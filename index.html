@@ -1,0 +1,2382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="1C:RSV MCP Server — плагин для 1C:EDT, который даёт ИИ-ассистентам прямой доступ к конфигурациям 1С. 37 инструментов, 0 внешних зависимостей, без SaaS-посредников.">
+  <title>1C:RSV — Зрение ИИ в 1С:EDT</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563eb'/><text x='50%' y='54%' dy='.35em' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='12' font-weight='900' letter-spacing='-0.5'>RSV</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #ffffff;
+      color: #0f172a;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --blue: #1d4ed8;
+      --blue-dark: #1e3a8a;
+      --blue-light: #3b82f6;
+      --blue-pale: #dbeafe;
+      --indigo: #6366f1;
+      --indigo-pale: #eef2ff;
+      --green: #16a34a;
+      --green-pale: #dcfce7;
+      --amber: #d97706;
+      --amber-pale: #fef3c7;
+      --text: #0f172a;
+      --text-m: #334155;
+      --text-l: #64748b;
+      --bg: #ffffff;
+      --bg-light: #f8fafc;
+      --border: #e2e8f0;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,.1), 0 10px 10px -5px rgba(0,0,0,.04);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-lg: 20px;
+    }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; color: var(--text); }
+    h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); }
+    h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); }
+    h3 { font-size: clamp(1.2rem, 2.5vw, 1.5rem); }
+    p { color: var(--text-m); }
+    code, .mono {
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 0.875em;
+      background: var(--bg-light);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--blue);
+    }
+
+    /* ===== LAYOUT ===== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 80px 0; }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary { background: var(--blue); color: #fff; box-shadow: 0 4px 14px rgba(29,78,216,.35); }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(29,78,216,.45); }
+    .btn-outline { background: transparent; color: var(--blue); border: 2px solid var(--blue); }
+    .btn-outline:hover { background: var(--blue-pale); transform: translateY(-2px); }
+    .btn-tg { background: #229ED9; color: #fff; box-shadow: 0 4px 14px rgba(34,158,217,.35); }
+    .btn-tg:hover { background: #1a8fc4; transform: translateY(-2px); }
+    .btn-sm { padding: 10px 20px; font-size: 0.875rem; }
+
+    /* ===== BADGE ===== */
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 50px;
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .badge-blue { background: var(--blue-pale); color: var(--blue); }
+    .badge-green { background: var(--green-pale); color: var(--green); }
+    .badge-indigo { background: var(--indigo-pale); color: var(--indigo); }
+    .badge-amber { background: var(--amber-pale); color: var(--amber); }
+
+    /* ===== SECTION HEADERS ===== */
+    .section-header { text-align: center; max-width: 700px; margin: 0 auto 56px; }
+    .section-header .badge { margin-bottom: 16px; }
+    .section-header p { font-size: 1.1rem; color: var(--text-l); margin-top: 12px; }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .navbar-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .navbar-logo .logo-badge { background: var(--blue); color: white; font-weight: 800; font-size: 0.85rem; padding: 4px 10px; border-radius: 6px; }
+    .navbar-logo .logo-text { font-weight: 600; color: var(--text); font-size: 0.95rem; }
+    .navbar-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .navbar-links a { text-decoration: none; color: var(--text-m); font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .navbar-links a:hover { color: var(--blue); }
+    .navbar-cta { display: flex; gap: 12px; align-items: center; }
+    .navbar-cta .btn { padding: 8px 20px; font-size: 0.875rem; }
+    @media (max-width: 768px) { .navbar-links { display: none; } }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 100px 0 80px;
+      background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 50%, #fff 100%);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-badge { margin-bottom: 24px; }
+    .hero h1 { margin-bottom: 20px; }
+    .hero h1 span { color: var(--blue); position: relative; }
+    .hero h1 span::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--blue), var(--indigo)); border-radius: 2px;
+    }
+    .hero-sub { font-size: 1.15rem; color: var(--text-m); margin-bottom: 36px; max-width: 520px; line-height: 1.7; }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 48px; }
+    .hero-stats { display: flex; gap: 32px; padding-top: 32px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+    .hero-stat .num { font-size: 2rem; font-weight: 800; color: var(--blue); line-height: 1; }
+    .hero-stat .lbl { font-size: 0.8rem; color: var(--text-l); margin-top: 4px; }
+    .hero-visual { position: relative; z-index: 2; }
+    .hero-image-wrap { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xl); border: 1px solid var(--border); }
+    .hero-image-wrap img { width: 100%; display: block; }
+    .hero-floating {
+      position: absolute; background: white; border-radius: var(--radius); padding: 12px 16px;
+      box-shadow: var(--shadow-lg); border: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 500;
+    }
+    .hero-floating.f1 { top: -20px; right: -20px; }
+    .hero-floating.f2 { bottom: -20px; left: -20px; }
+    .hero-floating .dot { width: 10px; height: 10px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.2); animation: pulse-dot 2s infinite; }
+    @keyframes pulse-dot {
+      0%,100% { box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
+      50% { box-shadow: 0 0 0 6px rgba(34,197,94,0.1); }
+    }
+    @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } .hero-visual { display: none; } }
+
+    /* ===== PRESENTATION SHOWCASE ===== */
+    .showcase { padding: 40px 0; background: white; }
+    .showcase-inner {
+      border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: var(--shadow-xl); border: 1px solid var(--border);
+      position: relative;
+    }
+    .showcase-inner img { width: 100%; display: block; }
+    .showcase-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.6));
+      padding: 40px 32px 24px;
+      color: white;
+      font-size: 0.95rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .showcase-inner:hover .showcase-caption { opacity: 1; }
+
+    /* ===== REAL CASE SECTION ===== */
+    .real-case { background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); color: white; padding: 80px 0 60px; overflow-x: hidden; }
+    .real-case .section-header h2 { color: white; }
+    .real-case .section-header p { color: #94a3b8; }
+    .rc-mission { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px; align-items: start; }
+    .rc-brief { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg); padding: 28px; }
+    .rc-brief h3 { color: #e2e8f0; font-size: 1.1rem; margin-bottom: 16px; }
+    .rc-brief-row { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.88rem; }
+    .rc-brief-row:last-child { border-bottom: none; }
+    .rc-brief-label { color: #64748b; min-width: 120px; flex-shrink: 0; }
+    .rc-brief-value { color: #e2e8f0; font-weight: 500; }
+    .rc-video-block { border-radius: var(--radius-lg); overflow: hidden; }
+    .rc-video-tabs { display: flex; gap: 0; }
+    .rc-video-tab { flex: 1; padding: 10px 16px; text-align: center; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: #94a3b8; transition: all 0.2s; }
+    .rc-video-tab:first-child { border-radius: var(--radius) 0 0 0; }
+    .rc-video-tab:last-child { border-radius: 0 var(--radius) 0 0; }
+    .rc-video-tab.active { background: rgba(255,255,255,0.1); color: white; border-bottom-color: transparent; }
+    .rc-video-tab:hover:not(.active) { background: rgba(255,255,255,0.07); }
+    .rc-video-frame { position: relative; padding-top: 56.25%; background: #000; border: 1px solid rgba(255,255,255,0.12); border-top: none; border-radius: 0 0 var(--radius) var(--radius); }
+    .rc-video-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .rc-stats { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin: 40px 0 32px; }
+    .rc-stat { text-align: center; }
+    .rc-stat-num { font-size: 1.8rem; font-weight: 900; color: #a8ff78; line-height: 1; }
+    .rc-stat-label { font-size: 0.78rem; color: #64748b; margin-top: 4px; }
+    .rc-gallery-title { text-align: center; font-size: 0.85rem; color: #64748b; margin-bottom: 12px; font-weight: 500; }
+    .rc-gallery { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: thin; scrollbar-color: #334155 transparent; }
+    .rc-gallery::-webkit-scrollbar { height: 6px; }
+    .rc-gallery::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    .rc-thumb { flex-shrink: 0; width: 160px; height: 90px; border-radius: 6px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; opacity: 0.7; }
+    .rc-thumb:hover { border-color: #a8ff78; opacity: 1; transform: scale(1.05); }
+    .rc-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .rc-bottom { display: flex; justify-content: center; gap: 16px; margin-top: 32px; }
+    .btn-case-detail { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: rgba(168,255,120,0.12); color: #a8ff78; border: 1px solid rgba(168,255,120,0.3); border-radius: var(--radius); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+    .btn-case-detail:hover { background: rgba(168,255,120,0.2); transform: translateY(-2px); }
+    .cg-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center; flex-direction: column; }
+    .cg-modal.active { display: flex; }
+    .cg-modal-img { max-width: 90vw; max-height: 80vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    .cg-modal-caption { color: #94a3b8; font-size: 0.85rem; margin-top: 12px; text-align: center; }
+    .cg-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 50px; height: 50px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; color: white; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .cg-nav:hover { background: rgba(255,255,255,0.2); }
+    .cg-prev { left: 20px; }
+    .cg-next { right: 20px; }
+    .cg-close { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; color: white; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .cd-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 20px; }
+    .cd-modal.active { display: flex; }
+    .cd-body { background: #1e293b; border-radius: var(--radius-lg); max-width: 800px; width: 100%; padding: 40px; color: #e2e8f0; position: relative; }
+    .cd-body h3 { color: white; font-size: 1.2rem; margin: 24px 0 12px; }
+    .cd-body h3:first-of-type { margin-top: 0; }
+    .cd-body p, .cd-body li { color: #94a3b8; font-size: 0.88rem; line-height: 1.7; }
+    .cd-body ul { padding-left: 20px; margin-bottom: 16px; }
+    .cd-body ul li { margin-bottom: 6px; }
+    .cd-body ul li strong { color: #e2e8f0; }
+    .cd-table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 0.82rem; }
+    .cd-table th { background: rgba(255,255,255,0.06); padding: 8px 12px; text-align: left; color: #94a3b8; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .cd-table td { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; }
+    .cd-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; background: rgba(255,255,255,0.06); border: none; border-radius: 50%; color: #94a3b8; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .cd-close:hover { background: rgba(255,255,255,0.12); color: white; }
+    .cd-highlight { background: rgba(168,255,120,0.08); border: 1px solid rgba(168,255,120,0.15); border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+    .cd-highlight strong { color: #a8ff78; }
+    .cg-counter { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: #64748b; font-size: 0.8rem; }
+    @media (max-width: 768px) {
+      .rc-mission { grid-template-columns: 1fr; }
+      .rc-stats { gap: 20px; }
+      .rc-thumb { width: 130px; height: 73px; }
+    }
+
+    /* ===== VIDEO SECTION ===== */
+    .video-section { padding: 0 0 80px; background: var(--bg-light); }
+    .video-section .section-header { padding-top: 80px; }
+    .video-wrap { position: relative; padding-top: 56.25%; border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.15); border: 1px solid var(--border); background: #000; }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-caption { text-align: center; margin-top: 16px; font-size: 0.875rem; color: var(--text-l); }
+
+    /* ===== PAIN SECTION ===== */
+    .pain { background: var(--bg-light); }
+    .pain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .pain-card { background: white; border-radius: var(--radius); padding: 32px; border: 1px solid var(--border); position: relative; overflow: hidden; }
+    .pain-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #ef4444, #f97316); }
+    .pain-icon { width: 52px; height: 52px; border-radius: 12px; background: #fef2f2; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; }
+    .pain-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+    .pain-card p { font-size: 0.92rem; color: var(--text-l); }
+    @media (max-width: 768px) { .pain-grid { grid-template-columns: 1fr; } }
+
+    /* ===== HOW IT WORKS ===== */
+    .how-content { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .how-text h2 { margin-bottom: 20px; }
+    .how-text p { color: var(--text-m); margin-bottom: 32px; font-size: 1.05rem; line-height: 1.7; }
+    .how-benefits { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .how-benefits li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; color: var(--text-m); }
+    .how-benefits li .check { width: 22px; height: 22px; border-radius: 50%; background: var(--green-pale); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .how-visual img { width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); border: 1px solid var(--border); }
+    @media (max-width: 900px) { .how-content { grid-template-columns: 1fr; } }
+
+    /* ===== STATS BAR ===== */
+    .stats-bar { background: var(--blue); padding: 48px 0; }
+    .stats-inner { display: flex; justify-content: center; gap: 64px; flex-wrap: wrap; }
+    .stat-item { text-align: center; }
+    .stat-item .sn { font-size: 3rem; font-weight: 900; color: white; line-height: 1; display: block; }
+    .stat-item .sl { font-size: 0.9rem; color: rgba(255,255,255,0.75); margin-top: 8px; font-weight: 500; }
+
+    /* ===== PROFILES ===== */
+    .profiles { background: var(--bg-light); }
+    .profile-tabs {
+      display: flex; justify-content: center; gap: 0; margin-bottom: 48px;
+      background: white; border-radius: 50px; padding: 6px; border: 1px solid var(--border);
+      box-shadow: var(--shadow); max-width: 520px; margin-left: auto; margin-right: auto;
+    }
+    .profile-tab { flex: 1; padding: 10px 24px; border-radius: 50px; border: none; background: transparent; font-weight: 600; font-size: 0.9rem; color: var(--text-l); cursor: pointer; transition: all 0.25s; }
+    .profile-tab.active { background: var(--blue); color: white; box-shadow: 0 2px 8px rgba(29,78,216,0.3); }
+    .profile-panel { display: none; }
+    .profile-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+    .profile-info h3 { font-size: 1.5rem; margin-bottom: 8px; }
+    .profile-tagline { font-size: 1rem; font-weight: 600; color: var(--blue); margin-bottom: 16px; }
+    .profile-info .profile-desc { font-size: 1rem; color: var(--text-m); line-height: 1.7; margin-bottom: 24px; }
+    .profile-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .tool-tag { background: var(--bg-light); border: 1px solid var(--border); border-radius: 50px; padding: 4px 12px; font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; color: var(--blue); font-weight: 500; }
+    .profile-features { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .profile-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.92rem; color: var(--text-m); }
+    .profile-features .star { color: var(--blue); font-size: 1rem; flex-shrink: 0; }
+    .profile-img-wrap {
+      border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xl);
+      border: 1px solid var(--border);
+    }
+    .profile-img-wrap img { width: 100%; display: block; }
+    .profile-card-visual { background: white; border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 24px; box-shadow: var(--shadow-md); }
+    .profile-card-visual .pv-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .profile-avatar { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .metric-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--bg-light); font-size: 0.875rem; }
+    .metric-row:last-child { border-bottom: none; }
+    .metric-val { font-weight: 700; color: var(--blue); }
+    .metric-yes { color: var(--green); font-weight: 600; }
+    @media (max-width: 768px) {
+      .profile-panel.active { grid-template-columns: 1fr; }
+      .profile-tab { padding: 10px 12px; font-size: 0.8rem; }
+    }
+
+    /* ===== CASES ===== */
+    .cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .case-card {
+      background: white; border-radius: var(--radius-lg); border: 1px solid var(--border);
+      overflow: hidden; box-shadow: var(--shadow); transition: box-shadow 0.25s, transform 0.25s;
+      cursor: pointer;
+    }
+    .case-card:hover { box-shadow: var(--shadow-xl); transform: translateY(-4px); }
+    .case-card:hover .case-more-btn { opacity: 1; }
+    .case-header { padding: 24px 24px 20px; border-bottom: 1px solid var(--border); }
+    .case-number { font-size: 0.75rem; font-weight: 700; color: var(--blue); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    .case-header h3 { font-size: 1.05rem; line-height: 1.35; }
+    .case-body { padding: 20px 24px; }
+    .case-stat { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 8px; margin-bottom: 8px; font-size: 0.875rem; font-weight: 500; }
+    .case-stat.green { background: var(--green-pale); color: #15803d; }
+    .case-stat.blue { background: var(--blue-pale); color: var(--blue); }
+    .case-stat.indigo { background: var(--indigo-pale); color: var(--indigo); }
+    .case-body p { font-size: 0.88rem; color: var(--text-l); margin-top: 14px; line-height: 1.6; }
+    .case-tools { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .case-tools-label { font-size: 0.75rem; font-weight: 600; color: var(--text-l); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+    .case-tools-list { font-size: 0.8rem; color: var(--text-l); font-family: 'JetBrains Mono', monospace; }
+    .case-more-btn {
+      display: block; text-align: center; margin: 16px 0 0;
+      padding: 10px; background: var(--blue-pale); color: var(--blue);
+      font-size: 0.85rem; font-weight: 600; border-radius: var(--radius-sm);
+      transition: opacity 0.2s; opacity: 0;
+    }
+    @media (max-width: 900px) { .cases-grid { grid-template-columns: 1fr; } .case-more-btn { opacity: 1; } }
+
+    /* ===== CASE MODAL ===== */
+    .case-modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.7);
+      z-index: 9000; align-items: center; justify-content: center; padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .case-modal-overlay.open { display: flex; }
+    .case-modal {
+      background: white; border-radius: var(--radius-lg); max-width: 780px; width: 100%;
+      max-height: 88vh; overflow-y: auto; box-shadow: 0 40px 80px rgba(0,0,0,0.25);
+      position: relative;
+    }
+    .case-modal-header {
+      position: sticky; top: 0; background: white; padding: 24px 28px 20px;
+      border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; z-index: 1;
+    }
+    .case-modal-header h3 { font-size: 1.3rem; max-width: 90%; }
+    .case-modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-l); line-height: 1; padding: 4px; flex-shrink: 0; }
+    .case-modal-close:hover { color: var(--text); }
+    .case-modal-body { padding: 28px; }
+    .cm-section { margin-bottom: 28px; }
+    .cm-section h4 { font-size: 0.85rem; font-weight: 700; color: var(--text-l); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .cm-prompt {
+      background: var(--bg-light); border-left: 4px solid var(--blue);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 16px 20px; font-style: italic; color: var(--text-m); font-size: 0.95rem; line-height: 1.6;
+    }
+    .cm-tools-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    .cm-tools-table th { text-align: left; padding: 8px 12px; background: var(--bg-light); font-weight: 600; color: var(--text-l); border-bottom: 1px solid var(--border); }
+    .cm-tools-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .cm-tools-table tr:last-child td { border-bottom: none; }
+    .cm-tools-table td:first-child { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--blue); white-space: nowrap; }
+    .cm-result {
+      background: linear-gradient(135deg, var(--green-pale), #f0fdf4);
+      border: 1px solid #86efac; border-radius: var(--radius);
+      padding: 20px 24px;
+    }
+    .cm-result .cm-result-title { font-weight: 700; color: var(--green); margin-bottom: 8px; font-size: 1rem; }
+    .cm-result p { font-size: 0.9rem; color: #15803d; line-height: 1.6; }
+    .cm-steps { list-style: none; counter-reset: step; }
+    .cm-steps li { counter-increment: step; display: flex; gap: 14px; margin-bottom: 14px; font-size: 0.9rem; color: var(--text-m); line-height: 1.55; }
+    .cm-steps li::before { content: counter(step); min-width: 26px; height: 26px; border-radius: 50%; background: var(--blue); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .cm-code { background: #0f172a; color: #a8ff78; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; padding: 16px 20px; border-radius: var(--radius-sm); line-height: 1.7; overflow-x: auto; }
+    .cm-code .c { color: #9ECEFF; }
+    .cm-calls { display: inline-flex; align-items: center; gap: 8px; background: var(--blue-pale); color: var(--blue); padding: 6px 14px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; }
+
+    /* ===== COMPATIBILITY ===== */
+    .compat { background: white; }
+    .compat-logos { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 40px; }
+    .compat-item { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 22px 26px; background: var(--bg-light); border: 1px solid var(--border); border-radius: var(--radius); min-width: 120px; transition: box-shadow 0.2s, transform 0.2s; }
+    .compat-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .compat-item .ci-icon { font-size: 2rem; }
+    .compat-item .ci-label { font-size: 0.85rem; font-weight: 600; color: var(--text-m); }
+
+    /* ===== COMPARISON ===== */
+    .comparison { background: var(--bg-light); }
+    .comparison-table-wrap { overflow-x: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+    .comparison-table { width: 100%; border-collapse: collapse; background: white; }
+    .comparison-table th { padding: 18px 24px; text-align: left; font-size: 0.85rem; font-weight: 600; background: var(--bg-light); border-bottom: 2px solid var(--border); color: var(--text-l); text-transform: uppercase; letter-spacing: 0.05em; }
+    .comparison-table th.highlight { background: var(--blue-pale); color: var(--blue); }
+    .comparison-table td { padding: 16px 24px; border-bottom: 1px solid var(--border); font-size: 0.95rem; vertical-align: middle; }
+    .comparison-table tr:last-child td { border-bottom: none; }
+    .comparison-table tr:hover td { background: var(--bg-light); }
+    .comparison-table td.highlight { background: #f0f4ff; }
+    .comparison-table .cat { font-weight: 600; color: var(--text); }
+    .check-yes { color: var(--green); font-size: 1.2rem; font-weight: 700; }
+    .check-no { color: #94a3b8; font-size: 1.2rem; }
+    .check-partial { color: #f59e0b; font-size: 0.85rem; font-weight: 600; }
+    .num-big { font-size: 1.3rem; font-weight: 800; color: var(--blue); }
+    .num-small { font-size: 1rem; color: var(--text-l); }
+    .comparison-note { margin-top: 20px; text-align: center; font-size: 0.85rem; color: var(--text-l); }
+
+    /* ===== DEPTH COMPARISON ===== */
+    .depth-section { margin-top: 56px; }
+    .depth-section-header { text-align: center; margin-bottom: 36px; }
+    .depth-section-header h3 { font-size: 1.6rem; margin-bottom: 10px; }
+    .depth-section-header p { color: var(--text-l); font-size: 1rem; max-width: 640px; margin: 0 auto; }
+    .tool-depth-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 28px; }
+    .tdc {
+      background: white; border-radius: var(--radius-lg); border: 1px solid var(--border);
+      overflow: hidden; box-shadow: var(--shadow);
+    }
+    .tdc-header {
+      padding: 16px 20px; background: var(--bg-light); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .tdc-tool-name { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; color: var(--blue); }
+    .tdc-label { font-size: 0.75rem; color: var(--text-l); font-weight: 500; }
+    .tdc-rows { padding: 4px 0; }
+    .tdc-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      padding: 10px 16px; border-bottom: 1px solid var(--bg-light); font-size: 0.82rem;
+      align-items: start; gap: 8px;
+    }
+    .tdc-row:last-child { border-bottom: none; }
+    .tdc-feature-name { font-weight: 500; color: var(--text-l); }
+    .tdc-rsv { color: var(--green); font-weight: 600; }
+    .tdc-comp { color: #94a3b8; }
+    .tdc-col-header {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      padding: 8px 16px 6px; background: linear-gradient(90deg, transparent, var(--blue-pale) 33%, #f1f5f9 66%);
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; gap: 8px;
+    }
+    .tdc-col-header span:nth-child(2) { color: var(--blue); }
+    .tdc-col-header span:nth-child(3) { color: var(--text-l); }
+    .format-strip {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      border-radius: var(--radius-lg); padding: 28px 32px;
+      display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: center;
+    }
+    .format-side { }
+    .format-side h4 { font-size: 1rem; margin-bottom: 10px; }
+    .format-side.rsv h4 { color: #a8ff78; }
+    .format-side.comp h4 { color: #f87171; }
+    .format-side ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .format-side ul li { font-size: 0.83rem; line-height: 1.4; }
+    .format-side.rsv ul li { color: rgba(255,255,255,0.85); }
+    .format-side.comp ul li { color: #94a3b8; }
+    .format-side.rsv ul li::before { content: '✓ '; color: #a8ff78; font-weight: 700; }
+    .format-side.comp ul li::before { content: '✗ '; color: #f87171; }
+    .format-vs { text-align: center; font-size: 1.4rem; font-weight: 900; color: #475569; padding: 0 8px; }
+    .format-label { font-size: 1.1rem; font-weight: 800; display: block; margin-bottom: 4px; }
+    .format-label.rsv { color: #a8ff78; }
+    .format-label.comp { color: #f87171; }
+    .depth-score {
+      margin-top: 28px; background: white; border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 24px 32px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;
+    }
+    .ds-item { text-align: center; }
+    .ds-num { font-size: 2.2rem; font-weight: 900; line-height: 1; }
+    .ds-label { font-size: 0.8rem; color: var(--text-l); margin-top: 4px; font-weight: 500; }
+    .ds-score { font-size: 0.95rem; color: var(--text-l); }
+    .ds-bar { height: 8px; border-radius: 4px; background: var(--border); margin-top: 8px; width: 160px; }
+    .ds-bar-fill { height: 100%; border-radius: 4px; }
+    @media (max-width: 768px) {
+      .tool-depth-grid { grid-template-columns: 1fr; }
+      .format-strip { grid-template-columns: 1fr; }
+      .format-vs { display: none; }
+      .depth-score { justify-content: center; }
+    }
+
+    /* ===== SCREENSHOTS ===== */
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .gallery-item { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); cursor: zoom-in; transition: box-shadow 0.2s, transform 0.2s; background: var(--bg-light); }
+    .gallery-item:first-child { grid-column: span 2; }
+    .gallery-item:hover { box-shadow: var(--shadow-xl); transform: scale(1.02); }
+    .gallery-item img { width: 100%; display: block; object-fit: cover; }
+    .gallery-caption { padding: 10px 14px; font-size: 0.82rem; color: var(--text-l); font-weight: 500; background: white; border-top: 1px solid var(--border); }
+    @media (max-width: 768px) { .gallery-grid { grid-template-columns: 1fr; } .gallery-item:first-child { grid-column: span 1; } }
+
+    /* Lightbox */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 85vh; border-radius: 8px; object-fit: contain; }
+    .lightbox-close { position: absolute; top: 20px; right: 24px; color: white; font-size: 2rem; cursor: pointer; line-height: 1; opacity: 0.8; }
+    .lightbox-close:hover { opacity: 1; }
+
+    /* ===== QUALITY SECTION ===== */
+    .quality { background: white; }
+    .quality-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .quality-card {
+      background: var(--bg-light); border-radius: var(--radius-lg); padding: 32px;
+      border: 1px solid var(--border); position: relative; overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .quality-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .quality-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--indigo));
+    }
+    .quality-icon { width: 56px; height: 56px; border-radius: 14px; background: var(--blue-pale); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 20px; }
+    .quality-card h3 { font-size: 1.1rem; margin-bottom: 10px; }
+    .quality-card ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .quality-card ul li { font-size: 0.88rem; color: var(--text-m); display: flex; align-items: flex-start; gap: 8px; line-height: 1.45; }
+    .quality-card ul li::before { content: '→'; color: var(--blue); font-weight: 700; flex-shrink: 0; }
+    .quality-review {
+      margin-top: 40px; background: linear-gradient(135deg, #f0f4ff, var(--indigo-pale));
+      border: 1px solid #c7d2fe; border-radius: var(--radius-lg); padding: 32px;
+      display: flex; align-items: flex-start; gap: 20px;
+    }
+    .quality-review .qr-icon { font-size: 2.5rem; flex-shrink: 0; }
+    .quality-review blockquote { font-size: 1.05rem; color: var(--text-m); line-height: 1.7; font-style: italic; }
+    .quality-review .qr-source { margin-top: 12px; font-size: 0.85rem; font-weight: 600; color: var(--indigo); font-style: normal; }
+    @media (max-width: 768px) { .quality-grid { grid-template-columns: 1fr; } }
+
+    /* ===== INSTALLATION ===== */
+    .install { background: var(--bg-light); }
+    .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .step-card { background: white; border-radius: var(--radius-lg); padding: 28px 24px; border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; text-align: center; }
+    .step-number { width: 48px; height: 48px; border-radius: 14px; background: var(--blue); color: white; font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+    .step-card h4 { font-size: 1rem; margin-bottom: 10px; }
+    .step-card p { font-size: 0.875rem; color: var(--text-l); line-height: 1.55; }
+    .step-card code { display: block; margin-top: 10px; font-size: 0.75rem; background: var(--bg-light); padding: 8px 10px; border-radius: 6px; text-align: left; }
+    .step-connector { position: absolute; top: 40px; right: -16px; font-size: 1.5rem; color: var(--blue-light); z-index: 2; }
+    .step-card:last-child .step-connector { display: none; }
+    .install-note { margin-top: 40px; background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; display: flex; align-items: flex-start; gap: 14px; }
+    .install-note .ni { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+    .install-note p { font-size: 0.9rem; color: var(--text-m); line-height: 1.6; }
+    .install-note a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .install-note a:hover { text-decoration: underline; }
+    @media (max-width: 900px) { .steps-grid { grid-template-columns: repeat(2, 1fr); } .step-connector { display: none !important; } }
+    @media (max-width: 480px) { .steps-grid { grid-template-columns: 1fr; } }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 50%, var(--indigo) 100%);
+      padding: 100px 0; text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-section::before, .cta-section::after { content: ''; position: absolute; border-radius: 50%; background: rgba(255,255,255,0.05); }
+    .cta-section::before { width: 500px; height: 500px; top: -200px; left: -100px; }
+    .cta-section::after { width: 400px; height: 400px; bottom: -200px; right: -100px; }
+    .cta-content { position: relative; z-index: 2; }
+    .cta-section h2 { color: white; font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 16px; }
+    .cta-section p { color: rgba(255,255,255,0.8); font-size: 1.1rem; margin-bottom: 40px; }
+    .cta-actions { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .btn-white { background: white; color: var(--blue); font-weight: 700; padding: 16px 36px; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+    .btn-white:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+    .btn-ghost { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.5); font-weight: 600; padding: 14px 32px; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+    .btn-ghost:hover { border-color: white; background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+    .btn-tg-white { background: #229ED9; color: white; font-weight: 700; padding: 16px 36px; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 4px 14px rgba(34,158,217,0.4); }
+    .btn-tg-white:hover { background: #1a8fc4; transform: translateY(-3px); }
+
+    /* ===== FOOTER ===== */
+    footer { background: var(--text); color: #94a3b8; padding: 48px 0 32px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; margin-bottom: 40px; flex-wrap: wrap; }
+    .footer-brand .logo-badge { background: var(--blue-light); }
+    .footer-brand .logo-text { color: #e2e8f0; }
+    .footer-desc { margin-top: 14px; font-size: 0.875rem; max-width: 320px; line-height: 1.6; }
+    .footer-links-section h5 { color: #e2e8f0; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .footer-links a:hover { color: white; }
+    .footer-bottom { border-top: 1px solid #1e293b; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; flex-wrap: wrap; gap: 12px; }
+    .footer-author a { color: var(--blue-light); text-decoration: none; }
+    .footer-author a:hover { text-decoration: underline; }
+    .footer-version { color: #475569; }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+
+    /* ===== COMPREHENSIVE MOBILE FIXES ===== */
+
+    /* --- Tablets (max 900px) --- */
+    @media (max-width: 900px) {
+      section { padding: 60px 0; }
+      .section-header { margin-bottom: 40px; }
+      .stats-inner { gap: 32px; }
+      .stat-item .sn { font-size: 2.2rem; }
+    }
+
+    /* --- Phones (max 768px) --- */
+    @media (max-width: 768px) {
+      section { padding: 48px 0; }
+      .section-header { margin-bottom: 32px; }
+      .section-header p { font-size: 0.95rem; }
+
+      /* Navbar */
+      .navbar-cta .btn { padding: 6px 14px; font-size: 0.8rem; }
+
+      /* Hero */
+      .hero { padding: 48px 0 40px; }
+      .hero-actions { gap: 12px; }
+      .hero-stats { gap: 20px; }
+      .hero-stat .num { font-size: 1.5rem; }
+      .hero-stat .lbl { font-size: 0.75rem; }
+
+      /* Real case — brief card */
+      .real-case { padding: 48px 0 36px; }
+      .rc-brief { padding: 18px; }
+      .rc-brief h3 { font-size: 1rem; margin-bottom: 12px; }
+      .rc-brief-label { min-width: 90px; font-size: 0.8rem; }
+      .rc-brief-row { font-size: 0.82rem; gap: 8px; }
+      .rc-brief-value { font-size: 0.82rem; }
+      /* Real case — stats */
+      .rc-stat-num { font-size: 1.3rem; }
+      .rc-stat-label { font-size: 0.72rem; }
+      /* Real case — video tabs */
+      .rc-video-tab { padding: 8px 10px; font-size: 0.78rem; }
+
+      /* Stats bar */
+      .stats-bar { padding: 36px 0; }
+      .stats-inner { gap: 20px; }
+      .stat-item .sn { font-size: 1.8rem; }
+      .stat-item .sl { font-size: 0.8rem; }
+
+      /* Depth comparison — cards */
+      .tdc-row { padding: 8px 10px; font-size: 0.75rem; }
+      .tdc-col-header { padding: 6px 10px; font-size: 0.68rem; }
+      .tdc-header { padding: 12px 14px; }
+      .tdc-tool-name { font-size: 0.78rem; }
+      .tdc-label { font-size: 0.68rem; }
+      /* Depth comparison — format strip */
+      .format-strip { padding: 20px 18px; }
+      .format-side h4 { font-size: 0.9rem; }
+      .format-side ul li { font-size: 0.78rem; }
+      .format-label { font-size: 0.95rem; }
+      /* Depth comparison — score */
+      .depth-score { padding: 18px 16px; gap: 20px; flex-wrap: wrap; justify-content: center; }
+      .ds-num { font-size: 1.6rem; }
+      .ds-bar { width: 120px; }
+      .ds-label { font-size: 0.75rem; }
+      .ds-score { font-size: 0.78rem; }
+
+      /* Comparison table */
+      .comparison-table th { padding: 12px 10px; font-size: 0.78rem; }
+      .comparison-table td { padding: 10px 10px; font-size: 0.82rem; }
+
+      /* Quality review */
+      .quality-review { flex-direction: column; gap: 14px; padding: 24px; }
+      .quality-card { padding: 24px; }
+
+      /* Installation */
+      .install-note { flex-direction: column; gap: 10px; }
+
+      /* Case detail modal */
+      .cd-body { padding: 24px 18px; }
+      .cd-modal { padding: 20px 10px; }
+      .cd-table { font-size: 0.76rem; }
+      .cd-table th, .cd-table td { padding: 6px 8px; }
+
+      /* Case gallery modal */
+      .cg-nav { width: 36px; height: 36px; font-size: 1.1rem; }
+      .cg-prev { left: 8px; }
+      .cg-next { right: 8px; }
+
+      /* Case modals (3 kейса) */
+      .case-modal-header { padding: 18px 16px 14px; }
+      .case-modal-header h3 { font-size: 1.1rem; }
+      .case-modal-body { padding: 18px; }
+      .cm-code { font-size: 0.72rem; padding: 12px 14px; }
+      .cm-tools-table td:first-child { white-space: normal; }
+
+      /* Footer */
+      .footer-inner { flex-direction: column; gap: 28px; }
+      .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
+
+      /* CTA */
+      .cta-section { padding: 60px 0; }
+      .btn-white, .btn-tg-white { padding: 12px 24px; font-size: 0.9rem; }
+      .btn-ghost { padding: 10px 24px; font-size: 0.9rem; }
+
+      /* Compat logos */
+      .compat-item { min-width: 100px; padding: 16px 14px; }
+      .compat-item .ci-icon { font-size: 1.5rem; }
+      .compat-item .ci-label { font-size: 0.78rem; }
+    }
+
+    /* --- Small phones (max 480px) --- */
+    @media (max-width: 480px) {
+      .container { padding: 0 14px; }
+      /* Prevent long words/code from overflowing */
+      code, .mono, .cm-code, .case-tools-list, .cd-body p { overflow-wrap: break-word; word-break: break-word; }
+      section { padding: 40px 0; }
+
+      /* Navbar */
+      .navbar-inner { height: 52px; }
+      .navbar-logo .logo-text { font-size: 0.82rem; }
+      .navbar-cta .btn { padding: 5px 10px; font-size: 0.75rem; }
+
+      /* Hero */
+      .hero { padding: 32px 0 28px; }
+      .hero-sub { font-size: 0.95rem; }
+      .hero-stats { gap: 12px; padding-top: 20px; }
+      .hero-stat .num { font-size: 1.3rem; }
+      .btn { padding: 11px 18px; font-size: 0.88rem; }
+      .btn-sm { padding: 8px 14px; }
+
+      /* Real case — brief: stack label/value vertically on very small screens */
+      .rc-brief { padding: 14px; }
+      .rc-brief-row { flex-direction: column; gap: 2px; }
+      .rc-brief-label { min-width: auto; }
+      /* Real case — stats */
+      .rc-stats { gap: 10px; }
+      .rc-stat-num { font-size: 1.1rem; }
+      .rc-stat-label { font-size: 0.68rem; }
+      /* Real case — buttons */
+      .btn-case-detail { padding: 10px 18px; font-size: 0.82rem; }
+      .rc-bottom { gap: 10px; }
+
+      /* Stats bar */
+      .stats-bar { padding: 28px 0; }
+      .stats-inner { gap: 14px; }
+      .stat-item .sn { font-size: 1.5rem; }
+      .stat-item .sl { font-size: 0.72rem; }
+
+      /* Profiles */
+      .profile-tab { padding: 8px 8px; font-size: 0.72rem; }
+      .profile-tabs { padding: 4px; }
+      .profile-info h3 { font-size: 1.15rem; }
+      .profile-tagline { font-size: 0.88rem; }
+      .tool-tag { font-size: 0.7rem; padding: 3px 8px; }
+
+      /* Cases */
+      .case-header { padding: 16px 16px 14px; }
+      .case-body { padding: 14px 16px; }
+      .case-stat { padding: 8px 10px; font-size: 0.82rem; }
+      .case-tools-list { font-size: 0.72rem; }
+
+      /* Depth comparison — very compact */
+      .tdc-row { font-size: 0.68rem; padding: 6px 8px; gap: 4px; }
+      .tdc-col-header { font-size: 0.62rem; padding: 5px 8px; gap: 4px; }
+      .tdc-header { padding: 10px 10px; }
+      .tdc-tool-name { font-size: 0.72rem; }
+      .tdc-label { font-size: 0.62rem; display: none; }
+      .format-strip { padding: 16px 14px; }
+      .format-side h4 { font-size: 0.82rem; }
+      .format-side ul li { font-size: 0.72rem; }
+      .format-label { font-size: 0.85rem; }
+      .depth-score { padding: 14px 12px; gap: 16px; }
+      .ds-num { font-size: 1.4rem; }
+      .ds-bar { width: 100px; }
+      .depth-section-header h3 { font-size: 1.2rem; }
+      .depth-section-header p { font-size: 0.88rem; }
+
+      /* Comparison table */
+      .comparison-table th { padding: 10px 8px; font-size: 0.72rem; }
+      .comparison-table td { padding: 8px 8px; font-size: 0.78rem; }
+      .num-big { font-size: 1rem; }
+
+      /* Quality */
+      .quality-card { padding: 20px; }
+      .quality-card h3 { font-size: 1rem; }
+      .quality-card ul li { font-size: 0.82rem; }
+      .quality-review blockquote { font-size: 0.9rem; }
+
+      /* Installation */
+      .step-card { padding: 20px 16px; }
+      .step-number { width: 40px; height: 40px; font-size: 1.1rem; }
+
+      /* CTA */
+      .cta-section { padding: 48px 0; }
+      .cta-actions { flex-direction: column; align-items: center; }
+      .btn-white, .btn-tg-white, .btn-ghost { width: 100%; max-width: 300px; justify-content: center; }
+
+      /* Case detail modal */
+      .cd-body { padding: 18px 14px; }
+      .cd-body h3 { font-size: 1rem; }
+      .cd-body p, .cd-body li { font-size: 0.82rem; }
+      .cd-highlight { padding: 12px 14px; }
+
+      /* Case modal */
+      .case-modal-body { padding: 14px; }
+      .cm-prompt { padding: 12px 14px; font-size: 0.88rem; }
+      .cm-steps li { font-size: 0.82rem; }
+      .cm-tools-table { font-size: 0.78rem; }
+      .cm-tools-table th, .cm-tools-table td { padding: 6px 8px; }
+      .cm-code { font-size: 0.68rem; padding: 10px 12px; }
+
+      /* Gallery */
+      .gallery-caption { font-size: 0.75rem; padding: 8px 10px; }
+
+      /* Footer */
+      .footer-desc { font-size: 0.82rem; max-width: 100%; }
+    }
+
+    /* ====== DOWNLOAD SECTION ====== */
+    .download-section {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+      padding: 80px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .download-section::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -15%;
+      width: 500px;
+      height: 500px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .download-inner {
+      text-align: center;
+      color: white;
+    }
+    .download-inner h2 {
+      color: white;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      margin: 16px 0 8px;
+    }
+    .download-sub {
+      color: rgba(255,255,255,0.72);
+      font-size: 1.05rem;
+      margin-bottom: 40px;
+    }
+    .download-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 48px;
+      max-width: 560px;
+      margin: 0 auto 32px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+    }
+    .download-card-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+    }
+    .download-file-icon { font-size: 2.4rem; line-height: 1; }
+    .download-file-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .download-file-meta {
+      color: var(--text-l);
+      font-size: 0.82rem;
+      margin-top: 4px;
+    }
+    .download-includes {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      background: var(--bg-light);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      color: var(--text-m);
+      text-align: left;
+    }
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #16a34a;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 16px 48px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 4px 20px rgba(22,163,74,0.4);
+      width: 100%;
+    }
+    .btn-download:hover {
+      background: #15803d;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(22,163,74,0.5);
+    }
+    .download-note {
+      font-size: 0.8rem;
+      color: var(--text-l);
+    }
+    .download-requirements {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.88rem;
+    }
+    .btn-nav-download {
+      background: #16a34a;
+      color: white !important;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      text-decoration: none;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .btn-nav-download:hover { background: #15803d; }
+    @media (max-width: 600px) {
+      .download-card { padding: 28px 20px; }
+      .download-file-name { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="#" class="navbar-logo">
+        <span class="logo-badge">1C:RSV</span>
+        <span class="logo-text">MCP Server</span>
+      </a>
+      <ul class="navbar-links">
+        <li><a href="#demo">Демо</a></li>
+        <li><a href="#real-case">Кейс ЗУП</a></li>
+        <li><a href="#how">Как работает</a></li>
+        <li><a href="#profiles">Профили</a></li>
+        <li><a href="#cases">Кейсы</a></li>
+        <li><a href="#quality">Качество</a></li>
+        <li><a href="#install">Установка</a></li>
+      </ul>
+      <div class="navbar-cta">
+        <a href="#download" class="btn-nav-download">⬇ Скачать v2.7.0</a>
+        <a href="https://t.me/edt_ai_1c" class="btn btn-primary" target="_blank" rel="noopener">
+          ✈ Telegram
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content fade-in">
+        <div class="hero-badge">
+          <span class="badge badge-blue">🔵 Версия 2.7.0 · Для 1C:EDT 2025.x</span>
+        </div>
+        <h1>Дайте ИИ <span>зрение</span><br>в 1С:EDT</h1>
+        <p class="hero-sub">
+          Плагин 1C:RSV подключает ИИ-ассистентов (Claude Code, Cursor, Windsurf)
+          напрямую к вашей конфигурации 1С. ИИ <strong>видит структуру, читает код
+          и пишет готовые решения</strong> уровня Senior — за секунды.
+        </p>
+        <div class="hero-actions">
+          <a href="https://t.me/edt_ai_1c" class="btn btn-primary" target="_blank" rel="noopener">
+            ✈ Telegram-канал
+          </a>
+          <a href="#how" class="btn btn-outline">Как это работает →</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="num" data-counter="37">0</div>
+            <div class="lbl">инструментов MCP</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num" data-counter="8">0</div>
+            <div class="lbl">групп функций</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num" data-counter="3">0</div>
+            <div class="lbl">профиля ролей</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num" data-counter="0">0</div>
+            <div class="lbl">внешних зависимостей</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual fade-in fade-in-delay-2">
+        <div style="position:relative;">
+          <div class="hero-image-wrap">
+            <img src="images/main-screen.png" alt="Интерфейс 1C:RSV в 1C:EDT" loading="lazy">
+          </div>
+          <div class="hero-floating f1">
+            <div class="dot"></div>
+            <span>MCP-сервер активен</span>
+          </div>
+          <div class="hero-floating f2">
+            <span>🧠</span>
+            <span>Claude Code подключён</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRESENTATION SHOWCASE ===== -->
+<section class="showcase">
+  <div class="container">
+    <div class="showcase-inner fade-in">
+      <img src="images/presentation-main.png" alt="1C:RSV — обзор решения" loading="lazy">
+      <div class="showcase-caption">Общий обзор решения 1C:RSV MCP Server</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VIDEO DEMO ===== -->
+<section class="video-section" id="demo">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-blue">Демо</span>
+      <h2>Посмотрите, как это работает</h2>
+      <p>3 минуты — и вы поймёте, что именно получает ИИ при работе с вашей 1С-конфигурацией.</p>
+    </div>
+    <div class="video-wrap fade-in">
+      <iframe
+        src="https://vk.com/video_ext.php?oid=-236008654&id=456239018&hd=2&autoplay=0"
+        allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+        allowfullscreen>
+      </iframe>
+    </div>
+    <p class="video-caption">Видео доступно без VPN — работает в России</p>
+  </div>
+</section>
+
+<!-- ===== REAL CASE: ЗУП ===== -->
+<section class="real-case" id="real-case">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge" style="background:rgba(168,255,120,0.15);color:#a8ff78;">Реальный кейс</span>
+      <h2>ИИ пишет код в типовой ЗУП за 1 час</h2>
+      <p>Задача уровня Senior-разработчика (2–3 дня вручную). Записано в реальном времени.</p>
+    </div>
+
+    <div class="rc-mission fade-in">
+      <!-- Левая часть: видео с табами -->
+      <div class="rc-video-block">
+        <div class="rc-video-tabs">
+          <div class="rc-video-tab active" onclick="switchCaseVideo('vk')">VK Видео</div>
+          <div class="rc-video-tab" onclick="switchCaseVideo('yt')">YouTube</div>
+        </div>
+        <div class="rc-video-frame">
+          <iframe id="case-video-vk" src="https://vk.com/video_ext.php?oid=-236008654&id=456239020&hd=2&autoplay=0" allow="autoplay; encrypted-media; fullscreen; picture-in-picture;" allowfullscreen></iframe>
+          <iframe id="case-video-yt" src="https://www.youtube.com/embed/-HI-SDFoNxs" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:none;"></iframe>
+        </div>
+      </div>
+
+      <!-- Правая часть: карточка задачи -->
+      <div class="rc-brief">
+        <h3>Миссия</h3>
+        <div class="rc-brief-row">
+          <span class="rc-brief-label">Конфигурация</span>
+          <span class="rc-brief-value">ЗУП 3.1.36.75 (типовая)</span>
+        </div>
+        <div class="rc-brief-row">
+          <span class="rc-brief-label">Цель</span>
+          <span class="rc-brief-value">Расчёт зарплаты «на лету» — тот же движок, что в документе, но без записи в базу</span>
+        </div>
+        <div class="rc-brief-row">
+          <span class="rc-brief-label">Сложность</span>
+          <span class="rc-brief-value" style="color:#f59e0b;">Высокая — МенеджерРасчетаЗарплаты: 22 914 строк, 620 методов</span>
+        </div>
+        <div class="rc-brief-row">
+          <span class="rc-brief-label">Порог входа</span>
+          <span class="rc-brief-value">Только Senior ЗУП (мидл застрянет, джуниор не справится)</span>
+        </div>
+        <div class="rc-brief-row">
+          <span class="rc-brief-label">Результат</span>
+          <span class="rc-brief-value" style="color:#a8ff78;">352 строки рабочего кода, 3 ошибки найдены и исправлены</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="rc-stats fade-in">
+      <div class="rc-stat"><div class="rc-stat-num">67 000</div><div class="rc-stat-label">строк кода проанализировано</div></div>
+      <div class="rc-stat"><div class="rc-stat-num">352</div><div class="rc-stat-label">строки написано</div></div>
+      <div class="rc-stat"><div class="rc-stat-num">~1 ч</div><div class="rc-stat-label">вместо 2–3 дней</div></div>
+      <div class="rc-stat"><div class="rc-stat-num">41</div><div class="rc-stat-label">вызов MCP-инструментов</div></div>
+      <div class="rc-stat"><div class="rc-stat-num">99%</div><div class="rc-stat-label">экономия токенов</div></div>
+    </div>
+
+    <!-- Gallery -->
+    <p class="rc-gallery-title fade-in">Слайды из презентации — нажмите для просмотра</p>
+    <div class="rc-gallery fade-in">
+      <div class="rc-thumb" onclick="openCaseGallery(0)"><img src="images/case/7.jpg" alt="Задача" loading="lazy"></div>
+      <div class="rc-thumb" onclick="openCaseGallery(1)"><img src="images/case/8.jpg" alt="67 000 строк" loading="lazy"></div>
+      <div class="rc-thumb" onclick="openCaseGallery(2)"><img src="images/case/9.jpg" alt="Цепочка вызовов" loading="lazy"></div>
+      <div class="rc-thumb" onclick="openCaseGallery(3)"><img src="images/case/10.jpg" alt="Результат" loading="lazy"></div>
+      <div class="rc-thumb" onclick="openCaseGallery(4)"><img src="images/case/11.jpg" alt="MCP vs Senior" loading="lazy"></div>
+      <div class="rc-thumb" onclick="openCaseGallery(5)"><img src="images/case/12.jpg" alt="Новые правила" loading="lazy"></div>
+      <div class="rc-thumb" onclick="openCaseGallery(6)"><img src="images/case/2.jpg" alt="Сложность" loading="lazy"></div>
+      <div class="rc-thumb" onclick="openCaseGallery(7)"><img src="images/case/3.jpg" alt="Архитектура" loading="lazy"></div>
+      <div class="rc-thumb" onclick="openCaseGallery(8)"><img src="images/case/4.jpg" alt="Инструменты" loading="lazy"></div>
+      <div class="rc-thumb" onclick="openCaseGallery(9)"><img src="images/case/5.jpg" alt="Профили" loading="lazy"></div>
+      <div class="rc-thumb" onclick="openCaseGallery(10)"><img src="images/case/6.jpg" alt="Установка" loading="lazy"></div>
+      <div class="rc-thumb" onclick="openCaseGallery(11)"><img src="images/case/13.jpg" alt="Что в видео" loading="lazy"></div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="rc-bottom fade-in">
+      <button class="btn-case-detail" onclick="openCaseDetail()">Подробный отчёт о разработке</button>
+    </div>
+  </div>
+</section>
+
+<!-- Case gallery modal -->
+<div class="cg-modal" id="cg-modal">
+  <button class="cg-close" onclick="closeCaseGallery()">&times;</button>
+  <button class="cg-nav cg-prev" onclick="caseGalleryNav(-1)">&larr;</button>
+  <button class="cg-nav cg-next" onclick="caseGalleryNav(1)">&rarr;</button>
+  <img class="cg-modal-img" id="cg-img" src="" alt="">
+  <div class="cg-modal-caption" id="cg-caption"></div>
+  <div class="cg-counter" id="cg-counter"></div>
+</div>
+
+<!-- Case detail modal -->
+<div class="cd-modal" id="cd-modal" onclick="if(event.target===this)closeCaseDetail()">
+  <div class="cd-body">
+    <button class="cd-close" onclick="closeCaseDetail()">&times;</button>
+    <h3>Задача</h3>
+    <p>Проанализировать цепочку вызовов расчёта зарплаты в типовом документе «Начисление зарплаты» (ЗУП 3.1.36.75) и написать обработку, выполняющую <strong style="color:#a8ff78;">полный расчёт зарплаты «на лету»</strong> — без создания документа и без записи в базу данных.</p>
+
+    <div class="cd-highlight">
+      <strong>Ключевая сложность:</strong> итоговый код выглядит простым — всего 3 вызова. Но чтобы узнать КАКИЕ вызовы нужны и КАКИЕ настройки передать — нужно перекопать МенеджерРасчетаЗарплаты (22 914 строк, 620 методов), РасчетЗарплатыРасширенный (19 887 строк) и форму документа (8 577 строк).
+    </div>
+
+    <h3>Использованные MCP-инструменты</h3>
+    <table class="cd-table">
+      <tr><th>Инструмент</th><th>Назначение</th><th>Вызовов</th></tr>
+      <tr><td>read_method_source</td><td>Точечное чтение методов из модулей 20 000+ строк</td><td>12</td></tr>
+      <tr><td>search_in_code</td><td>Поиск вхождений по коду конфигурации</td><td>7</td></tr>
+      <tr><td>write_module_source</td><td>Запись кода с проверкой синтаксиса (dryRun)</td><td>8</td></tr>
+      <tr><td>get_module_structure</td><td>Карта методов модулей</td><td>3</td></tr>
+      <tr><td>ai_context</td><td>Комплексный сбор контекста по объекту</td><td>2</td></tr>
+      <tr><td>Остальные (6 инстр.)</td><td>get_object_details, get_form_image, diff_module и др.</td><td>9</td></tr>
+    </table>
+
+    <h3>Обнаруженная цепочка вызовов</h3>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;line-height:1.8;color:#cbd5e1;background:rgba(0,0,0,0.3);padding:16px;border-radius:8px;">
+      Кнопка «Пересчитать сотрудника»<br>
+      &nbsp;&nbsp;&#8594; РасчетЗарплатыРасширенныйКлиент.ПересчитатьСотрудника()<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&#8594; Форма.ПересчитатьСотрудникаНаСервере()<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#8594; РасчетЗарплатыРасширенный.ПодготовитьДанныеДляПерезаполнения()<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#8594; МенеджерРасчетаЗарплаты: Инициализировать &#8594; Заполнить &#8594; Рассчитать
+    </p>
+
+    <h3>3 ошибки найдены и исправлены</h3>
+    <ul>
+      <li><strong>Ошибка 1:</strong> «Преобразование значения к типу Булево» — НастройкиНДФЛ.ОкончательныйРасчет не инициализируется типовым менеджером, в документе это делается на уровне формы. Добавлены недокументированные настройки.</li>
+      <li><strong>Ошибка 2:</strong> «Заполнение НастройкиРасчета.Сотрудники обязательно» — переработана процедура с формированием массивов Сотрудников и ФизическихЛиц.</li>
+      <li><strong>Ошибка 3:</strong> Нечитаемый вывод (30+ колонок НДФЛ) — полная переработка вывода: цветные заголовки, зебра-раскраска, фильтрация ненулевых колонок взносов.</li>
+    </ul>
+
+    <h3>Сравнение: ИИ + MCP vs. Senior вручную</h3>
+    <table class="cd-table">
+      <tr><th>Параметр</th><th style="color:#a8ff78;">ИИ + MCP</th><th>Senior вручную</th></tr>
+      <tr><td>Время</td><td style="color:#a8ff78;">~1–2 часа</td><td>2–3 рабочих дня</td></tr>
+      <tr><td>Строк кода прочитано</td><td style="color:#a8ff78;">~500 (точечно)</td><td>~67 000 (полные модули)</td></tr>
+      <tr><td>Итераций отладки</td><td style="color:#a8ff78;">3</td><td>5–15+</td></tr>
+    </table>
+
+    <div class="cd-highlight">
+      <strong>Вывод:</strong> MCP 1С-РСВ критически важен для работы с типовыми конфигурациями. Задача решена за ~41 вызов инструментов вместо чтения десятков тысяч строк. Мидл-разработчик с ИИ + MCP решает задачу, которая раньше требовала Senior ЗУП с годами опыта.
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAIN SECTION ===== -->
+<section class="pain">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-blue">Проблема</span>
+      <h2>Почему ИИ плохо работает с 1С без RSV?</h2>
+      <p>Современные ИИ-ассистенты мощны, но слепы внутри 1С:EDT. Без прямого доступа к структуре конфигурации они работают вслепую.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card fade-in fade-in-delay-1">
+        <div class="pain-icon">🙈</div>
+        <h3>ИИ не видит структуру конфигурации</h3>
+        <p>Тысячи объектов метаданных, реквизиты, формы, модули — ИИ не знает, что есть в вашей 1С, и вынужден угадывать названия.</p>
+      </div>
+      <div class="pain-card fade-in fade-in-delay-2">
+        <div class="pain-icon">📚</div>
+        <h3>Миллионы строк кода не влезают в контекст</h3>
+        <p>ERP, УНФ, УХ содержат миллионы строк BSL-кода. Загрузить всё в ИИ невозможно — нужна умная навигация, а не тупой поиск.</p>
+      </div>
+      <div class="pain-card fade-in fade-in-delay-3">
+        <div class="pain-icon">💸</div>
+        <h3>Токены тратятся впустую на «шум»</h3>
+        <p>Без контекстного фильтра ИИ получает нерелевантные данные и тратит дорогие токены на разбор «шума» вместо решения задачи.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section id="how">
+  <div class="container">
+    <div class="how-content">
+      <div class="how-text fade-in">
+        <span class="badge badge-indigo" style="margin-bottom:16px; display:inline-flex;">Решение</span>
+        <h2>Интеллектуальный мост между ИИ и 1С:EDT</h2>
+        <p>1C:RSV встраивает MCP-сервер прямо в среду разработки. ИИ-ассистент подключается по стандартному протоколу и получает доступ ко всей семантической базе знаний, которую EDT уже построил при анализе проекта.</p>
+        <ul class="how-benefits">
+          <li><span class="check">✓</span><span><strong>Без RAG-систем и векторных БД</strong> — используем готовые индексы EDT</span></li>
+          <li><span class="check">✓</span><span><strong>Точная выжимка данных</strong> — ИИ получает только нужное, без лишнего «шума»</span></li>
+          <li><span class="check">✓</span><span><strong>Экономия токенов в десятки раз</strong> — умная фильтрация на стороне EDT</span></li>
+          <li><span class="check">✓</span><span><strong>Без SaaS-посредников</strong> — плагин работает прямо в IDE, не требует внешних серверов или подписок</span></li>
+          <li><span class="check">✓</span><span><strong>JSON-формат</strong> — нативный для ИИ, без потерь при парсинге</span></li>
+        </ul>
+      </div>
+      <div class="how-visual fade-in fade-in-delay-2">
+        <img src="images/bridge.png" alt="Схема интеграции 1C:RSV" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS BAR ===== -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-inner">
+      <div class="stat-item"><span class="sn" data-counter="37">0</span><div class="sl">Инструментов MCP</div></div>
+      <div class="stat-item"><span class="sn" data-counter="51">0</span><div class="sl">Java-классов</div></div>
+      <div class="stat-item"><span class="sn" data-counter="3">0</span><div class="sl">Профиля работы</div></div>
+      <div class="stat-item"><span class="sn" data-counter="0">0</span><div class="sl">Внешних зависимостей</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROFILES ===== -->
+<section class="profiles" id="profiles">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-indigo">Роли</span>
+      <h2>Три профиля — для каждой роли</h2>
+      <p>Первое на рынке решение с чётким разделением инструментов по ролям. Каждый получает только то, что ему нужно.</p>
+    </div>
+
+    <div class="profile-tabs" id="profileTabs" style="margin-bottom:48px;">
+      <button class="profile-tab active" data-tab="dev">👨‍💻 Разработчик</button>
+      <button class="profile-tab" data-tab="analyst">📊 Аналитик</button>
+      <button class="profile-tab" data-tab="arch">🏛️ Архитектор</button>
+    </div>
+
+    <!-- ===== ПРОФИЛЬ: РАЗРАБОТЧИК ===== -->
+    <div class="profile-panel active" id="tab-dev">
+      <div class="profile-info fade-in">
+        <span class="badge badge-blue" style="margin-bottom:14px;">Профиль: Разработчик</span>
+        <h3>ИИ — полноценный Senior-разработчик</h3>
+        <p class="profile-tagline">Не помощник. Не советчик. Самостоятельный разработчик, пишущий production-код уровня Senior.</p>
+        <p class="profile-desc">
+          С 1C:RSV ИИ перестаёт угадывать — он <strong>видит всю конфигурацию изнутри</strong>.
+          Изучает структуру объектов, читает BSL-код, находит паттерны в типовых конфигурациях
+          (БСП, ERP, УНФ) и <strong>пишет готовые решения Enterprise-уровня</strong> по одному промту —
+          без технического задания, без указания методов, без помощи человека.
+        </p>
+        <div class="profile-tools">
+          <span class="tool-tag">get_object_details</span>
+          <span class="tool-tag">read_module_source</span>
+          <span class="tool-tag">get_method_call_hierarchy</span>
+          <span class="tool-tag">search_in_code</span>
+          <span class="tool-tag">get_validation_errors</span>
+          <span class="tool-tag">write_module_source</span>
+          <span class="tool-tag">ai_context</span>
+        </div>
+        <ul class="profile-features">
+          <li><span class="star">★</span><span>Пишет <strong>готовый BSL-код</strong> по одному промту — без ТЗ и без указания методов</span></li>
+          <li><span class="star">★</span><span>Находит паттерны в БСП/ERP и воспроизводит их <strong>по стандартам 1С</strong></span></li>
+          <li><span class="star">★</span><span><strong>Автоматически проверяет и исправляет</strong> ошибки валидации после записи</span></li>
+          <li><span class="star">★</span><span>Анализирует цепочки вызовов (<code>get_method_call_hierarchy</code>) — видит побочные эффекты</span></li>
+          <li><span class="star">★</span><span>Dry-run перед записью — <strong>полная безопасность</strong> изменений</span></li>
+        </ul>
+      </div>
+      <div class="fade-in fade-in-delay-2">
+        <div class="profile-img-wrap" style="margin-bottom:20px;">
+          <img src="images/profile-dev.png" alt="Возможности профиля Разработчик" loading="lazy">
+        </div>
+        <div class="profile-card-visual">
+          <div class="pv-header">
+            <div class="profile-avatar" style="background:#dbeafe;">👨‍💻</div>
+            <div><div style="font-weight:700;">Результаты из кейсов</div><div style="font-size:0.8rem;color:var(--text-l);">Реальные задачи, реальные цифры</div></div>
+          </div>
+          <div class="metric-row"><span>Сложность задач</span><span class="metric-val">Enterprise</span></div>
+          <div class="metric-row"><span>Заполнение по спецификациям</span><span class="metric-val">2 строки кода</span></div>
+          <div class="metric-row"><span>Паттерн БСП «с нуля»</span><span class="metric-val">1 промт</span></div>
+          <div class="metric-row"><span>Автоисправление ошибок</span><span class="metric-yes">✓ Автомат.</span></div>
+          <div class="metric-row"><span>Сложный баг</span><span class="metric-val">за 2 мин.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ПРОФИЛЬ: АНАЛИТИК ===== -->
+    <div class="profile-panel" id="tab-analyst">
+      <div class="profile-info fade-in">
+        <span class="badge badge-green" style="margin-bottom:14px;">Профиль: Аналитик</span>
+        <h3>Аналитик стал независим от программистов</h3>
+        <p class="profile-tagline">ИИ изучает конфигурацию самостоятельно — без привлечения разработчика.</p>
+        <p class="profile-desc">
+          С 1C:RSV аналитик получает ИИ-ассистента, который <strong>понимает конфигурацию как опытный эксперт</strong>.
+          ИИ самостоятельно изучает реализацию объектов, анализирует взаимосвязи, строит документацию
+          на основе <strong>живого кода и реальных метаданных</strong> — и отвечает на вопросы без участия разработчика.
+          Даже там, где встроенная справка 1С молчит.
+        </p>
+        <div class="profile-tools">
+          <span class="tool-tag">get_object_help</span>
+          <span class="tool-tag">get_form_image</span>
+          <span class="tool-tag">list_metadata_objects</span>
+          <span class="tool-tag">get_platform_docs</span>
+          <span class="tool-tag">find_object_references</span>
+          <span class="tool-tag">get_object_details</span>
+        </div>
+        <ul class="profile-features">
+          <li><span class="star">★</span><span><code>get_form_image</code>: <strong>визуализация любой формы</strong> в PNG — структура реквизитов за секунду</span></li>
+          <li><span class="star">★</span><span><code>get_object_help</code>: встроенная справка 1С + анализ живого кода <strong>одновременно</strong></span></li>
+          <li><span class="star">★</span><span>Документация системы <strong>«на лету»</strong> по реальным метаданным — не по устаревшим описаниям</span></li>
+          <li><span class="star">★</span><span>Полное понимание типовых конфигураций <strong>без знания BSL</strong></span></li>
+          <li><span class="star">★</span><span>Документация платформы API 1С — 4 специализированных инструмента</span></li>
+        </ul>
+      </div>
+      <div class="fade-in fade-in-delay-2">
+        <div class="profile-img-wrap" style="margin-bottom:20px;">
+          <img src="images/profile-analyst.png" alt="Возможности профиля Аналитик" loading="lazy">
+        </div>
+        <div class="profile-card-visual">
+          <div class="pv-header">
+            <div class="profile-avatar" style="background:#dcfce7;">📊</div>
+            <div><div style="font-weight:700;">Профиль: Аналитик</div><div style="font-size:0.8rem;color:var(--text-l);">Понимание без программирования</div></div>
+          </div>
+          <div class="metric-row"><span>Визуализация форм (PNG/JSON)</span><span class="metric-yes">✓ Уникально</span></div>
+          <div class="metric-row"><span>Встроенная справка 1С</span><span class="metric-yes">✓ Есть</span></div>
+          <div class="metric-row"><span>Документация платформы API</span><span class="metric-yes">✓ 4 инструмента</span></div>
+          <div class="metric-row"><span>Требует знания BSL</span><span style="color:var(--green);font-weight:600;">✗ Не нужно</span></div>
+          <div class="metric-row"><span>Независимость от разработчика</span><span class="metric-yes">✓ Полная</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ПРОФИЛЬ: АРХИТЕКТОР ===== -->
+    <div class="profile-panel" id="tab-arch">
+      <div class="profile-info fade-in">
+        <span class="badge badge-indigo" style="margin-bottom:14px;">Профиль: Архитектор</span>
+        <h3>Прямое конструирование прикладного решения</h3>
+        <p class="profile-tagline">ИИ не просто пишет текст — он создаёт и модифицирует объекты конфигурации.</p>
+        <p class="profile-desc">
+          Архитектор переводит взаимодействие ИИ и 1С на принципиально новый уровень —
+          не просто написание кода, а <strong>прямое создание и модификация объектов конфигурации</strong>
+          с многоуровневой системой защиты. Инструменты полностью работоспособны в базовых сценариях
+          и активно развиваются.
+        </p>
+        <div class="profile-tools">
+          <span class="tool-tag">create_metadata_object</span>
+          <span class="tool-tag">modify_metadata</span>
+          <span class="tool-tag">modify_form</span>
+          <span class="tool-tag">sync_database</span>
+          <span class="tool-tag">launch_debugger</span>
+          <span class="tool-tag">rebuild_project</span>
+        </div>
+        <ul class="profile-features">
+          <li><span class="star">★</span><span>Создание объектов метаданных напрямую через ИИ-ассистента</span></li>
+          <li><span class="star">★</span><span>Динамическое добавление реквизитов и элементов форм</span></li>
+          <li><span class="star">★</span><span><strong>Трёхуровневая защита:</strong> группы доступа + dry-run + подтверждение</span></li>
+          <li><span class="star">★</span><span>Активное R&D направление — быстро развивается</span></li>
+        </ul>
+      </div>
+      <div class="fade-in fade-in-delay-2">
+        <div class="profile-card-visual" style="margin-bottom:20px;">
+          <div class="pv-header">
+            <div class="profile-avatar" style="background:#eef2ff;">🏛️</div>
+            <div><div style="font-weight:700;">Профиль: Архитектор</div><div style="font-size:0.8rem;color:var(--text-l);">Управление структурой конфигурации</div></div>
+          </div>
+          <div class="metric-row"><span>Уровней защиты</span><span class="metric-val">3</span></div>
+          <div class="metric-row"><span>Создание объектов</span><span class="metric-yes">✓ Есть</span></div>
+          <div class="metric-row"><span>Управление формами</span><span class="metric-yes">✓ Есть</span></div>
+          <div class="metric-row"><span>Dry-run</span><span class="metric-yes">✓ Обязателен</span></div>
+          <div class="metric-row"><span>Статус</span><span style="color:var(--indigo);font-weight:600;">Активный R&D</span></div>
+        </div>
+        <div style="background:var(--indigo-pale); border:1px solid #c7d2fe; border-radius:var(--radius); padding:20px 24px;">
+          <div style="font-weight:700; color:var(--indigo); margin-bottom:8px;">🚀 Перспективное направление</div>
+          <p style="font-size:0.88rem; color:#4338ca; line-height:1.6;">Профиль Архитектор — первый на рынке 1С-MCP инструментарий для прямого создания объектов через ИИ. Активно тестируется и развивается.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CASES ===== -->
+<section id="cases">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-green">Кейсы</span>
+      <h2>Реальные задачи. Реальные результаты</h2>
+      <p>Нажмите на кейс, чтобы прочитать подробное описание — что делал ИИ, какие инструменты использовал и чего добился.</p>
+    </div>
+    <div class="cases-grid">
+
+      <!-- Кейс 1 -->
+      <div class="case-card fade-in fade-in-delay-1" onclick="openCase(1)">
+        <div class="case-header">
+          <div class="case-number">Кейс 01 · УНФ · Производство</div>
+          <h3>Автозаполнение материалов по спецификациям в документе Производство</h3>
+        </div>
+        <div class="case-body">
+          <div class="case-stat green">✅ Одна фраза → готовое решение</div>
+          <div class="case-stat blue">⚡ 16 вызовов MCP-инструментов</div>
+          <div class="case-stat indigo">🎯 Результат: 2 строки кода</div>
+          <p>ИИ самостоятельно нашёл метод заполнения по спецификациям в УНФ, проанализировал структуру документа (42 реквизита, 11 ТЧ!) и добавил функционал. Никаких указаний на методы или файлы.</p>
+          <div class="case-tools">
+            <div class="case-tools-label">Использованные инструменты</div>
+            <div class="case-tools-list">list_modules · read_module_source · get_object_details · search_in_code · get_validation_errors</div>
+          </div>
+          <div class="case-more-btn">Читать подробнее →</div>
+        </div>
+      </div>
+
+      <!-- Кейс 2 -->
+      <div class="case-card fade-in fade-in-delay-2" onclick="openCase(2)">
+        <div class="case-header">
+          <div class="case-number">Кейс 02 · УНФ · Расширение</div>
+          <h3>Реализация «Длительных операций» по паттерну БСП без знания API</h3>
+        </div>
+        <div class="case-body">
+          <div class="case-stat green">✅ 100% соответствие стандартам 1С</div>
+          <div class="case-stat blue">⚡ 17 вызовов MCP-инструментов</div>
+          <div class="case-stat indigo">🎯 Автоисправление ошибок валидации</div>
+          <p>ИИ нашёл 5 эталонных примеров БСП в типовой конфигурации, изучил паттерн и написал полный код расширения — на 100% соответствующий стандартам 1С. Затем сам исправил ошибки валидации.</p>
+          <div class="case-tools">
+            <div class="case-tools-label">Использованные инструменты</div>
+            <div class="case-tools-list">search_in_code · read_module_source · write_module_source · refresh_validation · get_validation_errors</div>
+          </div>
+          <div class="case-more-btn">Читать подробнее →</div>
+        </div>
+      </div>
+
+      <!-- Кейс 3 -->
+      <div class="case-card fade-in fade-in-delay-3" onclick="openCase(3)">
+        <div class="case-header">
+          <div class="case-number">Кейс 03 · УНФ · Enterprise</div>
+          <h3>Консолидация складской номенклатуры: склад vs. производство</h3>
+        </div>
+        <div class="case-body">
+          <div class="case-stat green">✅ Полный цикл: анализ → архитектура → код</div>
+          <div class="case-stat blue">⚡ Enterprise-уровень сложности</div>
+          <div class="case-stat indigo">🎯 Автоматическая пересортица запасов</div>
+          <p>500 3D-принтеров, два разных учёта одного материала. ИИ предложил архитектурное решение через механизм «Пересортица запасов», реализовал полный трёхкомпонентный функционал с откатом.</p>
+          <div class="case-tools">
+            <div class="case-tools-label">Использованные инструменты</div>
+            <div class="case-tools-list">get_object_details · list_metadata_objects · search_in_code · get_module_structure · write_module_source</div>
+          </div>
+          <div class="case-more-btn">Читать подробнее →</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== AI COMPATIBILITY ===== -->
+<section class="compat">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-blue">Совместимость</span>
+      <h2>Работает с любым ИИ-ассистентом</h2>
+      <p>Открытый стандарт MCP (Model Context Protocol) обеспечивает подключение к любому современному ИИ-инструменту.</p>
+    </div>
+    <div class="compat-logos fade-in">
+      <div class="compat-item"><span class="ci-icon">🧠</span><span class="ci-label">Claude Code</span></div>
+      <div class="compat-item"><span class="ci-icon">⚡</span><span class="ci-label">Cursor</span></div>
+      <div class="compat-item"><span class="ci-icon">🌊</span><span class="ci-label">Windsurf</span></div>
+      <div class="compat-item"><span class="ci-icon">💙</span><span class="ci-label">VS Code + Copilot</span></div>
+      <div class="compat-item"><span class="ci-icon">🔵</span><span class="ci-label">Any MCP Client</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMPARISON ===== -->
+<section class="comparison">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-indigo">Сравнение</span>
+      <h2>1C:RSV против аналогичных решений</h2>
+      <p>Объективное сравнение по ключевым метрикам. Данные получены путём прямого анализа плагинов.</p>
+    </div>
+    <div class="comparison-table-wrap fade-in">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th style="width:40%">Критерий</th>
+            <th class="highlight" style="width:30%">1C:RSV</th>
+            <th style="width:30%">Аналогичные решения</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cat">Инструментов MCP</td>
+            <td class="highlight"><span class="num-big">37</span> <span style="color:var(--green);font-size:0.8rem;font-weight:600;">+42%</span></td>
+            <td><span class="num-small">~26</span></td>
+          </tr>
+          <tr>
+            <td class="cat">Редактирование кода</td>
+            <td class="highlight"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr>
+            <td class="cat">Редактирование метаданных и форм</td>
+            <td class="highlight"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr>
+            <td class="cat">Визуализация форм (PNG/JSON)</td>
+            <td class="highlight"><span class="check-yes">✓ Уникально</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr>
+            <td class="cat">AI-контекст (ai_context)</td>
+            <td class="highlight"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr>
+            <td class="cat">Документация платформы API</td>
+            <td class="highlight"><span class="check-yes">✓ 4 инструмента</span></td>
+            <td><span class="check-partial">Частично (1)</span></td>
+          </tr>
+          <tr>
+            <td class="cat">Пагинация (offset/limit)</td>
+            <td class="highlight"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr>
+            <td class="cat">Профили по ролям</td>
+            <td class="highlight"><span class="check-yes">✓ 3 профиля</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr>
+            <td class="cat">Внешние зависимости</td>
+            <td class="highlight"><span class="num-big" style="font-size:1.5rem;">0</span></td>
+            <td><span class="num-small">3+</span></td>
+          </tr>
+          <tr>
+            <td class="cat">Размер кода (компактность)</td>
+            <td class="highlight"><span style="color:var(--blue);font-weight:600;">Компактнее в 2×</span></td>
+            <td><span class="num-small">В 2× больше кода</span></td>
+          </tr>
+          <tr>
+            <td class="cat">Семантические подсказки при ошибках</td>
+            <td class="highlight"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- ===== DEPTH COMPARISON ===== -->
+    <div class="depth-section fade-in">
+      <div class="depth-section-header">
+        <h3>Больше инструментов — это только начало</h3>
+        <p>Даже те инструменты, которые есть в аналогичных решениях, в 1C:RSV реализованы глубже: больше параметров, структурированный JSON-вывод, рекурсивный анализ.</p>
+      </div>
+
+      <div class="tool-depth-grid">
+
+        <!-- search_in_code -->
+        <div class="tdc">
+          <div class="tdc-header">
+            <span class="tdc-tool-name">search_in_code</span>
+            <span class="tdc-label">Поиск по коду конфигурации</span>
+          </div>
+          <div class="tdc-col-header">
+            <span>Возможность</span>
+            <span>1C:RSV</span>
+            <span>Аналоги</span>
+          </div>
+          <div class="tdc-rows">
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Параметров поиска</span>
+              <span class="tdc-rsv">12 параметров</span>
+              <span class="tdc-comp">10 параметров</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Символ-обёртка результата</span>
+              <span class="tdc-rsv">✓ enclosingSymbol</span>
+              <span class="tdc-comp">✗ нет</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Точный текст совпадения</span>
+              <span class="tdc-rsv">✓ matchedText</span>
+              <span class="tdc-comp">✗ нет</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Пагинация (offset / limit)</span>
+              <span class="tdc-rsv">✓ есть</span>
+              <span class="tdc-comp">✗ нет</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Поиск по MDO-файлам</span>
+              <span class="tdc-rsv">✓ метаданные</span>
+              <span class="tdc-comp">✗ нет</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Формат вывода</span>
+              <span class="tdc-rsv">JSON</span>
+              <span class="tdc-comp">Markdown</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- resolve_symbol -->
+        <div class="tdc">
+          <div class="tdc-header">
+            <span class="tdc-tool-name">resolve_symbol</span>
+            <span class="tdc-label">Разрешение символа по имени</span>
+          </div>
+          <div class="tdc-col-header">
+            <span>Возможность</span>
+            <span>1C:RSV</span>
+            <span>Аналоги</span>
+          </div>
+          <div class="tdc-rows">
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Количество определений</span>
+              <span class="tdc-rsv">До 10 результатов</span>
+              <span class="tdc-comp">1 результат</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Подсказки при ошибке поиска</span>
+              <span class="tdc-rsv">✓ 5 похожих имён</span>
+              <span class="tdc-comp">✗ просто ошибка</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Поиск по всем проектам</span>
+              <span class="tdc-rsv">✓ есть</span>
+              <span class="tdc-comp">✗ нет</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Формат вывода</span>
+              <span class="tdc-rsv">JSON</span>
+              <span class="tdc-comp">Markdown</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- get_module_structure -->
+        <div class="tdc">
+          <div class="tdc-header">
+            <span class="tdc-tool-name">get_module_structure</span>
+            <span class="tdc-label">Структура модуля</span>
+          </div>
+          <div class="tdc-col-header">
+            <span>Возможность</span>
+            <span>1C:RSV</span>
+            <span>Аналоги</span>
+          </div>
+          <div class="tdc-rows">
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Параметры как массив объектов</span>
+              <span class="tdc-rsv">✓ [{name, type}]</span>
+              <span class="tdc-comp">✗ сырая строка</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Регионы с методами внутри</span>
+              <span class="tdc-rsv">✓ regions[]</span>
+              <span class="tdc-comp">✗ нет</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Группировка экспорт / внутренние</span>
+              <span class="tdc-rsv">✓ есть</span>
+              <span class="tdc-comp">✗ нет</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Фильтр по имени + пагинация</span>
+              <span class="tdc-rsv">✓ nameFilter</span>
+              <span class="tdc-comp">✗ нет</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Формат вывода</span>
+              <span class="tdc-rsv">JSON</span>
+              <span class="tdc-comp">Markdown</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- get_method_call_hierarchy -->
+        <div class="tdc">
+          <div class="tdc-header">
+            <span class="tdc-tool-name">get_method_call_hierarchy</span>
+            <span class="tdc-label">Иерархия вызовов метода</span>
+          </div>
+          <div class="tdc-col-header">
+            <span>Возможность</span>
+            <span>1C:RSV</span>
+            <span>Аналоги</span>
+          </div>
+          <div class="tdc-rows">
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Глубина рекурсии</span>
+              <span class="tdc-rsv">3 уровня</span>
+              <span class="tdc-comp">1 уровень</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Направление анализа</span>
+              <span class="tdc-rsv">✓ оба направления</span>
+              <span class="tdc-comp">одно направление</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Детекция рекурсии</span>
+              <span class="tdc-rsv">✓ авто-защита</span>
+              <span class="tdc-comp">✗ нет</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Структура вывода</span>
+              <span class="tdc-rsv">Дерево (вложенное)</span>
+              <span class="tdc-comp">Плоский список</span>
+            </div>
+            <div class="tdc-row">
+              <span class="tdc-feature-name">Формат вывода</span>
+              <span class="tdc-rsv">JSON</span>
+              <span class="tdc-comp">Markdown</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /tool-depth-grid -->
+
+      <!-- JSON vs Markdown format strip -->
+      <div class="format-strip">
+        <div class="format-side rsv">
+          <span class="format-label rsv">1C:RSV — машиночитаемый JSON</span>
+          <ul>
+            <li>ИИ разбирает структуру напрямую, без текстового парсинга</li>
+            <li>Типы данных сохранены: числа, массивы, булевы</li>
+            <li>Нет потерь при интерпретации Markdown-форматирования</li>
+            <li>37 инструментов — 37 JSON-ответов</li>
+          </ul>
+        </div>
+        <div class="format-vs">VS</div>
+        <div class="format-side comp">
+          <span class="format-label comp">Аналоги — Markdown для ИИ</span>
+          <ul>
+            <li>23 из 26 инструментов возвращают Markdown-текст</li>
+            <li>ИИ вынужден парсить текст — выше риск ошибки</li>
+            <li>Теряется типизация: числа как строки, нет массивов</li>
+            <li>Разные форматы = нестабильное поведение ИИ</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Depth score summary -->
+      <div class="depth-score">
+        <div class="ds-item">
+          <div class="ds-num" style="color:var(--blue);">4.65<span style="font-size:1rem;font-weight:400;color:var(--text-l);">/5</span></div>
+          <div class="ds-label">Средний балл 1C:RSV</div>
+          <div class="ds-score">vs 3.75/5 у аналогов</div>
+          <div class="ds-bar"><div class="ds-bar-fill" style="width:93%;background:var(--blue);"></div></div>
+        </div>
+        <div class="ds-item">
+          <div class="ds-num" style="color:var(--blue);">37</div>
+          <div class="ds-label">MCP-инструментов</div>
+          <div class="ds-score">vs 26 у аналогов (+42%)</div>
+          <div class="ds-bar"><div class="ds-bar-fill" style="width:100%;background:var(--blue);"></div></div>
+        </div>
+        <div class="ds-item">
+          <div class="ds-num" style="color:var(--blue);">2.7×</div>
+          <div class="ds-label">Эффективнее на строку кода</div>
+          <div class="ds-score">2.47 vs 0.91 инстр./1K LOC</div>
+          <div class="ds-bar"><div class="ds-bar-fill" style="width:75%;background:var(--green);"></div></div>
+        </div>
+        <div class="ds-item">
+          <div class="ds-num" style="color:var(--blue);">0</div>
+          <div class="ds-label">Внешних зависимостей</div>
+          <div class="ds-score">vs 3+ у аналогов</div>
+          <div class="ds-bar"><div class="ds-bar-fill" style="width:100%;background:var(--green);"></div></div>
+        </div>
+      </div>
+
+    </div><!-- /depth-section -->
+
+    <p class="comparison-note">* Сравнение проводилось методом прямого анализа исходного кода доступных MCP-плагинов для 1C:EDT</p>
+  </div>
+</section>
+
+<!-- ===== SCREENSHOTS ===== -->
+<section id="screenshots">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-blue">Интерфейс</span>
+      <h2>Посмотрите на плагин в действии</h2>
+      <p>Простой и ненавязчивый интерфейс — плагин встраивается в 1C:EDT без изменения привычной среды.</p>
+    </div>
+    <div class="gallery-grid fade-in">
+      <div class="gallery-item" onclick="openLightbox('images/main-screen.png')">
+        <img src="images/main-screen.png" alt="Главный экран 1C:EDT с плагином RSV" loading="lazy" style="max-height:280px;object-fit:cover;">
+        <div class="gallery-caption">Главный экран — 1C:EDT с активным плагином RSV</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('images/statusbar.jpg')">
+        <img src="images/statusbar.jpg" alt="Индикатор в строке состояния" loading="lazy" style="max-height:280px;object-fit:cover;">
+        <div class="gallery-caption">Индикатор статуса в нижней строке 1C:EDT</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('images/install.jpg')">
+        <img src="images/install.jpg" alt="Установка плагина" loading="lazy" style="max-height:200px;object-fit:cover;">
+        <div class="gallery-caption">Стандартная установка через Help → Install New Software</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('images/led.jpg')">
+        <img src="images/led.jpg" alt="LED-индикатор состояния" loading="lazy" style="max-height:200px;object-fit:cover;">
+        <div class="gallery-caption">LED-индикатор: зелёный — сервер активен</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('images/port.jpg')">
+        <img src="images/port.jpg" alt="Настройки порта" loading="lazy" style="max-height:200px;object-fit:cover;">
+        <div class="gallery-caption">Настройки порта и параметров сервера</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUALITY SECTION ===== -->
+<section class="quality" id="quality">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-amber">Инженерное качество</span>
+      <h2>Разработано по высшим стандартам</h2>
+      <p>1C:RSV — не прототип и не «хобби-проект». Это системное решение с профессиональной архитектурой, прошедшее независимое код-ревью.</p>
+    </div>
+    <div class="quality-grid">
+      <div class="quality-card fade-in fade-in-delay-1">
+        <div class="quality-icon">🏗️</div>
+        <h3>Профессиональная архитектура OSGi</h3>
+        <ul>
+          <li>51 Java-класс с чёткой модульной структурой</li>
+          <li>OSGi-бандл с корректным управлением жизненным циклом</li>
+          <li>Java 17 и стандарты Eclipse RCP / Tycho 4.0.5</li>
+          <li>Строгое разделение на слои: transport → dispatch → tools → API</li>
+        </ul>
+      </div>
+      <div class="quality-card fade-in fade-in-delay-2">
+        <div class="quality-icon">🔗</div>
+        <h3>Технологическая независимость</h3>
+        <ul>
+          <li>EMF-рефлексия вместо прямых зависимостей от EDT</li>
+          <li>В <strong>2× компактнее</strong> аналогов при большей функциональности</li>
+          <li><strong>0 внешних JAR-зависимостей</strong> (у аналогов — 3+)</li>
+          <li>Устойчивость к обновлениям платформы EDT</li>
+        </ul>
+      </div>
+      <div class="quality-card fade-in fade-in-delay-1">
+        <div class="quality-icon">🔒</div>
+        <h3>Безопасность по умолчанию</h3>
+        <ul>
+          <li>Только localhost (127.0.0.1) — никогда 0.0.0.0</li>
+          <li>Опасные инструменты отключены по умолчанию</li>
+          <li>Dry-run + подтверждение для всех деструктивных операций</li>
+          <li>Трёхуровневая защита для профиля Архитектор</li>
+        </ul>
+      </div>
+      <div class="quality-card fade-in fade-in-delay-2">
+        <div class="quality-icon">⚡</div>
+        <h3>Производительность и надёжность</h3>
+        <ul>
+          <li>CachedThreadPool + ThreadLocal-изоляция состояния</li>
+          <li>Пагинация больших ответов (offset/limit)</li>
+          <li>Ошибки возвращают JSON — EDT никогда не падает</li>
+          <li>Полная поддержка MCP Streamable HTTP 2025-11-25</li>
+        </ul>
+      </div>
+    </div>
+    <div class="quality-review fade-in" style="margin-top:40px;">
+      <div class="qr-icon">🏆</div>
+      <div>
+        <blockquote>
+          «Решение обладает строгой модульной структурой, исключающей использование хардкода или временных костылей.
+          Весь код соответствует стандартам разработки Java 17 и OSGi-контейнеров. Архитектурные решения прошли
+          независимое профессиональное ревью и получили высокую оценку за качество реализации.»
+        </blockquote>
+        <div class="qr-source">— из технической документации проекта 1C:RSV</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INSTALLATION ===== -->
+<section class="install" id="install">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-green">Установка</span>
+      <h2>Готовы за 5 минут</h2>
+      <p>Стандартная установка через менеджер плагинов 1C:EDT. Никаких сложных настроек окружения.</p>
+    </div>
+    <div class="steps-grid fade-in">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h4>Скачать архив</h4>
+        <p>Скачайте архив плагина по <a href="#download" style="color:var(--blue);font-weight:600;">ссылке ниже</a> или из Telegram-канала.</p>
+        <div class="step-connector">→</div>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h4>Установить в EDT</h4>
+        <p>Справка → Установить новое ПО → Добавить → Архив → выберите ZIP → 1C:RSV MCP Server → Далее → Готово.</p>
+        <div class="step-connector">→</div>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h4>Настроить ИИ-ассистент</h4>
+        <p>Добавьте в конфигурацию:</p>
+        <code>url: http://127.0.0.1:8770/mcp</code>
+        <div class="step-connector">→</div>
+      </div>
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <h4>Готово!</h4>
+        <p>ИИ обнаружит 37 инструментов. Проверить:</p>
+        <code>curl localhost:8770/health</code>
+      </div>
+    </div>
+    <div class="install-note fade-in">
+      <span class="ni">💡</span>
+      <p>
+        <strong>Требования:</strong> 1C:EDT 2025.2 · Java 17 (Azul Zulu 17) · ИИ-ассистент с поддержкой MCP.<br>
+        MCP-сервер запускается прямо внутри 1C:EDT на <strong>127.0.0.1:8770</strong> — без внешних серверов и SaaS-посредников. Данные конфигурации передаются напрямую вашему ИИ-ассистенту: Cursor, Claude Code или Windsurf используют их через свои облачные модели в штатном режиме.
+        Актуальная версия и подробная документация — в <a href="https://t.me/edt_ai_1c" target="_blank" rel="noopener">Telegram-канале ✈</a>.
+      </p>
+    </div>
+    <div style="text-align:center; margin-top:40px; padding:28px; background:white; border-radius:var(--radius); border:1px solid var(--border);">
+      <p style="font-size:0.9rem; font-weight:600; color:var(--text-m); margin-bottom:20px;">Конфигурация для Claude Code (<code>~/.claude/claude_desktop_config.json</code>)</p>
+      <div style="background:#0f172a; color:#a8ff78; font-family:'JetBrains Mono',monospace; font-size:0.85rem; padding:20px 24px; border-radius:var(--radius); text-align:left; max-width:520px; margin:0 auto; line-height:1.7;">
+        <span style="color:#9ECEFF;">{</span><br>
+        &nbsp;&nbsp;<span style="color:#CE9178;">"mcpServers"</span>: <span style="color:#9ECEFF;">{</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#CE9178;">"1c-rsv"</span>: <span style="color:#9ECEFF;">{</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#CE9178;">"url"</span>: <span style="color:#a8ff78;">"http://127.0.0.1:8770/mcp"</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#CE9178;">"transport"</span>: <span style="color:#a8ff78;">"http"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#9ECEFF;">}</span><br>
+        &nbsp;&nbsp;<span style="color:#9ECEFF;">}</span><br>
+        <span style="color:#9ECEFF;">}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== СКАЧАТЬ ===== -->
+<section class="download-section" id="download">
+  <div class="container">
+    <div class="download-inner fade-in">
+      <span class="badge badge-green">📥 Актуальный релиз</span>
+      <h2>Скачать 1C:RSV MCP Server</h2>
+      <p class="download-sub">Версия 2.7.0 · Для 1C:EDT 2025.x · Windows x64 · Бесплатно на 30 дней</p>
+
+      <div class="download-card">
+        <div class="download-card-info">
+          <div class="download-file-icon">📦</div>
+          <div>
+            <div class="download-file-name">1C-RSV-MCP-2.7.0-distr.rar</div>
+            <div class="download-file-meta">Версия 2.7.0 · ~400 KB</div>
+          </div>
+        </div>
+
+        <div class="download-includes">
+          <span>✅ mcp-rsv-update-site-2.7.0.zip — плагин для установки в EDT</span>
+          <span>✅ GUIDE.md — пошаговое руководство пользователя</span>
+          <span>✅ CLAUDE.md — готовые правила для Claude / Cursor / Windsurf</span>
+        </div>
+
+        <a href="./1C-RSV-MCP-2.7.0-distr.rar" class="btn-download" download>
+          ⬇ Скачать бесплатно
+        </a>
+
+        <div class="download-note">
+          При первом запуске потребуется регистрация (имя, email, телефон) — лицензия выдаётся автоматически
+        </div>
+      </div>
+
+      <div class="download-requirements">
+        <span>Требования:</span>
+        <span class="badge badge-blue">1C:EDT 2025.x</span>
+        <span class="badge badge-blue">Java 17 (Zulu)</span>
+        <span class="badge badge-indigo">Windows x64</span>
+        <span class="badge badge-green">Бесплатно 30 дней</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content fade-in">
+      <h2>Дайте вашему ИИ зрение в 1С прямо сейчас</h2>
+      <p>Присоединяйтесь к каналу — там актуальная версия, кейсы и поддержка. Или напишите автору лично.</p>
+      <div class="cta-actions">
+        <a href="https://t.me/edt_ai_1c" class="btn-white" target="_blank" rel="noopener">
+          ✈ Telegram-канал @edt_ai_1c
+        </a>
+        <a href="https://t.me/Prepod2003" class="btn-tg-white" target="_blank" rel="noopener">
+          💬 Написать автору @Prepod2003
+        </a>
+        <a href="#how" class="btn-ghost">Узнать подробнее →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="navbar-logo">
+          <span class="logo-badge">1C:RSV</span>
+          <span class="logo-text">MCP Server</span>
+        </div>
+        <p class="footer-desc">
+          Интеллектуальный мост между ИИ-ассистентами и средой разработки 1C:EDT.
+          37 инструментов. Без внешних серверов. 0 JAR-зависимостей.
+        </p>
+      </div>
+      <div class="footer-links-section">
+        <h5>Разделы</h5>
+        <ul class="footer-links">
+          <li><a href="#real-case">Кейс ЗУП</a></li>
+          <li><a href="#how">Как работает</a></li>
+          <li><a href="#profiles">Профили</a></li>
+          <li><a href="#cases">Кейсы</a></li>
+          <li><a href="#quality">Инженерное качество</a></li>
+          <li><a href="#install">Установка</a></li>
+          <li><a href="#download">⬇ Скачать v2.7.0</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-section">
+        <h5>Контакты</h5>
+        <ul class="footer-links">
+          <li><a href="https://t.me/edt_ai_1c" target="_blank" rel="noopener">✈ Telegram-канал @edt_ai_1c</a></li>
+          <li><a href="https://t.me/Prepod2003" target="_blank" rel="noopener">💬 Личный Telegram @Prepod2003</a></li>
+          <li><a href="mailto:prepod2003@yandex.ru">✉ prepod2003@yandex.ru</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-author">
+        Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a> · <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">@Prepod2003</a>
+      </div>
+      <div class="footer-version">1C:RSV v2.7.0 · 2026</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">✕</span>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<!-- ===== CASE MODALS ===== -->
+<div class="case-modal-overlay" id="caseModal" onclick="handleModalClick(event)">
+  <div class="case-modal" id="caseModalContent">
+    <div class="case-modal-header">
+      <h3 id="modalTitle"></h3>
+      <button class="case-modal-close" onclick="closeCase()">✕</button>
+    </div>
+    <div class="case-modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+  // ===== CASE DATA =====
+  const cases = {
+    1: {
+      title: 'Кейс 01: Автозаполнение материалов по спецификациям',
+      context: 'Внешняя обработка для УНФ автоматически создаёт документы Производство. Клиент завёл спецификации и хочет, чтобы при создании документов автоматически заполнялась закладка «Материалы» из спецификаций.',
+      prompt: 'Используем MCP 1С RSV. Проанализируй проект АвтоматическоеСозданиеДокументовПроизводства. Это внешняя обработка, которая по определённым правилам создаёт документы производства. Нужно добавить функционал, чтобы при создании документов производства закладки материалы заполнялись данные из спецификации.',
+      steps: [
+        'Вызов <code>list_modules</code> → найдено 2 модуля: ObjectModule.bsl (24 стр.) и Forms/Форма/Module.bsl (354 стр.)',
+        'Чтение и анализ кода обработки — выявлена ключевая процедура <code>СформироватьДокументыПроизводстваНаСервере()</code>, которая не заполняет ни поле «Спецификация», ни ТЧ «Запасы»',
+        '<code>get_object_details("Document.СборкаЗапасов")</code> → 42 реквизита шапки, 11 табличных частей (включая «Продукция» и «Запасы»)',
+        '<code>get_module_structure</code> для 6770 строк и 39 методов → обнаружен экспортный метод <code>ЗаполнитьТабличнуюЧастьПоСпецификации()</code>',
+        'Чтение тела метода — он уже содержит всю нужную логику: получение спецификации, заполнение ТЧ Запасы',
+        '<code>search_in_code("СпецификацияПоУмолчанию")</code> → найден экспортный метод в менеджере справочника Спецификации',
+        'Подтверждение паттерна: <code>ЗаполнитьТабличнуюЧастьПоСпецификации</code> вызывается в 20+ местах типовой конфигурации',
+      ],
+      tools: [
+        ['list_modules', 'Получение списка модулей обработки', '1'],
+        ['read_module_source', 'Чтение исходного кода двух модулей', '2'],
+        ['get_object_details', 'Структура документа СборкаЗапасов и справочника Спецификации', '2'],
+        ['get_module_structure', 'Список 39 методов модуля объекта', '1'],
+        ['read_method_source', 'Чтение тел 3 ключевых методов', '3'],
+        ['search_in_code', 'Поиск паттернов по всей конфигурации', '6'],
+        ['get_validation_errors', 'Проверка после изменений', '1'],
+      ],
+      callsTotal: 16,
+      result: 'Задача решена добавлением 2 строк кода. ИИ нашёл штатный механизм платформы без единой подсказки от разработчика.',
+      code: 'СтрокаПродукции.Спецификация =\n  Справочники.Спецификации.СпецификацияПоУмолчанию(Номенклатура);\n\nДокументПроизводство.ЗаполнитьТабличнуюЧастьПоСпецификации();'
+    },
+    2: {
+      title: 'Кейс 02: Реализация паттерна «ДлительныеОперации» БСП',
+      context: 'Расширение УНФ_принтеры.РСВ добавляет функционал автоматического проведения пересортицы при проведении документа «Перемещение запасов». Из формы документа нужно запускать операцию через подсистему БСП «ДлительныеОперации» с уведомлением пользователя.',
+      prompt: 'Реализуй паттерн ДлительныеОперации для запуска проведения пересортицы из формы документа Перемещение запасов. Использовать стандартные паттерны БСП.',
+      steps: [
+        '<code>search_in_code("ДлительныеОперацииКлиент.ОжидатьЗавершение")</code> → найдено 5 примеров из типовой: Банки, АвтоматическиеСкидки, Валюты, ВидыЦен, ВидыКонтактнойИнформации',
+        'Каждый результат с 8 строками контекста — сразу виден полный паттерн: ПараметрыОжидания, настройка окна, вызов ОжидатьЗавершение с ОписаниемОповещения',
+        '<code>search_in_code("Функция ВыполнитьПроцедуру", objectName="CommonModule.ДлительныеОперации")</code> → изучен удобный API-метод',
+        '<code>search_in_code("ОбработатьРезультатОбновленияКлассификатора", objectName="Catalog.Банки")</code> → найден эталонный callback-паттерн',
+        'Написан полный код клиентской и серверной части расширения по образцу типовых паттернов',
+        '<code>write_module_source</code> с режимом replace/append — записаны все изменения',
+        '<code>refresh_validation</code> + <code>get_validation_errors</code> → найдено 2 ошибки, ИИ их самостоятельно исправил',
+      ],
+      tools: [
+        ['search_in_code', 'Поиск типовых паттернов в базовой конфигурации', '5'],
+        ['read_module_source', 'Чтение модулей расширения и типовой', '3'],
+        ['write_module_source', 'Запись BSL-кода (replace, append, insertBefore)', '5'],
+        ['refresh_validation', 'Перезапуск валидации проекта EDT', '2'],
+        ['get_validation_errors', 'Получение и анализ ошибок, автоисправление', '2'],
+      ],
+      callsTotal: 17,
+      result: 'Реализован полный паттерн БСП «ДлительныеОперации» — 100% соответствие стандартам 1С. ИИ нашёл эталонный паттерн в типовой конфигурации и воспроизвёл его без подсказок. Ошибки валидации исправлены автоматически.',
+      code: '// ИИ нашёл и воспроизвёл эталонный паттерн БСП:\n\n// 1. Запуск операции (клиент)\nПараметрыОжидания = ДлительныеОперацииКлиент.ПараметрыОжидания();\nДлительныеОперацииКлиент.ОжидатьЗавершение(\n  ФоновоеЗадание,\n  ОписаниеОповещения,\n  ПараметрыОжидания);\n\n// 2. Выполнение (сервер)\nФоновоеЗадание = ДлительныеОперации.ВыполнитьПроцедуру(\n  "МодульРасширения.ПровестиПересортицу", ...);'
+    },
+    3: {
+      title: 'Кейс 03: Консолидация складской номенклатуры',
+      context: 'Компания управляет парком из ~500 трёхмерных принтеров. Один и тот же материал имеет разные наименования: на складе — детализированное («Филамент PLA Зелёный 1.75мм»), в производстве — обобщённое («Филамент 5+»). При передаче материала со склада в цех нужна автоматическая «пересортица» — без ручного вмешательства.',
+      prompt: 'При проведении Перемещения запасов со склада в производство нужно автоматически создавать и проводить Пересортицу запасов, чтобы складские наименования «схлопывались» в производственные. При отмене проведения всё должно откатываться.',
+      steps: [
+        'ИИ проанализировал бизнес-логику и предложил архитектурное решение через механизм «Пересортица запасов» — штатный документ УНФ',
+        '<code>get_object_details("Document.ПеремещениеЗапасов")</code> → изучена структура документа, реквизиты и обработчики событий',
+        '<code>list_metadata_objects("Document")</code> + <code>get_object_details("Document.ПересортицаЗапасов")</code> → изучена структура целевого документа',
+        'Поиск в коде: где и как создаётся Пересортица запасов в типовой конфигурации — поиск эталонных паттернов',
+        'Реализованы три компонента расширения: создание пересортицы, автоматическое проведение, обратная операция с восстановлением строк',
+        'Написаны обработчики событий ПередЗаписью, ПриПроведении, ПриОтменеПроведения',
+        'Ошибки валидации найдены и исправлены автоматически',
+      ],
+      tools: [
+        ['get_object_details', 'Структура документов ПеремещениеЗапасов и ПересортицаЗапасов', '4'],
+        ['list_metadata_objects', 'Поиск подходящих документов в конфигурации', '2'],
+        ['search_in_code', 'Поиск паттернов работы с Пересортицей', '5'],
+        ['get_module_structure', 'Структура модулей документов', '2'],
+        ['write_module_source', 'Запись кода расширения', '6'],
+        ['get_validation_errors', 'Проверка и автоисправление ошибок', '2'],
+      ],
+      callsTotal: 21,
+      result: 'Реализован полноценный трёхкомпонентный механизм: создание пересортицы, автоматическое проведение и откат при отмене. Enterprise-уровень сложности — решён через анализ типовых паттернов без ручного указания на конкретные методы.',
+      code: '// Таблица соответствия — прямо в справочнике\n// Группа «Филаменты PLA 1.75мм» → «Филамент 5+»\n\n// При проведении Перемещения:\n// 1. Создать ПересортицаЗапасов\n// 2. Заполнить: складские → производственные\n// 3. Провести в нужном порядке\n// 4. Обновить строки Перемещения\n\n// При отмене проведения — всё откатывается назад'
+    }
+  };
+
+  // ===== MODAL OPEN/CLOSE =====
+  function openCase(id) {
+    const c = cases[id];
+    if (!c) return;
+
+    document.getElementById('modalTitle').textContent = c.title;
+
+    let toolsRows = c.tools.map(t =>
+      `<tr><td>${t[0]}</td><td>${t[1]}</td><td style="text-align:center;font-weight:600;color:var(--blue);">${t[2]}</td></tr>`
+    ).join('');
+
+    let stepsHtml = c.steps.map(s => `<li>${s}</li>`).join('');
+
+    document.getElementById('modalBody').innerHTML = `
+      <div class="cm-section">
+        <h4>Контекст задачи</h4>
+        <p style="font-size:0.9rem;color:var(--text-m);line-height:1.65;">${c.context}</p>
+      </div>
+      <div class="cm-section">
+        <h4>Промт (запрос к ИИ)</h4>
+        <div class="cm-prompt">${c.prompt}</div>
+      </div>
+      <div class="cm-section">
+        <h4>Что делал ИИ — шаг за шагом</h4>
+        <ol class="cm-steps">${stepsHtml}</ol>
+      </div>
+      <div class="cm-section">
+        <h4>Использованные MCP-инструменты &nbsp;<span class="cm-calls">Всего: ${c.callsTotal} вызовов</span></h4>
+        <table class="cm-tools-table">
+          <thead><tr><th>Инструмент</th><th>Для чего</th><th>Раз</th></tr></thead>
+          <tbody>${toolsRows}</tbody>
+        </table>
+      </div>
+      ${c.code ? `<div class="cm-section"><h4>Код решения</h4><div class="cm-code">${escapeHtml(c.code)}</div></div>` : ''}
+      <div class="cm-result">
+        <div class="cm-result-title">✅ Результат</div>
+        <p>${c.result}</p>
+      </div>
+    `;
+
+    document.getElementById('caseModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCase() {
+    document.getElementById('caseModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function handleModalClick(e) {
+    if (e.target === document.getElementById('caseModal')) closeCase();
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ===== PROFILE TABS =====
+  const tabs = document.querySelectorAll('.profile-tab');
+  const panels = document.querySelectorAll('.profile-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + target).classList.add('active');
+    });
+  });
+
+  // ===== COUNTER ANIMATION =====
+  function animateCounter(el, target, duration) {
+    const start = Date.now();
+    function update() {
+      const progress = Math.min((Date.now() - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(target * eased);
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  // ===== INTERSECTION OBSERVER =====
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        entry.target.querySelectorAll('[data-counter]').forEach(c => {
+          animateCounter(c, parseInt(c.dataset.counter), 1200);
+        });
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+  // Stats bar counters
+  const statsIo = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('[data-counter]').forEach(c => {
+          animateCounter(c, parseInt(c.dataset.counter), 1400);
+        });
+        statsIo.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.stats-bar').forEach(el => statsIo.observe(el));
+
+  // ===== LIGHTBOX =====
+  function openLightbox(src) {
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('lightbox').addEventListener('click', closeLightbox);
+
+  // ===== SMOOTH SCROLL =====
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // ===== NAVBAR SHADOW =====
+  const navbar = document.querySelector('.navbar');
+  window.addEventListener('scroll', () => {
+    navbar.style.boxShadow = window.scrollY > 20 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
+  });
+
+  // ===== CASE VIDEO TABS =====
+  function switchCaseVideo(type) {
+    const vk = document.getElementById('case-video-vk');
+    const yt = document.getElementById('case-video-yt');
+    const tabs = document.querySelectorAll('.rc-video-tab');
+    if (type === 'vk') {
+      vk.style.display = ''; yt.style.display = 'none';
+      tabs[0].classList.add('active'); tabs[1].classList.remove('active');
+    } else {
+      vk.style.display = 'none'; yt.style.display = '';
+      tabs[1].classList.add('active'); tabs[0].classList.remove('active');
+    }
+  }
+
+  // ===== CASE GALLERY MODAL =====
+  const caseSlides = [
+    { src: 'images/case/7.jpg', cap: 'Реальная задача: Расчёт зарплаты «на лету»' },
+    { src: 'images/case/8.jpg', cap: 'ИИ проанализировал 67 000 строк типового кода' },
+    { src: 'images/case/9.jpg', cap: 'Цепочка вызовов расчёта зарплаты — 5-6 уровней' },
+    { src: 'images/case/10.jpg', cap: 'Результат: 352 строки рабочего кода' },
+    { src: 'images/case/11.jpg', cap: 'ИИ + MCP vs. Senior-разработчик' },
+    { src: 'images/case/12.jpg', cap: 'Это меняет правила игры' },
+    { src: 'images/case/2.jpg', cap: 'Типовые конфигурации 1С — это сложно' },
+    { src: 'images/case/3.jpg', cap: 'MCP 1С-РСВ — плагин для 1С:EDT' },
+    { src: 'images/case/4.jpg', cap: '37 инструментов в 8 группах' },
+    { src: 'images/case/5.jpg', cap: 'Три профиля — три уровня доступа' },
+    { src: 'images/case/6.jpg', cap: 'Установка за 2 минуты' },
+    { src: 'images/case/13.jpg', cap: 'Видео реальной разработки' }
+  ];
+  let cgIdx = 0;
+  function openCaseGallery(i) {
+    cgIdx = i;
+    renderCaseGallery();
+    document.getElementById('cg-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeCaseGallery() {
+    document.getElementById('cg-modal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  function caseGalleryNav(d) {
+    cgIdx = (cgIdx + d + caseSlides.length) % caseSlides.length;
+    renderCaseGallery();
+  }
+  function renderCaseGallery() {
+    document.getElementById('cg-img').src = caseSlides[cgIdx].src;
+    document.getElementById('cg-caption').textContent = caseSlides[cgIdx].cap;
+    document.getElementById('cg-counter').textContent = (cgIdx + 1) + ' / ' + caseSlides.length;
+  }
+
+  // ===== CASE DETAIL MODAL =====
+  function openCaseDetail() {
+    document.getElementById('cd-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeCaseDetail() {
+    document.getElementById('cd-modal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // ===== KEYBOARD SHORTCUTS =====
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeLightbox(); closeCase(); closeCaseGallery(); closeCaseDetail(); }
+    if (document.getElementById('cg-modal').classList.contains('active')) {
+      if (e.key === 'ArrowLeft') caseGalleryNav(-1);
+      if (e.key === 'ArrowRight') caseGalleryNav(1);
+    }
+  });
+</script>
+
+</body>
+</html>
