@@ -936,6 +936,201 @@
       .download-card { padding: 28px 20px; }
       .download-file-name { font-size: 0.85rem; }
     }
+
+    /* ===== WHATS NEW SECTION ===== */
+    .whats-new { background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%); }
+    .whats-new-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .wn-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 28px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .wn-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .wn-card-icon { font-size: 2rem; margin-bottom: 12px; }
+    .wn-card h3 { font-size: 1.15rem; margin-bottom: 8px; }
+    .wn-card p { font-size: 0.9rem; color: var(--text-m); line-height: 1.6; }
+    .wn-card ul { list-style: none; padding: 0; margin: 8px 0 0; }
+    .wn-card ul li { font-size: 0.85rem; color: var(--text-m); padding: 4px 0; padding-left: 20px; position: relative; }
+    .wn-card ul li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+    .wn-bottom { text-align: center; margin-top: 32px; }
+    .btn-release-notes {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 50px;
+      background: var(--blue); color: #fff;
+      font-weight: 600; font-size: 0.95rem;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(29,78,216,.25);
+    }
+    .btn-release-notes:hover { background: var(--blue-dark); transform: translateY(-2px); }
+
+    /* ===== RELEASE NOTES MODAL ===== */
+    .rn-modal {
+      display: none; position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+      justify-content: center; align-items: flex-start;
+      padding: 40px 20px; overflow-y: auto;
+    }
+    .rn-modal.active { display: flex; }
+    .rn-body {
+      background: #fff; border-radius: var(--radius-lg);
+      max-width: 800px; width: 100%; padding: 40px;
+      position: relative; box-shadow: var(--shadow-xl);
+      max-height: 85vh; overflow-y: auto;
+    }
+    .rn-close {
+      position: sticky; top: 0; float: right;
+      background: var(--bg-light); border: 1px solid var(--border);
+      width: 36px; height: 36px; border-radius: 50%;
+      font-size: 1.2rem; cursor: pointer; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .rn-close:hover { background: var(--border); }
+    .rn-body h3 { font-size: 1.3rem; margin: 24px 0 12px; color: var(--text); }
+    .rn-body h3:first-of-type { margin-top: 0; }
+    .rn-body h4 { font-size: 1.05rem; margin: 16px 0 8px; color: var(--blue-dark); }
+    .rn-body p, .rn-body li { font-size: 0.9rem; color: var(--text-m); line-height: 1.7; }
+    .rn-body ul { padding-left: 20px; }
+    .rn-body code {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+      background: var(--bg-light); padding: 2px 6px; border-radius: 4px;
+      border: 1px solid var(--border); color: var(--blue);
+    }
+    .rn-body pre {
+      background: #0f172a; color: #a8ff78; padding: 16px;
+      border-radius: var(--radius-sm); overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+      line-height: 1.7; margin: 12px 0;
+    }
+    .rn-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.85rem; }
+    .rn-table th, .rn-table td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; }
+    .rn-table th { background: var(--bg-light); font-weight: 600; }
+    .rn-badge {
+      display: inline-block; padding: 4px 10px; border-radius: 50px;
+      font-size: 0.75rem; font-weight: 600; background: var(--green-pale);
+      color: var(--green); margin-bottom: 16px;
+    }
+
+    /* ===== ANALYST SECTION ===== */
+    .analyst-section { background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #eff6ff 100%); }
+    .analyst-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .analyst-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .analyst-card-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .analyst-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+    .analyst-card p { font-size: 0.88rem; color: var(--text-m); }
+    .analyst-case {
+      background: #fff; border-radius: var(--radius-lg);
+      padding: 40px; margin-top: 40px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+    }
+    .analyst-case h3 { font-size: 1.2rem; margin-bottom: 16px; color: var(--text); }
+    .analyst-case h4 { font-size: 1rem; margin: 20px 0 8px; color: var(--blue-dark); }
+    .analyst-case p, .analyst-case li { font-size: 0.9rem; color: var(--text-m); line-height: 1.7; }
+    .analyst-case ul { padding-left: 20px; }
+    .analyst-case blockquote {
+      background: var(--bg-light); border-left: 4px solid var(--blue);
+      padding: 16px 20px; margin: 12px 0; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-style: italic; color: var(--text-m); font-size: 0.9rem;
+    }
+    .analyst-case .ac-step {
+      background: var(--bg-light); border-radius: var(--radius-sm);
+      padding: 16px; margin: 12px 0; border: 1px solid var(--border);
+    }
+    .analyst-case .ac-step code {
+      display: block; margin-top: 6px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+      color: var(--blue);
+    }
+    .analyst-case .ac-compare {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin: 16px 0;
+    }
+    .analyst-case .ac-compare > div {
+      padding: 16px; border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+    }
+    .analyst-case .ac-compare .ac-without { background: #fef2f2; border: 1px solid #fecaca; }
+    .analyst-case .ac-compare .ac-with { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .analyst-case-images {
+      display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap;
+    }
+    .analyst-case-images img {
+      max-width: 380px; width: 100%; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); cursor: pointer;
+    }
+    .analyst-tools-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.85rem; }
+    .analyst-tools-table th, .analyst-tools-table td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; }
+    .analyst-tools-table th { background: var(--bg-light); font-weight: 600; }
+    .analyst-value-list { list-style: none; padding: 0; margin: 16px 0; }
+    .analyst-value-list li {
+      padding: 12px 16px; margin: 8px 0;
+      background: var(--bg-light); border-radius: var(--radius-sm);
+      border-left: 4px solid var(--green);
+      font-size: 0.9rem; color: var(--text-m);
+    }
+    .analyst-value-list li strong { color: var(--text); }
+    @media (max-width: 768px) {
+      .analyst-case .ac-compare { grid-template-columns: 1fr; }
+      .analyst-case-images img { max-width: 100%; }
+    }
+
+    /* ===== TREASURY CASE MODAL ===== */
+    .kazn-modal {
+      display: none; position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+      justify-content: center; align-items: flex-start;
+      padding: 40px 20px; overflow-y: auto;
+    }
+    .kazn-modal.active { display: flex; }
+    .kazn-body {
+      background: #fff; border-radius: var(--radius-lg);
+      max-width: 860px; width: 100%; padding: 40px;
+      position: relative; box-shadow: var(--shadow-xl);
+      max-height: 85vh; overflow-y: auto;
+    }
+    .kazn-body h3 { font-size: 1.25rem; margin: 24px 0 12px; color: var(--text); }
+    .kazn-body h4 { font-size: 1.05rem; margin: 16px 0 8px; color: var(--blue-dark); }
+    .kazn-body p, .kazn-body li { font-size: 0.9rem; color: var(--text-m); line-height: 1.7; }
+    .kazn-body ul, .kazn-body ol { padding-left: 20px; }
+    .kazn-body table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.85rem; }
+    .kazn-body th, .kazn-body td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; }
+    .kazn-body th { background: var(--bg-light); font-weight: 600; }
+    .kazn-body hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+    .kazn-body img { max-width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border); margin: 12px 0; cursor: pointer; }
+    .kazn-body blockquote {
+      background: var(--bg-light); border-left: 4px solid var(--blue);
+      padding: 16px 20px; margin: 12px 0; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-style: italic;
+    }
+    .kazn-highlight {
+      background: linear-gradient(135deg, var(--green-pale), #f0fdf4);
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      margin: 16px 0;
+    }
+    .kazn-highlight strong { color: var(--green); }
   </style>
 </head>
 <body>
@@ -954,11 +1149,12 @@
         <li><a href="#how">Как работает</a></li>
         <li><a href="#profiles">Профили</a></li>
         <li><a href="#cases">Кейсы</a></li>
+        <li><a href="#analysts">Аналитикам</a></li>
         <li><a href="#quality">Качество</a></li>
         <li><a href="#install">Установка</a></li>
       </ul>
       <div class="navbar-cta">
-        <a href="#download" class="btn-nav-download">⬇ Скачать v2.7.0</a>
+        <a href="#download" class="btn-nav-download">⬇ Скачать v2.8.0</a>
         <a href="https://t.me/edt_ai_1c" class="btn btn-primary" target="_blank" rel="noopener">
           ✈ Telegram
         </a>
@@ -973,7 +1169,7 @@
     <div class="hero-grid">
       <div class="hero-content fade-in">
         <div class="hero-badge">
-          <span class="badge badge-blue">🔵 Версия 2.7.0 · Для 1C:EDT 2025.x</span>
+          <span class="badge badge-blue">🔵 Версия 2.8.0 · Для 1C:EDT 2025.x</span>
         </div>
         <h1>Дайте ИИ <span>зрение</span><br>в 1С:EDT</h1>
         <p class="hero-sub">
@@ -1483,6 +1679,74 @@
         </div>
       </div>
 
+      <!-- Кейс 4 -->
+      <div class="case-card fade-in fade-in-delay-1" onclick="openKaznCase()">
+        <div class="case-header">
+          <div class="case-number">Кейс 04 · КА 2.5 · Казначейство</div>
+          <h3>Помощник казначея — полный цикл разработки обработки с ИИ</h3>
+        </div>
+        <div class="case-body">
+          <div class="case-stat green">✅ 719 строк BSL · 23 метода · 4-5 часов</div>
+          <div class="case-stat blue">⚡ 85 вызовов · 22 MCP-инструмента</div>
+          <div class="case-stat indigo">🎯 Ускорение 5-7x vs ручная разработка</div>
+          <p>ИИ самостоятельно нашёл регистры остатков, справочники приоритетов и паттерны работы с казначейскими документами в КА 2.5. Создал обработку с формой, запросами и цветовой маркировкой — от постановки до результата за одну сессию.</p>
+          <div class="case-tools">
+            <div class="case-tools-label">Использованные инструменты</div>
+            <div class="case-tools-list">create_metadata_object · write_module_source · search_in_code · modify_form · get_validation_errors · diff_module</div>
+          </div>
+          <div class="case-more-btn">Читать подробнее →</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== НЕ ТОЛЬКО ДЛЯ РАЗРАБОТЧИКОВ ===== -->
+<section class="analyst-section" id="analysts">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-green">Для всей команды</span>
+      <h2>Не только для разработчиков</h2>
+      <p>1C:RSV помогает аналитикам, консультантам и службе техподдержки — всем, кому нужно быстро разобраться в конфигурации 1С.</p>
+    </div>
+    <div class="analyst-grid">
+      <div class="analyst-card fade-in fade-in-delay-1">
+        <div class="analyst-card-icon">🔍</div>
+        <h3>Аналитик</h3>
+        <p>Мгновенно находит, как устроен любой механизм конфигурации — без открытия конфигуратора и без знания метаданных.</p>
+      </div>
+      <div class="analyst-card fade-in fade-in-delay-2">
+        <div class="analyst-card-icon">🎧</div>
+        <h3>Техподдержка</h3>
+        <p>Отвечает на вопросы пользователей за минуту вместо часов — ИИ сам разбирается в технической реализации.</p>
+      </div>
+      <div class="analyst-card fade-in fade-in-delay-3">
+        <div class="analyst-card-icon">💼</div>
+        <h3>Консультант</h3>
+        <p>Понимает бизнес-логику конфигурации без изучения кода — ИИ объясняет, как работает каждый механизм.</p>
+      </div>
+    </div>
+
+    <!-- Кейс аналитика — карточка-превью -->
+    <div class="analyst-case fade-in" style="cursor:pointer;" onclick="openAnalystCase()">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+        <div style="flex:1; min-width:280px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <span class="badge badge-green" style="text-transform:none; letter-spacing:0;">КА 2.5 · Техподдержка</span>
+          </div>
+          <h3 style="margin-bottom:8px;">Кейс: ИИ-ассистент для аналитика — ответ клиенту за 60 секунд</h3>
+          <p>Казначей спросила про приоритеты оплаты и выбор цвета. Аналитик не понял вопрос — ни что за поле, ни как устроено. ИИ за 5 вызовов MCP разобрался в механизме полностью: нашёл справочник, реквизит «Цвет», условное оформление. Ответ клиенту — за минуту вместо часов.</p>
+          <div style="display:flex; gap:16px; margin-top:12px; flex-wrap:wrap;">
+            <span style="font-size:0.85rem; color:var(--green); font-weight:600;">~60 сек вместо 30 мин</span>
+            <span style="font-size:0.85rem; color:var(--blue); font-weight:600;">5 вызовов MCP</span>
+            <span style="font-size:0.85rem; color:var(--indigo); font-weight:600;">0 звонков разработчику</span>
+          </div>
+        </div>
+        <div style="flex-shrink:0;">
+          <div class="case-more-btn" style="margin-top:0;">Читать подробнее →</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1965,30 +2229,79 @@
   </div>
 </section>
 
+<!-- ===== ЧТО НОВОГО В 2.8.0 ===== -->
+<section class="whats-new" id="whats-new">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-green">Обновление</span>
+      <h2>Что нового в версии 2.8.0</h2>
+      <p>Безопасная запись кода, автоматическое создание форм и пакетные операции.</p>
+    </div>
+    <div class="whats-new-grid">
+      <div class="wn-card fade-in fade-in-delay-1">
+        <div class="wn-card-icon">🛡️</div>
+        <h3>Безопасная запись кода</h3>
+        <p>Новые механизмы защиты при записи BSL-кода через <code>write_module_source</code>:</p>
+        <ul>
+          <li>Режим <code>replaceMethod</code> — замена метода по имени</li>
+          <li>Защита от деструктивной записи (блокировка удаления более 50% кода)</li>
+          <li>Автоматическое резервное копирование перед каждой записью</li>
+          <li>Сохранение формата переносов строк (CRLF/LF)</li>
+        </ul>
+      </div>
+      <div class="wn-card fade-in fade-in-delay-2">
+        <div class="wn-card-icon">📝</div>
+        <h3>Создание форм</h3>
+        <p>Параметр <code>createForm</code> при создании объектов метаданных:</p>
+        <ul>
+          <li>Автоматическая генерация формы с полями для всех реквизитов</li>
+          <li>Таблицы для табличных частей с колонками</li>
+          <li>Типизированные реквизиты (String, Number, Date, Boolean)</li>
+          <li>Работает и для существующих объектов</li>
+        </ul>
+      </div>
+      <div class="wn-card fade-in fade-in-delay-3">
+        <div class="wn-card-icon">⚡</div>
+        <h3>Пакетные операции с формами</h3>
+        <p>Несколько операций <code>modify_form</code> за один вызов:</p>
+        <ul>
+          <li>Новые операции: moveItem, setProperty, changeOrder</li>
+          <li>Batch-режим — массив операций в одном запросе</li>
+          <li>Поддержка ColumnGroup для таблиц</li>
+          <li>Форма загружается и сохраняется один раз</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wn-bottom fade-in">
+      <button class="btn-release-notes" onclick="openReleaseNotes()">📋 Подробные Release Notes</button>
+    </div>
+  </div>
+</section>
+
 <!-- ===== СКАЧАТЬ ===== -->
 <section class="download-section" id="download">
   <div class="container">
     <div class="download-inner fade-in">
       <span class="badge badge-green">📥 Актуальный релиз</span>
       <h2>Скачать 1C:RSV MCP Server</h2>
-      <p class="download-sub">Версия 2.7.0 · Для 1C:EDT 2025.x · Windows x64 · Бесплатно на 30 дней</p>
+      <p class="download-sub">Версия 2.8.0 · Для 1C:EDT 2025.x · Windows x64 · Бесплатно на 30 дней</p>
 
       <div class="download-card">
         <div class="download-card-info">
           <div class="download-file-icon">📦</div>
           <div>
-            <div class="download-file-name">1C-RSV-MCP-2.7.1-distr.rar</div>
-            <div class="download-file-meta">Версия 2.7.1 · ~400 KB</div>
+            <div class="download-file-name">1C-RSV-MCP-2.8.0-distr.rar</div>
+            <div class="download-file-meta">Версия 2.8.0 · ~400 KB</div>
           </div>
         </div>
 
         <div class="download-includes">
-          <span>✅ mcp-rsv-update-site-2.7.1.zip — плагин для установки в EDT</span>
+          <span>✅ mcp-rsv-update-site-2.8.0.zip — плагин для установки в EDT</span>
           <span>✅ GUIDE.md — пошаговое руководство пользователя</span>
           <span>✅ CLAUDE.md — готовые правила для Claude / Cursor / Windsurf</span>
         </div>
 
-        <a href="./1C-RSV-MCP-2.7.1-distr.rar" class="btn-download" download>
+        <a href="./1C-RSV-MCP-2.8.0-distr.rar" class="btn-download" download>
           ⬇ Скачать бесплатно
         </a>
 
@@ -2048,9 +2361,11 @@
           <li><a href="#how">Как работает</a></li>
           <li><a href="#profiles">Профили</a></li>
           <li><a href="#cases">Кейсы</a></li>
+          <li><a href="#analysts">Аналитикам</a></li>
           <li><a href="#quality">Инженерное качество</a></li>
           <li><a href="#install">Установка</a></li>
-          <li><a href="#download">⬇ Скачать v2.7.0</a></li>
+          <li><a href="#whats-new">Что нового</a></li>
+          <li><a href="#download">⬇ Скачать v2.8.0</a></li>
         </ul>
       </div>
       <div class="footer-links-section">
@@ -2066,7 +2381,7 @@
       <div class="footer-author">
         Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a> · <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">@Prepod2003</a>
       </div>
-      <div class="footer-version">1C:RSV v2.7.0 · 2026</div>
+      <div class="footer-version">1C:RSV v2.8.0 · 2026</div>
     </div>
   </div>
 </footer>
@@ -2085,6 +2400,311 @@
       <button class="case-modal-close" onclick="closeCase()">✕</button>
     </div>
     <div class="case-modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ===== RELEASE NOTES MODAL ===== -->
+<div class="rn-modal" id="rn-modal" onclick="if(event.target===this)closeReleaseNotes()">
+  <div class="rn-body">
+    <button class="rn-close" onclick="closeReleaseNotes()">&times;</button>
+    <span class="rn-badge">v2.8.0 — Март 2026</span>
+    <h2 style="font-size:1.5rem; margin-bottom:24px;">Release Notes: 1C:RSV MCP Server v2.8.0</h2>
+
+    <h3>1. Безопасная запись кода — <code>write_module_source</code></h3>
+
+    <h4>1.1. Новый режим <code>replaceMethod</code></h4>
+    <p>Замена метода по имени — без ручного определения номеров строк. ИИ-ассистент просто указывает имя метода, а плагин сам находит его границы и заменяет. Поддерживает многострочные сигнатуры и директивы компиляции (<code>&НаСервере</code>, <code>&НаКлиенте</code>).</p>
+
+    <h4>1.2. Защита от деструктивной записи</h4>
+    <p>Если <code>mode: "replace"</code> удаляет более 50% строк модуля, запись автоматически блокируется. Для подтверждения намерения нужно передать <code>confirmFullReplace: true</code>. В dry-run режиме отображается предупреждение с процентом удаления.</p>
+
+    <h4>1.3. Автоматическое резервное копирование</h4>
+    <p>Перед каждой записью плагин копирует текущее содержимое модуля в <code>~/.edt-rsv/backups/</code>. Для каждого модуля хранится максимум 5 бэкапов с автоматической ротацией. Это собственная система плагина — не git и не EDT.</p>
+
+    <h4>1.4. Сохранение формата переносов строк</h4>
+    <p>Плагин определяет CRLF или LF при чтении и восстанавливает формат при записи. <code>git diff</code> показывает только реально изменённые строки.</p>
+
+    <h3>2. Создание объектов метаданных — <code>create_metadata_object</code></h3>
+
+    <h4>2.1. Автоматическое создание формы</h4>
+    <p>Параметр <code>createForm: true</code> генерирует основную форму: поля ввода для реквизитов шапки, таблицы для табличных частей, командная панель. Работает и для существующих объектов.</p>
+
+    <h4>2.2. Типизированные реквизиты</h4>
+    <table class="rn-table">
+      <tr><th>Тип</th><th>Параметры</th><th>Пример</th></tr>
+      <tr><td>String</td><td>length (по умолчанию 100)</td><td><code>{"type": "String", "length": 250}</code></td></tr>
+      <tr><td>Number</td><td>length, precision</td><td><code>{"type": "Number", "length": 15, "precision": 2}</code></td></tr>
+      <tr><td>Date</td><td>—</td><td><code>{"type": "Date"}</code></td></tr>
+      <tr><td>Boolean</td><td>—</td><td><code>{"type": "Boolean"}</code></td></tr>
+    </table>
+
+    <h3>3. Модификация форм — <code>modify_form</code></h3>
+
+    <h4>3.1. Новые операции</h4>
+    <table class="rn-table">
+      <tr><th>Операция</th><th>Описание</th></tr>
+      <tr><td><code>moveItem</code></td><td>Переместить элемент в другой контейнер</td></tr>
+      <tr><td><code>setProperty</code></td><td>Установить свойство элемента (visible, enabled, title и др.)</td></tr>
+      <tr><td><code>changeOrder</code></td><td>Изменить позицию элемента (0-based, -1 = в конец)</td></tr>
+    </table>
+
+    <h4>3.2. Batch-режим</h4>
+    <p>Массив операций в одном вызове — форма загружается и сохраняется один раз.</p>
+    <pre>{ "operations": [
+  { "operation": "addField", "name": "Поле1", "dataPath": "Объект.Реквизит1" },
+  { "operation": "setProperty", "name": "Поле1", "propertyName": "title", "propertyValue": "Название" },
+  { "operation": "changeOrder", "name": "Поле1", "position": 0 }
+]}</pre>
+
+    <h3>Совместимость</h3>
+    <p>Полная обратная совместимость. Все новые параметры (<code>confirmFullReplace</code>, <code>methodName</code>, <code>createForm</code>, <code>operations</code>) — опциональные. Бэкапы и защита от деструктивной записи включены автоматически.</p>
+
+    <table class="rn-table">
+      <tr><th>Инструмент</th><th>Что изменилось</th></tr>
+      <tr><td><code>write_module_source</code></td><td>+replaceMethod, +confirmFullReplace, автобэкап, CRLF/LF</td></tr>
+      <tr><td><code>create_metadata_object</code></td><td>+createForm, типизированные реквизиты</td></tr>
+      <tr><td><code>modify_form</code></td><td>+moveItem, +setProperty, +changeOrder, batch-режим, ColumnGroup</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== TREASURY CASE MODAL ===== -->
+<div class="kazn-modal" id="kazn-modal" onclick="if(event.target===this)closeKaznCase()">
+  <div class="kazn-body">
+    <button class="rn-close" onclick="closeKaznCase()">&times;</button>
+
+    <span class="rn-badge">Кейс разработки</span>
+    <h2 style="font-size:1.4rem; margin-bottom:8px;">Помощник казначея — полный цикл разработки с ИИ</h2>
+    <p style="color:var(--text-l); margin-bottom:24px;">Конфигурация «Комплексная автоматизация 2.5» (КА 2.5)</p>
+
+    <h3>Бизнес-задача</h3>
+    <p>Казначей холдинга (~40 юр. лиц) ежедневно работает с документами «Заявка на расходование денежных средств». Стандартный функционал КА не позволяет:</p>
+    <ul>
+      <li>Быстро увидеть остатки и доступные средства по расчётным счетам</li>
+      <li>Быстро оценить объём предстоящих платежей на сегодня/завтра</li>
+      <li>Сравнить планируемые расходы с доступными средствами</li>
+    </ul>
+    <p>Нужен <strong>«Помощник казначея»</strong> — обработка, которая в одном окне показывает всё необходимое для принятия решений по платежам.</p>
+
+    <hr>
+
+    <h3>Процесс разработки</h3>
+
+    <h4>Этап 1. Анализ конфигурации</h4>
+    <p>ИИ-ассистент (Claude Opus + MCP 1C:RSV) провёл глубокий анализ конфигурации КА 2.5:</p>
+    <ul>
+      <li>Изучил структуру документа «ЗаявкаНаРасходованиеДС» — 60+ реквизитов, 5 табличных частей</li>
+      <li>Нашёл регистры остатков: «ДенежныеСредстваНаСчетах», «ДенежныеСредстваКОплате»</li>
+      <li>Обнаружил справочники: «БанковскиеСчетаОрганизаций», «Организации», «ПриоритетыОплаты»</li>
+      <li>Изучил механизм приоритетов оплаты — справочник с цветовой маркировкой</li>
+    </ul>
+
+    <h4>Этап 2. Разработка (итерации)</h4>
+    <p>Разработка велась итеративно — всего <strong>8 итераций</strong> за 4-5 часов:</p>
+
+    <table>
+      <tr><th>#</th><th>Что сделано</th><th>MCP-инструменты</th></tr>
+      <tr><td>1</td><td>Создан объект метаданных DataProcessor + форма</td><td>create_metadata_object, modify_form</td></tr>
+      <tr><td>2</td><td>Запросы к регистрам остатков, вывод таблицы счетов</td><td>search_in_code, read_method_source, write_module_source</td></tr>
+      <tr><td>3</td><td>Запрос плановых платежей, группировка по статусам</td><td>get_object_details, write_module_source</td></tr>
+      <tr><td>4</td><td>Реквизиты фильтрации (организация, даты, счёт)</td><td>modify_metadata, modify_form, write_module_source</td></tr>
+      <tr><td>5</td><td>Цветовая подсветка приоритетов в таблице</td><td>read_method_source, write_module_source</td></tr>
+      <tr><td>6</td><td>Переход к заявке по двойному щелчку</td><td>write_module_source</td></tr>
+      <tr><td>7</td><td>Итоговые суммы и форматирование</td><td>write_module_source, get_validation_errors</td></tr>
+      <tr><td>8</td><td>Финальная отладка, исправление ошибок</td><td>get_validation_errors, explain_error, diff_module</td></tr>
+    </table>
+
+    <h4>Этап 3. Результат</h4>
+    <div class="kazn-highlight">
+      <p><strong>Итоговая обработка «Помощник казначея»:</strong></p>
+      <ul>
+        <li><strong>719 строк</strong> BSL-кода (модуль формы)</li>
+        <li><strong>23 метода</strong> (серверные + клиентские)</li>
+        <li><strong>3 запроса</strong> к регистрам накопления</li>
+        <li>Таблица остатков по счетам с итоговой строкой</li>
+        <li>Таблица заявок на оплату с цветовой маркировкой приоритетов</li>
+        <li>Фильтрация по организации, расчётному счёту, диапазону дат</li>
+        <li>Переход к заявке по двойному щелчку на строке</li>
+      </ul>
+    </div>
+
+    <img src="images/case/kazn-1.jpg" alt="Помощник казначея — интерфейс обработки" onclick="openLightbox('images/case/kazn-1.jpg')" loading="lazy">
+
+    <hr>
+
+    <h3>Использованные MCP-инструменты</h3>
+    <table>
+      <tr><th>Инструмент</th><th>Назначение</th><th>Вызовов</th></tr>
+      <tr><td>write_module_source</td><td>Запись BSL-кода (6 режимов)</td><td>24</td></tr>
+      <tr><td>search_in_code</td><td>Поиск паттернов в типовой</td><td>11</td></tr>
+      <tr><td>read_method_source</td><td>Чтение конкретных методов</td><td>9</td></tr>
+      <tr><td>get_object_details</td><td>Структура объектов метаданных</td><td>8</td></tr>
+      <tr><td>get_validation_errors</td><td>Проверка ошибок после записи</td><td>7</td></tr>
+      <tr><td>modify_form</td><td>Изменение элементов формы</td><td>6</td></tr>
+      <tr><td>create_metadata_object</td><td>Создание обработки и формы</td><td>2</td></tr>
+      <tr><td>Остальные (15 инстр.)</td><td>ai_context, diff_module, explain_error и др.</td><td>18</td></tr>
+    </table>
+    <p style="margin-top:8px;"><strong>Итого: 85 вызовов</strong> 22 различных инструментов MCP.</p>
+
+    <hr>
+
+    <h3>Оценка сложности</h3>
+    <table>
+      <tr><th>Параметр</th><th style="color:var(--green);">ИИ + MCP</th><th>Вручную</th></tr>
+      <tr><td>Время разработки</td><td style="color:var(--green);"><strong>4-5 часов</strong></td><td>2-3 рабочих дня</td></tr>
+      <tr><td>Знание КА 2.5</td><td style="color:var(--green);">Не требуется</td><td>Глубокое</td></tr>
+      <tr><td>Поиск регистров и справочников</td><td style="color:var(--green);">Автоматически</td><td>Ручной поиск в конфигураторе</td></tr>
+      <tr><td>Количество итераций отладки</td><td style="color:var(--green);">8</td><td>15-20+</td></tr>
+      <tr><td>Ускорение</td><td style="color:var(--green);"><strong>5-7x</strong></td><td>—</td></tr>
+    </table>
+
+    <hr>
+
+    <h3>Ключевые выводы</h3>
+    <ul>
+      <li><strong>Разработчику не нужно знать конфигурацию</strong> — ИИ сам находит нужные объекты, регистры, методы и паттерны</li>
+      <li><strong>Полный цикл разработки за одну сессию</strong> — от постановки задачи до работающей обработки</li>
+      <li><strong>22 из 37 инструментов</strong> MCP были задействованы — система используется на полную мощность</li>
+      <li><strong>Качество на уровне опытного разработчика КА</strong> — правильные запросы к регистрам, корректная работа с приоритетами, стандартные паттерны 1С</li>
+    </ul>
+
+    <p style="margin-top:16px; font-style:italic; color:var(--text-l);">Сравните со стандартным «Платёжным календарём» КА — «Помощник казначея» решает более узкую, но конкретную задачу, которая не покрывается типовым функционалом.</p>
+  </div>
+</div>
+
+<!-- ===== ANALYST CASE MODAL ===== -->
+<div class="kazn-modal" id="analyst-modal" onclick="if(event.target===this)closeAnalystCase()">
+  <div class="kazn-body">
+    <button class="rn-close" onclick="closeAnalystCase()">&times;</button>
+
+    <span class="rn-badge">Кейс · Аналитик</span>
+    <h2 style="font-size:1.4rem; margin-bottom:8px;">ИИ-ассистент для аналитика на техподдержке 1С</h2>
+    <p style="color:var(--text-l); margin-bottom:24px;">Конфигурация «Комплексная автоматизация 2.5» · Холдинг ~40 юридических лиц</p>
+
+    <h3>О чём этот кейс</h3>
+    <p>Пользователи работают с документами <strong>«Заявка на расходование денежных средств»</strong> — основной документ казначейства. В заявке есть поле <strong>«Приоритет оплаты»</strong> — выпадающий список, в списке заявок строки подсвечиваются цветом в зависимости от приоритета.</p>
+
+    <hr>
+
+    <h3>Вопрос от пользователя</h3>
+    <p>Казначей написала аналитику:</p>
+    <blockquote>
+      У меня вопрос: у нас есть окно «Приоритет». В нём три варианта — обычный, средний, высокий.
+      Хочу добавить приоритет «Спецсчёт» и выделять этот приоритет особым цветом. Синим, например.
+      Кнопкой «+» добавила «Спецсчёт». Дальше в окне «Выбор цвета» мне какой вариант лучше выбрать?
+      Есть, например, «Фон выделения редактирования»...
+    </blockquote>
+
+    <hr>
+
+    <h3>Что произошло на стороне аналитика</h3>
+    <p>Аналитик прочитал сообщение и <strong>не понял, о чём вообще речь</strong>.</p>
+    <p>Он знал, что это клиент из казначейства. Но на этом понимание заканчивалось:</p>
+    <ul>
+      <li><strong>Не помнил</strong>, что в заявке на расходование ДС вообще есть поле «Приоритет»</li>
+      <li><strong>Не помнил</strong>, где именно приоритеты устанавливаются</li>
+      <li><strong>Не знал</strong>, как приоритеты технически реализованы — это перечисление? Справочник?</li>
+      <li><strong>Не понимал</strong>, откуда пользователь взяла кнопку «+» и диалог выбора цвета</li>
+      <li><strong>Не понимал суть вопроса</strong> — почему она спрашивает «какой вариант выбрать»?</li>
+    </ul>
+
+    <p>Без инструментов у аналитика было бы два пути:</p>
+    <ol>
+      <li><strong>Разбираться самому</strong> — открыть конфигуратор, найти документ, изучить реквизиты... Для аналитика, который не является разработчиком — <strong>15–30 минут</strong>, а может и больше.</li>
+      <li><strong>Позвонить разработчику</strong> — типичный путь. Разработчик отвлекается, ответ клиенту — через час-два.</li>
+    </ol>
+
+    <hr>
+
+    <h3>Что сделал аналитик</h3>
+    <p>Аналитик открыл заявку, увидел поле «Приоритет оплаты» и <strong>сразу передал вопрос ИИ-ассистенту</strong>. Не пытаясь сам разобраться — просто скопировал вопрос пользователя и сказал ИИ: «Разберись, что она спрашивает, и как это технически устроено».</p>
+
+    <div class="analyst-case-images" style="margin:16px 0;">
+      <img src="images/analyst-case-2.jpg" alt="Запрос аналитика к ИИ" onclick="openLightbox('images/analyst-case-2.jpg')" loading="lazy">
+    </div>
+
+    <h4>Что ИИ выяснил за ~60 секунд</h4>
+
+    <p><strong>Шаг 1</strong> — Поиск по коду документа:</p>
+    <pre>search_in_code("Приоритет", objectName: "Document.ЗаявкаНаРасходованиеДенежныхСредств")</pre>
+    <p>В результатах: <code>Справочники.ПриоритетыОплаты.ПолучитьВысшийПриоритет()</code> — значит приоритеты хранятся в <strong>справочнике</strong> <code>ПриоритетыОплаты</code>, а не в перечислении. Поэтому пользователь и смогла добавить новый элемент кнопкой «+».</p>
+
+    <p><strong>Шаг 2</strong> — Структура справочника:</p>
+    <pre>get_object_details("Catalog.ПриоритетыОплаты")</pre>
+    <table>
+      <tr><th>Реквизит</th><th>Тип</th><th>Назначение</th></tr>
+      <tr><td>РеквизитДопУпорядочивания</td><td>Число</td><td>Порядок сортировки</td></tr>
+      <tr><td>Цвет</td><td>ХранилищеЗначения</td><td>Цвет приоритета</td></tr>
+    </table>
+    <p>Реквизит <strong>Цвет</strong> типа <code>ХранилищеЗначения</code> — механизм привязки цвета заложен разработчиками конфигурации.</p>
+
+    <p><strong>Шаг 3</strong> — Как цвет сохраняется:</p>
+    <pre>read_method_source("ПередЗаписьюНаСервере")  →  ТекущийОбъект.Цвет = Новый ХранилищеЗначения(Цвет)</pre>
+    <p>Цвет хранится как объект типа <code>Цвет</code>. На форме элемента справочника — стандартный диалог выбора цвета платформы 1С.</p>
+
+    <p><strong>Шаг 4</strong> — Как цвет используется в списке заявок:</p>
+    <pre>read_method_source("УстановитьУсловноеОформление")</pre>
+    <p>Условное оформление <strong>захардкожено</strong> только для двух приоритетов:</p>
+    <ul>
+      <li>Высокий → <code>ЦветаСтиля.ВысокийПриоритетДокумента</code></li>
+      <li>Низкий → <code>ЦветаСтиля.НизкийПриоритетДокумента</code></li>
+    </ul>
+    <p>Цвет из реквизита справочника <strong>не считывается</strong>. Новый приоритет «Спецсчёт» не будет автоматически подсвечиваться в списке.</p>
+
+    <h4>Что стало понятно</h4>
+    <p>Пользователь открыла элемент справочника «Приоритеты оплаты», увидела поле «Цвет», нажала на кнопку выбора — и попала в стандартный диалог выбора цвета платформы. В этом диалоге список с названиями вроде «Фон формы», «Текст кнопки» — и она растерялась.</p>
+
+    <div class="analyst-case-images" style="margin:16px 0;">
+      <img src="images/analyst-case-1.jpg" alt="Диалог выбора цвета" onclick="openLightbox('images/analyst-case-1.jpg')" loading="lazy">
+    </div>
+
+    <hr>
+
+    <h3>Ответ клиенту</h3>
+    <p>Вся цепочка — от получения вопроса до отправки ответа — заняла <strong>около минуты</strong>:</p>
+    <blockquote>
+      В целом всё равно, как цвет называется — можно выбирать любой, какой вам нравится.
+      Если нужно, могу подключиться — помогу с настройкой отображения на форме.
+    </blockquote>
+    <p>Просто, быстро, по делу. Клиент получила ответ и продолжила работу.</p>
+
+    <hr>
+
+    <h3>Сравнение</h3>
+    <table>
+      <tr><th>Без ИИ-ассистента</th><th>С ИИ-ассистентом (MCP 1C:RSV)</th></tr>
+      <tr><td>Аналитик не понимает, о чём вопрос</td><td>ИИ за секунды разбирается в механизме</td></tr>
+      <tr><td>Нужно открывать конфигуратор/EDT</td><td>Нужно только задать вопрос</td></tr>
+      <tr><td>Нужно найти объект в дереве метаданных</td><td>ИИ находит объект по контексту</td></tr>
+      <tr><td>Нужно понять: справочник или перечисление?</td><td><code>get_object_details</code> — ответ мгновенно</td></tr>
+      <tr><td>Нужно изучить реквизиты, формы, код</td><td><code>read_method_source</code> — конкретный метод</td></tr>
+      <tr><td>Нужно звонить разработчику</td><td>Не нужно никого отвлекать</td></tr>
+      <tr><td><strong>15–30 минут</strong> (или ожидание разработчика)</td><td><strong>~1 минута</strong></td></tr>
+    </table>
+
+    <h3>Использованные MCP-инструменты</h3>
+    <table>
+      <tr><th>Инструмент</th><th>Что дал</th></tr>
+      <tr><td><code>search_in_code</code></td><td>По слову «Приоритет» определил, что это справочник ПриоритетыОплаты</td></tr>
+      <tr><td><code>get_object_details</code></td><td>Показал структуру справочника: 2 реквизита, в том числе Цвет</td></tr>
+      <tr><td><code>read_method_source</code></td><td>Раскрыл логику сохранения цвета и условное оформление списка</td></tr>
+    </table>
+    <p>Всего <strong>5 вызовов инструментов</strong> — и полная картина.</p>
+
+    <hr>
+
+    <h3>Ценность для аналитика и службы техподдержки</h3>
+    <ul>
+      <li><strong>Не нужно разбираться во внутреннем устройстве конфигурации.</strong> По внешнему виду поля невозможно определить — это справочник или перечисление. С ИИ — один вопрос, и ответ готов.</li>
+      <li><strong>Не нужно помнить детали.</strong> «Комплексная автоматизация» содержит тысячи объектов. Помнить каждый — невозможно. Даже разработчик не помнит всё.</li>
+      <li><strong>Не нужно отвлекать разработчика.</strong> С ИИ-ассистентом аналитик полностью самостоятелен.</li>
+      <li><strong>Ускорение техподдержки.</strong> Вместо цепочки «вопрос → не знаю → звонок → ожидание» — ответ за минуту.</li>
+      <li><strong>Бонус: выявлено ограничение.</strong> ИИ обнаружил, что условное оформление не поддерживает новые приоритеты. Аналитик сразу предложил помощь — вместо повторного обращения.</li>
+    </ul>
+
+    <div class="kazn-highlight">
+      <p><strong>Вывод:</strong> 1C:RSV — это не только инструмент разработчика. Для аналитика и службы техподдержки он превращает ИИ в эксперта по конфигурации, который мгновенно находит любой механизм, объясняет техническую реализацию и позволяет отвечать клиентам за минуту вместо часов.</p>
+    </div>
   </div>
 </div>
 
@@ -2368,9 +2988,39 @@
     document.body.style.overflow = '';
   }
 
+  // ===== RELEASE NOTES MODAL =====
+  function openReleaseNotes() {
+    document.getElementById('rn-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeReleaseNotes() {
+    document.getElementById('rn-modal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // ===== TREASURY CASE MODAL =====
+  function openKaznCase() {
+    document.getElementById('kazn-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeKaznCase() {
+    document.getElementById('kazn-modal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // ===== ANALYST CASE MODAL =====
+  function openAnalystCase() {
+    document.getElementById('analyst-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAnalystCase() {
+    document.getElementById('analyst-modal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
   // ===== KEYBOARD SHORTCUTS =====
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeLightbox(); closeCase(); closeCaseGallery(); closeCaseDetail(); }
+    if (e.key === 'Escape') { closeLightbox(); closeCase(); closeCaseGallery(); closeCaseDetail(); closeReleaseNotes(); closeKaznCase(); closeAnalystCase(); }
     if (document.getElementById('cg-modal').classList.contains('active')) {
       if (e.key === 'ArrowLeft') caseGalleryNav(-1);
       if (e.key === 'ArrowRight') caseGalleryNav(1);
