@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="1C:RSV MCP Server — плагин для 1C:EDT, который даёт ИИ-ассистентам прямой доступ к конфигурациям 1С. 37 инструментов, 0 внешних зависимостей, без SaaS-посредников.">
+  <meta name="description" content="1C:RSV MCP Server — плагин для 1C:EDT, который даёт ИИ-ассистентам прямой доступ к конфигурациям 1С. 38 инструментов, 0 внешних зависимостей, без SaaS-посредников.">
   <title>1C:RSV — Зрение ИИ в 1С:EDT</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563eb'/><text x='50%' y='54%' dy='.35em' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='12' font-weight='900' letter-spacing='-0.5'>RSV</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1154,7 +1154,7 @@
         <li><a href="#install">Установка</a></li>
       </ul>
       <div class="navbar-cta">
-        <a href="#download" class="btn-nav-download">⬇ Скачать v2.8.0</a>
+        <a href="#download" class="btn-nav-download">⬇ Скачать v2.8.1</a>
         <a href="https://t.me/edt_ai_1c" class="btn btn-primary" target="_blank" rel="noopener">
           ✈ Telegram
         </a>
@@ -1185,7 +1185,7 @@
         </div>
         <div class="hero-stats">
           <div class="hero-stat">
-            <div class="num" data-counter="37">0</div>
+            <div class="num" data-counter="38">0</div>
             <div class="lbl">инструментов MCP</div>
           </div>
           <div class="hero-stat">
@@ -1448,7 +1448,7 @@
 <div class="stats-bar">
   <div class="container">
     <div class="stats-inner">
-      <div class="stat-item"><span class="sn" data-counter="37">0</span><div class="sl">Инструментов MCP</div></div>
+      <div class="stat-item"><span class="sn" data-counter="38">0</span><div class="sl">Инструментов MCP</div></div>
       <div class="stat-item"><span class="sn" data-counter="51">0</span><div class="sl">Java-классов</div></div>
       <div class="stat-item"><span class="sn" data-counter="3">0</span><div class="sl">Профиля работы</div></div>
       <div class="stat-item"><span class="sn" data-counter="0">0</span><div class="sl">Внешних зависимостей</div></div>
@@ -1580,6 +1580,7 @@
           <span class="tool-tag">create_metadata_object</span>
           <span class="tool-tag">modify_metadata</span>
           <span class="tool-tag">modify_form</span>
+          <span class="tool-tag">modify_report</span>
           <span class="tool-tag">sync_database</span>
           <span class="tool-tag">launch_debugger</span>
           <span class="tool-tag">rebuild_project</span>
@@ -1789,7 +1790,7 @@
         <tbody>
           <tr>
             <td class="cat">Инструментов MCP</td>
-            <td class="highlight"><span class="num-big">37</span> <span style="color:var(--green);font-size:0.8rem;font-weight:600;">+42%</span></td>
+            <td class="highlight"><span class="num-big">38</span> <span style="color:var(--green);font-size:0.8rem;font-weight:600;">+46%</span></td>
             <td><span class="num-small">~26</span></td>
           </tr>
           <tr>
@@ -2024,7 +2025,7 @@
             <li>ИИ разбирает структуру напрямую, без текстового парсинга</li>
             <li>Типы данных сохранены: числа, массивы, булевы</li>
             <li>Нет потерь при интерпретации Markdown-форматирования</li>
-            <li>37 инструментов — 37 JSON-ответов</li>
+            <li>38 инструментов — 38 JSON-ответов</li>
           </ul>
         </div>
         <div class="format-vs">VS</div>
@@ -2048,9 +2049,9 @@
           <div class="ds-bar"><div class="ds-bar-fill" style="width:93%;background:var(--blue);"></div></div>
         </div>
         <div class="ds-item">
-          <div class="ds-num" style="color:var(--blue);">37</div>
+          <div class="ds-num" style="color:var(--blue);">38</div>
           <div class="ds-label">MCP-инструментов</div>
-          <div class="ds-score">vs 26 у аналогов (+42%)</div>
+          <div class="ds-score">vs 26 у аналогов (+46%)</div>
           <div class="ds-bar"><div class="ds-bar-fill" style="width:100%;background:var(--blue);"></div></div>
         </div>
         <div class="ds-item">
@@ -2201,7 +2202,7 @@
       <div class="step-card">
         <div class="step-number">4</div>
         <h4>Готово!</h4>
-        <p>ИИ обнаружит 37 инструментов. Проверить:</p>
+        <p>ИИ обнаружит 38 инструментов. Проверить:</p>
         <code>curl localhost:8770/health</code>
       </div>
     </div>
@@ -2229,51 +2230,88 @@
   </div>
 </section>
 
-<!-- ===== ЧТО НОВОГО В 2.8.0 ===== -->
+<!-- ===== ЧТО НОВОГО ===== -->
 <section class="whats-new" id="whats-new">
   <div class="container">
     <div class="section-header fade-in">
-      <span class="badge badge-green">Обновление</span>
-      <h2>Что нового в версии 2.8.0</h2>
-      <p>Безопасная запись кода, автоматическое создание форм и пакетные операции.</p>
+      <span class="badge badge-green">Актуальное обновление</span>
+      <h2>Что нового в версии 2.8.1</h2>
+      <p>Новая система лицензирования с кодами активации, три тарифа и редактор СКД-отчётов.</p>
     </div>
     <div class="whats-new-grid">
       <div class="wn-card fade-in fade-in-delay-1">
-        <div class="wn-card-icon">🛡️</div>
-        <h3>Безопасная запись кода</h3>
-        <p>Новые механизмы защиты при записи BSL-кода через <code>write_module_source</code>:</p>
+        <div class="wn-card-icon">🔑</div>
+        <h3>Коды активации</h3>
+        <p>Простая активация по одноразовому коду:</p>
         <ul>
-          <li>Режим <code>replaceMethod</code> — замена метода по имени</li>
-          <li>Защита от деструктивной записи (блокировка удаления более 50% кода)</li>
-          <li>Автоматическое резервное копирование перед каждой записью</li>
-          <li>Сохранение формата переносов строк (CRLF/LF)</li>
+          <li><code>ACT-ANL-xxx</code> — тариф Аналитик</li>
+          <li><code>ACT-DEV-xxx</code> — тариф Разработчик</li>
+          <li><code>ACT-ARC-xxx</code> — тариф Архитектор</li>
+          <li>Пробный период 30 дней — кнопка прямо в диалоге</li>
         </ul>
       </div>
       <div class="wn-card fade-in fade-in-delay-2">
-        <div class="wn-card-icon">📝</div>
-        <h3>Создание форм</h3>
-        <p>Параметр <code>createForm</code> при создании объектов метаданных:</p>
+        <div class="wn-card-icon">🎯</div>
+        <h3>Три тарифа</h3>
+        <p>Инструменты доступны по уровню подписки:</p>
         <ul>
-          <li>Автоматическая генерация формы с полями для всех реквизитов</li>
-          <li>Таблицы для табличных частей с колонками</li>
-          <li>Типизированные реквизиты (String, Number, Date, Boolean)</li>
-          <li>Работает и для существующих объектов</li>
+          <li><strong>Аналитик</strong> — анализ, чтение, поиск (19 инструментов)</li>
+          <li><strong>Разработчик</strong> — + запись кода, валидация (26)</li>
+          <li><strong>Архитектор</strong> — + метаданные, формы, отчёты (38)</li>
+          <li>ИИ видит только инструменты своего тарифа</li>
         </ul>
       </div>
       <div class="wn-card fade-in fade-in-delay-3">
-        <div class="wn-card-icon">⚡</div>
-        <h3>Пакетные операции с формами</h3>
-        <p>Несколько операций <code>modify_form</code> за один вызов:</p>
+        <div class="wn-card-icon">📊</div>
+        <h3>Редактор СКД-отчётов</h3>
+        <p>Новый инструмент <code>modify_report</code>:</p>
         <ul>
-          <li>Новые операции: moveItem, setProperty, changeOrder</li>
-          <li>Batch-режим — массив операций в одном запросе</li>
-          <li>Поддержка ColumnGroup для таблиц</li>
-          <li>Форма загружается и сохраняется один раз</li>
+          <li>Наборы данных, поля, параметры, ресурсы</li>
+          <li>Группировки, настройки компоновки</li>
+          <li>25 операций в одном инструменте</li>
+          <li>Только тариф Архитектор</li>
         </ul>
       </div>
     </div>
     <div class="wn-bottom fade-in">
       <button class="btn-release-notes" onclick="openReleaseNotes()">📋 Подробные Release Notes</button>
+    </div>
+
+    <!-- Предыдущая версия -->
+    <div style="margin-top:48px; padding-top:40px; border-top:1px solid var(--border);">
+      <div class="section-header fade-in" style="margin-bottom:24px;">
+        <span class="badge" style="background:#f1f5f9;color:#64748b;">Версия 2.8.0 — Март 2026</span>
+        <h3 style="font-size:1.3rem; color:var(--text-l);">Безопасная запись кода, создание форм, пакетные операции</h3>
+      </div>
+      <div class="whats-new-grid">
+        <div class="wn-card fade-in fade-in-delay-1" style="opacity:0.75;">
+          <div class="wn-card-icon">🛡️</div>
+          <h3>Безопасная запись кода</h3>
+          <ul>
+            <li>Режим <code>replaceMethod</code> — замена метода по имени</li>
+            <li>Защита от деструктивной записи (блокировка >50%)</li>
+            <li>Автобэкап перед каждой записью</li>
+          </ul>
+        </div>
+        <div class="wn-card fade-in fade-in-delay-2" style="opacity:0.75;">
+          <div class="wn-card-icon">📝</div>
+          <h3>Создание форм</h3>
+          <ul>
+            <li>Параметр <code>createForm</code> при создании объектов</li>
+            <li>Автогенерация полей, таблиц, колонок</li>
+            <li>Типизированные реквизиты</li>
+          </ul>
+        </div>
+        <div class="wn-card fade-in fade-in-delay-3" style="opacity:0.75;">
+          <div class="wn-card-icon">⚡</div>
+          <h3>Пакетные операции с формами</h3>
+          <ul>
+            <li>Batch-режим <code>modify_form</code></li>
+            <li>moveItem, setProperty, changeOrder</li>
+            <li>Форма загружается и сохраняется один раз</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -2284,29 +2322,29 @@
     <div class="download-inner fade-in">
       <span class="badge badge-green">📥 Актуальный релиз</span>
       <h2>Скачать 1C:RSV MCP Server</h2>
-      <p class="download-sub">Версия 2.8.0 · Для 1C:EDT 2025.x · Windows x64 · Бесплатно на 30 дней</p>
+      <p class="download-sub">Версия 2.8.1 · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней</p>
 
       <div class="download-card">
         <div class="download-card-info">
           <div class="download-file-icon">📦</div>
           <div>
-            <div class="download-file-name">1C-RSV-MCP-2.8.0-distr.rar</div>
-            <div class="download-file-meta">Версия 2.8.0 · ~400 KB</div>
+            <div class="download-file-name">1C-RSV-MCP-2.8.1-distr.rar</div>
+            <div class="download-file-meta">Версия 2.8.1 · ~400 KB</div>
           </div>
         </div>
 
         <div class="download-includes">
-          <span>✅ mcp-rsv-update-site-2.8.0.zip — плагин для установки в EDT</span>
+          <span>✅ edt-rsv-repository-2.8.1-SNAPSHOT.zip — плагин для установки в EDT</span>
           <span>✅ GUIDE.md — пошаговое руководство пользователя</span>
           <span>✅ CLAUDE.md — готовые правила для Claude / Cursor / Windsurf</span>
         </div>
 
-        <a href="./1C-RSV-MCP-2.8.0-distr.rar" class="btn-download" download>
+        <a href="./1C-RSV-MCP-2.8.1-distr.rar" class="btn-download" download>
           ⬇ Скачать бесплатно
         </a>
 
         <div class="download-note">
-          При первом запуске потребуется регистрация (имя, email, телефон) — лицензия выдаётся автоматически
+          При первом запуске откроется диалог активации — нажмите «Пробный период» или введите код активации
         </div>
       </div>
 
@@ -2315,7 +2353,7 @@
         <span class="badge badge-blue">1C:EDT 2025.x</span>
         <span class="badge badge-blue">Java 17 (Zulu)</span>
         <span class="badge badge-indigo">Windows x64</span>
-        <span class="badge badge-green">Бесплатно 30 дней</span>
+        <span class="badge badge-green">Пробный период 30 дней</span>
       </div>
     </div>
   </div>
@@ -2351,7 +2389,7 @@
         </div>
         <p class="footer-desc">
           Интеллектуальный мост между ИИ-ассистентами и средой разработки 1C:EDT.
-          37 инструментов. Без внешних серверов. 0 JAR-зависимостей.
+          38 инструментов. Без внешних серверов. 0 JAR-зависимостей.
         </p>
       </div>
       <div class="footer-links-section">
@@ -2365,7 +2403,7 @@
           <li><a href="#quality">Инженерное качество</a></li>
           <li><a href="#install">Установка</a></li>
           <li><a href="#whats-new">Что нового</a></li>
-          <li><a href="#download">⬇ Скачать v2.8.0</a></li>
+          <li><a href="#download">⬇ Скачать v2.8.1</a></li>
         </ul>
       </div>
       <div class="footer-links-section">
@@ -2381,7 +2419,7 @@
       <div class="footer-author">
         Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a> · <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">@Prepod2003</a>
       </div>
-      <div class="footer-version">1C:RSV v2.8.0 · 2026</div>
+      <div class="footer-version">1C:RSV v2.8.1 · 2026</div>
     </div>
   </div>
 </footer>
@@ -2407,8 +2445,35 @@
 <div class="rn-modal" id="rn-modal" onclick="if(event.target===this)closeReleaseNotes()">
   <div class="rn-body">
     <button class="rn-close" onclick="closeReleaseNotes()">&times;</button>
-    <span class="rn-badge">v2.8.0 — Март 2026</span>
-    <h2 style="font-size:1.5rem; margin-bottom:24px;">Release Notes: 1C:RSV MCP Server v2.8.0</h2>
+    <span class="rn-badge">v2.8.1 — Март 2026</span>
+    <h2 style="font-size:1.5rem; margin-bottom:24px;">Release Notes: 1C:RSV MCP Server v2.8.1</h2>
+
+    <h3>1. Новый инструмент <code>modify_report</code></h3>
+    <p>Редактирование СКД-отчётов (схема компоновки данных) напрямую через ИИ-ассистента. 25 операций в одном инструменте: управление наборами данных, полями, параметрами, ресурсами, группировками и настройками компоновки. Доступен только в тарифе Архитектор.</p>
+
+    <h3>2. Новая система лицензирования</h3>
+
+    <h4>2.1. Коды активации</h4>
+    <p>Активация по одноразовому коду вместо формы регистрации. Форматы: <code>ACT-ANL-xxx</code> (Аналитик), <code>ACT-DEV-xxx</code> (Разработчик), <code>ACT-ARC-xxx</code> (Архитектор). Код вводится в диалоге активации при первом запуске EDT.</p>
+
+    <h4>2.2. Три тарифа</h4>
+    <table class="rn-table">
+      <tr><th>Тариф</th><th>Инструментов</th><th>Доступные группы</th></tr>
+      <tr><td>Аналитик</td><td>19</td><td>Анализ метаданных, Анализ кода, Поиск</td></tr>
+      <tr><td>Разработчик</td><td>26</td><td>+ Валидация, Редактирование кода</td></tr>
+      <tr><td>Архитектор</td><td>38</td><td>+ Метаданные, Формы, Отчёты, Сборка, Утилиты</td></tr>
+    </table>
+
+    <h4>2.3. Пробный период</h4>
+    <p>Кнопка «Получить пробный период» прямо в диалоге активации. Выдаётся тариф Архитектор на 30 дней — без ввода каких-либо данных, только привязка к компьютеру.</p>
+
+    <h3>Совместимость с v2.8.0</h3>
+    <p>Пользователи v2.8.0 продолжают работать по своей лицензии до её истечения. После истечения потребуется код активации. Тариф для старых пользователей — Архитектор (полный доступ).</p>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:32px 0;">
+
+    <span class="rn-badge" style="background:#f1f5f9;color:#64748b;">v2.8.0 — Март 2026</span>
+    <h2 style="font-size:1.3rem; margin:16px 0 24px; color:var(--text-l);">Release Notes: 1C:RSV MCP Server v2.8.0</h2>
 
     <h3>1. Безопасная запись кода — <code>write_module_source</code></h3>
 
@@ -2564,7 +2629,7 @@
     <ul>
       <li><strong>Разработчику не нужно знать конфигурацию</strong> — ИИ сам находит нужные объекты, регистры, методы и паттерны</li>
       <li><strong>Полный цикл разработки за одну сессию</strong> — от постановки задачи до работающей обработки</li>
-      <li><strong>22 из 37 инструментов</strong> MCP были задействованы — система используется на полную мощность</li>
+      <li><strong>22 из 38 инструментов</strong> MCP были задействованы — система используется на полную мощность</li>
       <li><strong>Качество на уровне опытного разработчика КА</strong> — правильные запросы к регистрам, корректная работа с приоритетами, стандартные паттерны 1С</li>
     </ul>
 
@@ -2952,7 +3017,7 @@
     { src: 'images/case/12.jpg', cap: 'Это меняет правила игры' },
     { src: 'images/case/2.jpg', cap: 'Типовые конфигурации 1С — это сложно' },
     { src: 'images/case/3.jpg', cap: 'MCP 1С-РСВ — плагин для 1С:EDT' },
-    { src: 'images/case/4.jpg', cap: '37 инструментов в 8 группах' },
+    { src: 'images/case/4.jpg', cap: '38 инструментов в 8 группах' },
     { src: 'images/case/5.jpg', cap: 'Три профиля — три уровня доступа' },
     { src: 'images/case/6.jpg', cap: 'Установка за 2 минуты' },
     { src: 'images/case/13.jpg', cap: 'Видео реальной разработки' }
