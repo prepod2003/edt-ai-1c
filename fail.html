@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Оплата не прошла — 1C:RSV</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563eb'/><text x='50%' y='54%' dy='.35em' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='12' font-weight='900' letter-spacing='-0.5'>RSV</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
+    .icon {
+      width: 72px;
+      height: 72px;
+      background: #fee2e2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .icon svg { width: 36px; height: 36px; }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #0f172a;
+    }
+    .subtitle {
+      font-size: 1rem;
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .reasons {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 12px;
+      padding: 16px 20px;
+      text-align: left;
+      margin-bottom: 32px;
+    }
+    .reasons-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #92400e;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .reason {
+      font-size: 0.875rem;
+      color: #78350f;
+      line-height: 1.6;
+      padding-left: 12px;
+      position: relative;
+      margin-bottom: 4px;
+    }
+    .reason::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: #1d4ed8;
+      color: #fff;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #1e3a8a; }
+    .btn-secondary {
+      display: inline-block;
+      background: #f1f5f9;
+      color: #475569;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover { background: #e2e8f0; }
+    .note {
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+    .note a { color: #3b82f6; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </div>
+    <h1>Оплата не прошла</h1>
+    <p class="subtitle">
+      Платёж не был завершён. Деньги не списаны.<br>
+      Вы можете попробовать ещё раз.
+    </p>
+
+    <div class="reasons">
+      <div class="reasons-title">Возможные причины</div>
+      <div class="reason">Недостаточно средств на карте</div>
+      <div class="reason">Карта заблокирована или истёк срок</div>
+      <div class="reason">Банк отклонил транзакцию</div>
+      <div class="reason">Платёж был отменён вручную</div>
+    </div>
+
+    <div class="buttons">
+      <a href="index.html#pricing" class="btn-primary">Попробовать снова</a>
+      <a href="index.html" class="btn-secondary">На главную</a>
+    </div>
+
+    <p class="note">
+      Нужна помощь? <a href="mailto:prepod2003@yandex.ru">prepod2003@yandex.ru</a>
+      или <a href="https://t.me/Prepod2003" target="_blank">Telegram @Prepod2003</a>
+    </p>
+  </div>
+</body>
+</html>

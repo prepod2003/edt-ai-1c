@@ -124,6 +124,16 @@
     .navbar-cta { display: flex; gap: 12px; align-items: center; }
     .navbar-cta .btn { padding: 8px 20px; font-size: 0.875rem; }
     @media (max-width: 768px) { .navbar-links { display: none; } }
+    .navbar-btn-pricing { background: #2563eb; color: white !important; padding: 7px 14px; border-radius: 8px; font-weight: 700; font-size: 0.82rem; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
+    .navbar-btn-pricing:hover { background: #1d4ed8; }
+    @media (max-width: 768px) { .navbar-btn-download-hide { display: none; } }
+    /* Sticky mobile buy bar */
+    .mobile-buy-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 999; background: white; border-top: 1px solid #e2e8f0; padding: 12px 16px; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); }
+    @media (max-width: 768px) { .mobile-buy-bar { display: flex; gap: 10px; } }
+    .mobile-buy-bar a { flex: 1; text-align: center; padding: 13px 8px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; text-decoration: none; }
+    .mobile-buy-bar .mb-pricing { background: #2563eb; color: white; }
+    .mobile-buy-bar .mb-free { background: #f1f5f9; color: #334155; font-size: 0.85rem; }
+    @media (max-width: 768px) { body { padding-bottom: 76px; } }
 
     /* ===== HERO ===== */
     .hero {
@@ -1154,8 +1164,9 @@
         <li><a href="#install">Установка</a></li>
       </ul>
       <div class="navbar-cta">
-        <a href="#download" class="btn-nav-download">⬇ Скачать v2.8.1</a>
-        <a href="https://t.me/edt_ai_1c" class="btn btn-primary" target="_blank" rel="noopener">
+        <a href="#download" class="btn-nav-download navbar-btn-download-hide">⬇ Скачать v2.8.1</a>
+        <a href="#pricing" class="navbar-btn-pricing">Тарифы</a>
+        <a href="https://t.me/edt_ai_1c" class="btn btn-primary navbar-btn-download-hide" target="_blank" rel="noopener">
           ✈ Telegram
         </a>
       </div>
@@ -1181,7 +1192,8 @@
           <a href="https://t.me/edt_ai_1c" class="btn btn-primary" target="_blank" rel="noopener">
             ✈ Telegram-канал
           </a>
-          <a href="#how" class="btn btn-outline">Как это работает →</a>
+          <a href="#pricing" class="btn btn-outline" style="background:#2563eb;color:white;border-color:#2563eb;">Купить лицензию →</a>
+          <a href="#how" class="btn btn-outline">Как работает</a>
         </div>
         <div class="hero-stats">
           <div class="hero-stat">
@@ -1608,6 +1620,23 @@
           <div style="font-weight:700; color:var(--indigo); margin-bottom:8px;">🚀 Перспективное направление</div>
           <p style="font-size:0.88rem; color:#4338ca; line-height:1.6;">Профиль Архитектор — первый на рынке 1С-MCP инструментарий для прямого создания объектов через ИИ. Активно тестируется и развивается.</p>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MID-PAGE CTA ===== -->
+<section class="mid-cta-section">
+  <div class="container">
+    <div class="mid-cta-inner">
+      <div class="mid-cta-text">
+        <div class="mid-cta-label">Попробуйте прямо сейчас</div>
+        <div class="mid-cta-title">30 дней бесплатно — тариф Архитектор.</div>
+        <div class="mid-cta-sub">Кнопка прямо в диалоге активации 1C:EDT, без ввода данных.</div>
+      </div>
+      <div class="mid-cta-btns">
+        <a href="#pricing" class="mid-cta-btn-main">Посмотреть тарифы →</a>
+        <a href="#download" class="mid-cta-btn-ghost">⬇ Скачать бесплатно</a>
       </div>
     </div>
   </div>
@@ -2316,6 +2345,23 @@
   </div>
 </section>
 
+<!-- ===== PRE-DOWNLOAD CTA ===== -->
+<section class="mid-cta-section" style="background:#0f172a;">
+  <div class="container">
+    <div class="mid-cta-inner">
+      <div class="mid-cta-text">
+        <div class="mid-cta-label" style="color:#64748b;">Готовы начать?</div>
+        <div class="mid-cta-title">Уже есть 1C:EDT 2025.x и ИИ-ассистент?</div>
+        <div class="mid-cta-sub" style="color:#94a3b8;">Установка занимает 5 минут. Первые результаты — в первые же минуты работы.</div>
+      </div>
+      <div class="mid-cta-btns">
+        <a href="#pricing" class="mid-cta-btn-main">Выбрать тариф →</a>
+        <a href="#download" class="mid-cta-btn-ghost">Сначала попробовать бесплатно</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===== СКАЧАТЬ ===== -->
 <section class="download-section" id="download">
   <div class="container">
@@ -2358,6 +2404,189 @@
     </div>
   </div>
 </section>
+
+<!-- ===== PRICING ===== -->
+<style>
+  .pricing-section { padding: 100px 0; background: #f8fafc; }
+  .period-switcher { display: flex; gap: 6px; background: #e2e8f0; border-radius: 12px; padding: 4px; width: fit-content; margin: 0 auto 48px; }
+  .period-btn { padding: 8px 18px; border-radius: 8px; border: none; background: transparent; cursor: pointer; font-size: 0.875rem; font-weight: 500; color: #64748b; transition: all 0.2s; font-family: inherit; }
+  .period-btn.active { background: white; color: #0f172a; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-weight: 600; }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 980px; margin: 0 auto; }
+  .pricing-card { background: white; border-radius: 20px; padding: 32px; border: 2px solid #e2e8f0; transition: transform 0.2s, box-shadow 0.2s; }
+  .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+  .pricing-card.pc-featured { border-color: #2563eb; position: relative; }
+  .pricing-card.pc-featured::before { content: '🔥 Популярный'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #2563eb; color: white; padding: 4px 16px; border-radius: 100px; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+  .pricing-card.pc-dark { background: #0f172a; border-color: #0f172a; position: relative; transform: scale(1.02); }
+  .pricing-card.pc-dark:hover { transform: scale(1.02) translateY(-4px); box-shadow: 0 24px 48px rgba(0,0,0,0.2); }
+  .pricing-card.pc-dark::before { content: '⭐ Полный доступ'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #f59e0b; color: #0f172a; padding: 4px 16px; border-radius: 100px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
+  .pricing-card.pc-dark .pc-tier-label { color: #475569; }
+  .pricing-card.pc-dark .pc-name { color: #ffffff; }
+  .pricing-card.pc-dark .pc-tools { color: #94a3b8; border-bottom-color: #1e293b; }
+  .pricing-card.pc-dark .pc-amount { color: #ffffff; }
+  .pricing-card.pc-dark .pc-currency { color: #ffffff; }
+  .pricing-card.pc-dark .pc-per { color: #94a3b8; }
+  .pricing-card.pc-dark .pc-total { color: #64748b; }
+  .pricing-card.pc-dark .pc-discount { background: #fef3c7; color: #92400e; }
+  .pricing-card.pc-dark .pc-features { border-top-color: #1e293b; }
+  .pricing-card.pc-dark .pc-features li { color: #cbd5e1; }
+  .pricing-card.pc-dark .pc-features li::before { color: #4ade80; }
+  .pricing-card.pc-dark .btn-buy-now.secondary { background: #f59e0b; color: #0f172a; }
+  .pricing-card.pc-dark .btn-buy-now.secondary:hover { background: #d97706; color: #0f172a; }
+  .pc-tier-label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 6px; }
+  .pc-name { font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+  .pc-tools { font-size: 0.83rem; color: #64748b; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f1f5f9; }
+  .pc-amount { font-size: 2.4rem; font-weight: 800; color: #0f172a; line-height: 1; }
+  .pc-currency { font-size: 1.1rem; font-weight: 600; color: #0f172a; }
+  .pc-per { font-size: 0.82rem; color: #64748b; margin-top: 2px; min-height: 18px; }
+  .pc-total { font-size: 0.8rem; color: #94a3b8; margin-top: 2px; min-height: 18px; }
+  .pc-discount { display: inline-block; background: #dcfce7; color: #15803d; font-size: 0.75rem; font-weight: 700; padding: 2px 10px; border-radius: 100px; margin-top: 6px; min-height: 20px; }
+  .pc-discount.pc-hidden { visibility: hidden; }
+  .btn-buy-now { display: block; width: 100%; padding: 14px; border-radius: 12px; border: none; cursor: pointer; font-size: 0.95rem; font-weight: 600; transition: all 0.2s; text-align: center; margin-top: 20px; font-family: inherit; }
+  .btn-buy-now.primary { background: #2563eb; color: white; }
+  .btn-buy-now.primary:hover { background: #1d4ed8; }
+  .btn-buy-now.secondary { background: #f1f5f9; color: #334155; }
+  .btn-buy-now.secondary:hover { background: #e2e8f0; }
+  .pc-features { margin-top: 20px; list-style: none; display: flex; flex-direction: column; gap: 8px; padding-top: 20px; border-top: 1px solid #f1f5f9; }
+  .pc-features li { font-size: 0.85rem; color: #475569; display: flex; gap: 8px; line-height: 1.4; }
+  .pc-features li::before { content: '✓'; color: #16a34a; font-weight: 700; flex-shrink: 0; }
+
+  .email-modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center; padding: 24px; }
+  .email-modal-bg.active { display: flex; }
+  .email-modal-box { background: white; border-radius: 20px; padding: 40px; max-width: 440px; width: 100%; box-shadow: 0 25px 60px rgba(0,0,0,0.2); }
+  .email-modal-box h3 { font-size: 1.25rem; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+  .email-modal-box p { color: #64748b; font-size: 0.9rem; line-height: 1.5; margin-bottom: 24px; }
+  .email-modal-box input[type="email"] { width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; font-family: inherit; }
+  .email-modal-box input[type="email"]:focus { border-color: #2563eb; }
+  .email-modal-box input[type="email"].input-error { border-color: #dc2626; }
+  .email-modal-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .email-modal-actions .em-proceed { background: #2563eb; color: white; padding: 14px; border-radius: 10px; border: none; cursor: pointer; font-size: 1rem; font-weight: 600; font-family: inherit; transition: background 0.2s; }
+  .email-modal-actions .em-proceed:hover:not(:disabled) { background: #1d4ed8; }
+  .email-modal-actions .em-proceed:disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; }
+  .email-modal-actions .em-cancel { background: #f1f5f9; color: #475569; padding: 12px; border-radius: 10px; border: none; cursor: pointer; font-size: 0.9rem; font-weight: 500; font-family: inherit; transition: background 0.2s; }
+  .email-modal-actions .em-cancel:hover { background: #e2e8f0; }
+  .em-terms-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; font-size: 0.84rem; color: #475569; line-height: 1.4; }
+  .em-terms-row input[type="checkbox"] { margin-top: 1px; flex-shrink: 0; width: 16px; height: 16px; cursor: pointer; accent-color: #2563eb; }
+
+  @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; max-width: 420px; } .pricing-card.pc-featured { margin-top: 16px; } .pricing-card.pc-dark { transform: none; margin-top: 16px; } .pricing-card.pc-dark:hover { transform: translateY(-4px); } }
+  @media (max-width: 480px) { .period-switcher { width: 100%; } .period-btn { flex: 1; padding: 8px 8px; font-size: 0.8rem; } }
+
+  /* Mid-page CTA */
+  .mid-cta-section { background: #1d4ed8; padding: 48px 0; }
+  .mid-cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+  .mid-cta-label { color: #bfdbfe; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .mid-cta-title { color: white; font-size: 1.25rem; font-weight: 700; line-height: 1.3; margin-bottom: 4px; }
+  .mid-cta-sub { color: #bfdbfe; font-size: 0.95rem; }
+  .mid-cta-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .mid-cta-btn-main { background: white; color: #1d4ed8; font-weight: 700; padding: 13px 24px; border-radius: 10px; text-decoration: none; font-size: 0.95rem; white-space: nowrap; transition: background 0.2s; }
+  .mid-cta-btn-main:hover { background: #dbeafe; }
+  .mid-cta-btn-ghost { background: rgba(255,255,255,0.15); color: white; font-weight: 600; padding: 13px 24px; border-radius: 10px; text-decoration: none; font-size: 0.95rem; white-space: nowrap; border: 1px solid rgba(255,255,255,0.3); transition: background 0.2s; }
+  .mid-cta-btn-ghost:hover { background: rgba(255,255,255,0.25); }
+  @media (max-width: 768px) {
+    .mid-cta-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .mid-cta-btns { width: 100%; }
+    .mid-cta-btn-main, .mid-cta-btn-ghost { flex: 1; text-align: center; white-space: normal; }
+  }
+</style>
+
+<section class="pricing-section" id="pricing">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="badge badge-blue">Цены</span>
+      <h2>Выберите тариф</h2>
+      <p>30 дней бесплатно — кнопка прямо в диалоге активации 1C:EDT, без ввода данных.</p>
+    </div>
+
+    <div class="period-switcher">
+      <button class="period-btn" data-period="1M" onclick="pricingSetPeriod('1M',this)">1 месяц</button>
+      <button class="period-btn" data-period="3M" onclick="pricingSetPeriod('3M',this)">3 месяца</button>
+      <button class="period-btn" data-period="6M" onclick="pricingSetPeriod('6M',this)">6 месяцев</button>
+      <button class="period-btn active" data-period="1Y" onclick="pricingSetPeriod('1Y',this)">1 год</button>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- Аналитик -->
+      <div class="pricing-card">
+        <div class="pc-tier-label">Тариф</div>
+        <div class="pc-name">Аналитик</div>
+        <div class="pc-tools">19 инструментов — анализ, чтение, поиск</div>
+        <div><span class="pc-amount" id="pc-amount-ANL">990</span><span class="pc-currency"> ₽</span></div>
+        <div class="pc-per" id="pc-per-ANL"></div>
+        <div class="pc-total" id="pc-total-ANL"></div>
+        <div class="pc-discount pc-hidden" id="pc-disc-ANL">−0%</div>
+        <button class="btn-buy-now secondary" onclick="pricingOpenModal('ANL')">Купить</button>
+        <ul class="pc-features">
+          <li>Анализ метаданных конфигурации</li>
+          <li>Чтение и поиск по BSL-коду</li>
+          <li>Справка по платформе 1С</li>
+          <li>Только чтение — без записи кода</li>
+        </ul>
+      </div>
+
+      <!-- Разработчик (featured) -->
+      <div class="pricing-card pc-featured">
+        <div class="pc-tier-label">Тариф</div>
+        <div class="pc-name">Разработчик</div>
+        <div class="pc-tools">26 инструментов — + запись кода, валидация</div>
+        <div><span class="pc-amount" id="pc-amount-DEV">1 990</span><span class="pc-currency"> ₽</span></div>
+        <div class="pc-per" id="pc-per-DEV"></div>
+        <div class="pc-total" id="pc-total-DEV"></div>
+        <div class="pc-discount pc-hidden" id="pc-disc-DEV">−0%</div>
+        <button class="btn-buy-now primary" onclick="pricingOpenModal('DEV')">Купить</button>
+        <ul class="pc-features">
+          <li>Всё из тарифа Аналитик</li>
+          <li>Запись и редактирование BSL-кода</li>
+          <li>Валидация ошибок в реальном времени</li>
+          <li>Diff-просмотр изменений</li>
+        </ul>
+      </div>
+
+      <!-- Архитектор -->
+      <div class="pricing-card pc-dark">
+        <div class="pc-tier-label">Тариф</div>
+        <div class="pc-name">Архитектор</div>
+        <div class="pc-tools">38 инструментов — полный доступ</div>
+        <div><span class="pc-amount" id="pc-amount-ARC">3 490</span><span class="pc-currency"> ₽</span></div>
+        <div class="pc-per" id="pc-per-ARC"></div>
+        <div class="pc-total" id="pc-total-ARC"></div>
+        <div class="pc-discount pc-hidden" id="pc-disc-ARC">−0%</div>
+        <button class="btn-buy-now secondary" onclick="pricingOpenModal('ARC')">Купить</button>
+        <ul class="pc-features">
+          <li>Всё из тарифа Разработчик</li>
+          <li>Создание объектов метаданных</li>
+          <li>Редактирование форм и СКД-отчётов</li>
+          <li>Запуск отладчика из ИИ</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:32px;color:#64748b;font-size:0.85rem;">
+      Пробный период 30 дней (тариф Архитектор) — бесплатно, кнопка в диалоге активации 1C:EDT.<br>
+      Вопросы: <a href="mailto:prepod2003@yandex.ru" style="color:#2563eb;">prepod2003@yandex.ru</a>
+      или <a href="https://t.me/Prepod2003" target="_blank" style="color:#2563eb;">Telegram @Prepod2003</a>
+    </p>
+  </div>
+</section>
+
+<!-- Email modal -->
+<div class="email-modal-bg" id="email-modal-bg" onclick="if(event.target===this)pricingCloseModal()">
+  <div class="email-modal-box">
+    <h3>Введите email</h3>
+    <p>На него придёт код активации после оплаты. Проверьте правильность адреса.</p>
+    <input type="email" id="pricing-email-input" placeholder="your@email.com" autocomplete="email" oninput="pricingValidate()">
+    <label class="em-terms-row">
+      <input type="checkbox" id="pricing-terms-check" onchange="pricingValidate()">
+      <span>Я ознакомился с <a href="terms.html" target="_blank" style="color:#2563eb;">пользовательским соглашением</a> и принимаю его условия</span>
+    </label>
+    <label class="em-terms-row">
+      <input type="checkbox" id="pricing-privacy-check" onchange="pricingValidate()">
+      <span>Я даю согласие на <a href="privacy.html" target="_blank" style="color:#2563eb;">обработку персональных данных</a> в соответствии с Федеральным законом № 152-ФЗ</span>
+    </label>
+    <div class="email-modal-actions">
+      <button class="em-proceed" id="pricing-proceed-btn" onclick="pricingProceed()" disabled>Перейти к оплате →</button>
+      <button class="em-cancel" onclick="pricingCloseModal()">Отмена</button>
+    </div>
+  </div>
+</div>
 
 <!-- ===== CTA ===== -->
 <section class="cta-section">
@@ -3083,15 +3312,95 @@
     document.body.style.overflow = '';
   }
 
+  // ===== PRICING =====
+  const PRICING_GAS = 'https://script.google.com/macros/s/AKfycbzXuSR6nMP7wDIW9tQthJyGBbF7B9BI4hId4z-Npo8PRkMcH_B798HBXOW0cNaWdjInWw/exec';
+  const PRICING_DATA = {
+    '1M': { ANL:990,    DEV:1990,  ARC:3490,  disc:null },
+    '3M': { ANL:2500,   DEV:4990,  ARC:8900,  disc:'−16%', pm:{ANL:833,  DEV:1663, ARC:2967}, label:'3 месяца' },
+    '6M': { ANL:4490,   DEV:8900,  ARC:15900, disc:'−25%', pm:{ANL:748,  DEV:1483, ARC:2650}, label:'6 месяцев' },
+    '1Y': { ANL:7900,   DEV:15900, ARC:27900, disc:'−34%', pm:{ANL:658,  DEV:1325, ARC:2325}, label:'1 год' }
+  };
+  let pricingPeriod = '1Y', pricingTier = '';
+
+  function pricingFmt(n) { return n.toLocaleString('ru-RU'); }
+
+  function pricingSetPeriod(p, btn) {
+    pricingPeriod = p;
+    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    pricingUpdate();
+  }
+
+  function pricingUpdate() {
+    const d = PRICING_DATA[pricingPeriod];
+    ['ANL','DEV','ARC'].forEach(function(t) {
+      const isMulti = pricingPeriod !== '1M';
+      const total = d[t];
+      const perMo = isMulti ? d.pm[t] : null;
+      document.getElementById('pc-amount-' + t).textContent = pricingFmt(isMulti ? perMo : total);
+      document.getElementById('pc-per-' + t).textContent = isMulti ? '₽ / месяц' : '';
+      document.getElementById('pc-total-' + t).textContent = isMulti ? 'Итого: ' + pricingFmt(total) + ' ₽ за ' + d.label : '';
+      var disc = document.getElementById('pc-disc-' + t);
+      if (d.disc) { disc.textContent = d.disc; disc.classList.remove('pc-hidden'); }
+      else { disc.classList.add('pc-hidden'); }
+    });
+  }
+
+  function pricingEmailValid(val) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val.trim());
+  }
+
+  function pricingValidate() {
+    var email = document.getElementById('pricing-email-input').value;
+    var terms = document.getElementById('pricing-terms-check').checked;
+    var privacy = document.getElementById('pricing-privacy-check').checked;
+    var btn = document.getElementById('pricing-proceed-btn');
+    btn.disabled = !(pricingEmailValid(email) && terms && privacy);
+  }
+
+  function pricingOpenModal(tier) {
+    pricingTier = tier;
+    document.getElementById('email-modal-bg').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('pricing-terms-check').checked = false;
+    document.getElementById('pricing-privacy-check').checked = false;
+    document.getElementById('pricing-proceed-btn').disabled = true;
+    setTimeout(function() { document.getElementById('pricing-email-input').focus(); }, 100);
+  }
+
+  function pricingCloseModal() {
+    document.getElementById('email-modal-bg').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function pricingProceed() {
+    var email = document.getElementById('pricing-email-input').value.trim();
+    if (!pricingEmailValid(email)) return;
+    var tierCode = pricingTier + '-' + pricingPeriod;
+    window.location.href = PRICING_GAS + '?action=pay&tier=' + encodeURIComponent(tierCode) + '&email=' + encodeURIComponent(email);
+  }
+
+  pricingUpdate(); // инициализация цен при загрузке (период 1Y по умолчанию)
+
+  document.getElementById('pricing-email-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !document.getElementById('pricing-proceed-btn').disabled) pricingProceed();
+  });
+
   // ===== KEYBOARD SHORTCUTS =====
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeLightbox(); closeCase(); closeCaseGallery(); closeCaseDetail(); closeReleaseNotes(); closeKaznCase(); closeAnalystCase(); }
+    if (e.key === 'Escape') { closeLightbox(); closeCase(); closeCaseGallery(); closeCaseDetail(); closeReleaseNotes(); closeKaznCase(); closeAnalystCase(); pricingCloseModal(); }
     if (document.getElementById('cg-modal').classList.contains('active')) {
       if (e.key === 'ArrowLeft') caseGalleryNav(-1);
       if (e.key === 'ArrowRight') caseGalleryNav(1);
     }
   });
 </script>
+
+<!-- Sticky mobile buy bar -->
+<div class="mobile-buy-bar">
+  <a href="#pricing" class="mb-pricing">Купить лицензию →</a>
+  <a href="#download" class="mb-free">⬇ Скачать</a>
+</div>
 
 </body>
 </html>
