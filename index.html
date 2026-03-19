@@ -1164,7 +1164,7 @@
         <li><a href="#install">Установка</a></li>
       </ul>
       <div class="navbar-cta">
-        <a href="#download" class="btn-nav-download navbar-btn-download-hide">⬇ Скачать v2.8.1</a>
+        <a href="#download" class="btn-nav-download navbar-btn-download-hide">⬇ Скачать v2.8.2</a>
         <a href="#pricing" class="navbar-btn-pricing">Тарифы</a>
         <a href="https://t.me/edt_ai_1c" class="btn btn-primary navbar-btn-download-hide" target="_blank" rel="noopener">
           ✈ Telegram
@@ -1180,7 +1180,7 @@
     <div class="hero-grid">
       <div class="hero-content fade-in">
         <div class="hero-badge">
-          <span class="badge badge-blue">🔵 Версия 2.8.0 · Для 1C:EDT 2025.x</span>
+          <span class="badge badge-blue">🔵 Версия 2.8.2 · Для 1C:EDT 2025.x</span>
         </div>
         <h1>Дайте ИИ <span>зрение</span><br>в 1С:EDT</h1>
         <p class="hero-sub">
@@ -2264,41 +2264,40 @@
   <div class="container">
     <div class="section-header fade-in">
       <span class="badge badge-green">Актуальное обновление</span>
-      <h2>Что нового в версии 2.8.1</h2>
-      <p>Новая система лицензирования с кодами активации, три тарифа и редактор СКД-отчётов.</p>
+      <h2>Что нового в версии 2.8.2</h2>
+      <p>Реквизиты формы, дельта ошибок в modify_metadata, multi-project list_modules, кнопка покупки.</p>
     </div>
     <div class="whats-new-grid">
       <div class="wn-card fade-in fade-in-delay-1">
-        <div class="wn-card-icon">🔑</div>
-        <h3>Коды активации</h3>
-        <p>Простая активация по одноразовому коду:</p>
+        <div class="wn-card-icon">📋</div>
+        <h3>Реквизиты формы</h3>
+        <p>Новая операция <code>addFormAttribute</code> в <code>modify_form</code>:</p>
         <ul>
-          <li><code>ACT-ANL-xxx</code> — тариф Аналитик</li>
-          <li><code>ACT-DEV-xxx</code> — тариф Разработчик</li>
-          <li><code>ACT-ARC-xxx</code> — тариф Архитектор</li>
-          <li>Пробный период 30 дней — кнопка прямо в диалоге</li>
+          <li>Создание реквизитов формы (не объекта) через ИИ</li>
+          <li>Типы: строка, число, дата, булево, ссылочные</li>
+          <li>Автоматическое задание квалификаторов (точность, масштаб)</li>
+          <li>Тариф Архитектор</li>
         </ul>
       </div>
       <div class="wn-card fade-in fade-in-delay-2">
-        <div class="wn-card-icon">🎯</div>
-        <h3>Три тарифа</h3>
-        <p>Инструменты доступны по уровню подписки:</p>
+        <div class="wn-card-icon">🗂️</div>
+        <h3>Multi-project в list_modules</h3>
+        <p>Улучшен инструмент <code>list_modules</code>:</p>
         <ul>
-          <li><strong>Аналитик</strong> — анализ, чтение, поиск (19 инструментов)</li>
-          <li><strong>Разработчик</strong> — + запись кода, валидация (26)</li>
-          <li><strong>Архитектор</strong> — + метаданные, формы, отчёты (38)</li>
-          <li>ИИ видит только инструменты своего тарифа</li>
+          <li>Обход всех проектов workspace автоматически</li>
+          <li>Поле <code>ownerProject</code> у каждого модуля</li>
+          <li>Единый список модулей из нескольких конфигураций</li>
+          <li>Все тарифы</li>
         </ul>
       </div>
       <div class="wn-card fade-in fade-in-delay-3">
-        <div class="wn-card-icon">📊</div>
-        <h3>Редактор СКД-отчётов</h3>
-        <p>Новый инструмент <code>modify_report</code>:</p>
+        <div class="wn-card-icon">🔧</div>
+        <h3>Улучшения инструментов</h3>
+        <p>Три улучшения для разработки:</p>
         <ul>
-          <li>Наборы данных, поля, параметры, ресурсы</li>
-          <li>Группировки, настройки компоновки</li>
-          <li>25 операций в одном инструменте</li>
-          <li>Только тариф Архитектор</li>
+          <li><code>modify_metadata</code> — дельта ошибок: видно, появились ли ошибки из-за операции</li>
+          <li><code>read_method_source</code> — теперь принимает <code>objectName</code> + <code>moduleType</code></li>
+          <li>Кнопка «Купить» прямо в настройках EDT</li>
         </ul>
       </div>
     </div>
@@ -2309,35 +2308,35 @@
     <!-- Предыдущая версия -->
     <div style="margin-top:48px; padding-top:40px; border-top:1px solid var(--border);">
       <div class="section-header fade-in" style="margin-bottom:24px;">
-        <span class="badge" style="background:#f1f5f9;color:#64748b;">Версия 2.8.0 — Март 2026</span>
-        <h3 style="font-size:1.3rem; color:var(--text-l);">Безопасная запись кода, создание форм, пакетные операции</h3>
+        <span class="badge" style="background:#f1f5f9;color:#64748b;">Версия 2.8.1 — Март 2026</span>
+        <h3 style="font-size:1.3rem; color:var(--text-l);">Коды активации, три тарифа, редактор СКД-отчётов</h3>
       </div>
       <div class="whats-new-grid">
         <div class="wn-card fade-in fade-in-delay-1" style="opacity:0.75;">
-          <div class="wn-card-icon">🛡️</div>
-          <h3>Безопасная запись кода</h3>
+          <div class="wn-card-icon">🔑</div>
+          <h3>Коды активации</h3>
           <ul>
-            <li>Режим <code>replaceMethod</code> — замена метода по имени</li>
-            <li>Защита от деструктивной записи (блокировка >50%)</li>
-            <li>Автобэкап перед каждой записью</li>
+            <li><code>ACT-ANL/DEV/ARC-xxx</code> — три тарифа</li>
+            <li>Пробный период 30 дней — кнопка в диалоге</li>
+            <li>Привязка к компьютеру, онлайн-проверка раз в 7 дней</li>
           </ul>
         </div>
         <div class="wn-card fade-in fade-in-delay-2" style="opacity:0.75;">
-          <div class="wn-card-icon">📝</div>
-          <h3>Создание форм</h3>
+          <div class="wn-card-icon">🎯</div>
+          <h3>Три тарифа</h3>
           <ul>
-            <li>Параметр <code>createForm</code> при создании объектов</li>
-            <li>Автогенерация полей, таблиц, колонок</li>
-            <li>Типизированные реквизиты</li>
+            <li>Аналитик — 19 инструментов</li>
+            <li>Разработчик — 26 инструментов</li>
+            <li>Архитектор — 38 инструментов</li>
           </ul>
         </div>
         <div class="wn-card fade-in fade-in-delay-3" style="opacity:0.75;">
-          <div class="wn-card-icon">⚡</div>
-          <h3>Пакетные операции с формами</h3>
+          <div class="wn-card-icon">📊</div>
+          <h3>Редактор СКД-отчётов</h3>
           <ul>
-            <li>Batch-режим <code>modify_form</code></li>
-            <li>moveItem, setProperty, changeOrder</li>
-            <li>Форма загружается и сохраняется один раз</li>
+            <li><code>modify_report</code> — 25 операций</li>
+            <li>Наборы данных, поля, параметры, ресурсы</li>
+            <li>Группировки, варианты, диаграммы</li>
           </ul>
         </div>
       </div>
@@ -2368,24 +2367,24 @@
     <div class="download-inner fade-in">
       <span class="badge badge-green">📥 Актуальный релиз</span>
       <h2>Скачать 1C:RSV MCP Server</h2>
-      <p class="download-sub">Версия 2.8.1 · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней</p>
+      <p class="download-sub">Версия 2.8.2 · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней</p>
 
       <div class="download-card">
         <div class="download-card-info">
           <div class="download-file-icon">📦</div>
           <div>
-            <div class="download-file-name">1C-RSV-MCP-2.8.1-distr.rar</div>
-            <div class="download-file-meta">Версия 2.8.1 · ~400 KB</div>
+            <div class="download-file-name">1C-RSV-MCP-2.8.2-distr.rar</div>
+            <div class="download-file-meta">Версия 2.8.2 · ~400 KB</div>
           </div>
         </div>
 
         <div class="download-includes">
-          <span>✅ edt-rsv-repository-2.8.1-SNAPSHOT.zip — плагин для установки в EDT</span>
+          <span>✅ edt-rsv-repository-2.8.2-SNAPSHOT.zip — плагин для установки в EDT</span>
           <span>✅ GUIDE.md — пошаговое руководство пользователя</span>
           <span>✅ CLAUDE.md — готовые правила для Claude / Cursor / Windsurf</span>
         </div>
 
-        <a href="./1C-RSV-MCP-2.8.1-distr.rar" class="btn-download" download>
+        <a href="./1C-RSV-MCP-2.8.2-distr.rar" class="btn-download" download>
           ⬇ Скачать бесплатно
         </a>
 
@@ -2632,7 +2631,7 @@
           <li><a href="#quality">Инженерное качество</a></li>
           <li><a href="#install">Установка</a></li>
           <li><a href="#whats-new">Что нового</a></li>
-          <li><a href="#download">⬇ Скачать v2.8.1</a></li>
+          <li><a href="#download">⬇ Скачать v2.8.2</a></li>
         </ul>
       </div>
       <div class="footer-links-section">
@@ -2648,7 +2647,7 @@
       <div class="footer-author">
         Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a> · <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">@Prepod2003</a>
       </div>
-      <div class="footer-version">1C:RSV v2.8.1 · 2026</div>
+      <div class="footer-version">1C:RSV v2.8.2 · 2026</div>
     </div>
   </div>
 </footer>
@@ -2674,8 +2673,28 @@
 <div class="rn-modal" id="rn-modal" onclick="if(event.target===this)closeReleaseNotes()">
   <div class="rn-body">
     <button class="rn-close" onclick="closeReleaseNotes()">&times;</button>
-    <span class="rn-badge">v2.8.1 — Март 2026</span>
-    <h2 style="font-size:1.5rem; margin-bottom:24px;">Release Notes: 1C:RSV MCP Server v2.8.1</h2>
+    <span class="rn-badge">v2.8.2 — Март 2026</span>
+    <h2 style="font-size:1.5rem; margin-bottom:24px;">Release Notes: 1C:RSV MCP Server v2.8.2</h2>
+
+    <h3>1. Новая операция <code>addFormAttribute</code> в <code>modify_form</code></h3>
+    <p>ИИ-ассистент теперь может создавать реквизиты формы (не объекта) напрямую через <code>modify_form</code>. Поддерживаются все типы: строка, число, дата, булево, ссылочные типы. Для числовых реквизитов задаются точность (<code>precision</code>) и масштаб (<code>scale</code>). Реквизит добавляется в секцию <code>&lt;attributes&gt;</code> файла формы и сразу доступен в BSL-модуле формы. Доступно в тарифе Архитектор.</p>
+
+    <h3>2. Multi-project поддержка в <code>list_modules</code></h3>
+    <p>При наличии нескольких проектов в workspace инструмент <code>list_modules</code> автоматически обходит все из них и возвращает объединённый список. Каждый модуль содержит поле <code>ownerProject</code> с именем проекта-владельца. Ответ содержит <code>projectsSearched</code> — список всех опрошенных проектов. Доступно во всех тарифах.</p>
+
+    <h3>3. Дельта ошибок в <code>modify_metadata</code></h3>
+    <p>Инструмент <code>modify_metadata</code> теперь сравнивает количество ошибок до и после операции. Поля <code>errorsBefore</code>, <code>errorsAfter</code>, <code>newErrors</code> и статус (<code>OK</code>, <code>OK_PREEXISTING</code>, <code>NEW_ERRORS</code>) позволяют ИИ точно понять — появились ли ошибки из-за его действий или существовали раньше. Доступно в тарифе Архитектор.</p>
+
+    <h3>4. <code>read_method_source</code> — поддержка <code>objectName</code> + <code>moduleType</code></h3>
+    <p>Инструмент теперь принимает <code>objectName</code>, <code>moduleType</code> и <code>formName</code> — так же, как <code>read_module_source</code>. Параметр <code>modulePath</code> стал необязательным. ИИ-ассистент может читать метод напрямую по имени объекта, не выясняя предварительно путь к файлу. Доступно во всех тарифах.</p>
+
+    <h3>5. Кнопка покупки лицензии в настройках EDT</h3>
+    <p>На странице <code>Window → Preferences → 1C:RSV → Лицензия</code> добавлен блок «Купить или продлить лицензию» с кнопкой открытия сайта в браузере и кнопкой копирования ссылки. Диалог «О программе» (клик по значку в статусбаре) также получил кликабельную ссылку. Доступно во всех тарифах.</p>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:32px 0;">
+
+    <span class="rn-badge" style="background:#f1f5f9;color:#64748b;">v2.8.1 — Март 2026</span>
+    <h2 style="font-size:1.3rem; margin:16px 0 24px; color:var(--text-l);">Release Notes: 1C:RSV MCP Server v2.8.1</h2>
 
     <h3>1. Новый инструмент <code>modify_report</code></h3>
     <p>Редактирование СКД-отчётов (схема компоновки данных) напрямую через ИИ-ассистента. 25 операций в одном инструменте: управление наборами данных, полями, параметрами, ресурсами, группировками и настройками компоновки. Доступен только в тарифе Архитектор.</p>
