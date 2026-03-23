@@ -136,6 +136,13 @@
         <div class="empty-state">Загрузка...</div>
       </div>
     </div>
+
+    <div class="table-section" style="margin-top: 32px;">
+      <h3>История выплат</h3>
+      <div class="ref-table" id="payouts-table">
+        <div class="empty-state">Загрузка...</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -201,26 +208,45 @@
     document.getElementById('dash-total-comm').textContent = fmt(s.totalCommission) + ' \u20bd';
     document.getElementById('dash-balance').textContent = fmt(s.balance) + ' \u20bd';
 
+    // Таблица покупок
     var refs = data.referrals || [];
     var tableEl = document.getElementById('ref-table');
 
     if (refs.length === 0) {
       tableEl.innerHTML = '<div class="empty-state">Покупок пока нет. Поделитесь промокодом!</div>';
-      return;
+    } else {
+      var html = '<table><thead><tr><th>Дата</th><th>Тариф</th><th>Оплата</th><th>Комиссия</th></tr></thead><tbody>';
+      refs.forEach(function(r) {
+        html += '<tr>';
+        html += '<td>' + (r.date || '\u2014') + '</td>';
+        html += '<td>' + (TIER_LABELS[r.tier] || r.tier || '\u2014') + '</td>';
+        html += '<td>' + fmt(r.paidAmount) + ' \u20bd</td>';
+        html += '<td>' + fmt(r.commission) + ' \u20bd</td>';
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      tableEl.innerHTML = html;
     }
 
-    var html = '<table><thead><tr><th>Дата</th><th>Тариф</th><th>Оплата</th><th>Комиссия</th><th>Выплата</th></tr></thead><tbody>';
-    refs.forEach(function(r) {
-      html += '<tr>';
-      html += '<td>' + (r.date || '—') + '</td>';
-      html += '<td>' + (TIER_LABELS[r.tier] || r.tier || '—') + '</td>';
-      html += '<td>' + fmt(r.paidAmount) + ' \u20bd</td>';
-      html += '<td>' + fmt(r.commission) + ' \u20bd</td>';
-      html += '<td>' + (r.paid ? '<span class="badge badge-yes">Выплачено</span>' : '<span class="badge badge-no">Ожидает</span>') + '</td>';
-      html += '</tr>';
-    });
-    html += '</tbody></table>';
-    tableEl.innerHTML = html;
+    // Таблица выплат
+    var payouts = data.payouts || [];
+    var payoutsEl = document.getElementById('payouts-table');
+
+    if (payouts.length === 0) {
+      payoutsEl.innerHTML = '<div class="empty-state">Выплат пока не было</div>';
+    } else {
+      var ph = '<table><thead><tr><th>Дата</th><th>Сумма</th><th>Способ</th><th>Комментарий</th></tr></thead><tbody>';
+      payouts.forEach(function(p) {
+        ph += '<tr>';
+        ph += '<td>' + (p.date || '\u2014') + '</td>';
+        ph += '<td>' + fmt(p.amount) + ' \u20bd</td>';
+        ph += '<td>' + (p.method || '\u2014') + '</td>';
+        ph += '<td>' + (p.notes || '') + '</td>';
+        ph += '</tr>';
+      });
+      ph += '</tbody></table>';
+      payoutsEl.innerHTML = ph;
+    }
   }
 
   function doLogout() {
