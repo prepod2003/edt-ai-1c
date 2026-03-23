@@ -2465,6 +2465,15 @@
   .email-modal-actions .em-cancel:hover { background: #e2e8f0; }
   .em-terms-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; font-size: 0.84rem; color: #475569; line-height: 1.4; }
   .em-terms-row input[type="checkbox"] { margin-top: 1px; flex-shrink: 0; width: 16px; height: 16px; cursor: pointer; accent-color: #2563eb; }
+  .em-promo-row { margin-top: 16px; }
+  .em-promo-row input[type="text"] { width: 100%; padding: 10px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; font-family: inherit; }
+  .em-promo-row input[type="text"]:focus { border-color: #2563eb; }
+  .em-promo-row input[type="text"].promo-valid { border-color: #16a34a; }
+  .em-promo-row input[type="text"].promo-invalid { border-color: #dc2626; }
+  .em-promo-label { font-size: 0.84rem; color: #64748b; margin-bottom: 6px; display: block; }
+  .em-promo-result { margin-top: 8px; padding: 10px 14px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; display: none; }
+  .em-promo-result.promo-ok { display: block; background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .em-promo-result.promo-err { display: block; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
 
   @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; max-width: 420px; } .pricing-card.pc-featured { margin-top: 16px; } .pricing-card.pc-dark { transform: none; margin-top: 16px; } .pricing-card.pc-dark:hover { transform: translateY(-4px); } }
   @media (max-width: 480px) { .period-switcher { width: 100%; } .period-btn { flex: 1; padding: 8px 8px; font-size: 0.8rem; } }
@@ -2572,6 +2581,11 @@
     <h3>Введите email</h3>
     <p>На него придёт код активации после оплаты. Проверьте правильность адреса.</p>
     <input type="email" id="pricing-email-input" placeholder="your@email.com" autocomplete="email" oninput="pricingValidate()">
+    <div class="em-promo-row">
+      <span class="em-promo-label">Промокод (если есть)</span>
+      <input type="text" id="pricing-promo-input" placeholder="Введите промокод" autocomplete="off" oninput="promoChanged()">
+      <div class="em-promo-result" id="promo-result"></div>
+    </div>
     <label class="em-terms-row">
       <input type="checkbox" id="pricing-terms-check" onchange="pricingValidate()">
       <span>Я ознакомился с <a href="terms.html" target="_blank" style="color:#2563eb;">пользовательским соглашением</a> и принимаю его условия</span>
@@ -3377,6 +3391,9 @@
     btn.disabled = !(pricingEmailValid(email) && terms && privacy);
   }
 
+  var promoTimer = null;
+  var validPromoCode = '';
+
   function pricingOpenModal(tier) {
     pricingTier = tier;
     document.getElementById('email-modal-bg').classList.add('active');
@@ -3384,6 +3401,11 @@
     document.getElementById('pricing-terms-check').checked = false;
     document.getElementById('pricing-privacy-check').checked = false;
     document.getElementById('pricing-proceed-btn').disabled = true;
+    document.getElementById('pricing-promo-input').value = '';
+    document.getElementById('pricing-promo-input').className = '';
+    var pr = document.getElementById('promo-result');
+    pr.className = 'em-promo-result'; pr.textContent = '';
+    validPromoCode = '';
     setTimeout(function() { document.getElementById('pricing-email-input').focus(); }, 100);
   }
 
@@ -3392,11 +3414,56 @@
     document.body.style.overflow = '';
   }
 
+  function promoChanged() {
+    var input = document.getElementById('pricing-promo-input');
+    var pr = document.getElementById('promo-result');
+    var code = input.value.trim();
+    validPromoCode = '';
+    input.className = '';
+    pr.className = 'em-promo-result'; pr.textContent = '';
+    if (promoTimer) clearTimeout(promoTimer);
+    if (!code) return;
+    promoTimer = setTimeout(function() { checkPromo(code); }, 600);
+  }
+
+  function checkPromo(code) {
+    var tierCode = pricingTier + '-' + pricingPeriod;
+    var url = PRICING_GAS + '?action=check-promo&code=' + encodeURIComponent(code) + '&tier=' + encodeURIComponent(tierCode);
+    var input = document.getElementById('pricing-promo-input');
+    var pr = document.getElementById('promo-result');
+    fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+      if (input.value.trim().toUpperCase() !== code.toUpperCase()) return;
+      if (data.valid) {
+        validPromoCode = code;
+        input.className = 'promo-valid';
+        var msg = 'Скидка ' + data.discountPercent + '%';
+        if (data.discountedAmount) {
+          msg += '! Итого: ' + pricingFmt(data.discountedAmount) + ' \u20bd вместо ' + pricingFmt(data.originalAmount) + ' \u20bd';
+        }
+        pr.className = 'em-promo-result promo-ok';
+        pr.textContent = msg;
+      } else {
+        validPromoCode = '';
+        input.className = 'promo-invalid';
+        pr.className = 'em-promo-result promo-err';
+        pr.textContent = data.message || 'Промокод недействителен';
+      }
+    }).catch(function() {
+      validPromoCode = '';
+      input.className = '';
+      pr.className = 'em-promo-result'; pr.textContent = '';
+    });
+  }
+
   function pricingProceed() {
     var email = document.getElementById('pricing-email-input').value.trim();
     if (!pricingEmailValid(email)) return;
     var tierCode = pricingTier + '-' + pricingPeriod;
-    window.location.href = PRICING_GAS + '?action=pay&tier=' + encodeURIComponent(tierCode) + '&email=' + encodeURIComponent(email);
+    var url = PRICING_GAS + '?action=pay&tier=' + encodeURIComponent(tierCode) + '&email=' + encodeURIComponent(email);
+    if (validPromoCode) {
+      url += '&promo=' + encodeURIComponent(validPromoCode);
+    }
+    window.location.href = url;
   }
 
   pricingUpdate(); // инициализация цен при загрузке (период 1Y по умолчанию)
