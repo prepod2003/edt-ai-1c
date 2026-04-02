@@ -1164,7 +1164,7 @@
         <li><a href="#install">Установка</a></li>
       </ul>
       <div class="navbar-cta">
-        <a href="#download" class="btn-nav-download navbar-btn-download-hide" data-v="⬇ Скачать v{v}">⬇ Скачать v2.8.4</a>
+        <a href="#download" class="btn-nav-download navbar-btn-download-hide" data-v="⬇ Скачать v{v}">⬇ Скачать v2.8.7</a>
         <a href="#pricing" class="navbar-btn-pricing">Тарифы</a>
         <a href="https://t.me/edt_ai_1c" class="btn btn-primary navbar-btn-download-hide" target="_blank" rel="noopener">
           ✈ Telegram
@@ -1180,7 +1180,7 @@
     <div class="hero-grid">
       <div class="hero-content fade-in">
         <div class="hero-badge">
-          <span class="badge badge-blue" data-v="🔵 Версия {v} · Для 1C:EDT 2025.x">🔵 Версия 2.8.4 · Для 1C:EDT 2025.x</span>
+          <span class="badge badge-blue" data-v="🔵 Версия {v} · Для 1C:EDT 2025.x">🔵 Версия 2.8.7 · Для 1C:EDT 2025.x</span>
         </div>
         <h1>Дайте ИИ <span>зрение</span><br>в 1С:EDT</h1>
         <p class="hero-sub">
@@ -2264,40 +2264,38 @@
   <div class="container">
     <div class="section-header fade-in">
       <span class="badge badge-green">Актуальное обновление</span>
-      <h2 data-v="Что нового в версии {v}">Что нового в версии 2.8.4</h2>
-      <p>Существенное улучшение работы с формами, исправления метаданных, создание нескольких форм для объекта.</p>
+      <h2 data-v="Что нового в версии {v}">Что нового в версии 2.8.7</h2>
+      <p>Серьёзная переработка работы с формами и полноценная поддержка расширений.</p>
     </div>
     <div class="whats-new-grid">
       <div class="wn-card fade-in fade-in-delay-1">
         <div class="wn-card-icon">📋</div>
-        <h3>Формы: таблицы и группы</h3>
-        <p>Переработка <code>modify_form</code>:</p>
+        <h3>Сложные формы без ошибок</h3>
+        <p>Существенно улучшена работа с формами:</p>
         <ul>
-          <li><code>addTable</code> — 8 исправлений: колонки, свойства, вставка в контейнер</li>
-          <li><code>addGroup</code> — корректные Pages и Page (панели закладок)</li>
-          <li>Поддержка реквизитов формы типа ТаблицаЗначений</li>
-          <li>Тариф Архитектор</li>
+          <li>Группы, страницы, таблицы, радиокнопки, кнопки, декорации</li>
+          <li>Правильное расположение элементов на форме</li>
+          <li>Стабильная работа в основной конфигурации и расширениях</li>
         </ul>
       </div>
       <div class="wn-card fade-in fade-in-delay-2">
-        <div class="wn-card-icon">🗂️</div>
-        <h3>Реквизиты формы</h3>
-        <p>Улучшена операция <code>addFormAttribute</code>:</p>
+        <div class="wn-card-icon">🧩</div>
+        <h3>Расширения: формы</h3>
+        <p>Полноценная работа с формами в расширениях:</p>
         <ul>
-          <li>Новый параметр <code>parentAttributeName</code></li>
-          <li>Добавление колонок в ТаблицуЗначений</li>
-          <li>Устранена ложная ошибка валидации</li>
-          <li>Тариф Архитектор</li>
+          <li>Заимствование объектов и их форм из основной конфигурации</li>
+          <li>Доработка заимствованных форм через MCP</li>
+          <li>Создание новых форм в расширении с нуля</li>
         </ul>
       </div>
       <div class="wn-card fade-in fade-in-delay-3">
-        <div class="wn-card-icon">🔧</div>
-        <h3>Метаданные и формы</h3>
-        <p>Улучшения для архитекторов:</p>
+        <div class="wn-card-icon">🔗</div>
+        <h3>Расширения: типы данных</h3>
+        <p>Автоматическое заимствование зависимостей:</p>
         <ul>
-          <li><code>modify_metadata</code> — правильная вставка ТЧ, обязательные теги колонок</li>
-          <li><code>create_metadata_object</code> — параметр <code>formName</code> для нескольких форм</li>
-          <li>Защита от перезаписи существующей формы</li>
+          <li>Ссылочные типы (перечисления, справочники) заимствуются автоматически</li>
+          <li>Кнопки и обработчики команд в расширениях</li>
+          <li>Корректное определение заимствованных объектов</li>
         </ul>
       </div>
     </div>
@@ -2309,25 +2307,25 @@
     <div style="margin-top:48px; padding-top:40px; border-top:1px solid var(--border);">
       <div class="section-header fade-in" style="margin-bottom:24px;">
         <span class="badge" style="background:#f1f5f9;color:#64748b;">Ранее в 2.8.x</span>
-        <h3 style="font-size:1.3rem; color:var(--text-l);">Коды активации, тарифы, СКД-отчёты, реквизиты формы, безопасная запись кода</h3>
+        <h3 style="font-size:1.3rem; color:var(--text-l);">Таблицы, реквизиты, метаданные, коды активации, безопасная запись кода</h3>
       </div>
       <div class="whats-new-grid">
         <div class="wn-card fade-in fade-in-delay-1" style="opacity:0.75;">
+          <div class="wn-card-icon">📋</div>
+          <h3>Формы и метаданные (v2.8.4)</h3>
+          <ul>
+            <li>Таблицы, группы Pages/Page, реквизиты ТаблицаЗначений</li>
+            <li>Параметр <code>formName</code> для нескольких форм объекта</li>
+            <li>Правильная вставка ТЧ в метаданные</li>
+          </ul>
+        </div>
+        <div class="wn-card fade-in fade-in-delay-2" style="opacity:0.75;">
           <div class="wn-card-icon">🔑</div>
           <h3>Лицензирование (v2.8.1)</h3>
           <ul>
             <li>Коды активации: <code>ACT-ANL/DEV/ARC-xxx</code></li>
             <li>Три тарифа: Аналитик (19), Разработчик (26), Архитектор (38)</li>
             <li>Пробный период 30 дней, <code>modify_report</code> — 25 операций</li>
-          </ul>
-        </div>
-        <div class="wn-card fade-in fade-in-delay-2" style="opacity:0.75;">
-          <div class="wn-card-icon">📋</div>
-          <h3>Реквизиты и модули (v2.8.2)</h3>
-          <ul>
-            <li><code>addFormAttribute</code> — создание реквизитов формы</li>
-            <li>Multi-project <code>list_modules</code>, дельта ошибок</li>
-            <li><code>read_method_source</code> по имени объекта</li>
           </ul>
         </div>
         <div class="wn-card fade-in fade-in-delay-3" style="opacity:0.75;">
@@ -2367,24 +2365,24 @@
     <div class="download-inner fade-in">
       <span class="badge badge-green">📥 Актуальный релиз</span>
       <h2>Скачать 1C:RSV MCP Server</h2>
-      <p class="download-sub" data-v="Версия {v} · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней">Версия 2.8.4 · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней</p>
+      <p class="download-sub" data-v="Версия {v} · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней">Версия 2.8.7 · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней</p>
 
       <div class="download-card">
         <div class="download-card-info">
           <div class="download-file-icon">📦</div>
           <div>
-            <div class="download-file-name" data-v="1C-RSV-MCP-{v}-distr.rar">1C-RSV-MCP-2.8.4-distr.rar</div>
-            <div class="download-file-meta" data-v="Версия {v} · ~400 KB">Версия 2.8.4 · ~400 KB</div>
+            <div class="download-file-name" data-v="1C-RSV-MCP-{v}-distr.rar">1C-RSV-MCP-2.8.7-distr.rar</div>
+            <div class="download-file-meta" data-v="Версия {v} · ~400 KB">Версия 2.8.7 · ~400 KB</div>
           </div>
         </div>
 
         <div class="download-includes">
-          <span data-v="✅ edt-rsv-repository-{v}-SNAPSHOT.zip — плагин для установки в EDT">✅ edt-rsv-repository-2.8.4-SNAPSHOT.zip — плагин для установки в EDT</span>
+          <span data-v="✅ edt-rsv-repository-{v}-SNAPSHOT.zip — плагин для установки в EDT">✅ edt-rsv-repository-2.8.7-SNAPSHOT.zip — плагин для установки в EDT</span>
           <span>✅ GUIDE.md — пошаговое руководство пользователя</span>
           <span>✅ CLAUDE.md — готовые правила для Claude / Cursor / Windsurf</span>
         </div>
 
-        <a href="./1C-RSV-MCP-2.8.4-distr.rar" class="btn-download" data-v-href="./1C-RSV-MCP-{v}-distr.rar" download>
+        <a href="./1C-RSV-MCP-2.8.7-distr.rar" class="btn-download" data-v-href="./1C-RSV-MCP-{v}-distr.rar" download>
           ⬇ Скачать бесплатно
         </a>
 
@@ -2645,7 +2643,7 @@
           <li><a href="#quality">Инженерное качество</a></li>
           <li><a href="#install">Установка</a></li>
           <li><a href="#whats-new">Что нового</a></li>
-          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v2.8.4</a></li>
+          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v2.8.7</a></li>
         </ul>
       </div>
       <div class="footer-links-section">
@@ -2661,7 +2659,7 @@
       <div class="footer-author">
         Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a> · <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">@Prepod2003</a>
       </div>
-      <div class="footer-version" data-v="1C:RSV v{v} · 2026">1C:RSV v2.8.4 · 2026</div>
+      <div class="footer-version" data-v="1C:RSV v{v} · 2026">1C:RSV v2.8.7 · 2026</div>
     </div>
   </div>
 </footer>
@@ -2687,8 +2685,8 @@
 <div class="rn-modal" id="rn-modal" onclick="if(event.target===this)closeReleaseNotes()">
   <div class="rn-body">
     <button class="rn-close" onclick="closeReleaseNotes()">&times;</button>
-    <span class="rn-badge" data-v="v{v} — Март 2026">v2.8.4 — Март 2026</span>
-    <h2 style="font-size:1.5rem; margin-bottom:24px;" data-v="Release Notes: 1C:RSV MCP Server v{v}">Release Notes: 1C:RSV MCP Server v2.8.4</h2>
+    <span class="rn-badge" data-v="v{v} — Апрель 2026">v2.8.7 — Апрель 2026</span>
+    <h2 style="font-size:1.5rem; margin-bottom:24px;" data-v="Release Notes: 1C:RSV MCP Server v{v}">Release Notes: 1C:RSV MCP Server v2.8.7</h2>
 
     <h3>1. Существенное улучшение работы с формами</h3>
     <p>Полная переработка операции <code>addTable</code> в <code>modify_form</code>: устранено 8 ошибок. Таблицы теперь корректно открываются в EDT, содержат все колонки (в том числе для реквизитов формы типа ТаблицаЗначений), правильно вставляются в родительский контейнер и включают все обязательные свойства отображения.</p>
@@ -2963,7 +2961,7 @@
 <!-- ===== SCRIPTS ===== -->
 <script>
   // ===== ВЕРСИЯ ПЛАГИНА (менять ТОЛЬКО здесь) =====
-  const PLUGIN_VERSION = '2.8.4';
+  const PLUGIN_VERSION = '2.8.7';
   document.querySelectorAll('[data-v]').forEach(el => {
     el.textContent = el.dataset.v.replace(/\{v\}/g, PLUGIN_VERSION);
   });
