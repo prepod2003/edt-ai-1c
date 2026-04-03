@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="1C:RSV MCP Server — плагин для 1C:EDT, который даёт ИИ-ассистентам прямой доступ к конфигурациям 1С. 38 инструментов, 0 внешних зависимостей, без SaaS-посредников.">
+  <meta name="description" content="1C:RSV MCP Server — плагин для 1C:EDT, который даёт ИИ-ассистентам прямой доступ к конфигурациям 1С. 38 инструментов, встроен в EDT. Совместим с Claude Code, Cursor, Windsurf.">
   <title>1C:RSV — Зрение ИИ в 1С:EDT</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563eb'/><text x='50%' y='54%' dy='.35em' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='12' font-weight='900' letter-spacing='-0.5'>RSV</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1445,7 +1445,7 @@
           <li><span class="check">✓</span><span><strong>Без RAG-систем и векторных БД</strong> — используем готовые индексы EDT</span></li>
           <li><span class="check">✓</span><span><strong>Точная выжимка данных</strong> — ИИ получает только нужное, без лишнего «шума»</span></li>
           <li><span class="check">✓</span><span><strong>Экономия токенов в десятки раз</strong> — умная фильтрация на стороне EDT</span></li>
-          <li><span class="check">✓</span><span><strong>Без SaaS-посредников</strong> — плагин работает прямо в IDE, не требует внешних серверов или подписок</span></li>
+          <li><span class="check">✓</span><span><strong>Встроен в 1C:EDT</strong> — плагин работает внутри IDE, используя её индексы и семантический анализатор</span></li>
           <li><span class="check">✓</span><span><strong>JSON-формат</strong> — нативный для ИИ, без потерь при парсинге</span></li>
         </ul>
       </div>
@@ -2239,8 +2239,11 @@
       <span class="ni">💡</span>
       <p>
         <strong>Требования:</strong> 1C:EDT 2025.2 · Java 17 (Azul Zulu 17) · ИИ-ассистент с поддержкой MCP.<br>
-        MCP-сервер запускается прямо внутри 1C:EDT на <strong>127.0.0.1:8770</strong> — без внешних серверов и SaaS-посредников. Данные конфигурации передаются напрямую вашему ИИ-ассистенту: Cursor, Claude Code или Windsurf используют их через свои облачные модели в штатном режиме.
-        Актуальная версия и подробная документация — в <a href="https://t.me/edt_ai_1c" target="_blank" rel="noopener">Telegram-канале ✈</a>.
+        MCP-сервер встроен в 1C:EDT и работает на 127.0.0.1:8770 — ИИ-ассистент обращается к нему напрямую.
+        Для работы ИИ нужна языковая модель: лучшие результаты — <strong>Claude Code с подпиской от $100/мес</strong> (сложные проекты в ERP/ЗУП без проблем).
+        Также работает с Cursor, Windsurf и бесплатными моделями (Qwen 3.5) — результат хороший, но потребуется больше контроля.
+        Можно использовать локальную модель (Ollama) для работы без интернета, но результат не гарантирован — локальные модели значительно слабее облачных.<br>
+        Сообщество пользователей и ответы на вопросы — в <a href="https://t.me/edt_ai_1c" target="_blank" rel="noopener">Telegram-канале ✈</a>.
       </p>
     </div>
     <div style="text-align:center; margin-top:40px; padding:28px; background:white; border-radius:var(--radius); border:1px solid var(--border);">
@@ -2629,7 +2632,7 @@
         </div>
         <p class="footer-desc">
           Интеллектуальный мост между ИИ-ассистентами и средой разработки 1C:EDT.
-          38 инструментов. Без внешних серверов. 0 JAR-зависимостей.
+          38 инструментов. Встроен в 1C:EDT. 0 JAR-зависимостей.
         </p>
       </div>
       <div class="footer-links-section">
