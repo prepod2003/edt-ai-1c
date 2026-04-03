@@ -1164,7 +1164,7 @@
         <li><a href="#install">Установка</a></li>
       </ul>
       <div class="navbar-cta">
-        <a href="#download" class="btn-nav-download navbar-btn-download-hide" data-v="⬇ Скачать v{v}">⬇ Скачать v2.8.7</a>
+        <a href="#download" class="btn-nav-download navbar-btn-download-hide" data-v="⬇ Скачать v{v}">⬇ Скачать v2.8.8</a>
         <a href="#pricing" class="navbar-btn-pricing">Тарифы</a>
         <a href="https://t.me/edt_ai_1c" class="btn btn-primary navbar-btn-download-hide" target="_blank" rel="noopener">
           ✈ Telegram
@@ -1180,7 +1180,7 @@
     <div class="hero-grid">
       <div class="hero-content fade-in">
         <div class="hero-badge">
-          <span class="badge badge-blue" data-v="🔵 Версия {v} · Для 1C:EDT 2025.x">🔵 Версия 2.8.7 · Для 1C:EDT 2025.x</span>
+          <span class="badge badge-blue" data-v="🔵 Версия {v} · Для 1C:EDT 2025.x">🔵 Версия 2.8.8 · Для 1C:EDT 2025.x</span>
         </div>
         <h1>Дайте ИИ <span>зрение</span><br>в 1С:EDT</h1>
         <p class="hero-sub">
@@ -2267,38 +2267,38 @@
   <div class="container">
     <div class="section-header fade-in">
       <span class="badge badge-green">Актуальное обновление</span>
-      <h2 data-v="Что нового в версии {v}">Что нового в версии 2.8.7</h2>
-      <p>Серьёзная переработка работы с формами и полноценная поддержка расширений.</p>
+      <h2 data-v="Что нового в версии {v}">Что нового в версии 2.8.8</h2>
+      <p>Оптимизация поиска в коде для больших конфигураций, экономия токенов, умная маршрутизация.</p>
     </div>
     <div class="whats-new-grid">
       <div class="wn-card fade-in fade-in-delay-1">
-        <div class="wn-card-icon">📋</div>
-        <h3>Сложные формы без ошибок</h3>
-        <p>Существенно улучшена работа с формами:</p>
+        <div class="wn-card-icon">🔍</div>
+        <h3>Поиск в больших проектах</h3>
+        <p>search_in_code оптимизирован для КА, ERP, ЗУП:</p>
         <ul>
-          <li>Группы, страницы, таблицы, радиокнопки, кнопки, декорации</li>
-          <li>Правильное расположение элементов на форме</li>
-          <li>Стабильная работа в основной конфигурации и расширениях</li>
+          <li>Стабильная работа при сканировании всей конфигурации с расширениями</li>
+          <li>Частичные результаты при превышении времени — ИИ сразу работает с ними</li>
+          <li>Оптимизация потребления памяти на крупных файлах</li>
         </ul>
       </div>
       <div class="wn-card fade-in fade-in-delay-2">
-        <div class="wn-card-icon">🧩</div>
-        <h3>Расширения: формы</h3>
-        <p>Полноценная работа с формами в расширениях:</p>
+        <div class="wn-card-icon">💎</div>
+        <h3>Экономия токенов</h3>
+        <p>Меньше расход контекстного окна ИИ-модели:</p>
         <ul>
-          <li>Заимствование объектов и их форм из основной конфигурации</li>
-          <li>Доработка заимствованных форм через MCP</li>
-          <li>Создание новых форм в расширении с нуля</li>
+          <li>Новый параметр <code>compact: true</code> — результаты в 3 раза компактнее</li>
+          <li>Убрано дублирование данных в ответах инструментов</li>
+          <li>Особенно полезно для моделей с небольшим контекстным окном</li>
         </ul>
       </div>
       <div class="wn-card fade-in fade-in-delay-3">
-        <div class="wn-card-icon">🔗</div>
-        <h3>Расширения: типы данных</h3>
-        <p>Автоматическое заимствование зависимостей:</p>
+        <div class="wn-card-icon">🧭</div>
+        <h3>Умная маршрутизация</h3>
+        <p>ИИ-агент выбирает оптимальный инструмент:</p>
         <ul>
-          <li>Ссылочные типы (перечисления, справочники) заимствуются автоматически</li>
-          <li>Кнопки и обработчики команд в расширениях</li>
-          <li>Корректное определение заимствованных объектов</li>
+          <li>Описания инструментов подсказывают когда использовать индексный поиск</li>
+          <li>find_object_references, resolve_symbol — в 100x быстрее для типовых задач</li>
+          <li>search_in_code — только когда нужен произвольный текстовый поиск</li>
         </ul>
       </div>
     </div>
@@ -2310,16 +2310,16 @@
     <div style="margin-top:48px; padding-top:40px; border-top:1px solid var(--border);">
       <div class="section-header fade-in" style="margin-bottom:24px;">
         <span class="badge" style="background:#f1f5f9;color:#64748b;">Ранее в 2.8.x</span>
-        <h3 style="font-size:1.3rem; color:var(--text-l);">Таблицы, реквизиты, метаданные, коды активации, безопасная запись кода</h3>
+        <h3 style="font-size:1.3rem; color:var(--text-l);">Формы, расширения, метаданные, коды активации, безопасная запись кода</h3>
       </div>
       <div class="whats-new-grid">
         <div class="wn-card fade-in fade-in-delay-1" style="opacity:0.75;">
           <div class="wn-card-icon">📋</div>
-          <h3>Формы и метаданные (v2.8.4)</h3>
+          <h3>Формы и расширения (v2.8.7)</h3>
           <ul>
-            <li>Таблицы, группы Pages/Page, реквизиты ТаблицаЗначений</li>
-            <li>Параметр <code>formName</code> для нескольких форм объекта</li>
-            <li>Правильная вставка ТЧ в метаданные</li>
+            <li>Сложные формы: группы, страницы, таблицы, радиокнопки, декорации</li>
+            <li>Заимствование объектов и форм из основной конфигурации в расширение</li>
+            <li>Автоматическое заимствование зависимых типов данных</li>
           </ul>
         </div>
         <div class="wn-card fade-in fade-in-delay-2" style="opacity:0.75;">
@@ -2368,24 +2368,24 @@
     <div class="download-inner fade-in">
       <span class="badge badge-green">📥 Актуальный релиз</span>
       <h2>Скачать 1C:RSV MCP Server</h2>
-      <p class="download-sub" data-v="Версия {v} · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней">Версия 2.8.7 · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней</p>
+      <p class="download-sub" data-v="Версия {v} · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней">Версия 2.8.8 · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней</p>
 
       <div class="download-card">
         <div class="download-card-info">
           <div class="download-file-icon">📦</div>
           <div>
-            <div class="download-file-name" data-v="1C-RSV-MCP-{v}-distr.rar">1C-RSV-MCP-2.8.7-distr.rar</div>
-            <div class="download-file-meta" data-v="Версия {v} · ~400 KB">Версия 2.8.7 · ~400 KB</div>
+            <div class="download-file-name" data-v="1C-RSV-MCP-{v}-distr.rar">1C-RSV-MCP-2.8.8-distr.rar</div>
+            <div class="download-file-meta" data-v="Версия {v} · ~400 KB">Версия 2.8.8 · ~400 KB</div>
           </div>
         </div>
 
         <div class="download-includes">
-          <span data-v="✅ edt-rsv-repository-{v}-SNAPSHOT.zip — плагин для установки в EDT">✅ edt-rsv-repository-2.8.7-SNAPSHOT.zip — плагин для установки в EDT</span>
+          <span data-v="✅ edt-rsv-repository-{v}-SNAPSHOT.zip — плагин для установки в EDT">✅ edt-rsv-repository-2.8.8-SNAPSHOT.zip — плагин для установки в EDT</span>
           <span>✅ GUIDE.md — пошаговое руководство пользователя</span>
           <span>✅ CLAUDE.md — готовые правила для Claude / Cursor / Windsurf</span>
         </div>
 
-        <a href="./1C-RSV-MCP-2.8.7-distr.rar" class="btn-download" data-v-href="./1C-RSV-MCP-{v}-distr.rar" download>
+        <a href="./1C-RSV-MCP-2.8.8-distr.rar" class="btn-download" data-v-href="./1C-RSV-MCP-{v}-distr.rar" download>
           ⬇ Скачать бесплатно
         </a>
 
@@ -2646,7 +2646,7 @@
           <li><a href="#quality">Инженерное качество</a></li>
           <li><a href="#install">Установка</a></li>
           <li><a href="#whats-new">Что нового</a></li>
-          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v2.8.7</a></li>
+          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v2.8.8</a></li>
         </ul>
       </div>
       <div class="footer-links-section">
@@ -2662,7 +2662,7 @@
       <div class="footer-author">
         Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a> · <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">@Prepod2003</a>
       </div>
-      <div class="footer-version" data-v="1C:RSV v{v} · 2026">1C:RSV v2.8.7 · 2026</div>
+      <div class="footer-version" data-v="1C:RSV v{v} · 2026">1C:RSV v2.8.8 · 2026</div>
     </div>
   </div>
 </footer>
@@ -2688,30 +2688,28 @@
 <div class="rn-modal" id="rn-modal" onclick="if(event.target===this)closeReleaseNotes()">
   <div class="rn-body">
     <button class="rn-close" onclick="closeReleaseNotes()">&times;</button>
-    <span class="rn-badge" data-v="v{v} — Апрель 2026">v2.8.7 — Апрель 2026</span>
-    <h2 style="font-size:1.5rem; margin-bottom:24px;" data-v="Release Notes: 1C:RSV MCP Server v{v}">Release Notes: 1C:RSV MCP Server v2.8.7</h2>
+    <span class="rn-badge" data-v="v{v} — Апрель 2026">v2.8.8 — Апрель 2026</span>
+    <h2 style="font-size:1.5rem; margin-bottom:24px;" data-v="Release Notes: 1C:RSV MCP Server v{v}">Release Notes: 1C:RSV MCP Server v2.8.8</h2>
 
-    <h3>1. Существенное улучшение работы с формами</h3>
-    <p>Полная переработка операции <code>addTable</code> в <code>modify_form</code>: устранено 8 ошибок. Таблицы теперь корректно открываются в EDT, содержат все колонки (в том числе для реквизитов формы типа ТаблицаЗначений), правильно вставляются в родительский контейнер и включают все обязательные свойства отображения.</p>
-    <p>Исправлена генерация групп <code>addGroup</code> типа Pages (панель закладок) и Page (страница) — ранее визуальный превью формы мог оставаться пустым.</p>
-    <p>Операция <code>addFormAttribute</code> получила параметр <code>parentAttributeName</code> для добавления колонок в существующий реквизит формы типа ТаблицаЗначений. Устранена ложная ошибка валидации.</p>
+    <h3>1. Оптимизация поиска в коде</h3>
+    <p>Инструмент <code>search_in_code</code> оптимизирован для работы с большими конфигурациями (КА, ERP, ЗУП). Поиск стабильно завершается даже при сканировании всей конфигурации с расширениями. При превышении времени возвращаются частичные результаты с пометкой о неполноте — ИИ-агент может сразу работать с ними или уточнить запрос.</p>
 
-    <h3>2. Исправления в работе с метаданными</h3>
-    <p>Операция <code>addTabularSection</code> в <code>modify_metadata</code> — табличные части вставляются в правильную позицию в .mdo файле. Колонки генерируются со всеми обязательными тегами, что устраняет ошибки валидации в EDT.</p>
+    <h3>2. Экономия токенов</h3>
+    <p>Новый параметр <code>compact: true</code> возвращает результаты в компактном однострочном формате — в 3 раза меньше токенов. Убрано дублирование данных в ответах. Особенно полезно для моделей с небольшим контекстным окном.</p>
 
-    <h3>3. Создание дополнительных форм</h3>
-    <p>Новый параметр <code>formName</code> в <code>create_metadata_object</code> позволяет создавать несколько форм для одного объекта. Защита от случайной перезаписи существующей формы.</p>
+    <h3>3. Умная маршрутизация</h3>
+    <p>Описания инструментов подсказывают ИИ-агенту оптимальный выбор: когда использовать быстрый индексный поиск (<code>find_object_references</code>, <code>resolve_symbol</code>), а когда — полнотекстовый <code>search_in_code</code>.</p>
 
     <h3>Совместимость</h3>
-    <p>Полная обратная совместимость с v2.8.2. Новые параметры (<code>parentAttributeName</code>, <code>formName</code>) — опциональные.</p>
+    <p>Полная обратная совместимость. Параметр <code>compact</code> — опциональный, по умолчанию <code>false</code>.</p>
 
     <hr style="border:none;border-top:1px solid var(--border);margin:32px 0;">
 
-    <span class="rn-badge" style="background:#f1f5f9;color:#64748b;">Ранние версии</span>
-    <h2 style="font-size:1.3rem; margin:16px 0 24px; color:var(--text-l);">v2.8.0 — v2.8.2</h2>
+    <span class="rn-badge" style="background:#f1f5f9;color:#64748b;">Предыдущие версии</span>
+    <h2 style="font-size:1.3rem; margin:16px 0 24px; color:var(--text-l);">v2.8.0 — v2.8.7</h2>
 
-    <h3>v2.8.2 — Реквизиты формы, multi-project</h3>
-    <p><code>addFormAttribute</code> — создание реквизитов формы через ИИ. Multi-project в <code>list_modules</code>. Дельта ошибок в <code>modify_metadata</code>. <code>read_method_source</code> по имени объекта. Кнопка покупки в настройках.</p>
+    <h3>v2.8.7 — Формы и расширения</h3>
+    <p>Переработка работы с формами: таблицы, группы, страницы, декорации. Полноценная поддержка расширений: заимствование объектов и форм, автоматическое заимствование зависимых типов.</p>
 
     <h3>v2.8.1 — Коды активации, три тарифа, СКД-отчёты</h3>
     <p>Система кодов активации (<code>ACT-ANL/DEV/ARC-xxx</code>). Три тарифа: Аналитик (19 инструментов), Разработчик (26), Архитектор (38). Пробный период 30 дней. Инструмент <code>modify_report</code> — 25 операций для редактирования СКД-отчётов.</p>
@@ -2964,7 +2962,7 @@
 <!-- ===== SCRIPTS ===== -->
 <script>
   // ===== ВЕРСИЯ ПЛАГИНА (менять ТОЛЬКО здесь) =====
-  const PLUGIN_VERSION = '2.8.7';
+  const PLUGIN_VERSION = '2.8.8';
   document.querySelectorAll('[data-v]').forEach(el => {
     el.textContent = el.dataset.v.replace(/\{v\}/g, PLUGIN_VERSION);
   });
