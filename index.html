@@ -1799,310 +1799,7 @@
   </div>
 </section>
 
-<!-- ===== COMPARISON ===== -->
-<section class="comparison">
-  <div class="container">
-    <div class="section-header fade-in">
-      <span class="badge badge-indigo">Сравнение</span>
-      <h2>1C:RSV против аналогичных решений</h2>
-      <p>Объективное сравнение по ключевым метрикам. Данные получены путём прямого анализа плагинов.</p>
-    </div>
-    <div class="comparison-table-wrap fade-in">
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th style="width:40%">Критерий</th>
-            <th class="highlight" style="width:30%">1C:RSV</th>
-            <th style="width:30%">Аналогичные решения</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="cat">Инструментов MCP</td>
-            <td class="highlight"><span class="num-big">38</span> <span style="color:var(--green);font-size:0.8rem;font-weight:600;">+46%</span></td>
-            <td><span class="num-small">~26</span></td>
-          </tr>
-          <tr>
-            <td class="cat">Редактирование кода</td>
-            <td class="highlight"><span class="check-yes">✓</span></td>
-            <td><span class="check-no">✗</span></td>
-          </tr>
-          <tr>
-            <td class="cat">Редактирование метаданных и форм</td>
-            <td class="highlight"><span class="check-yes">✓</span></td>
-            <td><span class="check-no">✗</span></td>
-          </tr>
-          <tr>
-            <td class="cat">Визуализация форм (PNG/JSON)</td>
-            <td class="highlight"><span class="check-yes">✓ Уникально</span></td>
-            <td><span class="check-no">✗</span></td>
-          </tr>
-          <tr>
-            <td class="cat">AI-контекст (ai_context)</td>
-            <td class="highlight"><span class="check-yes">✓</span></td>
-            <td><span class="check-no">✗</span></td>
-          </tr>
-          <tr>
-            <td class="cat">Документация платформы API</td>
-            <td class="highlight"><span class="check-yes">✓ 4 инструмента</span></td>
-            <td><span class="check-partial">Частично (1)</span></td>
-          </tr>
-          <tr>
-            <td class="cat">Пагинация (offset/limit)</td>
-            <td class="highlight"><span class="check-yes">✓</span></td>
-            <td><span class="check-no">✗</span></td>
-          </tr>
-          <tr>
-            <td class="cat">Профили по ролям</td>
-            <td class="highlight"><span class="check-yes">✓ 3 профиля</span></td>
-            <td><span class="check-no">✗</span></td>
-          </tr>
-          <tr>
-            <td class="cat">Внешние зависимости</td>
-            <td class="highlight"><span class="num-big" style="font-size:1.5rem;">0</span></td>
-            <td><span class="num-small">3+</span></td>
-          </tr>
-          <tr>
-            <td class="cat">Размер кода (компактность)</td>
-            <td class="highlight"><span style="color:var(--blue);font-weight:600;">Компактнее в 2×</span></td>
-            <td><span class="num-small">В 2× больше кода</span></td>
-          </tr>
-          <tr>
-            <td class="cat">Семантические подсказки при ошибках</td>
-            <td class="highlight"><span class="check-yes">✓</span></td>
-            <td><span class="check-no">✗</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!-- ===== DEPTH COMPARISON ===== -->
-    <div class="depth-section fade-in">
-      <div class="depth-section-header">
-        <h3>Больше инструментов — это только начало</h3>
-        <p>Даже те инструменты, которые есть в аналогичных решениях, в 1C:RSV реализованы глубже: больше параметров, структурированный JSON-вывод, рекурсивный анализ.</p>
-      </div>
-
-      <div class="tool-depth-grid">
-
-        <!-- search_in_code -->
-        <div class="tdc">
-          <div class="tdc-header">
-            <span class="tdc-tool-name">search_in_code</span>
-            <span class="tdc-label">Поиск по коду конфигурации</span>
-          </div>
-          <div class="tdc-col-header">
-            <span>Возможность</span>
-            <span>1C:RSV</span>
-            <span>Аналоги</span>
-          </div>
-          <div class="tdc-rows">
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Параметров поиска</span>
-              <span class="tdc-rsv">12 параметров</span>
-              <span class="tdc-comp">10 параметров</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Символ-обёртка результата</span>
-              <span class="tdc-rsv">✓ enclosingSymbol</span>
-              <span class="tdc-comp">✗ нет</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Точный текст совпадения</span>
-              <span class="tdc-rsv">✓ matchedText</span>
-              <span class="tdc-comp">✗ нет</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Пагинация (offset / limit)</span>
-              <span class="tdc-rsv">✓ есть</span>
-              <span class="tdc-comp">✗ нет</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Поиск по MDO-файлам</span>
-              <span class="tdc-rsv">✓ метаданные</span>
-              <span class="tdc-comp">✗ нет</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Формат вывода</span>
-              <span class="tdc-rsv">JSON</span>
-              <span class="tdc-comp">Markdown</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- resolve_symbol -->
-        <div class="tdc">
-          <div class="tdc-header">
-            <span class="tdc-tool-name">resolve_symbol</span>
-            <span class="tdc-label">Разрешение символа по имени</span>
-          </div>
-          <div class="tdc-col-header">
-            <span>Возможность</span>
-            <span>1C:RSV</span>
-            <span>Аналоги</span>
-          </div>
-          <div class="tdc-rows">
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Количество определений</span>
-              <span class="tdc-rsv">До 10 результатов</span>
-              <span class="tdc-comp">1 результат</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Подсказки при ошибке поиска</span>
-              <span class="tdc-rsv">✓ 5 похожих имён</span>
-              <span class="tdc-comp">✗ просто ошибка</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Поиск по всем проектам</span>
-              <span class="tdc-rsv">✓ есть</span>
-              <span class="tdc-comp">✗ нет</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Формат вывода</span>
-              <span class="tdc-rsv">JSON</span>
-              <span class="tdc-comp">Markdown</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- get_module_structure -->
-        <div class="tdc">
-          <div class="tdc-header">
-            <span class="tdc-tool-name">get_module_structure</span>
-            <span class="tdc-label">Структура модуля</span>
-          </div>
-          <div class="tdc-col-header">
-            <span>Возможность</span>
-            <span>1C:RSV</span>
-            <span>Аналоги</span>
-          </div>
-          <div class="tdc-rows">
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Параметры как массив объектов</span>
-              <span class="tdc-rsv">✓ [{name, type}]</span>
-              <span class="tdc-comp">✗ сырая строка</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Регионы с методами внутри</span>
-              <span class="tdc-rsv">✓ regions[]</span>
-              <span class="tdc-comp">✗ нет</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Группировка экспорт / внутренние</span>
-              <span class="tdc-rsv">✓ есть</span>
-              <span class="tdc-comp">✗ нет</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Фильтр по имени + пагинация</span>
-              <span class="tdc-rsv">✓ nameFilter</span>
-              <span class="tdc-comp">✗ нет</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Формат вывода</span>
-              <span class="tdc-rsv">JSON</span>
-              <span class="tdc-comp">Markdown</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- get_method_call_hierarchy -->
-        <div class="tdc">
-          <div class="tdc-header">
-            <span class="tdc-tool-name">get_method_call_hierarchy</span>
-            <span class="tdc-label">Иерархия вызовов метода</span>
-          </div>
-          <div class="tdc-col-header">
-            <span>Возможность</span>
-            <span>1C:RSV</span>
-            <span>Аналоги</span>
-          </div>
-          <div class="tdc-rows">
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Глубина рекурсии</span>
-              <span class="tdc-rsv">3 уровня</span>
-              <span class="tdc-comp">1 уровень</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Направление анализа</span>
-              <span class="tdc-rsv">✓ оба направления</span>
-              <span class="tdc-comp">одно направление</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Детекция рекурсии</span>
-              <span class="tdc-rsv">✓ авто-защита</span>
-              <span class="tdc-comp">✗ нет</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Структура вывода</span>
-              <span class="tdc-rsv">Дерево (вложенное)</span>
-              <span class="tdc-comp">Плоский список</span>
-            </div>
-            <div class="tdc-row">
-              <span class="tdc-feature-name">Формат вывода</span>
-              <span class="tdc-rsv">JSON</span>
-              <span class="tdc-comp">Markdown</span>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /tool-depth-grid -->
-
-      <!-- JSON vs Markdown format strip -->
-      <div class="format-strip">
-        <div class="format-side rsv">
-          <span class="format-label rsv">1C:RSV — машиночитаемый JSON</span>
-          <ul>
-            <li>ИИ разбирает структуру напрямую, без текстового парсинга</li>
-            <li>Типы данных сохранены: числа, массивы, булевы</li>
-            <li>Нет потерь при интерпретации Markdown-форматирования</li>
-            <li>38 инструментов — 38 JSON-ответов</li>
-          </ul>
-        </div>
-        <div class="format-vs">VS</div>
-        <div class="format-side comp">
-          <span class="format-label comp">Аналоги — Markdown для ИИ</span>
-          <ul>
-            <li>23 из 26 инструментов возвращают Markdown-текст</li>
-            <li>ИИ вынужден парсить текст — выше риск ошибки</li>
-            <li>Теряется типизация: числа как строки, нет массивов</li>
-            <li>Разные форматы = нестабильное поведение ИИ</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Depth score summary -->
-      <div class="depth-score">
-        <div class="ds-item">
-          <div class="ds-num" style="color:var(--blue);">4.65<span style="font-size:1rem;font-weight:400;color:var(--text-l);">/5</span></div>
-          <div class="ds-label">Средний балл 1C:RSV</div>
-          <div class="ds-score">vs 3.75/5 у аналогов</div>
-          <div class="ds-bar"><div class="ds-bar-fill" style="width:93%;background:var(--blue);"></div></div>
-        </div>
-        <div class="ds-item">
-          <div class="ds-num" style="color:var(--blue);">38</div>
-          <div class="ds-label">MCP-инструментов</div>
-          <div class="ds-score">vs 26 у аналогов (+46%)</div>
-          <div class="ds-bar"><div class="ds-bar-fill" style="width:100%;background:var(--blue);"></div></div>
-        </div>
-        <div class="ds-item">
-          <div class="ds-num" style="color:var(--blue);">2.7×</div>
-          <div class="ds-label">Эффективнее на строку кода</div>
-          <div class="ds-score">2.47 vs 0.91 инстр./1K LOC</div>
-          <div class="ds-bar"><div class="ds-bar-fill" style="width:75%;background:var(--green);"></div></div>
-        </div>
-        <div class="ds-item">
-          <div class="ds-num" style="color:var(--blue);">0</div>
-          <div class="ds-label">Внешних зависимостей</div>
-          <div class="ds-score">vs 3+ у аналогов</div>
-          <div class="ds-bar"><div class="ds-bar-fill" style="width:100%;background:var(--green);"></div></div>
-        </div>
-      </div>
-
-    </div><!-- /depth-section -->
-
-    <p class="comparison-note">* Сравнение проводилось методом прямого анализа исходного кода доступных MCP-плагинов для 1C:EDT</p>
-  </div>
-</section>
-
+<!-- Секция сравнения убрана в 2.9.0 -->
 <!-- ===== SCREENSHOTS ===== -->
 <section id="screenshots">
   <div class="container">
@@ -2267,38 +1964,38 @@
   <div class="container">
     <div class="section-header fade-in">
       <span class="badge badge-green">Актуальное обновление</span>
-      <h2 data-v="Что нового в версии {v}">Что нового в версии 2.8.9</h2>
-      <p>Оптимизация поиска в коде для больших конфигураций, экономия токенов, умная маршрутизация.</p>
+      <h2 data-v="Что нового в версии {v}">Что нового в версии 2.9.0</h2>
+      <p>От метаданных к данным: AI-агент получил доступ к runtime через полноценную отладку.</p>
     </div>
     <div class="whats-new-grid">
       <div class="wn-card fade-in fade-in-delay-1">
-        <div class="wn-card-icon">🔍</div>
-        <h3>Поиск в больших проектах</h3>
-        <p>search_in_code оптимизирован для КА, ERP, ЗУП:</p>
+        <div class="wn-card-icon">🐛</div>
+        <h3>Полноценная отладка</h3>
+        <p>AI-агент отлаживает код 1С как человек в EDT:</p>
         <ul>
-          <li>Стабильная работа при сканировании всей конфигурации с расширениями</li>
-          <li>Частичные результаты при превышении времени — ИИ сразу работает с ними</li>
-          <li>Оптимизация потребления памяти на крупных файлах</li>
+          <li>Точки останова, пошаговое выполнение, стек вызовов</li>
+          <li>Чтение всех переменных: локальных + реквизитов формы (Объект, ЭтаФорма)</li>
+          <li>16 действий через один инструмент <code>launch_debugger</code></li>
         </ul>
       </div>
       <div class="wn-card fade-in fade-in-delay-2">
-        <div class="wn-card-icon">💎</div>
-        <h3>Экономия токенов</h3>
-        <p>Меньше расход контекстного окна ИИ-модели:</p>
+        <div class="wn-card-icon">🔮</div>
+        <h3>Доступ к живым данным</h3>
+        <p>Вычисление произвольных BSL-выражений в точке останова:</p>
         <ul>
-          <li>Новый параметр <code>compact: true</code> — результаты в 3 раза компактнее</li>
-          <li>Убрано дублирование данных в ответах инструментов</li>
-          <li>Особенно полезно для моделей с небольшим контекстным окном</li>
+          <li><code>Объект.Партнер</code> &rarr; &laquo;Дальстрой&raquo; (СправочникСсылка.Партнеры)</li>
+          <li><code>Объект.Товары.Количество()</code> &rarr; &laquo;5&raquo; (Число)</li>
+          <li>Арифметика, конкатенация строк, вызовы методов &mdash; любое выражение</li>
         </ul>
       </div>
       <div class="wn-card fade-in fade-in-delay-3">
-        <div class="wn-card-icon">🧭</div>
-        <h3>Умная маршрутизация</h3>
-        <p>ИИ-агент выбирает оптимальный инструмент:</p>
+        <div class="wn-card-icon">🛡️</div>
+        <h3>Улучшена запись кода</h3>
+        <p>Исправлены критические проблемы по фидбэку пользователей:</p>
         <ul>
-          <li>Описания инструментов подсказывают когда использовать индексный поиск</li>
-          <li>find_object_references, resolve_symbol — в 100x быстрее для типовых задач</li>
-          <li>search_in_code — только когда нужен произвольный текстовый поиск</li>
+          <li>replaceMethod сохраняет директивы компиляции (&amp;НаСервере, &amp;НаКлиенте)</li>
+          <li>BSL-валидация не путает #Если с обычным Если</li>
+          <li>afterSource в ответе &mdash; актуальные номера строк после записи</li>
         </ul>
       </div>
     </div>
@@ -2309,26 +2006,26 @@
     <!-- Предыдущие версии -->
     <div style="margin-top:48px; padding-top:40px; border-top:1px solid var(--border);">
       <div class="section-header fade-in" style="margin-bottom:24px;">
-        <span class="badge" style="background:#f1f5f9;color:#64748b;">Ранее в 2.8.x</span>
-        <h3 style="font-size:1.3rem; color:var(--text-l);">Формы, расширения, метаданные, коды активации, безопасная запись кода</h3>
+        <span class="badge" style="background:#f1f5f9;color:#64748b;">Ранее</span>
+        <h3 style="font-size:1.3rem; color:var(--text-l);">Поиск, формы, расширения, метаданные, безопасная запись кода</h3>
       </div>
       <div class="whats-new-grid">
         <div class="wn-card fade-in fade-in-delay-1" style="opacity:0.75;">
+          <div class="wn-card-icon">🔍</div>
+          <h3>Поиск и совместимость (v2.8.9)</h3>
+          <ul>
+            <li>search_in_code оптимизирован для КА, ERP, ЗУП (6000+ файлов)</li>
+            <li>Совместимость с OpenAI Codex (strict mode)</li>
+            <li>Компактный формат ответов (<code>compact: true</code>)</li>
+          </ul>
+        </div>
+        <div class="wn-card fade-in fade-in-delay-2" style="opacity:0.75;">
           <div class="wn-card-icon">📋</div>
           <h3>Формы и расширения (v2.8.7)</h3>
           <ul>
             <li>Сложные формы: группы, страницы, таблицы, радиокнопки, декорации</li>
-            <li>Заимствование объектов и форм из основной конфигурации в расширение</li>
-            <li>Автоматическое заимствование зависимых типов данных</li>
-          </ul>
-        </div>
-        <div class="wn-card fade-in fade-in-delay-2" style="opacity:0.75;">
-          <div class="wn-card-icon">🔑</div>
-          <h3>Лицензирование (v2.8.1)</h3>
-          <ul>
-            <li>Коды активации: <code>ACT-ANL/DEV/ARC-xxx</code></li>
-            <li>Три тарифа: Аналитик (19), Разработчик (26), Архитектор (38)</li>
-            <li>Пробный период 30 дней, <code>modify_report</code> — 25 операций</li>
+            <li>Заимствование объектов и форм в расширение</li>
+            <li>Три тарифа: Аналитик, Разработчик, Архитектор</li>
           </ul>
         </div>
         <div class="wn-card fade-in fade-in-delay-3" style="opacity:0.75;">
@@ -2385,7 +2082,7 @@
           <span>✅ CLAUDE.md — готовые правила для Claude / Cursor / Windsurf</span>
         </div>
 
-        <a href="./1C-RSV-MCP-2.8.9-distr.rar" class="btn-download" data-v-href="./1C-RSV-MCP-{v}-distr.rar" download>
+        <a href="./1C-RSV-MCP-2.9.0-distr.rar" class="btn-download" data-v-href="./1C-RSV-MCP-{v}-distr.rar" download>
           ⬇ Скачать бесплатно
         </a>
 
@@ -2962,7 +2659,7 @@
 <!-- ===== SCRIPTS ===== -->
 <script>
   // ===== ВЕРСИЯ ПЛАГИНА (менять ТОЛЬКО здесь) =====
-  const PLUGIN_VERSION = '2.8.9';
+  const PLUGIN_VERSION = '2.9.0';
   document.querySelectorAll('[data-v]').forEach(el => {
     el.textContent = el.dataset.v.replace(/\{v\}/g, PLUGIN_VERSION);
   });
