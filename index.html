@@ -3017,12 +3017,16 @@
     var email = document.getElementById('pricing-email-input').value;
     var terms = document.getElementById('pricing-terms-check').checked;
     var privacy = document.getElementById('pricing-privacy-check').checked;
+    var promoInput = document.getElementById('pricing-promo-input').value.trim();
     var btn = document.getElementById('pricing-proceed-btn');
-    btn.disabled = !(pricingEmailValid(email) && terms && privacy);
+    // Блокируем кнопку если: промокод введён но ещё не проверен/проверяется
+    var promoReady = !promoInput || validPromoCode || (!promoChecking && document.getElementById('pricing-promo-input').className === 'promo-invalid');
+    btn.disabled = !(pricingEmailValid(email) && terms && privacy && promoReady && !promoChecking);
   }
 
   var promoTimer = null;
   var validPromoCode = '';
+  var promoChecking = false;
 
   function pricingOpenModal(tier) {
     pricingTier = tier;
@@ -3049,10 +3053,14 @@
     var pr = document.getElementById('promo-result');
     var code = input.value.trim();
     validPromoCode = '';
+    promoChecking = false;
     input.className = '';
     pr.className = 'em-promo-result'; pr.textContent = '';
     if (promoTimer) clearTimeout(promoTimer);
+    pricingValidate();
     if (!code) return;
+    promoChecking = true;
+    pricingValidate();
     promoTimer = setTimeout(function() { checkPromo(code); }, 600);
   }
 
@@ -3061,8 +3069,11 @@
     var url = PRICING_GAS + '?action=check-promo&code=' + encodeURIComponent(code) + '&tier=' + encodeURIComponent(tierCode);
     var input = document.getElementById('pricing-promo-input');
     var pr = document.getElementById('promo-result');
+    promoChecking = true;
+    pricingValidate();
     fetch(url).then(function(r) { return r.json(); }).then(function(data) {
-      if (input.value.trim().toUpperCase() !== code.toUpperCase()) return;
+      promoChecking = false;
+      if (input.value.trim().toUpperCase() !== code.toUpperCase()) { pricingValidate(); return; }
       if (data.valid) {
         validPromoCode = code;
         input.className = 'promo-valid';
@@ -3078,10 +3089,13 @@
         pr.className = 'em-promo-result promo-err';
         pr.textContent = data.message || 'Промокод недействителен';
       }
+      pricingValidate();
     }).catch(function() {
+      promoChecking = false;
       validPromoCode = '';
       input.className = '';
       pr.className = 'em-promo-result'; pr.textContent = '';
+      pricingValidate();
     });
   }
 
