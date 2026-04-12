@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="1C:RSV MCP Server — руководство пользователя. Установка, настройка, примеры использования, описание инструментов.">
+  <title>Руководство — 1C:RSV MCP Server</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563eb'/><text x='50%' y='54%' dy='.35em' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='12' font-weight='900' letter-spacing='-0.5'>RSV</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+    /* ===== VARIABLES ===== */
+    :root {
+      --bg: #ffffff;
+      --bg-sidebar: #f8fafc;
+      --bg-card: #f1f5f9;
+      --bg-code: #1e293b;
+      --bg-table-odd: #f8fafc;
+      --bg-table-even: #ffffff;
+      --accent: #3b82f6;
+      --accent-dim: #2563eb;
+      --accent-glow: rgba(59, 130, 246, 0.08);
+      --accent-border: rgba(59, 130, 246, 0.3);
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --text: #0f172a;
+      --text-m: #334155;
+      --text-dim: #64748b;
+      --border: #e2e8f0;
+      --border-light: #e2e8f0;
+      --sidebar-w: 280px;
+      --header-h: 64px;
+      --radius: 8px;
+    }
+
+    /* ===== BASE ===== */
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1.25rem;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: #2563eb; }
+
+    /* ===== HEADER ===== */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+    }
+    .header-inner {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo-badge {
+      background: var(--accent-dim);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    .header-links { display: flex; gap: 20px; align-items: center; }
+    .header-links a {
+      color: var(--text-m);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .header-links a:hover { color: var(--accent); }
+    .version-badge {
+      background: var(--accent-glow);
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid var(--accent-border);
+    }
+
+    /* ===== HAMBURGER ===== */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      z-index: 200;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-dim);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 24px 0;
+      z-index: 50;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-light) transparent;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 40;
+    }
+
+    .nav-section { margin-bottom: 8px; }
+    .nav-section-title {
+      display: block;
+      padding: 8px 24px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+    }
+    .nav-link {
+      display: block;
+      padding: 6px 24px 6px 24px;
+      font-size: 0.9rem;
+      color: var(--text-m);
+      transition: all 0.15s;
+      border-left: 3px solid transparent;
+      line-height: 1.4;
+    }
+    .nav-link:hover {
+      color: var(--text);
+      background: rgba(59, 130, 246, 0.06);
+    }
+    .nav-link.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: var(--accent-glow);
+    }
+    .nav-link.sub {
+      padding-left: 36px;
+      font-size: 0.85rem;
+    }
+
+    /* ===== MAIN ===== */
+    .main {
+      margin-left: var(--sidebar-w);
+      margin-top: var(--header-h);
+      min-height: calc(100vh - var(--header-h));
+    }
+    .content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 40px 120px;
+    }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      line-height: 1.2;
+      color: var(--text);
+    }
+    .subtitle {
+      font-size: 1rem;
+      color: var(--text-m);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+    .subtitle a { color: var(--accent); }
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-top: 56px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      scroll-margin-top: 80px;
+    }
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-top: 36px;
+      margin-bottom: 14px;
+      color: var(--text);
+      scroll-margin-top: 80px;
+    }
+    h4 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      color: var(--text-m);
+      scroll-margin-top: 80px;
+    }
+    p { margin-bottom: 14px; color: var(--text-m); }
+    strong { color: var(--text); font-weight: 600; }
+    ul, ol { margin-bottom: 14px; padding-left: 24px; color: var(--text-m); }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    /* ===== INLINE CODE ===== */
+    code {
+      font-family: 'JetBrains Mono', 'Consolas', 'Fira Code', monospace;
+      font-size: 0.85em;
+      background: #f1f5f9;
+      color: #2563eb;
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    /* ===== CODE BLOCKS ===== */
+    pre {
+      background: var(--bg-code);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      line-height: 1.6;
+      position: relative;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.95rem;
+      color: #e2e8f0;
+    }
+    /* Basic syntax highlighting via CSS */
+    pre .kw { color: #c084fc; } /* keywords */
+    pre .str { color: #86efac; } /* strings */
+    pre .num { color: #fbbf24; } /* numbers */
+    pre .cmt { color: #64748b; font-style: italic; } /* comments */
+    pre .prop { color: #7dd3fc; } /* properties/keys */
+
+    /* Language label */
+    pre::before {
+      content: attr(data-lang);
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ===== BLOCKQUOTE ===== */
+    blockquote {
+      border-left: 3px solid var(--accent);
+      background: #eff6ff;
+      padding: 14px 20px;
+      margin-bottom: 16px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    blockquote p { color: var(--text-m); margin-bottom: 6px; }
+    blockquote p:last-child { margin-bottom: 0; }
+    blockquote em { color: var(--text); font-style: italic; }
+    blockquote strong { color: var(--text); }
+
+    /* ===== TABLES ===== */
+    .table-wrap {
+      overflow-x: auto;
+      margin-bottom: 20px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-light);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    thead th {
+      background: #f1f5f9;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-m);
+      vertical-align: top;
+    }
+    tbody tr:nth-child(odd) { background: #f8fafc; }
+    tbody tr:nth-child(even) { background: #ffffff; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody td code {
+      font-size: 0.8em;
+      white-space: nowrap;
+    }
+
+    /* ===== TREE (code block for edit_metadata) ===== */
+    .tree-block {
+      background: #f1f5f9;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-m);
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .tree-block .node { color: #1d4ed8; font-weight: 600; }
+    .tree-block .op { color: #7c3aed; font-weight: 500; }
+    .tree-block .desc { color: #64748b; }
+    .tree-block .branch { color: #94a3b8; }
+
+    /* ===== BACK TO TOP ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 44px;
+      height: 44px;
+      background: var(--accent-dim);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      z-index: 90;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; }
+    .back-to-top:hover { background: var(--accent); transform: translateY(-2px); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        width: 280px;
+      }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      .main { margin-left: 0; }
+      .content { padding: 32px 20px 100px; }
+      .hamburger { display: flex; }
+      h1 { font-size: 1.7rem; }
+      h2 { font-size: 1.35rem; }
+      .header-links .hide-mobile { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .content { padding: 24px 16px 80px; }
+      pre { padding: 14px 16px; font-size: 0.85rem; }
+      table { font-size: 0.8rem; }
+      thead th, tbody td { padding: 8px 10px; }
+      .table-wrap { margin-left: -16px; margin-right: -16px; border-radius: 0; border-left: none; border-right: none; }
+    }
+
+    /* ===== PRINT ===== */
+    @media print {
+      .header, .sidebar, .sidebar-overlay, .hamburger, .back-to-top { display: none !important; }
+      .main { margin-left: 0; margin-top: 0; }
+      .content { max-width: 100%; padding: 0; }
+      body { background: #fff; color: #000; }
+      h1, h2, h3, h4, strong { color: #000; -webkit-text-fill-color: #000; }
+      p, li, td { color: #333; }
+      a { color: #1d4ed8; }
+      pre, code, .tree-block { background: #f3f4f6; color: #1e293b; border-color: #d1d5db; }
+      code { color: #1d4ed8; }
+      table, th, td { border: 1px solid #d1d5db; }
+      blockquote { background: #f3f4f6; border-left-color: #1d4ed8; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="index.html" class="logo">
+        <span class="logo-badge">RSV</span>
+        1C:RSV MCP Server
+      </a>
+      <span class="version-badge">v3.0.0</span>
+    </div>
+    <div class="header-links">
+      <a href="index.html" class="hide-mobile">Главная</a>
+      <a href="https://t.me/edt_ai_1c" target="_blank">Telegram</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="nav-section">
+    <span class="nav-section-title">Введение</span>
+    <a href="#what" class="nav-link">Что такое плагин</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Быстрый старт</span>
+    <a href="#requirements" class="nav-link sub">Требования</a>
+    <a href="#install" class="nav-link sub">Установка</a>
+    <a href="#connect" class="nav-link sub">Подключение ИИ-ассистента</a>
+    <a href="#rules-file" class="nav-link sub">Файл правил</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Лицензирование</span>
+    <a href="#licensing" class="nav-link">Тарифы и активация</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Интерфейс</span>
+    <a href="#ui" class="nav-link">Управление в EDT</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Возможности</span>
+    <a href="#examples" class="nav-link">Примеры запросов</a>
+    <a href="#examples-analyst" class="nav-link sub">Аналитик</a>
+    <a href="#examples-dev" class="nav-link sub">Разработчик</a>
+    <a href="#examples-arch" class="nav-link sub">Архитектор</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Инструменты</span>
+    <a href="#profiles" class="nav-link">Профили и группы</a>
+    <a href="#profile-analyst" class="nav-link sub">Аналитик (18)</a>
+    <a href="#profile-dev" class="nav-link sub">Разработчик (25)</a>
+    <a href="#profile-arch" class="nav-link sub">Архитектор (26)</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Подробнее</span>
+    <a href="#edit-metadata" class="nav-link">Конструктор конфигурации</a>
+    <a href="#debugger" class="nav-link">Отладка через ИИ</a>
+    <a href="#recommendations" class="nav-link">Рекомендации</a>
+    <a href="#specs" class="nav-link">Тех. характеристики</a>
+  </div>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main">
+  <div class="content">
+
+    <!-- Title -->
+    <h1>Руководство пользователя</h1>
+    <p class="subtitle">
+      <strong>Автор:</strong> Радзивиллович Сергей
+      (<a href="mailto:prepod2003@yandex.ru">prepod2003@yandex.ru</a>,
+      Telegram: <a href="https://t.me/Prepod2003" target="_blank">@Prepod2003</a>,
+      ТГ канал: <a href="https://t.me/edt_ai_1c" target="_blank">edt_ai_1c</a>)
+    </p>
+
+    <hr>
+
+    <!-- Что такое плагин -->
+    <h2 id="what">Что такое плагин</h2>
+    <p><strong>1C:RSV MCP Server</strong> — плагин для 1C:EDT, встраивающий MCP-сервер (Model Context Protocol) прямо в среду разработки. Плагин даёт ИИ-ассистентам (Claude Code, Cursor, Windsurf, Roo Code, Gemini CLI, Qwen Code) прямой доступ к конфигурациям 1С: метаданным, коду, формам, справке платформы, валидации и даже отладчику.</p>
+    <p>Плагин запускает HTTP-сервер на <code>127.0.0.1:8770</code> внутри EDT. ИИ-ассистент подключается по протоколу MCP (JSON-RPC 2.0 over HTTP) и получает <strong>26 инструментов</strong> в <strong>7 группах</strong>, распределённых по <strong>3 профилям</strong>.</p>
+    <p>Все данные обрабатываются <strong>локально</strong> — код конфигурации не передаётся в интернет. Сервер работает прямо внутри IDE, без внешних серверов и SaaS-посредников.</p>
+
+    <hr>
+
+    <!-- Быстрый старт -->
+    <h2 id="quickstart">Быстрый старт</h2>
+
+    <h3 id="requirements">Требования</h3>
+    <ul>
+      <li><strong>1C:EDT</strong> 2025.2</li>
+      <li><strong>Java 17</strong> (Azul Zulu 17)</li>
+      <li>ИИ-ассистент: Claude Code, Cursor, Windsurf, Roo Code, Gemini CLI, Qwen Code или VS Code + Copilot</li>
+    </ul>
+
+    <h3 id="install">Установка</h3>
+    <ol>
+      <li>Скачать ZIP-архив <code>edt-rsv-repository-3.0.0-SNAPSHOT.zip</code> из релизов</li>
+      <li>В EDT: <strong>Справка &rarr; Установить новое ПО...</strong></li>
+      <li><strong>Добавить...</strong> &rarr; <strong>Архив...</strong> &rarr; выбрать скачанный ZIP</li>
+      <li>Отметить <strong>1C:RSV MCP Server</strong> &rarr; <strong>Далее</strong> &rarr; <strong>Готово</strong></li>
+      <li>Перезапустить EDT</li>
+      <li>Проверить: <code>curl http://localhost:8770/health</code></li>
+    </ol>
+
+    <h3 id="connect">Подключение ИИ-ассистента</h3>
+
+    <p><strong>Claude Code</strong> (файл <code>~/.claude/claude_desktop_config.json</code>):</p>
+    <pre data-lang="json"><code>{
+  <span class="prop">"mcpServers"</span>: {
+    <span class="prop">"1c-rsv"</span>: {
+      <span class="prop">"url"</span>: <span class="str">"http://127.0.0.1:8770/mcp"</span>,
+      <span class="prop">"transport"</span>: <span class="str">"http"</span>
+    }
+  }
+}</code></pre>
+
+    <p><strong>Cursor / Windsurf</strong> (файл <code>.cursor/mcp.json</code>):</p>
+    <pre data-lang="json"><code>{
+  <span class="prop">"mcpServers"</span>: {
+    <span class="prop">"1c-rsv"</span>: {
+      <span class="prop">"url"</span>: <span class="str">"http://127.0.0.1:8770/mcp"</span>
+    }
+  }
+}</code></pre>
+
+    <p><strong>Roo Code (VS Code)</strong> (файл <code>.roo/mcp.json</code> или настройки Roo Code):</p>
+    <pre data-lang="json"><code>{
+  <span class="prop">"mcpServers"</span>: {
+    <span class="prop">"1c-rsv"</span>: {
+      <span class="prop">"type"</span>: <span class="str">"streamable-http"</span>,
+      <span class="prop">"url"</span>: <span class="str">"http://127.0.0.1:8770/mcp"</span>
+    }
+  }
+}</code></pre>
+
+    <p><strong>Gemini CLI</strong> (глобально <code>~/.gemini/settings.json</code>, или для проекта <code>.gemini/settings.json</code>):</p>
+    <pre data-lang="json"><code>{
+  <span class="prop">"mcpServers"</span>: {
+    <span class="prop">"1c-rsv"</span>: {
+      <span class="prop">"httpUrl"</span>: <span class="str">"http://127.0.0.1:8770/mcp"</span>,
+      <span class="prop">"trust"</span>: <span class="kw">true</span>
+    }
+  }
+}</code></pre>
+
+    <blockquote>
+      <p>Для Gemini CLI используется ключ <code>httpUrl</code> (не <code>url</code>). Глобальный конфиг <code>~/.gemini/settings.json</code> подключает MCP-сервер во всех проектах сразу.</p>
+    </blockquote>
+
+    <p><strong>Qwen Code CLI</strong> (глобально <code>~/.qwen/settings.json</code>, или для проекта <code>.qwen/settings.json</code>):</p>
+    <pre data-lang="json"><code>{
+  <span class="prop">"mcpServers"</span>: {
+    <span class="prop">"1c-rsv"</span>: {
+      <span class="prop">"httpUrl"</span>: <span class="str">"http://127.0.0.1:8770/mcp"</span>
+    }
+  }
+}</code></pre>
+
+    <blockquote>
+      <p>Сервер автоматически согласует версию MCP-протокола с клиентом — совместим как с новыми (2025-11-25), так и со старыми (2024-11-05) клиентами.</p>
+    </blockquote>
+
+    <h3 id="rules-file">Файл правил для ИИ-ассистента</h3>
+    <p>В комплекте с плагином поставляется <strong>файл правил</strong> — инструкции, которые учат ИИ-ассистента правильно работать с 1С через MCP. Файл правил:</p>
+    <ul>
+      <li>Запрещает ИИ читать/редактировать BSL- и MDO-файлы напрямую — только через инструменты MCP</li>
+      <li>Объясняет профили и их ограничения</li>
+      <li>Учит следовать паттернам конкретной конфигурации (использовать методы БСП, а не платформенные примитивы)</li>
+      <li>Обеспечивает управление знаниями — результаты исследований сохраняются между сессиями</li>
+      <li>Экономит токены — инструменты вызываются только при необходимости</li>
+    </ul>
+    <p>Скопируйте содержимое <code>CLAUDE.md</code> из комплекта в файл правил вашего ИИ-ассистента:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ИИ-ассистент</th><th>Файл правил</th><th>Расположение</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Claude Code</strong></td><td><code>CLAUDE.md</code></td><td>Корень проекта</td></tr>
+          <tr><td><strong>Cursor</strong></td><td><code>.cursor/rules/rules.mdc</code></td><td>Корень проекта</td></tr>
+          <tr><td><strong>Windsurf</strong></td><td><code>.windsurfrules</code></td><td>Корень проекта</td></tr>
+          <tr><td><strong>Roo Code</strong></td><td><code>.roo/rules/rules.md</code></td><td>Корень проекта</td></tr>
+          <tr><td><strong>Gemini CLI</strong></td><td><code>GEMINI.md</code></td><td>Корень проекта</td></tr>
+          <tr><td><strong>Qwen Code</strong></td><td><code>.qwen/rules</code></td><td>Корень проекта</td></tr>
+          <tr><td><strong>Cline</strong></td><td><code>.clinerules</code></td><td>Корень проекта</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Содержимое правил одинаковое для всех ИИ-ассистентов — меняется только расположение файла.</p>
+    <p>При работе с проектом ИИ-ассистент автоматически создаст в папке <code>.ai/</code> два файла:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Файл</th><th>Назначение</th></tr></thead>
+        <tbody>
+          <tr><td><code>.ai/project-knowledge.md</code></td><td>Знания о конфигурации: тип, версия, паттерны кода, ключевые модули</td></tr>
+          <tr><td><code>.ai/current-task.md</code></td><td>Текущая задача: план, статус шагов, хронология</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <blockquote>
+      <p><strong>Рекомендация:</strong> добавьте <code>.ai/</code> в <code>.gitignore</code> или оставьте <code>project-knowledge.md</code> в репозитории — он может быть полезен всей команде.</p>
+    </blockquote>
+
+    <hr>
+
+    <!-- Лицензирование -->
+    <h2 id="licensing">Лицензирование</h2>
+
+    <h3>Тарифные планы</h3>
+    <p>1C:RSV MCP Server распространяется по подписке. Доступны три тарифа:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Тариф</th><th>Инструментов</th><th>Доступные группы</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Аналитик</strong></td><td>18</td><td>Анализ метаданных, Анализ кода, Поиск и навигация</td></tr>
+          <tr><td><strong>Разработчик</strong></td><td>25</td><td>+ Редактирование кода и отладка, Валидация, Сборка и управление</td></tr>
+          <tr><td><strong>Архитектор</strong></td><td>26</td><td>+ Редактирование метаданных (~50 операций)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Подписка платная. Информация об оформлении и оплате — в Telegram-канале <a href="https://t.me/edt_ai_1c" target="_blank">@edt_ai_1c</a>.</p>
+
+    <h3>Пробный период — бесплатно</h3>
+    <p>При первом запуске EDT после установки автоматически открывается диалог активации. Нажмите <strong>«Получить пробный период»</strong> — плагин активируется с тарифом <strong>Архитектор</strong> на 14 дней.</p>
+
+    <h3>Активация подписки</h3>
+    <ol>
+      <li>Оформите подписку на нужный тариф — подробности в Telegram-канале <a href="https://t.me/edt_ai_1c" target="_blank">@edt_ai_1c</a></li>
+      <li>Получите <strong>код активации</strong> (формат: <code>ACT-DEV-XXXXXXXX</code>)</li>
+      <li>В EDT откройте <strong>Окно &rarr; Настройки &rarr; 1C:RSV &rarr; Лицензия</strong> &rarr; нажмите <strong>«Активировать новый код...»</strong></li>
+      <li>Введите код &rarr; нажмите <strong>«Активировать»</strong></li>
+    </ol>
+    <p>Привязка к компьютеру происходит автоматически.</p>
+
+    <h3>Привязка к компьютеру</h3>
+    <p>Лицензия привязывается к конкретному компьютеру через <strong>Machine ID</strong> — технический идентификатор, формируемый из аппаратных характеристик устройства.</p>
+    <p>При переустановке операционной системы или смене компьютера Machine ID изменится и старый код активации не подойдёт. В этом случае обратитесь в службу поддержки — мы выпустим новый код:</p>
+    <ul>
+      <li>Telegram: <a href="https://t.me/Prepod2003" target="_blank">@Prepod2003</a></li>
+      <li>Email: <a href="mailto:prepod2003@yandex.ru">prepod2003@yandex.ru</a></li>
+    </ul>
+
+    <h3>Управление лицензией</h3>
+    <p><strong>Окно &rarr; Настройки &rarr; 1C:RSV &rarr; Лицензия</strong></p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Поле</th><th>Описание</th></tr></thead>
+        <tbody>
+          <tr><td>Статус</td><td>АКТИВНА / ИСТЕКЛА / НЕ АКТИВИРОВАН</td></tr>
+          <tr><td>Тариф</td><td>Аналитик / Разработчик / Архитектор</td></tr>
+          <tr><td>Действует до</td><td>Дата окончания подписки</td></tr>
+          <tr><td>ID компьютера</td><td>Технический идентификатор для поддержки</td></tr>
+          <tr><td>Файл лицензии</td><td>Путь к локальному кэшу (<code>~/.edt-rsv/license.json</code>)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Продление подписки</h3>
+    <p>По истечении срока MCP-сервер перестанет запускаться. Для продолжения:</p>
+    <ol>
+      <li>Приобретите новый код активации</li>
+      <li>Введите через <strong>«Активировать новый код...»</strong> на странице лицензии</li>
+    </ol>
+
+    <hr>
+
+    <!-- Интерфейс -->
+    <h2 id="ui">Интерфейс управления в EDT</h2>
+
+    <h3>Индикатор в строке состояния</h3>
+    <p>В нижней строке состояния EDT появляется значок <strong>1C:RSV</strong> с цветным индикатором:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Цвет</th><th>Значение</th></tr></thead>
+        <tbody>
+          <tr><td><strong style="color:#22c55e">Зелёный</strong></td><td>Сервер работает, инструменты доступны</td></tr>
+          <tr><td><strong style="color:#94a3b8">Серый</strong></td><td>Сервер не запущен</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>При наведении отображается порт, количество активных инструментов и URL для подключения.</p>
+
+    <h3>Контекстное меню (клик по индикатору)</h3>
+    <p><strong>1. Управление сервером:</strong> Запустить / Перезапустить / Остановить</p>
+    <p><strong>2. Профили</strong> — быстрое переключение набора инструментов:</p>
+    <ul>
+      <li><strong>Аналитик</strong> [3 группы] — 18 инструментов</li>
+      <li><strong>Разработчик</strong> [6 групп] — 25 инструментов</li>
+      <li><strong>Архитектор</strong> [все 7] — 26 инструментов</li>
+    </ul>
+    <p>Активный профиль отмечен галочкой. При переключении реестр инструментов мгновенно перезагружается — перезапуск EDT не требуется.</p>
+
+    <blockquote>
+      <p><strong>Профиль и тариф</strong> — разные вещи. Тариф лицензии — это потолок доступа, определяемый подпиской. Профиль — пользовательская настройка в рамках тарифа. Например, пользователь с тарифом «Архитектор» может выбрать профиль «Аналитик», чтобы ограничить набор инструментов для ИИ.</p>
+    </blockquote>
+
+    <p><strong>3. Группы инструментов</strong> — тонкая настройка. Каждая группа имеет чекбокс для включения/отключения независимо от профиля.</p>
+
+    <h3>Страница настроек</h3>
+    <p><strong>Окно &rarr; Настройки &rarr; 1C:RSV</strong> — порт сервера (1024–65535, по умолчанию 8770) и управление группами.</p>
+
+    <hr>
+
+    <!-- Примеры запросов -->
+    <h2 id="examples">Что умеет плагин — примеры запросов</h2>
+    <p>Главное преимущество MCP-сервера — вы общаетесь с ИИ-ассистентом <strong>на естественном языке</strong>. Не нужно знать имена инструментов и их параметры. Просто опишите задачу — ассистент сам подберёт нужные инструменты.</p>
+
+    <h3 id="examples-analyst">Аналитик — изучение конфигурации</h3>
+
+    <p><strong>Знакомство с конфигурацией:</strong></p>
+    <blockquote><p><em>«Расскажи, что это за конфигурация — тип, версия, какие подсистемы есть, сколько объектов»</em></p></blockquote>
+    <blockquote><p><em>«Покажи все справочники, в имени которых есть "Контрагент"»</em></p></blockquote>
+    <blockquote><p><em>«Какие реквизиты у документа РеализацияТоваровУслуг? Покажи табличные части с колонками»</em></p></blockquote>
+
+    <p><strong>Анализ кода:</strong></p>
+    <blockquote><p><em>«Проанализируй подсистему Продажи — какие объекты входят, как связаны, где основная логика»</em></p></blockquote>
+    <blockquote><p><em>«Покажи структуру модуля менеджера справочника Номенклатура — какие методы, экспортные ли»</em></p></blockquote>
+    <blockquote><p><em>«Кто вызывает метод ПересчитатьСумму в документе ЗаказКлиента? Покажи цепочку вызовов»</em></p></blockquote>
+    <blockquote><p><em>«Что изменилось в модуле объекта документа ЗаказКлиента с прошлого коммита?»</em></p></blockquote>
+
+    <p><strong>Поиск по коду:</strong></p>
+    <blockquote><p><em>«Найди все места, где используется справочник Номенклатура — включая СправочникСсылка и СправочникОбъект»</em></p></blockquote>
+    <blockquote><p><em>«Найди в коде все обращения к регистру ЦеныНоменклатуры»</em></p></blockquote>
+
+    <p><strong>Справка платформы:</strong></p>
+    <blockquote><p><em>«Найди в справке платформы какие параметры принимает ВычислитьВыражениеСГруппировкойМассив»</em></p></blockquote>
+    <blockquote><p><em>«Покажи документацию по типу HTTPСоединение — конструктор, методы, свойства»</em></p></blockquote>
+    <blockquote><p><em>«Какие есть функции языка запросов 1С для работы с датами?»</em></p></blockquote>
+
+    <p><strong>Формы и справка:</strong></p>
+    <blockquote><p><em>«Покажи, как выглядит форма списка справочника Партнеры — хочу увидеть картинку»</em></p></blockquote>
+    <blockquote><p><em>«Прочитай встроенную справку документа ЗаказКлиента»</em></p></blockquote>
+
+    <hr>
+
+    <h3 id="examples-dev">Разработчик — код, валидация, отладка</h3>
+
+    <p><strong>Написание кода:</strong></p>
+    <blockquote><p><em>«Найди в конфигурации примеры использования Запрос.Выполнить и напиши аналогичный метод для выборки цен по номенклатуре»</em></p></blockquote>
+    <blockquote><p><em>«Добавь в модуль объекта документа ЗаказКлиента процедуру ПроверитьЗаполнение, которая проверяет наличие строк в табличной части»</em></p></blockquote>
+    <blockquote><p><em>«Замени метод ПересчитатьИтоги в модуле формы — вместо прямого расчёта используй вызов серверной функции»</em></p></blockquote>
+
+    <p><strong>Валидация:</strong></p>
+    <blockquote><p><em>«Проверь ошибки в документе ЗаказКлиента и исправь автоматически где возможно»</em></p></blockquote>
+    <blockquote><p><em>«Покажи все ошибки уровня ERROR в проекте — топ-10 самых частых»</em></p></blockquote>
+    <blockquote><p><em>«Проверь синтаксис этого запроса: ВЫБРАТЬ Наименование ИЗ Справочник.Номенклатура ГДЕ ЭтоГруппа = ЛОЖЬ»</em></p></blockquote>
+
+    <p><strong>Отладка:</strong></p>
+    <blockquote><p><em>«Поставь точку останова в ПриСозданииНаСервере документа ЗаказКлиента и покажи значение Объект.Партнер, когда я открою документ»</em></p></blockquote>
+    <blockquote><p><em>«Покажи все переменные в текущей точке останова»</em></p></blockquote>
+    <blockquote><p><em>«Вычисли выражение Объект.Товары.Количество() в контексте отладки»</em></p></blockquote>
+
+    <p><strong>Сборка:</strong></p>
+    <blockquote><p><em>«Обнови информационную базу из проекта»</em></p></blockquote>
+    <blockquote><p><em>«Очисти кэш и пересобери проект — в валидации ложные ошибки»</em></p></blockquote>
+
+    <hr>
+
+    <h3 id="examples-arch">Архитектор — создание объектов, форм, отчётов</h3>
+
+    <p><strong>Создание объектов:</strong></p>
+    <blockquote><p><em>«Создай справочник Товары с реквизитами Наименование (Строка 150), Артикул (Строка 25) и Цена (Число 15,2). Добавь табличную часть Характеристики с колонками Наименование и Значение. Создай форму элемента и установи её основной»</em></p></blockquote>
+    <blockquote><p><em>«Создай документ ЗаказПоставщику с реквизитами Контрагент (СправочникСсылка.Контрагенты), Склад, Сумма и табличной частью Товары (Номенклатура, Количество, Цена, Сумма)»</em></p></blockquote>
+    <blockquote><p><em>«Создай регистр накопления ОстаткиТоваров с измерениями Номенклатура и Склад, ресурсом Количество, регистратор — ПриходнаяНакладная»</em></p></blockquote>
+
+    <p><strong>Работа с формами:</strong></p>
+    <blockquote><p><em>«Добавь на форму элемента справочника Товары группу "Основное" с полями Наименование и Артикул, и группу "Цены" с полем Цена»</em></p></blockquote>
+    <blockquote><p><em>«Добавь кнопку "Рассчитать итоги" на форму документа ЗаказКлиента и создай для неё обработчик на сервере»</em></p></blockquote>
+    <blockquote><p><em>«Подбери стандартную картинку для подсистемы Склад и установи её»</em></p></blockquote>
+    <blockquote><p><em>«Добавь на форму таблицу динамического списка по регистру ОстаткиТоваров»</em></p></blockquote>
+
+    <p><strong>Отчёты СКД:</strong></p>
+    <blockquote><p><em>«Создай отчёт ПродажиПоКонтрагентам с группировкой по контрагентам и сортировкой по сумме»</em></p></blockquote>
+    <blockquote><p><em>«Добавь в отчёт условное оформление: если сумма больше 100000, выделить строку жёлтым»</em></p></blockquote>
+    <blockquote><p><em>«Добавь в отчёт отбор по периоду и контрагенту»</em></p></blockquote>
+
+    <p><strong>Расширения:</strong></p>
+    <blockquote><p><em>«Заимствуй документ ЗаказКлиента в расширение и добавь реквизит КодПроекта»</em></p></blockquote>
+
+    <p><strong>Права и подсистемы:</strong></p>
+    <blockquote><p><em>«Создай роль ТолькоЧтениеСклад с правами Чтение и Просмотр на все складские справочники»</em></p></blockquote>
+    <blockquote><p><em>«Включи документ ЗаказПоставщику в подсистему Закупки»</em></p></blockquote>
+
+    <hr>
+
+    <!-- Профили и группы -->
+    <h2 id="profiles">Профили и группы инструментов</h2>
+
+    <h3 id="profile-analyst">Профиль «Аналитик» — 18 инструментов</h3>
+    <p>Профиль только для чтения. Для изучения и документирования конфигураций без внесения изменений.</p>
+
+    <h4>Анализ метаданных (8 инструментов)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
+        <tbody>
+          <tr><td><code>show_edt_version</code></td><td>Версия и сборка EDT, информация о JVM и ОС</td></tr>
+          <tr><td><code>list_workspace_projects</code></td><td>Список проектов в текущем workspace</td></tr>
+          <tr><td><code>list_metadata_objects</code></td><td>Каталог объектов метаданных с фильтрацией по типу и имени</td></tr>
+          <tr><td><code>get_object_details</code></td><td>Полная структура объекта: реквизиты, табличные части, формы, команды</td></tr>
+          <tr><td><code>get_config_properties</code></td><td>Свойства конфигурации: версия, подсистемы, статистика объектов</td></tr>
+          <tr><td><code>get_form_image</code></td><td>Визуализация формы — PNG-картинка или JSON-структура элементов</td></tr>
+          <tr><td><code>get_platform_docs</code></td><td>Синтаксис-помощник: API платформы, язык запросов, директивы, функции СКД</td></tr>
+          <tr><td><code>get_object_help</code></td><td>Встроенная справка объекта (HTML-документация по кнопке «?»)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong><code>get_platform_docs</code></strong> — полноценный синтаксис-помощник для ИИ. Покрывает тысячи топиков: все типы платформы (Запрос, ТаблицаЗначений, HTTPСоединение...) с методами, свойствами и конструкторами. Язык запросов, директивы компиляции, аннотации расширений, ~130 функций СКД. Поиск без учёта регистра, русские и английские имена, точечная нотация (<code>Запрос.Выполнить</code>).</p>
+
+    <h4>Анализ кода (7 инструментов)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
+        <tbody>
+          <tr><td><code>list_modules</code></td><td>Все BSL-модули проекта с типом, размером, количеством строк</td></tr>
+          <tr><td><code>read_module_source</code></td><td>Чтение исходника модуля целиком или по диапазону строк</td></tr>
+          <tr><td><code>get_module_structure</code></td><td>Карта методов: сигнатуры, параметры, области, экспортные/внутренние</td></tr>
+          <tr><td><code>read_method_source</code></td><td>Код конкретной процедуры/функции по имени</td></tr>
+          <tr><td><code>get_method_call_hierarchy</code></td><td>Иерархия вызовов: входящие и исходящие, до 3 уровней глубины</td></tr>
+          <tr><td><code>ai_context</code></td><td>Умный сборщик контекста — метаданные + код + вызовы за один запрос</td></tr>
+          <tr><td><code>diff_module</code></td><td>Сравнение модуля с версией из git (summary / unified / methods)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong><code>ai_context</code></strong> — заменяет 5–7 отдельных вызовов. Три режима: <code>minimal</code> (быстрый обзор), <code>standard</code> (для большинства задач), <code>full</code> (максимум: код + вызовы + ссылки). Лучший первый шаг при работе с незнакомым объектом.</p>
+
+    <h4>Поиск и навигация (3 инструмента)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
+        <tbody>
+          <tr><td><code>search_in_code</code></td><td>Полнотекстовый поиск по BSL-коду с регулярными выражениями</td></tr>
+          <tr><td><code>find_object_references</code></td><td>Все места использования объекта в коде. Режим <code>deep</code> для производных типов</td></tr>
+          <tr><td><code>resolve_symbol</code></td><td>Переход к определению метода с подсказками при опечатках</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr>
+
+    <h3 id="profile-dev">Профиль «Разработчик» — 25 инструментов</h3>
+    <p>К 18 инструментам аналитика добавляются инструменты для редактирования кода, отладки, валидации и сборки.</p>
+
+    <h4>Редактирование кода и отладка (2 инструмента)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
+        <tbody>
+          <tr><td><code>write_module_source</code></td><td>Запись BSL-кода (6 режимов: replace, replaceLines, replaceMethod, append, insertBefore, insertAfter)</td></tr>
+          <tr><td><code>launch_debugger</code></td><td>Полноценная отладка 1С — 16 действий (запуск, breakpoints, пошаговое выполнение, переменные, evaluate)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong><code>write_module_source</code></strong> — по умолчанию работает в режиме симуляции (<code>dryRun=true</code>). Автоматический бэкап перед каждой записью, проверка синтаксиса, блокировка при удалении &gt;50% строк.</p>
+
+    <h4>Валидация (2 инструмента)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
+        <tbody>
+          <tr><td><code>get_validation_errors</code></td><td>Ошибки и предупреждения EDT с фильтрацией, объяснением и рекомендациями по исправлению</td></tr>
+          <tr><td><code>validate_query</code></td><td>Синтаксическая проверка запросов на языке запросов 1С</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Сборка и управление (3 инструмента)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
+        <tbody>
+          <tr><td><code>sync_database</code></td><td>Обновление информационной базы из проекта EDT</td></tr>
+          <tr><td><code>rebuild_project</code></td><td>Очистка кэша и пересборка проекта</td></tr>
+          <tr><td><code>list_applications</code></td><td>Список зарегистрированных информационных баз (нужен для отладчика)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr>
+
+    <h3 id="profile-arch">Профиль «Архитектор» — 26 инструментов</h3>
+    <p>К 25 инструментам разработчика добавляется конструктор конфигурации.</p>
+
+    <h4>Редактирование метаданных (1 инструмент, ~50 операций)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
+        <tbody>
+          <tr><td><code>edit_metadata</code></td><td>Единый конструктор: создание объектов, реквизитов, форм, элементов, отчётов СКД, расширений</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <blockquote>
+      <p><strong>Важно.</strong> Группа «Редактирование метаданных» отключена по умолчанию. Для включения: <strong>Окно &rarr; Настройки &rarr; 1C:RSV</strong> &rarr; включите группу.</p>
+    </blockquote>
+
+    <hr>
+
+    <!-- Конструктор конфигурации -->
+    <h2 id="edit-metadata">Конструктор конфигурации — edit_metadata</h2>
+    <p>Единый инструмент для создания и настройки объектов метаданных, форм и отчётов. Содержит около <strong>50 операций</strong> в 6 областях. Все изменения выполняются через нативные сервисы EDT — результат идентичен ручному созданию в конструкторе.</p>
+
+    <h3>Дерево операций</h3>
+
+    <div class="tree-block"><span class="node">edit_metadata</span> <span class="desc">(~50 операций)</span>
+<span class="branch">│</span>
+<span class="branch">├──</span> <span class="op">Объекты метаданных</span> <span class="desc">(5 операций)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> createObject <span class="desc">— создание (30+ типов: справочники, документы, регистры...)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> setObjectProperty <span class="desc">— свойства (иерархия, код, картинка подсистемы...)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addObjectAttribute <span class="desc">— реквизиты (примитивные и ссылочные типы)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addTabularSection <span class="desc">— табличные части с колонками</span>
+<span class="branch">│</span>   <span class="branch">└──</span> addTabularSectionAttribute <span class="desc">— колонки в существующую ТЧ</span>
+<span class="branch">│</span>
+<span class="branch">├──</span> <span class="op">Специализированные объекты</span> <span class="desc">(6 операций)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addRegisterField / removeRegisterField <span class="desc">— поля регистров</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addEnumValue <span class="desc">— значения перечислений</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addSubsystemContent / removeSubsystemContent <span class="desc">— состав подсистем</span>
+<span class="branch">│</span>   <span class="branch">└──</span> setRoleRight <span class="desc">— права ролей (русские и английские имена)</span>
+<span class="branch">│</span>
+<span class="branch">├──</span> <span class="op">Формы</span> <span class="desc">(14 операций)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> createForm <span class="desc">— создание (элемент, список, выбор, общая, запись регистра)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addFormAttribute / addFormAttributeColumn <span class="desc">— реквизиты формы</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addDynamicListTable <span class="desc">— таблица динамического списка</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addField, addGroup, addButton, addTable <span class="desc">— элементы формы</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addDecoration, addRadioButton <span class="desc">— декорации и переключатели</span>
+<span class="branch">│</span>   <span class="branch">├──</span> setProperty <span class="desc">— свойства элементов (цвета, шрифты, картинки)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> listPictures <span class="desc">— поиск среди 763 стандартных картинок</span>
+<span class="branch">│</span>   <span class="branch">└──</span> addCommandHandler <span class="desc">— обработчики кнопок</span>
+<span class="branch">│</span>
+<span class="branch">├──</span> <span class="op">Расширения</span> <span class="desc">(3 операции)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> adoptObject <span class="desc">— заимствовать объект из базовой конфигурации</span>
+<span class="branch">│</span>   <span class="branch">├──</span> adoptChild <span class="desc">— заимствовать дочерний элемент</span>
+<span class="branch">│</span>   <span class="branch">└──</span> adoptFormItem <span class="desc">— заимствовать элемент формы</span>
+<span class="branch">│</span>
+<span class="branch">├──</span> <span class="op">Отчёты СКД</span> <span class="desc">(22 операции)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> createReportSchema, addDataSet, addDataSetField <span class="desc">— структура</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addSchemaParameter, addCalculatedField, addTotalField <span class="desc">— вычисления</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addSettingsGroup/Table/Chart <span class="desc">— группировки и визуализация</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addSettingsFilter/Order <span class="desc">— отборы и сортировки</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addConditionalAppearance <span class="desc">— условное оформление</span>
+<span class="branch">│</span>   <span class="branch">└──</span> setOutputParameter, addSettingsVariant <span class="desc">— настройки вывода</span>
+<span class="branch">│</span>
+<span class="branch">└──</span> <span class="op">Общее</span> <span class="desc">(2 операции)</span>
+    <span class="branch">├──</span> moveItem <span class="desc">— перемещение элементов</span>
+    <span class="branch">└──</span> removeItem <span class="desc">— удаление элементов</span></div>
+
+    <h3>Ключевые возможности</h3>
+    <p><strong>Картинки.</strong> Свойства <code>setObjectProperty</code> и <code>setProperty</code> принимают как стандартные картинки EDT (763 шт., поиск через <code>listPictures</code>), так и общие картинки конфигурации в формате <code>CommonPicture.ИмяКартинки</code>.</p>
+    <p><strong>Пакетный режим.</strong> Большинство операций поддерживают создание нескольких элементов за один вызов. Справочник с 10 реквизитами, табличной частью и формой — за 3–4 вызова вместо 15.</p>
+    <p><strong>Расширения.</strong> При добавлении реквизитов со ссылочными типами инструмент автоматически заимствует связанные объекты.</p>
+    <p><strong>Отчёты СКД.</strong> Полный цикл: схема, наборы данных, параметры, ресурсы, группировки, таблицы, диаграммы, отборы, сортировки, условное оформление, варианты настроек. Минимальный отчёт — 6 вызовов.</p>
+
+    <h3>Встроенная справка</h3>
+    <p>У инструмента есть собственный справочник, который ИИ-ассистент запрашивает при необходимости:</p>
+    <ul>
+      <li><code>help</code> — список всех операций</li>
+      <li><code>help topic=&lt;операция&gt;</code> — подробная справка с примерами</li>
+      <li><code>help topic=types</code> — каталог типов данных для реквизитов</li>
+      <li><code>help topic=objectTypes</code> — типы объектов, которые можно создать</li>
+      <li><code>help topic=formTypes</code> — типы форм</li>
+      <li><code>help topic=workflow</code> — типичный сценарий работы от создания объекта до обработчиков</li>
+    </ul>
+    <p>ИИ-ассистенту не нужно знать внутреннее устройство EDT — он спрашивает у инструмента, что доступно, и получает готовые примеры.</p>
+
+    <hr>
+
+    <!-- Отладка -->
+    <h2 id="debugger">Отладка через ИИ-агента — launch_debugger</h2>
+    <p>Инструмент <code>launch_debugger</code> позволяет ИИ-агенту отлаживать код 1С так же, как это делает разработчик в EDT:</p>
+    <ul>
+      <li><strong>Точки останова</strong> — настоящие BSL breakpoints, видимые отладчику EDT. Поддержка условных точек останова</li>
+      <li><strong>Запуск отладки</strong> — клиент 1С запускается в режиме отладки одной командой</li>
+      <li><strong>Пошаговое выполнение</strong> — шаг через строку, вход в метод, выход из метода</li>
+      <li><strong>Чтение переменных</strong> — локальные переменные метода + все реквизиты формы (Объект, ЭтаФорма, Элементы)</li>
+      <li><strong>Вычисление выражений</strong> — любое BSL-выражение в контексте точки останова</li>
+      <li><strong>Стек вызовов</strong> — текущая строка, метод, цепочка вызовов</li>
+      <li><strong>Управление выполнением</strong> — продолжить, приостановить, завершить</li>
+    </ul>
+
+    <h3>Все 16 действий</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Группа</th><th>Действия</th><th>Описание</th></tr></thead>
+        <tbody>
+          <tr><td>Сессия</td><td><code>launch</code>, <code>status</code>, <code>terminate</code></td><td>Запуск отладки, статус сессий, завершение</td></tr>
+          <tr><td>Выполнение</td><td><code>resume</code>, <code>stepOver</code>, <code>stepInto</code>, <code>stepReturn</code>, <code>suspend</code></td><td>Пошаговое выполнение</td></tr>
+          <tr><td>Состояние</td><td><code>getState</code>, <code>getVariables</code>, <code>getVariable</code>, <code>evaluate</code></td><td>Стек вызовов, переменные, вычисление</td></tr>
+          <tr><td>Breakpoints</td><td><code>listBreakpoints</code>, <code>addBreakpoint</code>, <code>removeBreakpoint</code>, <code>toggleBreakpoint</code></td><td>Управление точками останова</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Примеры вычислений через evaluate</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Выражение</th><th>Результат</th></tr></thead>
+        <tbody>
+          <tr><td><code>Объект.Партнер</code></td><td><code>"Дальстрой"</code> (СправочникСсылка.Партнеры)</td></tr>
+          <tr><td><code>Объект.Товары.Количество()</code></td><td><code>"5"</code> (Число)</td></tr>
+          <tr><td><code>1 + 2 + 3</code></td><td><code>"6"</code> (Число)</td></tr>
+          <tr><td><code>"Привет" + " мир!"</code></td><td><code>"Привет мир!"</code> (Строка)</td></tr>
+          <tr><td><code>Объект.Дата</code></td><td><code>"01.10.2022 12:00:00"</code> (Дата)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Типичный сценарий</h3>
+    <p>Попросите ассистента:</p>
+    <blockquote><p><em>«Поставь точку останова в ПриСозданииНаСервере документа ЗаказКлиента и покажи значение Объект.Партнер, когда я открою документ»</em></p></blockquote>
+    <p>Агент поставит breakpoint, дождётся остановки, вычислит выражение и вернёт результат с типом.</p>
+
+    <hr>
+
+    <!-- Рекомендации -->
+    <h2 id="recommendations">Рекомендации по работе с ИИ-ассистентом</h2>
+
+    <h3>Выбор модели</h3>
+    <p>Для серьёзной разработки 1С <strong>рекомендуются топовые модели</strong>: Claude Opus, Claude Sonnet. Они лучше понимают контекст 1С, следуют правилам и реже галлюцинируют.</p>
+    <p>При работе с бесплатными или средними моделями (Claude Haiku, GPT-4o-mini, Gemini Flash):</p>
+    <ul>
+      <li>Контролируйте процесс жёстче — модель чаще будет игнорировать правила</li>
+      <li>Для чтения и анализа средние модели подходят, для записи кода — контроль обязателен</li>
+    </ul>
+
+    <h3>Контроль галлюцинаций</h3>
+    <p>Даже топовые модели могут «выдумывать» методы платформы 1С. Для минимизации:</p>
+    <ol>
+      <li><strong>Синтаксис-помощник</strong> — пусть ИИ проверяет сигнатуры через <code>get_platform_docs</code></li>
+      <li><strong>Примеры из проекта</strong> — ИИ должен искать аналогичный код в конфигурации (3–5 примеров)</li>
+      <li><strong>Встроенная справка</strong> — <code>get_object_help</code> помогает понять бизнес-логику без домыслов</li>
+      <li><strong>Проверка запросов</strong> — <code>validate_query</code> до вставки в код</li>
+      <li><strong>Цикл валидации</strong> — после каждой записи кода: <code>get_validation_errors</code> &rarr; исправление &rarr; повторная проверка до 0 ошибок ERROR</li>
+    </ol>
+
+    <h3>Планирование</h3>
+    <p>Для сложных задач обязательно:</p>
+    <ol>
+      <li>Попросите ИИ составить план реализации</li>
+      <li>Зафиксируйте план в <code>.ai/current-task.md</code></li>
+      <li>Обновляйте статус после каждого шага</li>
+      <li>При новой сессии — ИИ сначала прочитает план и продолжит с нужного места</li>
+    </ol>
+
+    <h3>Что контролировать</h3>
+    <ul>
+      <li><strong>Режим записи</strong> — <code>replaceMethod</code> для одного метода, а не <code>replace</code> для всего модуля</li>
+      <li><strong>dry-run</strong> — каждая запись начинается с <code>dryRun: true</code></li>
+      <li><strong>Паттерны конфигурации</strong> — ИИ ищет примеры в проекте, а не генерирует «по памяти»</li>
+      <li><strong>Методы БСП</strong> — в типовых конфигурациях ИИ использует обёртки БСП, а не платформенные примитивы</li>
+    </ul>
+
+    <h3>Автобэкап</h3>
+    <p>Плагин автоматически создаёт резервную копию модуля перед каждой записью:</p>
+    <ul>
+      <li>Бэкапы хранятся в <code>~/.edt-rsv/backups/</code></li>
+      <li>Максимум 5 бэкапов на каждый модуль, старые удаляются автоматически</li>
+      <li>Для восстановления: скопируйте <code>.bsl.bak</code> файл на место модуля или используйте его содержимое как <code>source</code> для <code>write_module_source</code></li>
+    </ul>
+
+    <hr>
+
+    <!-- Технические характеристики -->
+    <h2 id="specs">Технические характеристики</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Параметр</th><th>Значение</th></tr></thead>
+        <tbody>
+          <tr><td>Инструментов</td><td>26 в 7 группах</td></tr>
+          <tr><td>Профилей</td><td>3 (Аналитик, Разработчик, Архитектор)</td></tr>
+          <tr><td>Протокол</td><td>MCP Streamable HTTP (2025-11-25 / 2024-11-05)</td></tr>
+          <tr><td>Порт по умолчанию</td><td>8770 (настраиваемый, 1024–65535)</td></tr>
+          <tr><td>Формат ответов</td><td>JSON (все инструменты)</td></tr>
+          <tr><td>ИИ-ассистенты</td><td>Claude Code, Cursor, Windsurf, Roo Code, Gemini CLI, Qwen Code</td></tr>
+          <tr><td>Совместимость</td><td>1C:EDT 2025.2, Java 17</td></tr>
+          <tr><td>Установка</td><td>Справка &rarr; Установить новое ПО &rarr; Архив</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr>
+
+    <p style="text-align:center;color:var(--text-dim);margin-top:40px;font-size:0.9rem;">
+      <em>1C:RSV MCP Server v3.0.0 — самый функциональный MCP-сервер для работы ИИ-ассистентов с 1С:EDT</em>
+    </p>
+
+  </div>
+</main>
+
+<!-- ===== BACK TO TOP ===== -->
+<button class="back-to-top" id="backToTop" aria-label="Наверх">&#8593;</button>
+
+<script>
+  // Sidebar toggle
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+  overlay.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+
+  // Close sidebar on nav link click (mobile)
+  sidebar.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        hamburger.classList.remove('active');
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+      }
+    });
+  });
+
+  // Back to top
+  const btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 400);
+  });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('h2[id], h3[id], h4[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const idToLink = {};
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      idToLink[href.slice(1)] = link;
+    }
+  });
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        let current = '';
+        sections.forEach(section => {
+          const top = section.getBoundingClientRect().top;
+          if (top <= 120) current = section.id;
+        });
+        navLinks.forEach(l => l.classList.remove('active'));
+        if (current && idToLink[current]) {
+          idToLink[current].classList.add('active');
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+</script>
+
+</body>
+</html>

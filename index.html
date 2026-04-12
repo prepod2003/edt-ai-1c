@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="1C:RSV MCP Server — плагин для 1C:EDT, который даёт ИИ-ассистентам прямой доступ к конфигурациям 1С. 38 инструментов, встроен в EDT. Совместим с Claude Code, Cursor, Windsurf.">
+  <meta name="description" content="1C:RSV MCP Server — плагин для 1C:EDT, который даёт ИИ-ассистентам прямой доступ к конфигурациям 1С. 26 инструментов, встроен в EDT. Совместим с Claude Code, Cursor, Windsurf.">
   <title>1C:RSV — Зрение ИИ в 1С:EDT</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563eb'/><text x='50%' y='54%' dy='.35em' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='12' font-weight='900' letter-spacing='-0.5'>RSV</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -106,6 +106,27 @@
     .section-header { text-align: center; max-width: 700px; margin: 0 auto 56px; }
     .section-header .badge { margin-bottom: 16px; }
     .section-header p { font-size: 1.1rem; color: var(--text-l); margin-top: 12px; }
+
+    /* ===== ANNOUNCEMENT BAR ===== */
+    .announce-bar {
+      background: linear-gradient(90deg, #1d4ed8, #3b82f6, #1d4ed8);
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 0;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .announce-bar .announce-track {
+      display: inline-block;
+      animation: marquee 20s linear infinite;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .announce-bar a { color: #fbbf24; text-decoration: underline; }
 
     /* ===== NAVBAR ===== */
     .navbar {
@@ -1146,6 +1167,16 @@
 <body>
 
 <!-- ===== NAVBAR ===== -->
+<!-- ===== ANNOUNCEMENT BAR ===== -->
+<div class="announce-bar">
+  <span class="announce-track">
+    ⭐ 14 дней бесплатно — полный доступ ко всем 26 инструментам (тариф Архитектор) &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    🛠 Версия 3.0.0 — единый конструктор конфигурации, отладка, 3 платформы &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    ⭐ 14 дней бесплатно — полный доступ ко всем 26 инструментам (тариф Архитектор) &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    🛠 Версия 3.0.0 — единый конструктор конфигурации, отладка, 3 платформы
+  </span>
+</div>
+
 <nav class="navbar">
   <div class="container">
     <div class="navbar-inner">
@@ -1154,14 +1185,11 @@
         <span class="logo-text">MCP Server</span>
       </a>
       <ul class="navbar-links">
-        <li><a href="#demo">Демо</a></li>
-        <li><a href="#real-case">Кейс ЗУП</a></li>
-        <li><a href="#how">Как работает</a></li>
+        <li><a href="#docs">Документация</a></li>
         <li><a href="#profiles">Профили</a></li>
         <li><a href="#cases">Кейсы</a></li>
-        <li><a href="#analysts">Аналитикам</a></li>
-        <li><a href="#quality">Качество</a></li>
         <li><a href="#install">Установка</a></li>
+        <li><a href="#pricing">Тарифы</a></li>
       </ul>
       <div class="navbar-cta">
         <a href="#download" class="btn-nav-download navbar-btn-download-hide" data-v="⬇ Скачать v{v}">⬇ Скачать v2.8.9</a>
@@ -1175,8 +1203,9 @@
 </nav>
 
 <!-- ===== HERO ===== -->
-<section class="hero">
-  <div class="container">
+<section class="hero" style="position:relative;">
+  <div id="tsparticles" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;"></div>
+  <div class="container" style="position:relative;z-index:2;">
     <div class="hero-grid">
       <div class="hero-content fade-in">
         <div class="hero-badge">
@@ -1184,9 +1213,9 @@
         </div>
         <h1>Дайте ИИ <span>зрение</span><br>в 1С:EDT</h1>
         <p class="hero-sub">
-          Плагин 1C:RSV подключает ИИ-ассистентов (Claude Code, Cursor, Windsurf)
-          напрямую к вашей конфигурации 1С. ИИ <strong>видит структуру, читает код
-          и пишет готовые решения</strong> уровня Senior — за секунды.
+          Единственный в мире плагин, дающий ИИ-ассистенту <strong>полный контроль над 1С:EDT</strong>:
+          создание объектов, форм, отчётов СКД, запись кода, отладка — всё через естественный язык.
+          <strong>26 инструментов, ~50 операций конструктора</strong>. Ничего подобного не существует.
         </p>
         <div class="hero-actions">
           <a href="https://t.me/edt_ai_1c" class="btn btn-primary" target="_blank" rel="noopener">
@@ -1197,20 +1226,16 @@
         </div>
         <div class="hero-stats">
           <div class="hero-stat">
-            <div class="num" data-counter="38">0</div>
+            <div class="num" data-counter="26">0</div>
             <div class="lbl">инструментов MCP</div>
           </div>
           <div class="hero-stat">
-            <div class="num" data-counter="8">0</div>
+            <div class="num" data-counter="7">0</div>
             <div class="lbl">групп функций</div>
           </div>
           <div class="hero-stat">
             <div class="num" data-counter="3">0</div>
             <div class="lbl">профиля ролей</div>
-          </div>
-          <div class="hero-stat">
-            <div class="num" data-counter="0">0</div>
-            <div class="lbl">внешних зависимостей</div>
           </div>
         </div>
       </div>
@@ -1233,12 +1258,29 @@
   </div>
 </section>
 
-<!-- ===== PRESENTATION SHOWCASE ===== -->
-<section class="showcase">
+<!-- ===== DOCUMENTATION (moved here from below) ===== -->
+<section id="docs" style="background:#f8fafc; padding:48px 0;">
   <div class="container">
-    <div class="showcase-inner fade-in">
-      <img src="images/presentation-main.png" alt="1C:RSV — обзор решения" loading="lazy">
-      <div class="showcase-caption">Общий обзор решения 1C:RSV MCP Server</div>
+    <div class="section-header fade-in">
+      <span class="badge badge-blue">Документация</span>
+      <h2>Всё задокументировано</h2>
+      <p>Подробная документация для быстрого старта и глубокого погружения в возможности плагина.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:24px; max-width:800px; margin:0 auto;">
+      <a href="guide.html" style="text-decoration:none;" class="fade-in fade-in-delay-1">
+        <div style="background:white; border:2px solid var(--blue); border-radius:var(--radius-lg); padding:32px; text-align:center; transition:box-shadow 0.2s,transform 0.2s; cursor:pointer;" onmouseover="this.style.boxShadow='0 10px 30px rgba(59,130,246,0.15)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
+          <div style="font-size:2.5rem; margin-bottom:16px;">📖</div>
+          <h3 style="font-size:1.15rem; margin-bottom:8px; color:var(--text);">Руководство пользователя</h3>
+          <p style="font-size:0.9rem; color:var(--text-l); line-height:1.6;">Установка, настройка, примеры запросов к ИИ, профили, лицензирование</p>
+        </div>
+      </a>
+      <a href="tools.html" style="text-decoration:none;" class="fade-in fade-in-delay-2">
+        <div style="background:white; border:2px solid var(--indigo); border-radius:var(--radius-lg); padding:32px; text-align:center; transition:box-shadow 0.2s,transform 0.2s; cursor:pointer;" onmouseover="this.style.boxShadow='0 10px 30px rgba(99,102,241,0.15)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
+          <div style="font-size:2.5rem; margin-bottom:16px;">🔧</div>
+          <h3 style="font-size:1.15rem; margin-bottom:8px; color:var(--text);">Описание инструментов</h3>
+          <p style="font-size:0.9rem; color:var(--text-l); line-height:1.6;">26 инструментов, ~50 операций edit_metadata, примеры для каждого тарифа</p>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -1460,10 +1502,9 @@
 <div class="stats-bar">
   <div class="container">
     <div class="stats-inner">
-      <div class="stat-item"><span class="sn" data-counter="38">0</span><div class="sl">Инструментов MCP</div></div>
-      <div class="stat-item"><span class="sn" data-counter="51">0</span><div class="sl">Java-классов</div></div>
+      <div class="stat-item"><span class="sn" data-counter="26">0</span><div class="sl">Инструментов MCP</div></div>
+      <div class="stat-item"><span class="sn" data-counter="7">0</span><div class="sl">Групп функций</div></div>
       <div class="stat-item"><span class="sn" data-counter="3">0</span><div class="sl">Профиля работы</div></div>
-      <div class="stat-item"><span class="sn" data-counter="0">0</span><div class="sl">Внешних зависимостей</div></div>
     </div>
   </div>
 </div>
@@ -1502,13 +1543,14 @@
           <span class="tool-tag">search_in_code</span>
           <span class="tool-tag">get_validation_errors</span>
           <span class="tool-tag">write_module_source</span>
+          <span class="tool-tag">launch_debugger</span>
           <span class="tool-tag">ai_context</span>
         </div>
         <ul class="profile-features">
           <li><span class="star">★</span><span>Пишет <strong>готовый BSL-код</strong> по одному промту — без ТЗ и без указания методов</span></li>
           <li><span class="star">★</span><span>Находит паттерны в БСП/ERP и воспроизводит их <strong>по стандартам 1С</strong></span></li>
           <li><span class="star">★</span><span><strong>Автоматически проверяет и исправляет</strong> ошибки валидации после записи</span></li>
-          <li><span class="star">★</span><span>Анализирует цепочки вызовов (<code>get_method_call_hierarchy</code>) — видит побочные эффекты</span></li>
+          <li><span class="star">★</span><span>Полноценная отладка через <code>launch_debugger</code> — точки останова, стек, переменные</span></li>
           <li><span class="star">★</span><span>Dry-run перед записью — <strong>полная безопасность</strong> изменений</span></li>
         </ul>
       </div>
@@ -1580,28 +1622,25 @@
     <div class="profile-panel" id="tab-arch">
       <div class="profile-info fade-in">
         <span class="badge badge-indigo" style="margin-bottom:14px;">Профиль: Архитектор</span>
-        <h3>Прямое конструирование прикладного решения</h3>
-        <p class="profile-tagline">ИИ не просто пишет текст — он создаёт и модифицирует объекты конфигурации.</p>
+        <h3>Единый конструктор прикладного решения</h3>
+        <p class="profile-tagline">ИИ не просто пишет текст — он создаёт и модифицирует объекты конфигурации через единый инструмент.</p>
         <p class="profile-desc">
-          Архитектор переводит взаимодействие ИИ и 1С на принципиально новый уровень —
-          не просто написание кода, а <strong>прямое создание и модификация объектов конфигурации</strong>
-          с многоуровневой системой защиты. Инструменты полностью работоспособны в базовых сценариях
-          и активно развиваются.
+          В v3.0.0 четыре отдельных инструмента (create_metadata_object, modify_metadata, modify_form, modify_report)
+          объединены в <strong>единый конструктор <code>edit_metadata</code></strong> с ~50 операциями.
+          Создание объектов, управление реквизитами, редактирование форм, настройка СКД-отчётов и работа с расширениями —
+          всё через один инструмент с <strong>трёхуровневой системой защиты</strong>.
         </p>
         <div class="profile-tools">
-          <span class="tool-tag">create_metadata_object</span>
-          <span class="tool-tag">modify_metadata</span>
-          <span class="tool-tag">modify_form</span>
-          <span class="tool-tag">modify_report</span>
+          <span class="tool-tag">edit_metadata</span>
           <span class="tool-tag">sync_database</span>
-          <span class="tool-tag">launch_debugger</span>
           <span class="tool-tag">rebuild_project</span>
+          <span class="tool-tag">list_applications</span>
         </div>
         <ul class="profile-features">
-          <li><span class="star">★</span><span>Создание объектов метаданных напрямую через ИИ-ассистента</span></li>
-          <li><span class="star">★</span><span>Динамическое добавление реквизитов и элементов форм</span></li>
+          <li><span class="star">★</span><span><strong>~50 операций</strong> в одном инструменте: объекты, реквизиты, формы, СКД, расширения</span></li>
+          <li><span class="star">★</span><span>Дерево операций: <strong>Объекты</strong> (создание, реквизиты, ТЧ) → <strong>Формы</strong> (элементы, свойства) → <strong>Расширения</strong> (заимствование) → <strong>СКД</strong> (отчёты)</span></li>
           <li><span class="star">★</span><span><strong>Трёхуровневая защита:</strong> группы доступа + dry-run + подтверждение</span></li>
-          <li><span class="star">★</span><span>Активное R&D направление — быстро развивается</span></li>
+          <li><span class="star">★</span><span>Полноценный production-инструмент — протестирован на реальных проектах</span></li>
         </ul>
       </div>
       <div class="fade-in fade-in-delay-2">
@@ -1610,15 +1649,11 @@
             <div class="profile-avatar" style="background:#eef2ff;">🏛️</div>
             <div><div style="font-weight:700;">Профиль: Архитектор</div><div style="font-size:0.8rem;color:var(--text-l);">Управление структурой конфигурации</div></div>
           </div>
-          <div class="metric-row"><span>Уровней защиты</span><span class="metric-val">3</span></div>
+          <div class="metric-row"><span>Операций edit_metadata</span><span class="metric-val">~50</span></div>
           <div class="metric-row"><span>Создание объектов</span><span class="metric-yes">✓ Есть</span></div>
           <div class="metric-row"><span>Управление формами</span><span class="metric-yes">✓ Есть</span></div>
           <div class="metric-row"><span>Dry-run</span><span class="metric-yes">✓ Обязателен</span></div>
-          <div class="metric-row"><span>Статус</span><span style="color:var(--indigo);font-weight:600;">Активный R&D</span></div>
-        </div>
-        <div style="background:var(--indigo-pale); border:1px solid #c7d2fe; border-radius:var(--radius); padding:20px 24px;">
-          <div style="font-weight:700; color:var(--indigo); margin-bottom:8px;">🚀 Перспективное направление</div>
-          <p style="font-size:0.88rem; color:#4338ca; line-height:1.6;">Профиль Архитектор — первый на рынке 1С-MCP инструментарий для прямого создания объектов через ИИ. Активно тестируется и развивается.</p>
+          <div class="metric-row"><span>Статус</span><span style="color:var(--green);font-weight:600;">Production</span></div>
         </div>
       </div>
     </div>
@@ -1631,7 +1666,7 @@
     <div class="mid-cta-inner">
       <div class="mid-cta-text">
         <div class="mid-cta-label">Попробуйте прямо сейчас</div>
-        <div class="mid-cta-title">30 дней бесплатно — тариф Архитектор.</div>
+        <div class="mid-cta-title">14 дней бесплатно — тариф Архитектор.</div>
         <div class="mid-cta-sub">Кнопка прямо в диалоге активации 1C:EDT, без ввода данных.</div>
       </div>
       <div class="mid-cta-btns">
@@ -1641,6 +1676,8 @@
     </div>
   </div>
 </section>
+
+<!-- docs section moved above video demo -->
 
 <!-- ===== CASES ===== -->
 <section id="cases">
@@ -1833,69 +1870,6 @@
   </div>
 </section>
 
-<!-- ===== QUALITY SECTION ===== -->
-<section class="quality" id="quality">
-  <div class="container">
-    <div class="section-header fade-in">
-      <span class="badge badge-amber">Инженерное качество</span>
-      <h2>Разработано по высшим стандартам</h2>
-      <p>1C:RSV — не прототип и не «хобби-проект». Это системное решение с профессиональной архитектурой, прошедшее независимое код-ревью.</p>
-    </div>
-    <div class="quality-grid">
-      <div class="quality-card fade-in fade-in-delay-1">
-        <div class="quality-icon">🏗️</div>
-        <h3>Профессиональная архитектура OSGi</h3>
-        <ul>
-          <li>51 Java-класс с чёткой модульной структурой</li>
-          <li>OSGi-бандл с корректным управлением жизненным циклом</li>
-          <li>Java 17 и стандарты Eclipse RCP / Tycho 4.0.5</li>
-          <li>Строгое разделение на слои: transport → dispatch → tools → API</li>
-        </ul>
-      </div>
-      <div class="quality-card fade-in fade-in-delay-2">
-        <div class="quality-icon">🔗</div>
-        <h3>Технологическая независимость</h3>
-        <ul>
-          <li>EMF-рефлексия вместо прямых зависимостей от EDT</li>
-          <li>В <strong>2× компактнее</strong> аналогов при большей функциональности</li>
-          <li><strong>0 внешних JAR-зависимостей</strong> (у аналогов — 3+)</li>
-          <li>Устойчивость к обновлениям платформы EDT</li>
-        </ul>
-      </div>
-      <div class="quality-card fade-in fade-in-delay-1">
-        <div class="quality-icon">🔒</div>
-        <h3>Безопасность по умолчанию</h3>
-        <ul>
-          <li>Только localhost (127.0.0.1) — никогда 0.0.0.0</li>
-          <li>Опасные инструменты отключены по умолчанию</li>
-          <li>Dry-run + подтверждение для всех деструктивных операций</li>
-          <li>Трёхуровневая защита для профиля Архитектор</li>
-        </ul>
-      </div>
-      <div class="quality-card fade-in fade-in-delay-2">
-        <div class="quality-icon">⚡</div>
-        <h3>Производительность и надёжность</h3>
-        <ul>
-          <li>CachedThreadPool + ThreadLocal-изоляция состояния</li>
-          <li>Пагинация больших ответов (offset/limit)</li>
-          <li>Ошибки возвращают JSON — EDT никогда не падает</li>
-          <li>Полная поддержка MCP Streamable HTTP 2025-11-25</li>
-        </ul>
-      </div>
-    </div>
-    <div class="quality-review fade-in" style="margin-top:40px;">
-      <div class="qr-icon">🏆</div>
-      <div>
-        <blockquote>
-          «Решение обладает строгой модульной структурой, исключающей использование хардкода или временных костылей.
-          Весь код соответствует стандартам разработки Java 17 и OSGi-контейнеров. Архитектурные решения прошли
-          независимое профессиональное ревью и получили высокую оценку за качество реализации.»
-        </blockquote>
-        <div class="qr-source">— из технической документации проекта 1C:RSV</div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ===== INSTALLATION ===== -->
 <section class="install" id="install">
@@ -1928,7 +1902,7 @@
       <div class="step-card">
         <div class="step-number">4</div>
         <h4>Готово!</h4>
-        <p>ИИ обнаружит 38 инструментов. Проверить:</p>
+        <p>ИИ обнаружит 26 инструментов. Проверить:</p>
         <code>curl localhost:8770/health</code>
       </div>
     </div>
@@ -1964,59 +1938,49 @@
   <div class="container">
     <div class="section-header fade-in">
       <span class="badge badge-green">Актуальное обновление</span>
-      <h2 data-v="Что нового в версии {v}">Что нового в версии 2.9.1</h2>
-      <p>От метаданных к данным: AI-агент получил доступ к runtime через полноценную отладку.</p>
+      <h2 data-v="Что нового в версии {v}">Что нового в версии 3.0.0</h2>
+      <p>Единый конструктор метаданных, кроссплатформенность и полная документация.</p>
     </div>
     <div class="whats-new-grid">
       <div class="wn-card fade-in fade-in-delay-1">
-        <div class="wn-card-icon">🐛</div>
-        <h3>Полноценная отладка</h3>
-        <p>AI-агент отлаживает код 1С как человек в EDT:</p>
+        <div class="wn-card-icon">🏗️</div>
+        <h3>Единый конструктор edit_metadata</h3>
+        <p>Четыре инструмента объединены в один с ~50 операциями:</p>
         <ul>
-          <li>Точки останова, пошаговое выполнение, стек вызовов</li>
-          <li>Чтение всех переменных: локальных + реквизитов формы (Объект, ЭтаФорма)</li>
-          <li>16 действий через один инструмент <code>launch_debugger</code></li>
+          <li>Создание объектов, реквизитов, табличных частей</li>
+          <li>Редактирование форм: элементы, свойства, обработчики</li>
+          <li>Настройка СКД-отчётов и работа с расширениями</li>
         </ul>
       </div>
       <div class="wn-card fade-in fade-in-delay-2">
-        <div class="wn-card-icon">🔮</div>
-        <h3>Доступ к живым данным</h3>
-        <p>Вычисление произвольных BSL-выражений в точке останова:</p>
+        <div class="wn-card-icon">🔄</div>
+        <h3>Реорганизация: 38 → 26 инструментов</h3>
+        <p>Меньше инструментов — больше возможностей:</p>
         <ul>
-          <li><code>Объект.Партнер</code> &rarr; &laquo;Дальстрой&raquo; (СправочникСсылка.Партнеры)</li>
-          <li><code>Объект.Товары.Количество()</code> &rarr; &laquo;5&raquo; (Число)</li>
-          <li>Арифметика, конкатенация строк, вызовы методов &mdash; любое выражение</li>
-        </ul>
-      </div>
-      <div class="wn-card fade-in fade-in-delay-3">
-        <div class="wn-card-icon">🛡️</div>
-        <h3>Улучшена запись кода</h3>
-        <p>Исправлены критические проблемы по фидбэку пользователей:</p>
-        <ul>
-          <li>replaceMethod сохраняет директивы компиляции (&amp;НаСервере, &amp;НаКлиенте)</li>
-          <li>BSL-валидация не путает #Если с обычным Если</li>
-          <li>afterSource в ответе &mdash; актуальные номера строк после записи</li>
+          <li>8 → 7 групп: чище структура, проще навигация</li>
+          <li>Поддержка macOS и Linux (нативные библиотеки)</li>
+          <li>Полная документация: <a href="guide.html" style="color:var(--blue);">руководство</a> и <a href="tools.html" style="color:var(--blue);">описание инструментов</a></li>
         </ul>
       </div>
     </div>
     <div class="wn-bottom fade-in">
-      <button class="btn-release-notes" onclick="openReleaseNotes()">📋 Подробные Release Notes</button>
+      <button class="btn-release-notes" onclick="openReleaseNotes()">История изменений</button>
     </div>
 
     <!-- Предыдущие версии -->
     <div style="margin-top:48px; padding-top:40px; border-top:1px solid var(--border);">
       <div class="section-header fade-in" style="margin-bottom:24px;">
         <span class="badge" style="background:#f1f5f9;color:#64748b;">Ранее</span>
-        <h3 style="font-size:1.3rem; color:var(--text-l);">Поиск, формы, расширения, метаданные, безопасная запись кода</h3>
+        <h3 style="font-size:1.3rem; color:var(--text-l);">Отладка, поиск, формы, расширения, безопасная запись кода</h3>
       </div>
       <div class="whats-new-grid">
         <div class="wn-card fade-in fade-in-delay-1" style="opacity:0.75;">
-          <div class="wn-card-icon">🔍</div>
-          <h3>Поиск и совместимость (v2.8.9)</h3>
+          <div class="wn-card-icon">🐛</div>
+          <h3>Отладка и поиск (v2.9.1)</h3>
           <ul>
-            <li>search_in_code оптимизирован для КА, ERP, ЗУП (6000+ файлов)</li>
+            <li>Полноценная отладка через <code>launch_debugger</code> (16 действий)</li>
+            <li>search_in_code оптимизирован для КА, ERP, ЗУП</li>
             <li>Совместимость с OpenAI Codex (strict mode)</li>
-            <li>Компактный формат ответов (<code>compact: true</code>)</li>
           </ul>
         </div>
         <div class="wn-card fade-in fade-in-delay-2" style="opacity:0.75;">
@@ -2065,24 +2029,25 @@
     <div class="download-inner fade-in">
       <span class="badge badge-green">📥 Актуальный релиз</span>
       <h2>Скачать 1C:RSV MCP Server</h2>
-      <p class="download-sub" data-v="Версия {v} · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней">Версия 2.8.9 · Для 1C:EDT 2025.x · Windows x64 · Пробный период 30 дней</p>
+      <p class="download-sub" data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS, Linux · Пробный период 14 дней">Версия 3.0.0 · Для 1C:EDT 2025.x · Windows, macOS, Linux · Пробный период 14 дней</p>
 
       <div class="download-card">
         <div class="download-card-info">
           <div class="download-file-icon">📦</div>
           <div>
-            <div class="download-file-name" data-v="1C-RSV-MCP-{v}-distr.rar">1C-RSV-MCP-2.8.9-distr.rar</div>
-            <div class="download-file-meta" data-v="Версия {v} · ~400 KB">Версия 2.8.9 · ~400 KB</div>
+            <div class="download-file-name" data-v="1C-RSV-MCP-{v}-distr.zip">1C-RSV-MCP-3.0.0-distr.zip</div>
+            <div class="download-file-meta" data-v="Версия {v} · ~1.9 MB">Версия 3.0.0 · ~1.9 MB</div>
           </div>
         </div>
 
         <div class="download-includes">
           <span data-v="✅ edt-rsv-repository-{v}-SNAPSHOT.zip — плагин для установки в EDT">✅ edt-rsv-repository-2.8.9-SNAPSHOT.zip — плагин для установки в EDT</span>
-          <span>✅ GUIDE.md — пошаговое руководство пользователя</span>
-          <span>✅ CLAUDE.md — готовые правила для Claude / Cursor / Windsurf</span>
+          <span>✅ guide.html — руководство пользователя</span>
+          <span>✅ tools.html — описание инструментов</span>
+          <span>✅ CLAUDE.md — правила для AI-ассистента</span>
         </div>
 
-        <a href="./1C-RSV-MCP-2.9.1-distr.rar" class="btn-download" data-v-href="./1C-RSV-MCP-{v}-distr.rar" download>
+        <a href="./1C-RSV-MCP-3.0.0-distr.zip" class="btn-download" data-v-href="./1C-RSV-MCP-{v}-distr.zip" download>
           ⬇ Скачать бесплатно
         </a>
 
@@ -2095,8 +2060,8 @@
         <span>Требования:</span>
         <span class="badge badge-blue">1C:EDT 2025.x</span>
         <span class="badge badge-blue">Java 17 (Zulu)</span>
-        <span class="badge badge-indigo">Windows x64</span>
-        <span class="badge badge-green">Пробный период 30 дней</span>
+        <span class="badge badge-indigo">Windows, macOS, Linux</span>
+        <span class="badge badge-green">Пробный период 14 дней</span>
       </div>
     </div>
   </div>
@@ -2135,7 +2100,8 @@
   .pc-amount { font-size: 2.4rem; font-weight: 800; color: #0f172a; line-height: 1; }
   .pc-currency { font-size: 1.1rem; font-weight: 600; color: #0f172a; }
   .pc-per { font-size: 0.82rem; color: #64748b; margin-top: 2px; min-height: 18px; }
-  .pc-total { font-size: 0.8rem; color: #94a3b8; margin-top: 2px; min-height: 18px; }
+  .pc-total { font-size: 0.95rem; color: #475569; margin-top: 4px; min-height: 18px; font-weight: 600; }
+  .pricing-card.pc-dark .pc-total { color: #94a3b8; font-weight: 600; }
   .pc-discount { display: inline-block; background: #dcfce7; color: #15803d; font-size: 0.75rem; font-weight: 700; padding: 2px 10px; border-radius: 100px; margin-top: 6px; min-height: 20px; }
   .pc-discount.pc-hidden { visibility: hidden; }
   .btn-buy-now { display: block; width: 100%; padding: 14px; border-radius: 12px; border: none; cursor: pointer; font-size: 0.95rem; font-weight: 600; transition: all 0.2s; text-align: center; margin-top: 20px; font-family: inherit; }
@@ -2199,7 +2165,7 @@
     <div class="section-header fade-in">
       <span class="badge badge-blue">Цены</span>
       <h2>Выберите тариф</h2>
-      <p>30 дней бесплатно — кнопка прямо в диалоге активации 1C:EDT, без ввода данных.</p>
+      <p>14 дней бесплатно — кнопка прямо в диалоге активации 1C:EDT, без ввода данных.</p>
     </div>
 
     <div class="period-switcher">
@@ -2214,7 +2180,7 @@
       <div class="pricing-card">
         <div class="pc-tier-label">Тариф</div>
         <div class="pc-name">Аналитик</div>
-        <div class="pc-tools">19 инструментов — анализ, чтение, поиск</div>
+        <div class="pc-tools">18 инструментов — анализ, чтение, поиск</div>
         <div><span class="pc-amount" id="pc-amount-ANL">990</span><span class="pc-currency"> ₽</span></div>
         <div class="pc-per" id="pc-per-ANL"></div>
         <div class="pc-total" id="pc-total-ANL"></div>
@@ -2232,7 +2198,7 @@
       <div class="pricing-card pc-featured">
         <div class="pc-tier-label">Тариф</div>
         <div class="pc-name">Разработчик</div>
-        <div class="pc-tools">26 инструментов — + запись кода, валидация</div>
+        <div class="pc-tools">25 инструментов — + запись кода, валидация, отладка</div>
         <div><span class="pc-amount" id="pc-amount-DEV">1 990</span><span class="pc-currency"> ₽</span></div>
         <div class="pc-per" id="pc-per-DEV"></div>
         <div class="pc-total" id="pc-total-DEV"></div>
@@ -2242,7 +2208,7 @@
           <li>Всё из тарифа Аналитик</li>
           <li>Запись и редактирование BSL-кода</li>
           <li>Валидация ошибок в реальном времени</li>
-          <li>Diff-просмотр изменений</li>
+          <li>Отладка через launch_debugger</li>
         </ul>
       </div>
 
@@ -2250,7 +2216,7 @@
       <div class="pricing-card pc-dark">
         <div class="pc-tier-label">Тариф</div>
         <div class="pc-name">Архитектор</div>
-        <div class="pc-tools">38 инструментов — полный доступ</div>
+        <div class="pc-tools">26 инструментов (~50 операций) — полный доступ</div>
         <div><span class="pc-amount" id="pc-amount-ARC">3 490</span><span class="pc-currency"> ₽</span></div>
         <div class="pc-per" id="pc-per-ARC"></div>
         <div class="pc-total" id="pc-total-ARC"></div>
@@ -2258,15 +2224,15 @@
         <button class="btn-buy-now secondary" onclick="pricingOpenModal('ARC')">Купить</button>
         <ul class="pc-features">
           <li>Всё из тарифа Разработчик</li>
-          <li>Создание объектов метаданных</li>
-          <li>Редактирование форм и СКД-отчётов</li>
-          <li>Запуск отладчика из ИИ</li>
+          <li>edit_metadata: ~50 операций (объекты, формы, СКД)</li>
+          <li>Синхронизация и пересборка проекта</li>
+          <li>Полный цикл: от идеи до готового решения</li>
         </ul>
       </div>
     </div>
 
     <p style="text-align:center;margin-top:32px;color:#64748b;font-size:0.85rem;">
-      Пробный период 30 дней (тариф Архитектор) — бесплатно, кнопка в диалоге активации 1C:EDT.<br>
+      Пробный период 14 дней (тариф Архитектор) — бесплатно, кнопка в диалоге активации 1C:EDT.<br>
       Вопросы: <a href="mailto:prepod2003@yandex.ru" style="color:#2563eb;">prepod2003@yandex.ru</a>
       или <a href="https://t.me/Prepod2003" target="_blank" style="color:#2563eb;">Telegram @Prepod2003</a>
     </p>
@@ -2329,7 +2295,7 @@
         </div>
         <p class="footer-desc">
           Интеллектуальный мост между ИИ-ассистентами и средой разработки 1C:EDT.
-          38 инструментов. Встроен в 1C:EDT. 0 JAR-зависимостей.
+          26 инструментов. Встроен в 1C:EDT. 0 JAR-зависимостей.
         </p>
       </div>
       <div class="footer-links-section">
@@ -2340,10 +2306,11 @@
           <li><a href="#profiles">Профили</a></li>
           <li><a href="#cases">Кейсы</a></li>
           <li><a href="#analysts">Аналитикам</a></li>
-          <li><a href="#quality">Инженерное качество</a></li>
           <li><a href="#install">Установка</a></li>
           <li><a href="#whats-new">Что нового</a></li>
-          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v2.8.9</a></li>
+          <li><a href="guide.html">Руководство пользователя</a></li>
+          <li><a href="tools.html">Описание инструментов</a></li>
+          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v3.0.0</a></li>
         </ul>
       </div>
       <div class="footer-links-section">
@@ -2385,34 +2352,40 @@
 <div class="rn-modal" id="rn-modal" onclick="if(event.target===this)closeReleaseNotes()">
   <div class="rn-body">
     <button class="rn-close" onclick="closeReleaseNotes()">&times;</button>
-    <span class="rn-badge" data-v="v{v} — Апрель 2026">v2.8.9 — Апрель 2026</span>
-    <h2 style="font-size:1.5rem; margin-bottom:24px;" data-v="Release Notes: 1C:RSV MCP Server v{v}">Release Notes: 1C:RSV MCP Server v2.8.9</h2>
+    <span class="rn-badge" data-v="v{v} — Апрель 2026">v3.0.0 — Апрель 2026</span>
+    <h2 style="font-size:1.5rem; margin-bottom:24px;" data-v="Примечания к версии: 1C:RSV MCP Server v{v}">Примечания к версии: 1C:RSV MCP Server v3.0.0</h2>
 
-    <h3>1. Оптимизация поиска в коде</h3>
-    <p>Инструмент <code>search_in_code</code> оптимизирован для работы с большими конфигурациями (КА, ERP, ЗУП). Поиск стабильно завершается даже при сканировании всей конфигурации с расширениями. При превышении времени возвращаются частичные результаты с пометкой о неполноте — ИИ-агент может сразу работать с ними или уточнить запрос.</p>
+    <h3>1. Единый конструктор edit_metadata (~50 операций)</h3>
+    <p>Инструменты <code>create_metadata_object</code>, <code>modify_metadata</code>, <code>modify_form</code> и <code>modify_report</code> объединены в один <code>edit_metadata</code> с ~50 операциями в 6 областях: объекты метаданных, специализированные объекты, формы, расширения, отчёты СКД, общее. Встроенная справка с примерами для каждой операции.</p>
 
-    <h3>2. Экономия токенов</h3>
-    <p>Новый параметр <code>compact: true</code> возвращает результаты в компактном однострочном формате — в 3 раза меньше токенов. Убрано дублирование данных в ответах. Особенно полезно для моделей с небольшим контекстным окном.</p>
+    <h3>2. Реорганизация: 38 → 26 инструментов</h3>
+    <p>Меньше инструментов — больше возможностей. 8 → 7 групп: чище структура, проще навигация для ИИ-агента. Описания инструментов подсказывают агенту оптимальный выбор.</p>
 
-    <h3>3. Умная маршрутизация</h3>
-    <p>Описания инструментов подсказывают ИИ-агенту оптимальный выбор: когда использовать быстрый индексный поиск (<code>find_object_references</code>, <code>resolve_symbol</code>), а когда — полнотекстовый <code>search_in_code</code>.</p>
+    <h3>3. Кроссплатформенность</h3>
+    <p>Полная поддержка Windows x64, macOS (Intel + Apple Silicon), Linux x64. Нативные библиотеки для каждой платформы. 0 внешних JAR-зависимостей.</p>
+
+    <h3>4. Полная документация</h3>
+    <p>Подробное <a href="guide.html" style="color:var(--blue);">руководство пользователя</a> и <a href="tools.html" style="color:var(--blue);">описание всех 26 инструментов</a> с примерами.</p>
 
     <h3>Совместимость</h3>
-    <p>Полная обратная совместимость. Параметр <code>compact</code> — опциональный, по умолчанию <code>false</code>.</p>
+    <p>Полная поддержка MCP Streamable HTTP (2025-11-25) и обратная совместимость с MCP 2024-11-05. Совместим с Claude Code, Cursor, Windsurf, Roo Code, Gemini CLI, Qwen Code.</p>
 
     <hr style="border:none;border-top:1px solid var(--border);margin:32px 0;">
 
     <span class="rn-badge" style="background:#f1f5f9;color:#64748b;">Предыдущие версии</span>
-    <h2 style="font-size:1.3rem; margin:16px 0 24px; color:var(--text-l);">v2.8.0 — v2.8.7</h2>
+    <h2 style="font-size:1.3rem; margin:16px 0 24px; color:var(--text-l);">v2.8.0 — v2.9.1</h2>
+
+    <h3>v2.9.1 — Отладка и поиск</h3>
+    <p>Полноценная отладка через <code>launch_debugger</code> (16 действий). Оптимизация <code>search_in_code</code> для КА, ERP, ЗУП. Совместимость с OpenAI Codex (strict mode).</p>
 
     <h3>v2.8.7 — Формы и расширения</h3>
     <p>Переработка работы с формами: таблицы, группы, страницы, декорации. Полноценная поддержка расширений: заимствование объектов и форм, автоматическое заимствование зависимых типов.</p>
 
     <h3>v2.8.1 — Коды активации, три тарифа, СКД-отчёты</h3>
-    <p>Система кодов активации (<code>ACT-ANL/DEV/ARC-xxx</code>). Три тарифа: Аналитик (19 инструментов), Разработчик (26), Архитектор (38). Пробный период 30 дней. Инструмент <code>modify_report</code> — 25 операций для редактирования СКД-отчётов.</p>
+    <p>Система кодов активации (<code>ACT-ANL/DEV/ARC-xxx</code>). Три тарифа: Аналитик (18 инструментов), Разработчик (25), Архитектор (26). Пробный период 14 дней.</p>
 
     <h3>v2.8.0 — Безопасная запись кода, создание объектов</h3>
-    <p>Режим <code>replaceMethod</code> в <code>write_module_source</code>, защита от деструктивной записи, автобэкап модулей. <code>create_metadata_object</code> с автоматическим созданием формы. <code>modify_form</code>: moveItem, setProperty, changeOrder, batch-режим.</p>
+    <p>Режим <code>replaceMethod</code> в <code>write_module_source</code>, защита от деструктивной записи, автобэкап модулей.</p>
   </div>
 </div>
 
@@ -2512,7 +2485,7 @@
     <ul>
       <li><strong>Разработчику не нужно знать конфигурацию</strong> — ИИ сам находит нужные объекты, регистры, методы и паттерны</li>
       <li><strong>Полный цикл разработки за одну сессию</strong> — от постановки задачи до работающей обработки</li>
-      <li><strong>22 из 38 инструментов</strong> MCP были задействованы — система используется на полную мощность</li>
+      <li><strong>22 из 26 инструментов</strong> MCP были задействованы — система используется на полную мощность</li>
       <li><strong>Качество на уровне опытного разработчика КА</strong> — правильные запросы к регистрам, корректная работа с приоритетами, стандартные паттерны 1С</li>
     </ul>
 
@@ -2659,7 +2632,7 @@
 <!-- ===== SCRIPTS ===== -->
 <script>
   // ===== ВЕРСИЯ ПЛАГИНА (менять ТОЛЬКО здесь) =====
-  const PLUGIN_VERSION = '2.9.1';
+  const PLUGIN_VERSION = '3.0.0';
   document.querySelectorAll('[data-v]').forEach(el => {
     el.textContent = el.dataset.v.replace(/\{v\}/g, PLUGIN_VERSION);
   });
@@ -2909,7 +2882,7 @@
     { src: 'images/case/12.jpg', cap: 'Это меняет правила игры' },
     { src: 'images/case/2.jpg', cap: 'Типовые конфигурации 1С — это сложно' },
     { src: 'images/case/3.jpg', cap: 'MCP 1С-РСВ — плагин для 1С:EDT' },
-    { src: 'images/case/4.jpg', cap: '38 инструментов в 8 группах' },
+    { src: 'images/case/4.jpg', cap: '26 инструментов в 7 группах' },
     { src: 'images/case/5.jpg', cap: 'Три профиля — три уровня доступа' },
     { src: 'images/case/6.jpg', cap: 'Установка за 2 минуты' },
     { src: 'images/case/13.jpg', cap: 'Видео реальной разработки' }
@@ -3131,6 +3104,35 @@
   <a href="#pricing" class="mb-pricing">Купить лицензию →</a>
   <a href="#download" class="mb-free">⬇ Скачать</a>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.12.0/tsparticles.slim.bundle.min.js"></script>
+<script>
+  tsParticles.load("tsparticles", {
+    fullScreen: { enable: false },
+    background: { color: { value: "transparent" } },
+    fpsLimit: 60,
+    interactivity: {
+      events: {
+        onHover: { enable: true, mode: "repulse" },
+        onClick: { enable: true, mode: "push" }
+      },
+      modes: {
+        repulse: { distance: 150, duration: 0.4 },
+        push: { quantity: 4 }
+      }
+    },
+    particles: {
+      color: { value: "#3b82f6" },
+      links: { color: "#3b82f6", distance: 150, enable: true, opacity: 0.35, width: 1.2 },
+      move: { enable: true, speed: 1.5, direction: "none", outModes: { default: "out" } },
+      number: { density: { enable: true, area: 700 }, value: 80 },
+      opacity: { value: 0.5 },
+      shape: { type: "circle" },
+      size: { value: { min: 1, max: 4 } }
+    },
+    detectRetina: true
+  });
+</script>
 
 </body>
 </html>

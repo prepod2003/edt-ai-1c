@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="1C:RSV MCP Server — подробное описание всех 26 инструментов для работы с 1С:EDT через AI-ассистента. 7 групп, 3 профиля, ~50 операций конструктора метаданных.">
+  <title>1C:RSV — Описание инструментов</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563eb'/><text x='50%' y='54%' dy='.35em' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='12' font-weight='900' letter-spacing='-0.5'>RSV</text></svg>">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 1.25rem;
+      line-height: 1.75;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :root {
+      --blue: #3b82f6;
+      --blue-dim: #eff6ff;
+      --blue-glow: rgba(59,130,246,0.08);
+      --green: #10b981;
+      --green-dim: #ecfdf5;
+      --green-glow: rgba(16,185,129,0.08);
+      --amber: #f59e0b;
+      --amber-dim: #fffbeb;
+      --amber-glow: rgba(245,158,11,0.08);
+      --indigo: #6366f1;
+      --indigo-dim: #eef2ff;
+      --indigo-glow: rgba(99,102,241,0.08);
+      --bg: #ffffff;
+      --bg-card: #f8fafc;
+      --bg-code: #1e293b;
+      --bg-sidebar: #f8fafc;
+      --border: #e2e8f0;
+      --border-light: #e2e8f0;
+      --text: #0f172a;
+      --text-m: #334155;
+      --text-d: #475569;
+      --text-dd: #64748b;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-lg: 16px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
+      --sidebar-w: 280px;
+      --header-h: 64px;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f8fafc; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* ===== HEADER ===== */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+    }
+    .header-inner {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .header-logo-badge {
+      background: var(--blue);
+      color: white;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+    .header-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .header-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-dd);
+      margin-left: 8px;
+    }
+    .header-back {
+      color: var(--text-d);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .header-back:hover {
+      color: var(--blue);
+      border-color: var(--blue);
+      background: var(--blue-glow);
+    }
+
+    /* ===== MOBILE MENU TOGGLE ===== */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dd);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-light);
+      overflow-y: auto;
+      padding: 24px 0;
+      z-index: 50;
+    }
+    .sidebar-section {
+      padding: 0 16px;
+      margin-bottom: 20px;
+    }
+    .sidebar-section-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-dd);
+      padding: 0 8px;
+      margin-bottom: 8px;
+    }
+    .sidebar-link {
+      display: block;
+      padding: 6px 12px;
+      color: var(--text-d);
+      text-decoration: none;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      transition: all 0.15s;
+      line-height: 1.4;
+    }
+    .sidebar-link:hover {
+      color: var(--text);
+      background: rgba(59,130,246,0.06);
+    }
+    .sidebar-link.active {
+      color: var(--blue);
+      background: var(--blue-glow);
+    }
+    .sidebar-link.indent {
+      padding-left: 24px;
+      font-size: 0.78rem;
+    }
+    .sidebar-link.indent2 {
+      padding-left: 36px;
+      font-size: 0.75rem;
+    }
+    .sidebar-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 10px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .badge-green { background: #ecfdf5; color: #059669; }
+    .badge-amber { background: #fffbeb; color: #d97706; }
+    .badge-indigo { background: #eef2ff; color: #4f46e5; }
+
+    /* ===== MAIN CONTENT ===== */
+    .main {
+      margin-left: var(--sidebar-w);
+      margin-top: var(--header-h);
+      padding: 40px 48px 80px;
+      max-width: calc(100% - var(--sidebar-w));
+    }
+    .main-inner {
+      max-width: 860px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      margin-bottom: 48px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.95rem;
+      color: var(--text-dd);
+      margin-bottom: 20px;
+    }
+    .hero-meta span { display: flex; align-items: center; gap: 4px; }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-m);
+      max-width: 700px;
+      line-height: 1.7;
+    }
+
+    /* ===== PROFILES TABLE ===== */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 24px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+    .profiles-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 1.05rem;
+    }
+    .profiles-table th {
+      text-align: left;
+      padding: 14px 16px;
+      background: #f1f5f9;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--border);
+    }
+    .profiles-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--text-m);
+      font-size: 1.05rem;
+    }
+    .profiles-table tr:last-child td { border-bottom: none; }
+    .profiles-table .profile-name {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .profiles-table .pn-green { color: var(--green); }
+    .profiles-table .pn-amber { color: var(--amber); }
+    .profiles-table .pn-indigo { color: var(--indigo); }
+
+    /* ===== PROFILE SECTIONS ===== */
+    .profile-section {
+      margin-top: 56px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border-light);
+    }
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .profile-header h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+    .profile-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-green { background: var(--green); box-shadow: 0 0 8px rgba(16,185,129,0.3); }
+    .dot-amber { background: var(--amber); box-shadow: 0 0 8px rgba(245,158,11,0.3); }
+    .dot-indigo { background: var(--indigo); box-shadow: 0 0 8px rgba(99,102,241,0.3); }
+    .profile-desc {
+      font-size: 1.1rem;
+      color: var(--text-m);
+      margin-bottom: 32px;
+      max-width: 700px;
+      line-height: 1.7;
+    }
+    .profile-note {
+      background: #eff6ff;
+      border-left: 3px solid var(--blue);
+      padding: 16px 20px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-bottom: 32px;
+      font-size: 1.05rem;
+      color: var(--text-m);
+      line-height: 1.7;
+    }
+    .profile-note strong { color: var(--text); }
+    .profile-warning {
+      background: #fffbeb;
+      border-left: 3px solid var(--amber);
+      padding: 16px 20px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-bottom: 32px;
+      font-size: 1.05rem;
+      color: var(--text-m);
+      line-height: 1.7;
+    }
+    .profile-warning strong { color: var(--amber); }
+
+    /* ===== GROUP HEADER ===== */
+    .group-header {
+      margin-top: 40px;
+      margin-bottom: 24px;
+    }
+    .group-header h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .group-desc {
+      font-size: 1.05rem;
+      color: var(--text-d);
+      line-height: 1.6;
+    }
+
+    /* ===== TOOL CARD ===== */
+    .tool-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .tool-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .tool-card-name {
+      font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+    .tool-card-title {
+      font-size: 1.05rem;
+      color: var(--text-d);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    .tool-card p {
+      font-size: 1.1rem;
+      color: var(--text-m);
+      line-height: 1.75;
+    }
+    .tool-card ul {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    .tool-card li {
+      font-size: 1.05rem;
+      color: var(--text-m);
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+    .tool-card li strong { color: var(--text); }
+
+    /* ===== TOOL CARD with colored border ===== */
+    .tool-card.border-green { border-left: 3px solid var(--green); }
+    .tool-card.border-amber { border-left: 3px solid var(--amber); }
+    .tool-card.border-indigo { border-left: 3px solid var(--indigo); }
+
+    /* ===== WRITE MODES TABLE ===== */
+    .modes-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 1.05rem;
+    }
+    .modes-table th {
+      text-align: left;
+      padding: 12px 14px;
+      background: #f1f5f9;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--border);
+    }
+    .modes-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--text-m);
+    }
+    .modes-table td:first-child {
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 0.95rem;
+      color: var(--blue);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .modes-table tr:last-child td { border-bottom: none; }
+
+    /* ===== CODE TREE ===== */
+    .code-tree {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin: 24px 0;
+      font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+      font-size: 0.95rem;
+      line-height: 1.9;
+      overflow-x: auto;
+      color: var(--text-d);
+      white-space: pre;
+    }
+    .code-tree .tree-root {
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .code-tree .tree-branch {
+      color: #94a3b8;
+    }
+    .code-tree .tree-cat {
+      font-weight: 600;
+    }
+    .code-tree .cat-meta { color: #1d4ed8; }
+    .code-tree .cat-spec { color: #7c3aed; }
+    .code-tree .cat-form { color: #059669; }
+    .code-tree .cat-ext { color: #d97706; }
+    .code-tree .cat-dcs { color: #db2777; }
+    .code-tree .cat-common { color: var(--text-d); }
+    .code-tree .tree-op {
+      color: var(--text-m);
+    }
+
+    /* ===== OPERATIONS SECTION ===== */
+    .ops-section {
+      margin-top: 32px;
+      margin-bottom: 32px;
+    }
+    .ops-section h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .op-item {
+      margin-bottom: 16px;
+    }
+    .op-name {
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 1.05rem;
+      color: var(--indigo);
+      font-weight: 600;
+    }
+    .op-desc {
+      font-size: 1.05rem;
+      color: var(--text-m);
+      margin-top: 4px;
+      line-height: 1.6;
+    }
+
+    /* ===== HELP BOX ===== */
+    .help-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .help-box h4 {
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .help-box ul {
+      list-style: none;
+      padding: 0;
+    }
+    .help-box li {
+      padding: 6px 0;
+      font-size: 1.05rem;
+      color: var(--text-m);
+      display: flex;
+      gap: 8px;
+    }
+    .help-box code {
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 0.9em;
+      background: #f1f5f9;
+      color: #2563eb;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    /* ===== LIMITATIONS ===== */
+    .limitations {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .limitations h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-d);
+      margin-bottom: 12px;
+    }
+    .limitations ul {
+      padding-left: 20px;
+    }
+    .limitations li {
+      font-size: 1.05rem;
+      color: var(--text-dd);
+      margin-bottom: 6px;
+    }
+
+    /* ===== BACK TO TOP ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 44px;
+      height: 44px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+      z-index: 90;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .back-to-top:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59,130,246,0.5);
+    }
+
+    /* ===== INLINE CODE ===== */
+    .ic {
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 0.85em;
+      background: #f1f5f9;
+      color: #2563eb;
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+        width: 280px;
+        z-index: 80;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.3);
+        z-index: 79;
+      }
+      .sidebar-overlay.open {
+        display: block;
+      }
+      .main {
+        margin-left: 0;
+        max-width: 100%;
+        padding: 24px 20px 60px;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .header-subtitle {
+        display: none;
+      }
+      .hero h1 {
+        font-size: 1.5rem;
+      }
+      .code-tree {
+        padding: 16px 18px;
+        font-size: 0.82rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .header-back { display: none; }
+      .profiles-table { font-size: 0.8rem; }
+      .profiles-table th, .profiles-table td { padding: 8px 10px; }
+      .modes-table { font-size: 0.8rem; }
+      .modes-table th, .modes-table td { padding: 8px 10px; }
+      .tool-card { padding: 18px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
+      <a href="index.html" class="header-logo">
+        <span class="header-logo-badge">RSV</span>
+        <span class="header-title">1C:RSV MCP Server</span>
+        <span class="header-subtitle">Описание инструментов</span>
+      </a>
+    </div>
+    <a href="index.html" class="header-back">&larr; На главную</a>
+  </div>
+</header>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">О документе</div>
+    <a href="#top" class="sidebar-link">Введение</a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Аналитик <span class="sidebar-badge badge-green">18</span></div>
+    <a href="#analyst" class="sidebar-link">Обзор профиля</a>
+    <a href="#metadata-analysis" class="sidebar-link indent">Анализ метаданных</a>
+    <a href="#code-analysis" class="sidebar-link indent">Анализ кода</a>
+    <a href="#search-nav" class="sidebar-link indent">Поиск и навигация</a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Разработчик <span class="sidebar-badge badge-amber">+7</span></div>
+    <a href="#developer" class="sidebar-link">Обзор профиля</a>
+    <a href="#code-editing" class="sidebar-link indent">Код и отладка</a>
+    <a href="#validation" class="sidebar-link indent">Валидация</a>
+    <a href="#build-mgmt" class="sidebar-link indent">Сборка и управление</a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Архитектор <span class="sidebar-badge badge-indigo">+1</span></div>
+    <a href="#architect" class="sidebar-link">Обзор профиля</a>
+    <a href="#edit-metadata" class="sidebar-link indent">edit_metadata</a>
+    <a href="#ops-objects" class="sidebar-link indent2">Объекты метаданных</a>
+    <a href="#ops-special" class="sidebar-link indent2">Специализированные</a>
+    <a href="#ops-forms" class="sidebar-link indent2">Формы</a>
+    <a href="#ops-extensions" class="sidebar-link indent2">Расширения</a>
+    <a href="#ops-dcs" class="sidebar-link indent2">Отчёты СКД</a>
+    <a href="#ops-common" class="sidebar-link indent2">Общее</a>
+    <a href="#batch-modes" class="sidebar-link indent">Пакетные режимы</a>
+    <a href="#not-implemented" class="sidebar-link indent">Ограничения</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <div class="main-inner">
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <h1>Описание инструментов MCP-сервера 1C:RSV</h1>
+      <div class="hero-meta">
+        <span>Автор: Радзивиллович Сергей</span>
+      </div>
+      <p>MCP-сервер 1C:RSV предоставляет <strong style="color:var(--text)">26 инструментов</strong> для работы с 1С:EDT через AI-ассистента. Инструменты организованы в <strong style="color:var(--text)">7 групп</strong> и доступны в трёх профилях в зависимости от вашей роли.</p>
+
+      <p style="margin-top:12px"><strong style="color:var(--text)">Профили</strong> определяют, какие инструменты видит AI-ассистент:</p>
+
+      <div class="table-wrap" style="margin-top:20px">
+      <table class="profiles-table" style="margin-top:0">
+        <thead>
+          <tr>
+            <th>Профиль</th>
+            <th>Назначение</th>
+            <th>Инструментов</th>
+            <th>Группы</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="profile-name pn-green">Аналитик</td>
+            <td>Изучение конфигурации без внесения изменений</td>
+            <td>18</td>
+            <td>3 группы (только чтение)</td>
+          </tr>
+          <tr>
+            <td class="profile-name pn-amber">Разработчик</td>
+            <td>Повседневная разработка: анализ + запись кода + валидация</td>
+            <td>25</td>
+            <td>6 групп</td>
+          </tr>
+          <tr>
+            <td class="profile-name pn-indigo">Архитектор</td>
+            <td>Полный контроль: создание объектов, форм, отчётов СКД</td>
+            <td>26</td>
+            <td>7 групп</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <p style="font-size:1.0rem;color:var(--text-dd);margin-top:8px">Каждый следующий профиль включает все инструменты предыдущего.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- ANALYST PROFILE -->
+    <!-- ============================================================ -->
+    <section class="profile-section" id="analyst">
+      <div class="profile-header">
+        <span class="profile-dot dot-green"></span>
+        <h2>Профиль &laquo;Аналитик&raquo; &mdash; 18 инструментов</h2>
+      </div>
+      <p class="profile-desc">Профиль для изучения и документирования конфигураций 1С. Аналитик может исследовать структуру метаданных, читать код, искать зависимости, просматривать формы и справку &mdash; без возможности что-либо изменить.</p>
+
+      <!-- Metadata Analysis -->
+      <div class="group-header" id="metadata-analysis">
+        <h3>Анализ метаданных (8 инструментов)</h3>
+        <p class="group-desc">Группа для изучения структуры конфигурации: какие объекты есть, из чего они состоят, как выглядят формы, что написано в справке платформы.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-show-edt-version">
+        <div class="tool-card-name">show_edt_version</div>
+        <div class="tool-card-title">Версия EDT</div>
+        <p>Возвращает версию установленной 1C:EDT, номер сборки, дату, а также информацию о Java и операционной системе. Полезно для диагностики и проверки совместимости.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-list-workspace-projects">
+        <div class="tool-card-name">list_workspace_projects</div>
+        <div class="tool-card-title">Список проектов</div>
+        <p>Возвращает список всех проектов, открытых в текущем рабочем пространстве EDT. Каждый проект содержит имя, путь на диске и признак &mdash; является ли он проектом 1С. Используйте этот инструмент первым, чтобы узнать точные имена проектов для передачи в другие инструменты.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-list-metadata-objects">
+        <div class="tool-card-name">list_metadata_objects</div>
+        <div class="tool-card-title">Каталог объектов метаданных</div>
+        <p>Возвращает перечень объектов конфигурации с фильтрацией по типу и имени. Поддерживает около 39 типов объектов: справочники, документы, регистры (сведений, накопления, бухгалтерии, расчёта), планы счетов, планы видов характеристик, планы видов расчёта, бизнес-процессы, задачи, перечисления, обработки, отчёты, общие модули, подсистемы, роли и другие.</p>
+        <p style="margin-top:8px">Для каждого объекта возвращается имя, синоним, количество реквизитов и форм. Поддерживается пагинация &mdash; для больших конфигураций всегда указывайте фильтр по типу или маску имени.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-get-object-details">
+        <div class="tool-card-name">get_object_details</div>
+        <div class="tool-card-title">Детали объекта метаданных</div>
+        <p>Возвращает полную структуру конкретного объекта: все реквизиты с типами данных, табличные части с колонками, список форм, команд и модулей. Для разных типов объектов возвращаются специфичные поля &mdash; например, у справочников видна иерархия и владельцы, у документов &mdash; тип нумерации, у регистров &mdash; измерения и ресурсы.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-get-config-properties">
+        <div class="tool-card-name">get_config_properties</div>
+        <div class="tool-card-title">Свойства конфигурации</div>
+        <p>Возвращает общие свойства конфигурации: имя, версию, режим совместимости, список подсистем и статистику по количеству объектов каждого типа. Позволяет быстро понять, с какой конфигурацией вы работаете.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-get-form-image">
+        <div class="tool-card-name">get_form_image</div>
+        <div class="tool-card-title">Визуализация формы</div>
+        <p>Показывает управляемую форму объекта в двух форматах:</p>
+        <ul>
+          <li><strong>Картинка (PNG)</strong> &mdash; визуальное представление формы, как она выглядит в 1С.</li>
+          <li><strong>Структура (JSON)</strong> &mdash; дерево элементов формы с их типами, заголовками и свойствами.</li>
+        </ul>
+        <p>Позволяет анализировать компоновку форм без открытия EDT и документировать пользовательский интерфейс.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-get-platform-docs">
+        <div class="tool-card-name">get_platform_docs</div>
+        <div class="tool-card-title">Справка по платформе 1С</div>
+        <p>Полноценный синтаксис-помощник, доступный AI-ассистенту. Покрывает тысячи топиков:</p>
+        <ul>
+          <li><strong>API платформы</strong> &mdash; все типы (Запрос, ТаблицаЗначений, HTTPСоединение и сотни других), их методы, свойства, конструкторы. Поддерживается точечная нотация: <span class="ic">Запрос.Выполнить</span>, <span class="ic">HTTPСоединение.Получить</span>.</li>
+          <li><strong>Встроенный язык</strong> &mdash; ключевые слова (Если, Для, Пока, Попытка), базовые типы (Число, Строка, Дата, Булево).</li>
+          <li><strong>Язык запросов</strong> &mdash; ВЫБРАТЬ, ИЗ, ГДЕ, СОЕДИНЕНИЕ, ОБЪЕДИНИТЬ, ИТОГИ, ВЫРАЗИТЬ, ПОДОБНО и все агрегатные функции.</li>
+          <li><strong>Директивы компиляции</strong> &mdash; &amp;НаСервере, &amp;НаКлиенте, &amp;НаСервереБезКонтекста и другие.</li>
+          <li><strong>Аннотации расширений</strong> &mdash; &amp;Вместо, &amp;После, &amp;Перед, &amp;ИзменениеИКонтроль.</li>
+          <li><strong>Функции СКД</strong> &mdash; около 130 функций языка выражений системы компоновки данных.</li>
+        </ul>
+        <p>Поиск работает без учёта регистра и понимает как русские, так и английские имена.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-get-object-help">
+        <div class="tool-card-name">get_object_help</div>
+        <div class="tool-card-title">Встроенная справка объекта</div>
+        <p>Читает справку, заложенную разработчиками конфигурации в объект метаданных. Это те самые HTML-страницы, которые открываются по кнопке &laquo;?&raquo; в пользовательском интерфейсе 1С. Дополнительно возвращает комментарий из описания объекта, синоним и список подсистем. Позволяет аналитику получить содержательное описание объекта без погружения в код.</p>
+      </div>
+
+      <!-- Code Analysis -->
+      <div class="group-header" id="code-analysis">
+        <h3>Анализ кода (7 инструментов)</h3>
+        <p class="group-desc">Группа для чтения и исследования BSL-кода: просмотр модулей, чтение методов, анализ цепочек вызовов, сравнение с предыдущими версиями.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-list-modules">
+        <div class="tool-card-name">list_modules</div>
+        <div class="tool-card-title">Список модулей</div>
+        <p>Возвращает перечень всех BSL-модулей в проекте с указанием типа (модуль объекта, менеджера, формы, общий модуль), размера в байтах и количества строк. Поддерживает фильтрацию по типу модуля, объекту-владельцу и сортировку по размеру &mdash; удобно для поиска самых крупных модулей.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-read-module-source">
+        <div class="tool-card-name">read_module_source</div>
+        <div class="tool-card-title">Чтение исходника модуля</div>
+        <p>Читает исходный код BSL-модуля целиком или по указанному диапазону строк. Модуль можно указать двумя способами: путём к файлу или парой &laquo;имя объекта + тип модуля&raquo;. Поддерживает фильтрацию &mdash; можно исключить комментарии или пустые строки.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-get-module-structure">
+        <div class="tool-card-name">get_module_structure</div>
+        <div class="tool-card-title">Карта методов модуля</div>
+        <p>Возвращает список всех процедур и функций модуля с их сигнатурами, параметрами, признаком экспортности, номерами строк и принадлежностью к областям (#Область). Позволяет быстро понять структуру модуля перед тем, как читать конкретные методы.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-read-method-source">
+        <div class="tool-card-name">read_method_source</div>
+        <div class="tool-card-title">Исходный код одного метода</div>
+        <p>Читает полный текст конкретной процедуры или функции по имени &mdash; от объявления до КонецПроцедуры/КонецФункции, включая документирующий комментарий над методом. Удобнее, чем читать весь модуль, когда нужен один метод.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-get-method-call-hierarchy">
+        <div class="tool-card-name">get_method_call_hierarchy</div>
+        <div class="tool-card-title">Иерархия вызовов</div>
+        <p>Показывает, кто вызывает указанный метод (входящие вызовы) и что вызывает сам метод (исходящие вызовы). Поддерживает рекурсивный анализ до 3 уровней глубины. Незаменим для оценки влияния изменений &mdash; перед модификацией метода всегда полезно проверить, откуда он вызывается.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-ai-context">
+        <div class="tool-card-name">ai_context</div>
+        <div class="tool-card-title">Умный сборщик контекста</div>
+        <p>Одним вызовом собирает всю информацию об объекте метаданных или модуле: структуру, реквизиты, модули, методы, иерархию вызовов, ссылки в коде. Заменяет 5&ndash;7 последовательных вызовов отдельных инструментов. Три режима глубины:</p>
+        <ul>
+          <li><strong>minimal</strong> &mdash; быстрый обзор: метаданные + список модулей.</li>
+          <li><strong>standard</strong> &mdash; для большинства задач: + структура методов.</li>
+          <li><strong>full</strong> &mdash; максимально полный: + исходный код + иерархия вызовов + ссылки.</li>
+        </ul>
+        <p>Оптимальный первый шаг перед работой с незнакомым объектом.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-diff-module">
+        <div class="tool-card-name">diff_module</div>
+        <div class="tool-card-title">Сравнение с версией из git</div>
+        <p>Сравнивает текущее состояние BSL-модуля с предыдущей версией из системы контроля версий. Три режима:</p>
+        <ul>
+          <li><strong>summary</strong> &mdash; сводка: какие методы добавлены, изменены, удалены.</li>
+          <li><strong>unified</strong> &mdash; полный diff в формате git.</li>
+          <li><strong>methods</strong> &mdash; построчный diff для каждого изменённого метода отдельно.</li>
+        </ul>
+      </div>
+
+      <!-- Search & Navigation -->
+      <div class="group-header" id="search-nav">
+        <h3>Поиск и навигация (3 инструмента)</h3>
+        <p class="group-desc">Группа для поиска по коду конфигурации: текстовый поиск, поиск ссылок на объекты, переход к определению.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-search-in-code">
+        <div class="tool-card-name">search_in_code</div>
+        <div class="tool-card-title">Полнотекстовый поиск</div>
+        <p>Ищет текст или регулярное выражение по BSL-коду проекта. Поддерживает фильтрацию по конкретному объекту, поиск без учёта регистра, вывод контекста вокруг найденных строк. Три режима вывода: полные результаты с контекстом, только счётчики по файлам, только список файлов.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-find-object-references">
+        <div class="tool-card-name">find_object_references</div>
+        <div class="tool-card-title">Ссылки на объект в коде</div>
+        <p>Находит все места использования объекта метаданных в BSL-коде. В режиме <span class="ic">deep</span> автоматически ищет все производные типы: СправочникСсылка, СправочникОбъект, Справочники и т.д. Незаменим при анализе зависимостей перед рефакторингом или удалением объекта.</p>
+      </div>
+
+      <div class="tool-card border-green" id="tool-resolve-symbol">
+        <div class="tool-card-name">resolve_symbol</div>
+        <div class="tool-card-title">Переход к определению</div>
+        <p>Находит процедуру или функцию по имени и возвращает её местоположение, исходный код и документирующий комментарий. Поддерживает двухкомпонентный формат <span class="ic">ОбщийМодуль.МойМетод</span> (поиск в конкретном модуле) и однокомпонентный <span class="ic">МойМетод</span> (поиск по всему проекту). При неточном имени предлагает похожие варианты.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- DEVELOPER PROFILE -->
+    <!-- ============================================================ -->
+    <section class="profile-section" id="developer">
+      <div class="profile-header">
+        <span class="profile-dot dot-amber"></span>
+        <h2>Профиль &laquo;Разработчик&raquo; &mdash; добавляет 7 инструментов</h2>
+      </div>
+      <p class="profile-desc">К 18 инструментам аналитика добавляются инструменты для редактирования кода, отладки, валидации и управления сборкой. Всего у разработчика <strong style="color:var(--text)">25 инструментов</strong>.</p>
+
+      <div class="profile-note">
+        <strong>Синтаксис-помощник:</strong> разработчику также доступен <span class="ic">get_platform_docs</span> из профиля Аналитика &mdash; полная справка по API платформы 1С, языку запросов, директивам компиляции и функциям СКД. Незаменим при написании кода &mdash; агент проверяет сигнатуры методов и параметры по официальной документации.
+      </div>
+
+      <!-- Code Editing -->
+      <div class="group-header" id="code-editing">
+        <h3>Редактирование кода и отладка (2 инструмента)</h3>
+      </div>
+
+      <div class="tool-card border-amber" id="tool-write-module-source">
+        <div class="tool-card-name">write_module_source</div>
+        <div class="tool-card-title">Запись BSL-кода</div>
+        <p>Записывает BSL-код в модуль объекта метаданных. Поддерживает 6 режимов записи для разных задач:</p>
+
+        <div class="table-wrap">
+        <table class="modes-table">
+          <thead>
+            <tr><th>Режим</th><th>Назначение</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>replace</td><td>Замена всего модуля целиком (для пустых или очень маленьких модулей)</td></tr>
+            <tr><td>replaceLines</td><td>Замена диапазона строк (для точечных правок)</td></tr>
+            <tr><td>replaceMethod</td><td>Замена одного метода по имени (самый безопасный способ изменить метод)</td></tr>
+            <tr><td>append</td><td>Добавление кода в конец модуля</td></tr>
+            <tr><td>insertBefore</td><td>Вставка перед указанной строкой</td></tr>
+            <tr><td>insertAfter</td><td>Вставка после указанной строки</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <p style="margin-top:14px"><strong style="color:var(--text)">Безопасность:</strong></p>
+        <ul>
+          <li>По умолчанию работает в режиме симуляции (<span class="ic">dryRun=true</span>) &mdash; показывает, что изменится, без реальной записи.</li>
+          <li>Автоматически создаёт резервную копию модуля перед записью.</li>
+          <li>Блокирует запись, если удаляется более 50% строк модуля (защита от случайной потери кода).</li>
+          <li>Проверяет синтаксис BSL после записи.</li>
+        </ul>
+      </div>
+
+      <div class="tool-card border-amber" id="tool-launch-debugger">
+        <div class="tool-card-name">launch_debugger</div>
+        <div class="tool-card-title">Управление отладкой</div>
+        <p>Полноценный отладчик с 16 действиями:</p>
+        <ul>
+          <li><strong>Запуск и завершение</strong> &mdash; запуск клиента 1С в режиме отладки, завершение сессии.</li>
+          <li><strong>Пошаговое выполнение</strong> &mdash; шаг через строку, вход в метод, выход из метода.</li>
+          <li><strong>Точки останова</strong> &mdash; добавление, удаление, включение/отключение, условные точки останова.</li>
+          <li><strong>Инспекция</strong> &mdash; чтение переменных, стек вызовов, вычисление произвольных BSL-выражений.</li>
+        </ul>
+        <p style="margin-top:10px">Типичный сценарий: <span class="ic">list_applications</span> &rarr; <span class="ic">launch</span> &rarr; <span class="ic">addBreakpoint</span> &rarr; пользователь выполняет действие в 1С &rarr; <span class="ic">getState</span> &rarr; <span class="ic">getVariables</span> &rarr; <span class="ic">stepOver</span> &rarr; <span class="ic">resume</span>.</p>
+      </div>
+
+      <!-- Validation -->
+      <div class="group-header" id="validation">
+        <h3>Валидация (2 инструмента)</h3>
+        <p class="group-desc">Группа для работы с результатами проверок EDT: ошибки, предупреждения, автофиксы, проверка запросов.</p>
+      </div>
+
+      <div class="tool-card border-amber" id="tool-get-validation-errors">
+        <div class="tool-card-name">get_validation_errors</div>
+        <div class="tool-card-title">Ошибки валидации</div>
+        <p>Возвращает список ошибок и предупреждений из EDT с фильтрацией по проекту, объекту и уровню серьёзности (ERROR, WARNING, INFO). Для каждой ошибки показывает файл, строку, сообщение и код проверки. Поддерживает описания проверок, объяснение ошибки с контекстом кода и рекомендацией по исправлению, а также информацию о доступных автоматических исправлениях (Quick Fix).</p>
+        <p style="margin-top:8px">Перед чтением инструмент ожидает завершения фоновых задач сборки EDT, что предотвращает возврат устаревших данных.</p>
+      </div>
+
+      <div class="tool-card border-amber" id="tool-validate-query">
+        <div class="tool-card-name">validate_query</div>
+        <div class="tool-card-title">Проверка запроса 1С</div>
+        <p>Проверяет синтаксическую корректность запроса на языке запросов 1С перед вставкой в код. Возвращает результат проверки и список ошибок с позициями.</p>
+      </div>
+
+      <!-- Build & Management -->
+      <div class="group-header" id="build-mgmt">
+        <h3>Сборка и управление (3 инструмента)</h3>
+      </div>
+
+      <div class="tool-card border-amber" id="tool-sync-database">
+        <div class="tool-card-name">sync_database</div>
+        <div class="tool-card-title">Обновление базы данных</div>
+        <p>Запускает обновление информационной базы 1С из проекта EDT. Поддерживает инкрементальное и полное обновление.</p>
+      </div>
+
+      <div class="tool-card border-amber" id="tool-rebuild-project">
+        <div class="tool-card-name">rebuild_project</div>
+        <div class="tool-card-title">Очистка и пересборка</div>
+        <p>Удаляет скомпилированные файлы и кэш EDT, при необходимости запускает полную пересборку. Помогает при ложных ошибках валидации и устаревших данных.</p>
+      </div>
+
+      <div class="tool-card border-amber" id="tool-list-applications">
+        <div class="tool-card-name">list_applications</div>
+        <div class="tool-card-title">Список информационных баз</div>
+        <p>Возвращает список зарегистрированных информационных баз для проекта с их идентификаторами, типами и состоянием обновления. Основное назначение &mdash; получить <span class="ic">applicationId</span>, который требуется для запуска отладчика и обновления базы.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- ARCHITECT PROFILE -->
+    <!-- ============================================================ -->
+    <section class="profile-section" id="architect">
+      <div class="profile-header">
+        <span class="profile-dot dot-indigo"></span>
+        <h2>Профиль &laquo;Архитектор&raquo; &mdash; добавляет 1 инструмент (~50 операций)</h2>
+      </div>
+      <p class="profile-desc">К 25 инструментам разработчика добавляется инструмент для создания и изменения объектов метаданных, форм, схем компоновки данных и расширений. Всего у архитектора <strong style="color:var(--text)">26 инструментов</strong>.</p>
+
+      <div class="profile-warning">
+        <strong>Важно.</strong> Группа &laquo;Редактирование метаданных&raquo; отключена по умолчанию. Для включения используйте настройки плагина: Window &rarr; Preferences &rarr; 1C:RSV &rarr; включите группу.
+      </div>
+
+      <!-- edit_metadata overview -->
+      <div class="group-header" id="edit-metadata">
+        <h3>edit_metadata &mdash; Конструктор конфигурации</h3>
+        <p class="group-desc">Единый инструмент для создания и настройки объектов метаданных, форм и отчётов. Содержит около <strong style="color:var(--text)">50 операций</strong>, организованных в 6 областей. Все изменения выполняются через нативные сервисы EDT &mdash; после операций не нужно вручную перезагружать формы или обновлять дерево объектов.</p>
+      </div>
+
+      <!-- Operation tree -->
+      <div class="code-tree">
+<span class="tree-root">edit_metadata</span> <span class="tree-branch">(1 инструмент, ~50 операций)</span>
+<span class="tree-branch">│</span>
+<span class="tree-branch">├──</span> <span class="tree-cat cat-meta">Объекты метаданных</span> <span class="tree-branch">(5 операций)</span>
+<span class="tree-branch">│   ├──</span> <span class="tree-op">createObject</span> — создание (30+ типов: справочники, документы, регистры...)
+<span class="tree-branch">│   ├──</span> <span class="tree-op">setObjectProperty</span> — свойства объекта
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addObjectAttribute</span> — реквизиты
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addTabularSection</span> — табличные части с колонками
+<span class="tree-branch">│   └──</span> <span class="tree-op">addTabularSectionAttribute</span> — колонки в существующую ТЧ
+<span class="tree-branch">│</span>
+<span class="tree-branch">├──</span> <span class="tree-cat cat-spec">Специализированные объекты</span> <span class="tree-branch">(6 операций)</span>
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addRegisterField / removeRegisterField</span> — поля регистров
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addEnumValue</span> — значения перечислений
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addSubsystemContent / removeSubsystemContent</span> — состав подсистем
+<span class="tree-branch">│   └──</span> <span class="tree-op">setRoleRight</span> — права ролей
+<span class="tree-branch">│</span>
+<span class="tree-branch">├──</span> <span class="tree-cat cat-form">Формы</span> <span class="tree-branch">(14 операций)</span>
+<span class="tree-branch">│   ├──</span> <span class="tree-op">createForm</span> — создание (все типы форм)
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addFormAttribute / addFormAttributeColumn</span> — реквизиты формы
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addDynamicListTable</span> — таблица динамического списка
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addField, addGroup, addButton, addTable</span> — элементы формы
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addDecoration, addRadioButton</span> — декорации и переключатели
+<span class="tree-branch">│   ├──</span> <span class="tree-op">setProperty</span> — свойства элементов (цвета, шрифты, картинки)
+<span class="tree-branch">│   ├──</span> <span class="tree-op">listPictures</span> — поиск среди 763 стандартных картинок
+<span class="tree-branch">│   └──</span> <span class="tree-op">addCommandHandler</span> — обработчики кнопок
+<span class="tree-branch">│</span>
+<span class="tree-branch">├──</span> <span class="tree-cat cat-ext">Расширения</span> <span class="tree-branch">(3 операции)</span>
+<span class="tree-branch">│   ├──</span> <span class="tree-op">adoptObject</span> — заимствовать объект из базы
+<span class="tree-branch">│   ├──</span> <span class="tree-op">adoptChild</span> — заимствовать дочерний элемент
+<span class="tree-branch">│   └──</span> <span class="tree-op">adoptFormItem</span> — заимствовать элемент формы
+<span class="tree-branch">│</span>
+<span class="tree-branch">├──</span> <span class="tree-cat cat-dcs">Отчёты СКД</span> <span class="tree-branch">(22 операции)</span>
+<span class="tree-branch">│   ├──</span> <span class="tree-op">createReportSchema, addDataSet, addDataSetField</span> — структура
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addSchemaParameter, addCalculatedField, addTotalField</span> — вычисления
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addSettingsGroup/Table/Chart</span> — группировки и визуализация
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addSettingsFilter/Order</span> — отборы и сортировки
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addConditionalAppearance</span> — условное оформление
+<span class="tree-branch">│   └──</span> <span class="tree-op">setOutputParameter, addSettingsVariant</span> — настройки вывода
+<span class="tree-branch">│</span>
+<span class="tree-branch">└──</span> <span class="tree-cat cat-common">Общее</span> <span class="tree-branch">(2 операции)</span>
+<span class="tree-branch">    ├──</span> <span class="tree-op">moveItem</span> — перемещение элементов
+<span class="tree-branch">    └──</span> <span class="tree-op">removeItem</span> — удаление элементов
+      </div>
+
+      <!-- Built-in help -->
+      <div class="help-box">
+        <h4>Встроенная справка</h4>
+        <p style="font-size:1.05rem;color:var(--text-m);margin-bottom:14px">У инструмента есть собственный справочник, который AI-ассистент запрашивает при необходимости:</p>
+        <ul>
+          <li><code>help</code> <span style="color:var(--text-d)">&mdash; список всех операций с кратким описанием</span></li>
+          <li><code>help topic=&lt;операция&gt;</code> <span style="color:var(--text-d)">&mdash; подробная справка по конкретной операции с примерами</span></li>
+          <li><code>help topic=types</code> <span style="color:var(--text-d)">&mdash; каталог типов данных для реквизитов</span></li>
+          <li><code>help topic=objectTypes</code> <span style="color:var(--text-d)">&mdash; список всех типов объектов, которые можно создать</span></li>
+          <li><code>help topic=formTypes</code> <span style="color:var(--text-d)">&mdash; типы форм</span></li>
+          <li><code>help topic=propertyValues</code> <span style="color:var(--text-d)">&mdash; форматы значений свойств</span></li>
+          <li><code>help topic=workflow</code> <span style="color:var(--text-d)">&mdash; типичный сценарий работы от создания объекта до обработчиков</span></li>
+        </ul>
+        <p style="font-size:1.0rem;color:var(--text-dd);margin-top:12px">AI-ассистенту не нужно знать внутреннее устройство EDT &mdash; он спрашивает у инструмента, что доступно, и получает готовые примеры.</p>
+      </div>
+
+      <!-- Operations: Metadata Objects -->
+      <div class="ops-section" id="ops-objects">
+        <h4>Объекты метаданных (5 операций)</h4>
+
+        <div class="op-item">
+          <div class="op-name">createObject</div>
+          <p class="op-desc">Создаёт любой объект метаданных со всеми свойствами по умолчанию (такими же, как при создании через мастер EDT). Поддерживаемые типы (более 30): справочники, документы, обработки, отчёты, перечисления, регистры (сведений, накопления, бухгалтерии, расчёта), планы счетов, планы видов характеристик и расчёта, бизнес-процессы, задачи, планы обмена, общие модули, общие формы, общие команды, подсистемы, роли, константы, параметры сеансов, регламентные задания, функциональные опции, определяемые типы и другие. При создании регистров можно сразу задать измерения, ресурсы и документы-регистраторы &mdash; всё за один вызов.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">setObjectProperty</div>
+          <p class="op-desc">Изменение свойств объекта: иерархия, тип кода, длина кода, длина наименования, проведение, формы по умолчанию, периодичность регистра, картинка подсистемы и т.д. Картинки принимаются в двух форматах: стандартные (<span class="ic">CreateFolder</span>) и общие картинки конфигурации (<span class="ic">CommonPicture.МояКартинка</span>). Пакетный режим, русские и английские значения.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">addObjectAttribute</div>
+          <p class="op-desc">Добавление реквизитов (примитивные и ссылочные типы). Пакетный режим.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">addTabularSection</div>
+          <p class="op-desc">Создание табличной части сразу с колонками.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">addTabularSectionAttribute</div>
+          <p class="op-desc">Добавление колонок в уже существующую табличную часть.</p>
+        </div>
+      </div>
+
+      <!-- Operations: Specialized Objects -->
+      <div class="ops-section" id="ops-special">
+        <h4>Специализированные объекты (6 операций)</h4>
+
+        <div class="op-item">
+          <div class="op-name">addRegisterField / removeRegisterField</div>
+          <p class="op-desc">Добавление и удаление полей регистров: ресурсы, измерения, реквизиты. Вид поля задаётся на русском или английском.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">addEnumValue</div>
+          <p class="op-desc">Добавление значений в перечисление. Одиночный и пакетный режим.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">addSubsystemContent / removeSubsystemContent</div>
+          <p class="op-desc">Включение и исключение объектов из состава подсистемы. Идемпотентно.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">setRoleRight</div>
+          <p class="op-desc">Назначение прав роли на объекты метаданных. Русские и английские имена прав (<span class="ic">Чтение</span>/<span class="ic">Read</span>, <span class="ic">Добавление</span>/<span class="ic">Insert</span> и др.). Пакетный режим, идемпотентно.</p>
+        </div>
+      </div>
+
+      <!-- Operations: Forms -->
+      <div class="ops-section" id="ops-forms">
+        <h4>Формы (14 операций)</h4>
+
+        <div class="op-item">
+          <div class="op-name">createForm</div>
+          <p class="op-desc">Создаёт форму через встроенный генератор EDT. Все типы: форма элемента, списка, выбора, группы, записи регистра, общая. Параметр <span class="ic">setAsDefault=true</span> назначает форму основной.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">addFormAttribute / addFormAttributeColumn</div>
+          <p class="op-desc">Реквизиты формы (фильтры, временные таблицы, динамические списки). Колонки можно добавлять в существующие реквизиты-таблицы без пересоздания.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">addDynamicListTable</div>
+          <p class="op-desc">Таблица динамического списка с ручными или автоматически сгенерированными колонками.</p>
+        </div>
+
+        <div class="op-item" style="padding:14px 0;border-left:2px solid var(--green-dim);padding-left:16px;margin-left:4px">
+          <p style="font-size:0.95rem;font-weight:600;color:var(--green);margin-bottom:10px">Элементы формы</p>
+          <div style="display:grid;gap:8px;">
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addField</span> &mdash; поле ввода (тип определяется автоматически)</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addGroup</span> &mdash; группа: обычная, страницы, страница, группа колонок, командная панель, группа кнопок</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addButton</span> &mdash; кнопка с автоматически создаваемой командой формы</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addTable</span> &mdash; таблица для табличной части, сразу с колонками</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addDecoration</span> &mdash; надпись для заголовков и пояснений</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addRadioButton</span> &mdash; переключатель (точки или тумблер) с произвольными вариантами</p>
+          </div>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">setProperty</div>
+          <p class="op-desc">Универсальная установка свойств любого элемента: видимость, доступность, заголовок, цвет, шрифт, картинка и десятки других. Пакетный режим.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">listPictures</div>
+          <p class="op-desc">Поиск среди 763 стандартных картинок EDT по имени. Для общих картинок конфигурации (из раздела &laquo;Общие &rarr; Общие картинки&raquo;) поиск не нужен &mdash; используйте формат <span class="ic">CommonPicture.ИмяКартинки</span> напрямую в <span class="ic">setProperty</span> или <span class="ic">setObjectProperty</span>.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">addCommandHandler</div>
+          <p class="op-desc">Создаёт обработчик команды кнопки с правильной директивой. Поддерживает обычные формы и заимствованные (обработчики Перед, После, Вместо).</p>
+        </div>
+      </div>
+
+      <!-- Operations: Extensions -->
+      <div class="ops-section" id="ops-extensions">
+        <h4>Расширения (3 операции)</h4>
+        <p class="group-desc" style="margin-bottom:16px">Полная поддержка работы с расширениями конфигурации:</p>
+
+        <div class="op-item">
+          <div class="op-name">adoptObject</div>
+          <p class="op-desc">Заимствовать объект из базовой конфигурации (целиком или рекурсивно с дочерними элементами).</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">adoptChild</div>
+          <p class="op-desc">Заимствовать конкретный дочерний элемент: реквизит, табличную часть, форму, команду, измерение, ресурс.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">adoptFormItem</div>
+          <p class="op-desc">Заимствовать элемент внутри заимствованной формы (главный реквизит, команду, параметр).</p>
+        </div>
+
+        <p class="op-desc" style="margin-top:12px">При добавлении реквизитов со ссылочными типами инструмент <strong style="color:var(--text)">автоматически заимствует</strong> связанные объекты.</p>
+      </div>
+
+      <!-- Operations: DCS Reports -->
+      <div class="ops-section" id="ops-dcs">
+        <h4>Отчёты СКД (22 операции)</h4>
+        <p class="group-desc" style="margin-bottom:16px">Полный цикл создания отчётов со схемой компоновки данных:</p>
+
+        <div class="op-item" style="padding:14px 0;border-left:2px solid rgba(244,114,182,0.3);padding-left:16px;margin-left:4px">
+          <p style="font-size:0.95rem;font-weight:600;color:#db2777;margin-bottom:10px">Базовое создание</p>
+          <div style="display:grid;gap:6px;">
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">createReportSchema</span> &mdash; создание схемы с готовым скелетом (источник данных, вариант настроек, автополе).</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addDataSet</span> &mdash; набор данных (запрос, объект, объединение).</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addDataSetField</span> &mdash; поле в набор данных.</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSchemaParameter</span> &mdash; параметр схемы.</p>
+          </div>
+        </div>
+
+        <div class="op-item" style="padding:14px 0;border-left:2px solid rgba(244,114,182,0.3);padding-left:16px;margin-left:4px">
+          <p style="font-size:0.95rem;font-weight:600;color:#db2777;margin-bottom:10px">Вычисления и итоги</p>
+          <div style="display:grid;gap:6px;">
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addCalculatedField</span> &mdash; вычисляемое поле (выражение над другими полями).</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addTotalField</span> &mdash; ресурс с агрегацией (Сумма, Количество, Максимум и др.).</p>
+          </div>
+        </div>
+
+        <div class="op-item" style="padding:14px 0;border-left:2px solid rgba(244,114,182,0.3);padding-left:16px;margin-left:4px">
+          <p style="font-size:0.95rem;font-weight:600;color:#db2777;margin-bottom:10px">Структура настроек</p>
+          <div style="display:grid;gap:6px;">
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsGroup</span> &mdash; группировка (обычная, детальные записи).</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsTable</span> &mdash; таблица с группировками по строкам и колонкам.</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsChart</span> &mdash; диаграмма с точками и сериями.</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsSelectedField / removeSettingsSelectedField</span> &mdash; управление выбранными полями.</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">removeSettingsItem</span> &mdash; удаление группировки, таблицы или диаграммы.</p>
+          </div>
+        </div>
+
+        <div class="op-item" style="padding:14px 0;border-left:2px solid rgba(244,114,182,0.3);padding-left:16px;margin-left:4px">
+          <p style="font-size:0.95rem;font-weight:600;color:#db2777;margin-bottom:10px">Отборы, сортировка, оформление</p>
+          <div style="display:grid;gap:6px;">
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsFilter</span> &mdash; элемент отбора (20+ типов сравнения).</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsFilterGroup</span> &mdash; группа отборов (И/ИЛИ/НЕ).</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsOrder</span> &mdash; сортировка.</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addConditionalAppearance / removeConditionalAppearance</span> &mdash; условное оформление с полным набором параметров (формат, цвета, шрифт, отступы и др.).</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">setDataSetFieldAppearance</span> &mdash; статическое оформление поля.</p>
+          </div>
+        </div>
+
+        <div class="op-item" style="padding:14px 0;border-left:2px solid rgba(244,114,182,0.3);padding-left:16px;margin-left:4px">
+          <p style="font-size:0.95rem;font-weight:600;color:#db2777;margin-bottom:10px">Параметры и варианты</p>
+          <div style="display:grid;gap:6px;">
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">setSettingsParameter</span> &mdash; значение параметра схемы.</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">setOutputParameter</span> &mdash; параметры вывода (заголовок, макет оформления, тип диаграммы и др.). Принимает русские и английские названия.</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsVariant</span> &mdash; новый вариант отчёта (глубокая копия настроек).</p>
+            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addUserField</span> &mdash; пользовательское поле.</p>
+          </div>
+        </div>
+
+        <p class="op-desc" style="margin-top:12px">Пример создания минимального отчёта &mdash; 6 вызовов: создание объекта, схемы, набора данных с запросом, ресурса, группировки и заголовка.</p>
+      </div>
+
+      <!-- Operations: Common -->
+      <div class="ops-section" id="ops-common">
+        <h4>Общее (2 операции)</h4>
+
+        <div class="op-item">
+          <div class="op-name">moveItem</div>
+          <p class="op-desc">Перемещение элемента в другой контейнер на конкретную позицию.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">removeItem</div>
+          <p class="op-desc">Удаление элемента по имени.</p>
+        </div>
+      </div>
+
+      <!-- Batch modes -->
+      <div class="ops-section" id="batch-modes">
+        <h4>Пакетные режимы</h4>
+        <p class="op-desc">Большинство операций поддерживают создание нескольких элементов за один вызов &mdash; передавайте массив вместо одиночного элемента. Это позволяет, например, создать справочник с 10 реквизитами, табличной частью и формой за 3&ndash;4 вызова вместо 15.</p>
+      </div>
+
+      <!-- Not implemented -->
+      <div class="limitations" id="not-implemented">
+        <h4>Что пока не реализовано</h4>
+        <ul>
+          <li>Декорация-картинка (пока только надписи).</li>
+          <li>Общие картинки конфигурации (поддерживаются только системные картинки EDT).</li>
+          <li>Создание проекта расширения с нуля (расширение должно уже существовать в рабочем пространстве).</li>
+          <li>Создание подписок на события через <span class="ic">createObject</span>.</li>
+          <li>Редактирование настроек не-основного варианта отчёта.</li>
+        </ul>
+      </div>
+
+    </section>
+
+  </div>
+</main>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">&#8593;</button>
+
+<script>
+  // Back to top visibility
+  const btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // Mobile sidebar toggle
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('open');
+  }
+
+  // Close sidebar on link click (mobile)
+  document.querySelectorAll('.sidebar-link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('open');
+      }
+    });
+  });
+
+  // Active sidebar link on scroll
+  const sections = document.querySelectorAll('[id]');
+  const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+    let currentId = '';
+    sections.forEach(section => {
+      if (section.offsetTop <= scrollPos) {
+        currentId = section.id;
+      }
+    });
+    sidebarLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && href.substring(1) === currentId) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateActiveLink();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+  updateActiveLink();
+</script>
+
+</body>
+</html>
