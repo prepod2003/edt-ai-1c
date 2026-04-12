@@ -1937,71 +1937,84 @@
 <section class="whats-new" id="whats-new">
   <div class="container">
     <div class="section-header fade-in">
-      <span class="badge badge-green">Актуальное обновление</span>
-      <h2 data-v="Что нового в версии {v}">Что нового в версии 3.0.0</h2>
-      <p>Единый конструктор метаданных, кроссплатформенность и полная документация.</p>
-    </div>
-    <div class="whats-new-grid">
-      <div class="wn-card fade-in fade-in-delay-1">
-        <div class="wn-card-icon">🏗️</div>
-        <h3>Единый конструктор edit_metadata</h3>
-        <p>Четыре инструмента объединены в один с ~50 операциями:</p>
-        <ul>
-          <li>Создание объектов, реквизитов, табличных частей</li>
-          <li>Редактирование форм: элементы, свойства, обработчики</li>
-          <li>Настройка СКД-отчётов и работа с расширениями</li>
-        </ul>
-      </div>
-      <div class="wn-card fade-in fade-in-delay-2">
-        <div class="wn-card-icon">🔄</div>
-        <h3>Реорганизация: 38 → 26 инструментов</h3>
-        <p>Меньше инструментов — больше возможностей:</p>
-        <ul>
-          <li>8 → 7 групп: чище структура, проще навигация</li>
-          <li>Поддержка macOS и Linux (нативные библиотеки)</li>
-          <li>Полная документация: <a href="guide.html" style="color:var(--blue);">руководство</a> и <a href="tools.html" style="color:var(--blue);">описание инструментов</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="wn-bottom fade-in">
-      <button class="btn-release-notes" onclick="openReleaseNotes()">История изменений</button>
+      <span class="badge badge-green">Версия 3.0.0</span>
+      <h2>Полноценная разработка 1С через ИИ-агента</h2>
+      <p>Это уже не R&D и не эксперимент. Это серьёзный промышленный инструмент.</p>
     </div>
 
-    <!-- Предыдущие версии -->
-    <div style="margin-top:48px; padding-top:40px; border-top:1px solid var(--border);">
-      <div class="section-header fade-in" style="margin-bottom:24px;">
-        <span class="badge" style="background:#f1f5f9;color:#64748b;">Ранее</span>
-        <h3 style="font-size:1.3rem; color:var(--text-l);">Отладка, поиск, формы, расширения, безопасная запись кода</h3>
+    <!-- Конструктор -->
+    <div class="wn-card fade-in" style="margin-bottom:32px; padding:32px; border-left:4px solid var(--blue);">
+      <div class="wn-card-icon">🏗️</div>
+      <h3>Единый конструктор конфигурации <code style="color:var(--blue);">edit_metadata</code></h3>
+      <p style="font-size:1.05rem; margin:12px 0;">Один инструмент, ~50 операций верхнего уровня. Через него ИИ-агент может:</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px 24px; margin:16px 0;">
+        <span>✓ Создавать любые объекты метаданных</span>
+        <span>✓ Реквизиты, табличные части, колонки</span>
+        <span>✓ Формы всех типов с элементами</span>
+        <span>✓ Кнопки с обработчиками команд</span>
+        <span>✓ Картинки: 763 стандартных + свои</span>
+        <span>✓ Расширения и заимствование</span>
+        <span>✓ Отчёты СКД (22 операции)</span>
+        <span>✓ Права ролей, подсистемы, перечисления</span>
       </div>
-      <div class="whats-new-grid">
-        <div class="wn-card fade-in fade-in-delay-1" style="opacity:0.75;">
-          <div class="wn-card-icon">🐛</div>
-          <h3>Отладка и поиск (v2.9.1)</h3>
-          <ul>
-            <li>Полноценная отладка через <code>launch_debugger</code> (16 действий)</li>
-            <li>search_in_code оптимизирован для КА, ERP, ЗУП</li>
-            <li>Совместимость с OpenAI Codex (strict mode)</li>
-          </ul>
-        </div>
-        <div class="wn-card fade-in fade-in-delay-2" style="opacity:0.75;">
-          <div class="wn-card-icon">📋</div>
-          <h3>Формы и расширения (v2.8.7)</h3>
-          <ul>
-            <li>Сложные формы: группы, страницы, таблицы, радиокнопки, декорации</li>
-            <li>Заимствование объектов и форм в расширение</li>
-            <li>Три тарифа: Аналитик, Разработчик, Архитектор</li>
-          </ul>
-        </div>
-        <div class="wn-card fade-in fade-in-delay-3" style="opacity:0.75;">
-          <div class="wn-card-icon">⚙️</div>
-          <h3>Безопасная запись (v2.8.0)</h3>
-          <ul>
-            <li><code>replaceMethod</code>, защита от деструктивной записи</li>
-            <li>Автобэкап модулей, сохранение CRLF/LF</li>
-            <li><code>create_metadata_object</code>, <code>modify_form</code> batch</li>
-          </ul>
-        </div>
+      <p style="color:var(--text-l); font-size:0.95rem; margin-top:12px;">
+        Всё через нативные сервисы EDT. Никакого хардкода, никаких костылей — как будто человек делает руками, только через агента.
+      </p>
+    </div>
+
+    <!-- Тест Мини-склад -->
+    <div class="wn-card fade-in" style="margin-bottom:32px; padding:32px; border-left:4px solid var(--green); background:#f0fdf4;">
+      <div class="wn-card-icon">✅</div>
+      <h3>Тест «Мини-склад» — конфигурация с нуля</h3>
+      <p style="font-size:1.05rem; margin:12px 0;">Агент получил ТЗ на естественном языке и создал всё самостоятельно:</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px 24px; margin:16px 0;">
+        <span>▸ 3 справочника с реквизитами</span>
+        <span>▸ 2 документа с табличными частями</span>
+        <span>▸ Регистр накопления с регистраторами</span>
+        <span>▸ Регистр бухгалтерии + план счетов</span>
+        <span>▸ Перечисление, подсистема с картинкой</span>
+        <span>▸ Отчёт СКД с группировками и оформлением</span>
       </div>
+      <p style="margin:12px 0;">А в <strong>расширении</strong>: регистр расчёта, регистр сведений, документ-регистратор, заимствование объектов и добавление реквизитов на заимствованную форму.</p>
+      <p style="font-weight:600; color:var(--green);">Результат: ошибок 0, отчёт формируется, документы проводятся.</p>
+    </div>
+
+    <!-- Другие улучшения -->
+    <div class="whats-new-grid" style="margin-bottom:32px;">
+      <div class="wn-card fade-in fade-in-delay-1">
+        <div class="wn-card-icon">🔍</div>
+        <h3>Валидация ошибок</h3>
+        <p>Агент видит полное описание каждой проверки: что нарушено, почему, как исправить. Автоматическое применение исправлений (Quick Fix).</p>
+      </div>
+      <div class="wn-card fade-in fade-in-delay-2">
+        <div class="wn-card-icon">📚</div>
+        <h3>Синтаксис-помощник</h3>
+        <p>Полноценная справка платформы 1С: тысячи топиков, все ~130 функций СКД, поиск на русском и английском.</p>
+      </div>
+      <div class="wn-card fade-in fade-in-delay-3">
+        <div class="wn-card-icon">🔄</div>
+        <h3>38 → 26 инструментов</h3>
+        <p>Меньше инструментов — больше возможностей. Встроенная справка, агент не перегружается контекстом.</p>
+      </div>
+      <div class="wn-card fade-in fade-in-delay-1">
+        <div class="wn-card-icon">🐛</div>
+        <h3>Отладка у разработчика</h3>
+        <p>16 действий: breakpoints, step, переменные, evaluate. Теперь доступна в тарифе Разработчик.</p>
+      </div>
+      <div class="wn-card fade-in fade-in-delay-2">
+        <div class="wn-card-icon">🖥️</div>
+        <h3>Windows, macOS</h3>
+        <p>Нативные библиотеки для Windows и macOS (Intel + Apple Silicon).</p>
+      </div>
+      <div class="wn-card fade-in fade-in-delay-3">
+        <div class="wn-card-icon">📖</div>
+        <h3>Документация</h3>
+        <p>Полностью переработана. <a href="guide.html" style="color:var(--blue);">Руководство</a> и <a href="tools.html" style="color:var(--blue);">описание инструментов</a> в HTML с навигацией.</p>
+      </div>
+    </div>
+
+    <div class="wn-bottom fade-in">
+      <button class="btn-release-notes" onclick="openReleaseNotes()">История изменений</button>
     </div>
   </div>
 </section>
@@ -2029,7 +2042,7 @@
     <div class="download-inner fade-in">
       <span class="badge badge-green">📥 Актуальный релиз</span>
       <h2>Скачать 1C:RSV MCP Server</h2>
-      <p class="download-sub" data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS, Linux · Пробный период 14 дней">Версия 3.0.0 · Для 1C:EDT 2025.x · Windows, macOS, Linux · Пробный период 14 дней</p>
+      <p class="download-sub" data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 3.0.0 · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней</p>
 
       <div class="download-card">
         <div class="download-card-info">
@@ -2060,7 +2073,7 @@
         <span>Требования:</span>
         <span class="badge badge-blue">1C:EDT 2025.x</span>
         <span class="badge badge-blue">Java 17 (Zulu)</span>
-        <span class="badge badge-indigo">Windows, macOS, Linux</span>
+        <span class="badge badge-indigo">Windows, macOS</span>
         <span class="badge badge-green">Пробный период 14 дней</span>
       </div>
     </div>
@@ -2362,7 +2375,7 @@
     <p>Меньше инструментов — больше возможностей. 8 → 7 групп: чище структура, проще навигация для ИИ-агента. Описания инструментов подсказывают агенту оптимальный выбор.</p>
 
     <h3>3. Кроссплатформенность</h3>
-    <p>Полная поддержка Windows x64, macOS (Intel + Apple Silicon), Linux x64. Нативные библиотеки для каждой платформы. 0 внешних JAR-зависимостей.</p>
+    <p>Полная поддержка Windows x64 и macOS (Intel + Apple Silicon). Нативные библиотеки для каждой платформы.</p>
 
     <h3>4. Полная документация</h3>
     <p>Подробное <a href="guide.html" style="color:var(--blue);">руководство пользователя</a> и <a href="tools.html" style="color:var(--blue);">описание всех 26 инструментов</a> с примерами.</p>
