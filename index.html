@@ -2244,6 +2244,15 @@
       </div>
     </div>
 
+    <div style="text-align:center;margin-top:32px;">
+      <button onclick="upgradeOpenModal()" style="background:#eef2ff;color:#4338ca;border:2px solid #c7d2fe;padding:12px 28px;border-radius:10px;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;" onmouseover="this.style.background='#e0e7ff';this.style.borderColor='#a5b4fc';" onmouseout="this.style.background='#eef2ff';this.style.borderColor='#c7d2fe';">
+        ↗ Сменить тариф (уже есть код активации)
+      </button>
+      <p style="margin-top:8px;color:#64748b;font-size:0.85rem;">
+        Перейти на более высокий тариф с учётом уже оплаченной суммы
+      </p>
+    </div>
+
     <p style="text-align:center;margin-top:32px;color:#64748b;font-size:0.85rem;">
       Пробный период 14 дней (тариф Архитектор) — бесплатно, кнопка в диалоге активации 1C:EDT.<br>
       Вопросы: <a href="mailto:prepod2003@yandex.ru" style="color:#2563eb;">prepod2003@yandex.ru</a>
@@ -2274,6 +2283,84 @@
     <div class="email-modal-actions">
       <button class="em-proceed" id="pricing-proceed-btn" onclick="pricingProceed()" disabled>Перейти к оплате →</button>
       <button class="em-cancel" onclick="pricingCloseModal()">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- Upgrade modal -->
+<div class="email-modal-bg" id="upgrade-modal-bg" onclick="if(event.target===this)upgradeCloseModal()">
+  <div class="email-modal-box" style="max-width:520px;">
+    <h3>Смена тарифа с доплатой</h3>
+    <p>Перейдите на более высокий тариф. Уже оплаченное время будет учтено — вы платите только разницу.</p>
+
+    <!-- Шаг 1: ввод данных -->
+    <div id="upg-step-input">
+      <label style="display:block;font-size:0.85rem;color:#475569;font-weight:600;margin-bottom:6px;">Код активации текущей лицензии</label>
+      <input type="text" id="upg-code-input" placeholder="ACT-DEV-XXXXXXXX" autocomplete="off" style="width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:1rem;outline:none;box-sizing:border-box;font-family:'JetBrains Mono',monospace;text-transform:uppercase;">
+
+      <label style="display:block;font-size:0.85rem;color:#475569;font-weight:600;margin:16px 0 6px;">Email (на который оформлен код)</label>
+      <input type="email" id="upg-email-input" placeholder="your@email.com" autocomplete="email" style="width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:1rem;outline:none;box-sizing:border-box;font-family:inherit;">
+
+      <label style="display:block;font-size:0.85rem;color:#475569;font-weight:600;margin:16px 0 6px;">Новый тариф</label>
+      <select id="upg-tier-select" style="width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:1rem;outline:none;box-sizing:border-box;font-family:inherit;background:white;">
+        <option value="">— выберите тариф и период —</option>
+        <optgroup label="Разработчик">
+          <option value="DEV-1M">Разработчик, 1 месяц</option>
+          <option value="DEV-3M">Разработчик, 3 месяца</option>
+          <option value="DEV-6M">Разработчик, 6 месяцев</option>
+          <option value="DEV-1Y">Разработчик, 1 год</option>
+        </optgroup>
+        <optgroup label="Архитектор">
+          <option value="ARC-1M">Архитектор, 1 месяц</option>
+          <option value="ARC-3M">Архитектор, 3 месяца</option>
+          <option value="ARC-6M">Архитектор, 6 месяцев</option>
+          <option value="ARC-1Y">Архитектор, 1 год</option>
+        </optgroup>
+      </select>
+
+      <div id="upg-error" style="display:none;margin-top:12px;padding:12px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;color:#991b1b;font-size:0.88rem;"></div>
+
+      <div class="email-modal-actions">
+        <button class="em-proceed" id="upg-quote-btn" onclick="upgradeRequestQuote()">Рассчитать доплату</button>
+        <button class="em-cancel" onclick="upgradeCloseModal()">Отмена</button>
+      </div>
+    </div>
+
+    <!-- Шаг 2: результат расчёта -->
+    <div id="upg-step-quote" style="display:none;">
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:16px;">
+        <div style="font-size:0.85rem;color:#64748b;margin-bottom:8px;">Ваш текущий тариф</div>
+        <div style="font-size:1.05rem;font-weight:600;color:#0f172a;margin-bottom:4px;" id="upg-old-tier">—</div>
+        <div style="font-size:0.85rem;color:#475569;" id="upg-old-days">—</div>
+        <div style="font-size:0.85rem;color:#475569;margin-top:4px;">Оплачено: <strong id="upg-old-paid">—</strong> ₽</div>
+        <div style="font-size:0.85rem;color:#059669;margin-top:4px;">К зачёту: <strong id="upg-old-remaining">—</strong> ₽</div>
+      </div>
+
+      <div style="background:#eff6ff;border:2px solid #bfdbfe;border-radius:12px;padding:20px;margin-bottom:16px;">
+        <div style="font-size:0.85rem;color:#1e40af;margin-bottom:8px;">Новый тариф</div>
+        <div style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:4px;" id="upg-new-tier">—</div>
+        <div style="font-size:0.85rem;color:#475569;">Полная стоимость: <strong id="upg-new-full">—</strong> ₽</div>
+        <div style="font-size:0.85rem;color:#475569;margin-top:4px;">Действует до: <strong id="upg-new-expires">—</strong></div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #fbbf24;border-radius:12px;padding:20px;margin-bottom:20px;text-align:center;">
+        <div style="font-size:0.85rem;color:#92400e;margin-bottom:4px;">Сумма доплаты</div>
+        <div style="font-size:2rem;font-weight:800;color:#78350f;" id="upg-amount">— ₽</div>
+      </div>
+
+      <label class="em-terms-row">
+        <input type="checkbox" id="upg-terms-check" onchange="upgradeValidatePay()">
+        <span>Я ознакомился с <a href="terms.html" target="_blank" style="color:#2563eb;">пользовательским соглашением</a> и принимаю его условия</span>
+      </label>
+      <label class="em-terms-row">
+        <input type="checkbox" id="upg-privacy-check" onchange="upgradeValidatePay()">
+        <span>Я даю согласие на <a href="privacy.html" target="_blank" style="color:#2563eb;">обработку персональных данных</a> (152-ФЗ)</span>
+      </label>
+
+      <div class="email-modal-actions">
+        <button class="em-proceed" id="upg-pay-btn" onclick="upgradeProceed()" disabled>Оплатить доплату →</button>
+        <button class="em-cancel" onclick="upgradeBack()">Назад</button>
+      </div>
     </div>
   </div>
 </div>
@@ -3102,9 +3189,114 @@
     if (e.key === 'Enter' && !document.getElementById('pricing-proceed-btn').disabled) pricingProceed();
   });
 
+  // ===== UPGRADE MODAL =====
+  var upgradeQuoteData = null;
+
+  function upgradeOpenModal() {
+    document.getElementById('upg-step-input').style.display = 'block';
+    document.getElementById('upg-step-quote').style.display = 'none';
+    document.getElementById('upg-error').style.display = 'none';
+    document.getElementById('upg-code-input').value = '';
+    document.getElementById('upg-email-input').value = '';
+    document.getElementById('upg-tier-select').value = '';
+    document.getElementById('upg-terms-check').checked = false;
+    document.getElementById('upg-privacy-check').checked = false;
+    document.getElementById('upgrade-modal-bg').classList.add('active');
+    upgradeQuoteData = null;
+  }
+
+  function upgradeCloseModal() {
+    document.getElementById('upgrade-modal-bg').classList.remove('active');
+    upgradeQuoteData = null;
+  }
+
+  function upgradeBack() {
+    document.getElementById('upg-step-input').style.display = 'block';
+    document.getElementById('upg-step-quote').style.display = 'none';
+    document.getElementById('upg-error').style.display = 'none';
+  }
+
+  function upgradeShowError(msg) {
+    var el = document.getElementById('upg-error');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function upgradeRequestQuote() {
+    var code = document.getElementById('upg-code-input').value.trim().toUpperCase();
+    var email = document.getElementById('upg-email-input').value.trim();
+    var newTier = document.getElementById('upg-tier-select').value;
+
+    if (!code) { upgradeShowError('Введите код активации'); return; }
+    if (!email || !pricingEmailValid(email)) { upgradeShowError('Введите корректный email'); return; }
+    if (!newTier) { upgradeShowError('Выберите новый тариф и период'); return; }
+
+    document.getElementById('upg-error').style.display = 'none';
+    var btn = document.getElementById('upg-quote-btn');
+    btn.disabled = true;
+    btn.textContent = 'Рассчитываем...';
+
+    var url = PRICING_GAS + '?action=upgrade-quote'
+      + '&code=' + encodeURIComponent(code)
+      + '&email=' + encodeURIComponent(email)
+      + '&newTier=' + encodeURIComponent(newTier);
+
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        btn.disabled = false;
+        btn.textContent = 'Рассчитать доплату';
+        if (!data.success) {
+          upgradeShowError(data.message || 'Ошибка расчёта');
+          return;
+        }
+        upgradeQuoteData = {
+          code: code,
+          email: email,
+          newTier: newTier
+        };
+        // Показываем результат
+        document.getElementById('upg-old-tier').textContent = data.oldTier;
+        document.getElementById('upg-old-days').textContent = 'Использовано ' + data.oldDaysUsed + ' из ' + data.oldDaysValid + ' дней (осталось ' + data.oldDaysLeft + ')';
+        document.getElementById('upg-old-paid').textContent = pricingFmt(data.oldPaidRub);
+        document.getElementById('upg-old-remaining').textContent = pricingFmt(data.oldRemainingRub);
+        document.getElementById('upg-new-tier').textContent = data.newTier + ' — ' + data.newPeriod;
+        document.getElementById('upg-new-full').textContent = pricingFmt(data.newFullPriceRub);
+        document.getElementById('upg-new-expires').textContent = data.newExpiresAt;
+        document.getElementById('upg-amount').textContent = pricingFmt(data.upgradeAmountRub) + ' ₽';
+
+        document.getElementById('upg-terms-check').checked = false;
+        document.getElementById('upg-privacy-check').checked = false;
+        document.getElementById('upg-pay-btn').disabled = true;
+
+        document.getElementById('upg-step-input').style.display = 'none';
+        document.getElementById('upg-step-quote').style.display = 'block';
+      })
+      .catch(function(err) {
+        btn.disabled = false;
+        btn.textContent = 'Рассчитать доплату';
+        upgradeShowError('Ошибка соединения: ' + err.message);
+      });
+  }
+
+  function upgradeValidatePay() {
+    var terms = document.getElementById('upg-terms-check').checked;
+    var privacy = document.getElementById('upg-privacy-check').checked;
+    document.getElementById('upg-pay-btn').disabled = !(terms && privacy);
+  }
+
+  function upgradeProceed() {
+    if (!upgradeQuoteData) return;
+    var url = PRICING_GAS + '?action=upgrade-pay'
+      + '&code=' + encodeURIComponent(upgradeQuoteData.code)
+      + '&email=' + encodeURIComponent(upgradeQuoteData.email)
+      + '&newTier=' + encodeURIComponent(upgradeQuoteData.newTier);
+    window.location.href = url;
+  }
+
   // ===== KEYBOARD SHORTCUTS =====
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeLightbox(); closeCase(); closeCaseGallery(); closeCaseDetail(); closeReleaseNotes(); closeKaznCase(); closeAnalystCase(); pricingCloseModal(); }
+    if (e.key === 'Escape') { closeLightbox(); closeCase(); closeCaseGallery(); closeCaseDetail(); closeReleaseNotes(); closeKaznCase(); closeAnalystCase(); pricingCloseModal(); upgradeCloseModal(); }
     if (document.getElementById('cg-modal').classList.contains('active')) {
       if (e.key === 'ArrowLeft') caseGalleryNav(-1);
       if (e.key === 'ArrowRight') caseGalleryNav(1);
