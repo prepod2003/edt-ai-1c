@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="1C:RSV MCP Server — подробное описание всех 26 инструментов для работы с 1С:EDT через AI-ассистента. 7 групп, 3 профиля, ~50 операций конструктора метаданных.">
+  <meta name="description" content="1C:RSV MCP Server — подробное описание всех 26 инструментов для работы с 1С:EDT через AI-ассистента. 7 групп, 3 профиля, ~54 операции конструктора метаданных.">
   <title>1C:RSV — Описание инструментов</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563eb'/><text x='50%' y='54%' dy='.35em' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='12' font-weight='900' letter-spacing='-0.5'>RSV</text></svg>">
   <style>
@@ -14,7 +14,7 @@
       font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
       background: #ffffff;
       color: #0f172a;
-      font-size: 1.25rem;
+      font-size: var(--fs-body);
       line-height: 1.75;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
@@ -33,6 +33,8 @@
       --indigo: #6366f1;
       --indigo-dim: #eef2ff;
       --indigo-glow: rgba(99,102,241,0.08);
+      --pink: #db2777;
+      --pink-glow: rgba(244,114,182,0.3);
       --bg: #ffffff;
       --bg-card: #f8fafc;
       --bg-code: #1e293b;
@@ -50,6 +52,22 @@
       --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
       --sidebar-w: 280px;
       --header-h: 64px;
+
+      /* ===== ЕДИНАЯ ТИПОГРАФИКА ===== */
+      /* Все размеры шрифтов централизованы здесь. Поменял одну переменную —
+         поменялось везде одинаково. Блочные компоненты наследуют эти размеры. */
+      --fs-xs:    0.75rem;   /* бейджики, мини-метки */
+      --fs-sm:    0.85rem;   /* sidebar-links indent2, инлайновые метки в блоках */
+      --fs-side:  0.9rem;    /* sidebar-links, header-links */
+      --fs-base:  1rem;      /* help-box заголовки, sub-text */
+      --fs-body:  1.05rem;   /* основной текст карточек, op-desc, списки */
+      --fs-md:    1.1rem;    /* profile-desc, hero-p */
+      --fs-lg:    1.15rem;   /* tool-card-name (моноширинный) */
+      --fs-h4:    1.05rem;   /* group header H4 / ops-section H4 */
+      --fs-h3:    1.3rem;    /* group-header H3 */
+      --fs-h2:    1.6rem;    /* profile H2 */
+      --fs-h1:    2rem;      /* hero H1 */
+      --fs-mono:  0.95rem;   /* моноширинные блоки (code-tree, pre) */
     }
 
     /* ===== SCROLLBAR ===== */
@@ -91,25 +109,25 @@
       background: var(--blue);
       color: white;
       font-weight: 800;
-      font-size: 0.75rem;
+      font-size: var(--fs-xs);
       padding: 4px 10px;
       border-radius: 6px;
       letter-spacing: 0.5px;
     }
     .header-title {
-      font-size: 1rem;
+      font-size: var(--fs-base);
       font-weight: 600;
       color: var(--text);
     }
     .header-subtitle {
-      font-size: 0.8rem;
+      font-size: var(--fs-sm);
       color: var(--text-dd);
       margin-left: 8px;
     }
     .header-back {
       color: var(--text-d);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: var(--fs-side);
       font-weight: 500;
       padding: 8px 16px;
       border: 1px solid var(--border);
@@ -153,7 +171,7 @@
       margin-bottom: 20px;
     }
     .sidebar-section-title {
-      font-size: 0.8rem;
+      font-size: var(--fs-sm);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1.5px;
@@ -166,7 +184,7 @@
       padding: 6px 12px;
       color: var(--text-d);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: var(--fs-side);
       border-radius: 6px;
       transition: all 0.15s;
       line-height: 1.4;
@@ -181,15 +199,15 @@
     }
     .sidebar-link.indent {
       padding-left: 24px;
-      font-size: 0.78rem;
+      font-size: var(--fs-sm);
     }
     .sidebar-link.indent2 {
       padding-left: 36px;
-      font-size: 0.75rem;
+      font-size: var(--fs-xs);
     }
     .sidebar-badge {
       display: inline-block;
-      font-size: 0.65rem;
+      font-size: var(--fs-xs);
       font-weight: 700;
       padding: 1px 6px;
       border-radius: 10px;
@@ -218,7 +236,7 @@
       border-bottom: 1px solid var(--border-light);
     }
     .hero h1 {
-      font-size: 2rem;
+      font-size: var(--fs-h1);
       font-weight: 800;
       color: #0f172a;
       margin-bottom: 12px;
@@ -228,13 +246,13 @@
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
-      font-size: 0.95rem;
+      font-size: var(--fs-mono);
       color: var(--text-dd);
       margin-bottom: 20px;
     }
     .hero-meta span { display: flex; align-items: center; gap: 4px; }
     .hero p {
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
       color: var(--text-m);
       max-width: 700px;
       line-height: 1.7;
@@ -250,7 +268,7 @@
       width: 100%;
       border-collapse: collapse;
       margin: 24px 0;
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
     }
     .profiles-table th {
       text-align: left;
@@ -258,7 +276,7 @@
       background: #f1f5f9;
       color: #475569;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: var(--fs-side);
       text-transform: uppercase;
       letter-spacing: 0.5px;
       border-bottom: 2px solid var(--border);
@@ -267,7 +285,7 @@
       padding: 14px 16px;
       border-bottom: 1px solid var(--border-light);
       color: var(--text-m);
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
     }
     .profiles-table tr:last-child td { border-bottom: none; }
     .profiles-table .profile-name {
@@ -291,7 +309,7 @@
       margin-bottom: 12px;
     }
     .profile-header h2 {
-      font-size: 1.6rem;
+      font-size: var(--fs-h2);
       font-weight: 800;
       color: #0f172a;
       line-height: 1.2;
@@ -306,7 +324,7 @@
     .dot-amber { background: var(--amber); box-shadow: 0 0 8px rgba(245,158,11,0.3); }
     .dot-indigo { background: var(--indigo); box-shadow: 0 0 8px rgba(99,102,241,0.3); }
     .profile-desc {
-      font-size: 1.1rem;
+      font-size: var(--fs-md);
       color: var(--text-m);
       margin-bottom: 32px;
       max-width: 700px;
@@ -318,7 +336,7 @@
       padding: 16px 20px;
       border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
       margin-bottom: 32px;
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
       color: var(--text-m);
       line-height: 1.7;
     }
@@ -329,7 +347,7 @@
       padding: 16px 20px;
       border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
       margin-bottom: 32px;
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
       color: var(--text-m);
       line-height: 1.7;
     }
@@ -341,13 +359,13 @@
       margin-bottom: 24px;
     }
     .group-header h3 {
-      font-size: 1.3rem;
+      font-size: var(--fs-h3);
       font-weight: 700;
       color: var(--text);
       margin-bottom: 8px;
     }
     .group-desc {
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
       color: var(--text-d);
       line-height: 1.6;
     }
@@ -367,19 +385,19 @@
     }
     .tool-card-name {
       font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
-      font-size: 1.15rem;
+      font-size: var(--fs-lg);
       font-weight: 600;
       color: var(--blue);
       margin-bottom: 6px;
     }
     .tool-card-title {
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
       color: var(--text-d);
       margin-bottom: 12px;
       font-weight: 500;
     }
     .tool-card p {
-      font-size: 1.1rem;
+      font-size: var(--fs-md);
       color: var(--text-m);
       line-height: 1.75;
     }
@@ -388,7 +406,7 @@
       padding-left: 20px;
     }
     .tool-card li {
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
       color: var(--text-m);
       margin-bottom: 6px;
       line-height: 1.6;
@@ -405,7 +423,7 @@
       width: 100%;
       border-collapse: collapse;
       margin: 16px 0;
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
     }
     .modes-table th {
       text-align: left;
@@ -413,7 +431,7 @@
       background: #f1f5f9;
       color: #475569;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: var(--fs-side);
       text-transform: uppercase;
       letter-spacing: 0.5px;
       border-bottom: 2px solid var(--border);
@@ -425,7 +443,7 @@
     }
     .modes-table td:first-child {
       font-family: 'JetBrains Mono', 'Consolas', monospace;
-      font-size: 0.95rem;
+      font-size: var(--fs-mono);
       color: var(--blue);
       font-weight: 600;
       white-space: nowrap;
@@ -440,7 +458,7 @@
       padding: 28px 32px;
       margin: 24px 0;
       font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
-      font-size: 0.95rem;
+      font-size: var(--fs-mono);
       line-height: 1.9;
       overflow-x: auto;
       color: var(--text-d);
@@ -449,7 +467,7 @@
     .code-tree .tree-root {
       color: var(--blue);
       font-weight: 700;
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
     }
     .code-tree .tree-branch {
       color: #94a3b8;
@@ -473,7 +491,7 @@
       margin-bottom: 32px;
     }
     .ops-section h4 {
-      font-size: 1.05rem;
+      font-size: var(--fs-h4);
       font-weight: 700;
       color: var(--text);
       margin-bottom: 16px;
@@ -485,16 +503,35 @@
     }
     .op-name {
       font-family: 'JetBrains Mono', 'Consolas', monospace;
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
       color: var(--indigo);
       font-weight: 600;
     }
     .op-desc {
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
       color: var(--text-m);
       margin-top: 4px;
       line-height: 1.6;
     }
+    /* Подзаголовок внутри op-item (например "Элементы формы", "Базовое создание") */
+    .op-subheader {
+      font-size: var(--fs-base);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    /* Мелкий op-name внутри группирующих блоков */
+    .op-name.sm {
+      font-size: var(--fs-base);
+    }
+    /* Карточка-обёртка группы операций с цветной левой линейкой */
+    .op-group {
+      padding: 14px 0 14px 16px;
+      margin-left: 4px;
+    }
+    .op-group.form-green { border-left: 2px solid var(--green-dim); }
+    .op-group.dcs-pink   { border-left: 2px solid var(--pink-glow); }
+    .op-group-stack { display: grid; gap: 8px; }
+    .op-group-stack.tight { gap: 6px; }
 
     /* ===== HELP BOX ===== */
     .help-box {
@@ -505,9 +542,19 @@
       margin: 24px 0;
     }
     .help-box h4 {
-      font-size: 1rem;
+      font-size: var(--fs-base);
       color: var(--text);
       margin-bottom: 14px;
+    }
+    .help-box p {
+      font-size: var(--fs-body);
+      color: var(--text-m);
+      margin-bottom: 14px;
+    }
+    .help-box p.sub {
+      font-size: var(--fs-base);
+      color: var(--text-dd);
+      margin-top: 12px;
     }
     .help-box ul {
       list-style: none;
@@ -515,10 +562,13 @@
     }
     .help-box li {
       padding: 6px 0;
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
       color: var(--text-m);
       display: flex;
       gap: 8px;
+    }
+    .help-box li .hint {
+      color: var(--text-d);
     }
     .help-box code {
       font-family: 'JetBrains Mono', 'Consolas', monospace;
@@ -540,7 +590,7 @@
       margin: 32px 0;
     }
     .limitations h4 {
-      font-size: 1rem;
+      font-size: var(--fs-base);
       font-weight: 700;
       color: var(--text-d);
       margin-bottom: 12px;
@@ -549,7 +599,7 @@
       padding-left: 20px;
     }
     .limitations li {
-      font-size: 1.05rem;
+      font-size: var(--fs-body);
       color: var(--text-dd);
       margin-bottom: 6px;
     }
@@ -696,6 +746,7 @@
     <a href="#ops-objects" class="sidebar-link indent2">Объекты метаданных</a>
     <a href="#ops-special" class="sidebar-link indent2">Специализированные</a>
     <a href="#ops-forms" class="sidebar-link indent2">Формы</a>
+    <a href="#ops-templates" class="sidebar-link indent2">Макеты печатных форм</a>
     <a href="#ops-extensions" class="sidebar-link indent2">Расширения</a>
     <a href="#ops-dcs" class="sidebar-link indent2">Отчёты СКД</a>
     <a href="#ops-common" class="sidebar-link indent2">Общее</a>
@@ -987,8 +1038,18 @@
       <div class="tool-card border-amber" id="tool-get-validation-errors">
         <div class="tool-card-name">get_validation_errors</div>
         <div class="tool-card-title">Ошибки валидации</div>
-        <p>Возвращает список ошибок и предупреждений из EDT с фильтрацией по проекту, объекту и уровню серьёзности (ERROR, WARNING, INFO). Для каждой ошибки показывает файл, строку, сообщение и код проверки. Поддерживает описания проверок, объяснение ошибки с контекстом кода и рекомендацией по исправлению, а также информацию о доступных автоматических исправлениях (Quick Fix).</p>
-        <p style="margin-top:8px">Перед чтением инструмент ожидает завершения фоновых задач сборки EDT, что предотвращает возврат устаревших данных.</p>
+        <p>Возвращает ошибки и предупреждения из EDT. Для каждой показывает текст на русском, файл, номер строки, начало и конец проблемного участка, тип проверки, есть ли автофикс (Quick Fix), готовую строку подавления <span class="ic">// @skip-check &hellip;</span> и подробное описание из каталога проверок. Поддерживает автоматическое применение официальных Quick Fix через отдельный режим.</p>
+        <p style="margin-top:12px"><strong>Область выборки (параметр <span class="ic">scope</span>):</strong></p>
+        <ul style="margin-top:6px">
+          <li><strong>session (по умолчанию)</strong> &mdash; показывает ошибки <strong>только в файлах, изменённых в текущей сессии EDT</strong> (через инструменты MCP или вручную в редакторе). AI видит ровно то, что сам наработал, и не отвлекается на тысячи старых ошибок демо-конфигурации.</li>
+          <li><strong>object</strong> &mdash; ошибки конкретного объекта метаданных (с <span class="ic">objectName=FQN</span>).</li>
+          <li><strong>project</strong> &mdash; все ошибки проекта (осознанный запрос для полного скана, например перед релизом).</li>
+          <li><strong>all</strong> &mdash; все ошибки всех открытых проектов workspace.</li>
+        </ul>
+        <p style="margin-top:12px"><strong>Дефолт severity = ERROR</strong> &mdash; возвращаются только реальные ошибки, предупреждения не засоряют ответ. Нужны &mdash; передавайте явно.</p>
+        <p style="margin-top:12px"><strong>Надёжная синхронизация.</strong> Xtext-парсер коммитит маркеры асинхронно через внутренний ExecutorService, который не ловится стандартными ожиданиями сборки. Инструмент подписывается на события обновления маркеров через официальный API EDT и ждёт «тишины» в потоке &mdash; самый надёжный способ синхронизации. Плюс retry-цикл до 3 попыток сбора. Ситуация «AI записал модуль, в EDT появился красный крестик, а инструмент возвращает 0» закрыта.</p>
+        <p style="margin-top:12px"><strong>На крупных конфигурациях</strong> (ERP, УТ, БП) первый вызов на свежеоткрытом проекте больше не зависает &mdash; в режиме <span class="ic">session</span> читаются только маркеры свежих файлов, выдача практически мгновенная даже при десятках тысяч маркеров в проекте.</p>
+        <p style="margin-top:12px"><strong>Два канала маркеров.</strong> Одновременно читает Eclipse <span class="ic">IMarker.PROBLEM</span> (синтаксис Xtext, сборщики) и EDT-нативные маркеры через <span class="ic">IMarkerManager</span> (все проверки фреймворка checks: качество кода БСП, BSL, формы, метаданные). Дубликаты автоматически дедуплицируются.</p>
       </div>
 
       <div class="tool-card border-amber" id="tool-validate-query">
@@ -1027,7 +1088,7 @@
     <section class="profile-section" id="architect">
       <div class="profile-header">
         <span class="profile-dot dot-indigo"></span>
-        <h2>Профиль &laquo;Архитектор&raquo; &mdash; добавляет 1 инструмент (~50 операций)</h2>
+        <h2>Профиль &laquo;Архитектор&raquo; &mdash; добавляет 1 инструмент (~54 операции)</h2>
       </div>
       <p class="profile-desc">К 25 инструментам разработчика добавляется инструмент для создания и изменения объектов метаданных, форм, схем компоновки данных и расширений. Всего у архитектора <strong style="color:var(--text)">26 инструментов</strong>.</p>
 
@@ -1038,25 +1099,26 @@
       <!-- edit_metadata overview -->
       <div class="group-header" id="edit-metadata">
         <h3>edit_metadata &mdash; Конструктор конфигурации</h3>
-        <p class="group-desc">Единый инструмент для создания и настройки объектов метаданных, форм и отчётов. Содержит около <strong style="color:var(--text)">50 операций</strong>, организованных в 6 областей. Все изменения выполняются через нативные сервисы EDT &mdash; после операций не нужно вручную перезагружать формы или обновлять дерево объектов.</p>
+        <p class="group-desc">Единый инструмент для создания и настройки объектов метаданных, форм, макетов печатных форм и отчётов. Содержит около <strong style="color:var(--text)">54 операций</strong>, организованных в 7 областей. Все изменения выполняются через нативные сервисы EDT &mdash; после операций не нужно вручную перезагружать формы или обновлять дерево объектов.</p>
       </div>
 
       <!-- Operation tree -->
       <div class="code-tree">
-<span class="tree-root">edit_metadata</span> <span class="tree-branch">(1 инструмент, ~50 операций)</span>
+<span class="tree-root">edit_metadata</span> <span class="tree-branch">(1 инструмент, ~54 операции)</span>
 <span class="tree-branch">│</span>
 <span class="tree-branch">├──</span> <span class="tree-cat cat-meta">Объекты метаданных</span> <span class="tree-branch">(5 операций)</span>
 <span class="tree-branch">│   ├──</span> <span class="tree-op">createObject</span> — создание (30+ типов: справочники, документы, регистры...)
-<span class="tree-branch">│   ├──</span> <span class="tree-op">setObjectProperty</span> — свойства объекта
-<span class="tree-branch">│   ├──</span> <span class="tree-op">addObjectAttribute</span> — реквизиты
+<span class="tree-branch">│   ├──</span> <span class="tree-op">setObjectProperty</span> — свойства объекта (с подсказками похожих имён)
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addObjectAttribute</span> — реквизиты (все объекты с реквизитами, тип опциональный)
 <span class="tree-branch">│   ├──</span> <span class="tree-op">addTabularSection</span> — табличные части с колонками
 <span class="tree-branch">│   └──</span> <span class="tree-op">addTabularSectionAttribute</span> — колонки в существующую ТЧ
 <span class="tree-branch">│</span>
 <span class="tree-branch">├──</span> <span class="tree-cat cat-spec">Специализированные объекты</span> <span class="tree-branch">(6 операций)</span>
-<span class="tree-branch">│   ├──</span> <span class="tree-op">addRegisterField / removeRegisterField</span> — поля регистров
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addRegisterField / removeRegisterField</span> — поля всех 4 видов регистров
 <span class="tree-branch">│   ├──</span> <span class="tree-op">addEnumValue</span> — значения перечислений
 <span class="tree-branch">│   ├──</span> <span class="tree-op">addSubsystemContent / removeSubsystemContent</span> — состав подсистем
-<span class="tree-branch">│   └──</span> <span class="tree-op">setRoleRight</span> — права ролей
+<span class="tree-branch">│   ├──</span> <span class="tree-op">setRoleRight</span> — права ролей
+<span class="tree-branch">│   └──</span> <span class="tree-op">setDefinedTypeTypes</span> — состав определяемого типа
 <span class="tree-branch">│</span>
 <span class="tree-branch">├──</span> <span class="tree-cat cat-form">Формы</span> <span class="tree-branch">(14 операций)</span>
 <span class="tree-branch">│   ├──</span> <span class="tree-op">createForm</span> — создание (все типы форм)
@@ -1067,6 +1129,12 @@
 <span class="tree-branch">│   ├──</span> <span class="tree-op">setProperty</span> — свойства элементов (цвета, шрифты, картинки)
 <span class="tree-branch">│   ├──</span> <span class="tree-op">listPictures</span> — поиск среди 763 стандартных картинок
 <span class="tree-branch">│   └──</span> <span class="tree-op">addCommandHandler</span> — обработчики кнопок
+<span class="tree-branch">│</span>
+<span class="tree-branch">├──</span> <span class="tree-cat cat-meta">Макеты печатных форм</span> <span class="tree-branch">(4 операции)</span>
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addTemplate</span> — создание макета (табличный, текстовый, СКД и др.)
+<span class="tree-branch">│   ├──</span> <span class="tree-op">setTemplateCell</span> — содержимое ячейки (текст, шрифт, цвет, выравнивание)
+<span class="tree-branch">│   ├──</span> <span class="tree-op">mergeTemplateCells</span> — объединение диапазонов ячеек
+<span class="tree-branch">│   └──</span> <span class="tree-op">drawTemplate</span> — пакетное заполнение (ячейки, ширины, именованные области)
 <span class="tree-branch">│</span>
 <span class="tree-branch">├──</span> <span class="tree-cat cat-ext">Расширения</span> <span class="tree-branch">(3 операции)</span>
 <span class="tree-branch">│   ├──</span> <span class="tree-op">adoptObject</span> — заимствовать объект из базы
@@ -1089,17 +1157,18 @@
       <!-- Built-in help -->
       <div class="help-box">
         <h4>Встроенная справка</h4>
-        <p style="font-size:1.05rem;color:var(--text-m);margin-bottom:14px">У инструмента есть собственный справочник, который AI-ассистент запрашивает при необходимости:</p>
+        <p>У инструмента есть собственный справочник, который AI-ассистент запрашивает при необходимости:</p>
         <ul>
-          <li><code>help</code> <span style="color:var(--text-d)">&mdash; список всех операций с кратким описанием</span></li>
-          <li><code>help topic=&lt;операция&gt;</code> <span style="color:var(--text-d)">&mdash; подробная справка по конкретной операции с примерами</span></li>
-          <li><code>help topic=types</code> <span style="color:var(--text-d)">&mdash; каталог типов данных для реквизитов</span></li>
-          <li><code>help topic=objectTypes</code> <span style="color:var(--text-d)">&mdash; список всех типов объектов, которые можно создать</span></li>
-          <li><code>help topic=formTypes</code> <span style="color:var(--text-d)">&mdash; типы форм</span></li>
-          <li><code>help topic=propertyValues</code> <span style="color:var(--text-d)">&mdash; форматы значений свойств</span></li>
-          <li><code>help topic=workflow</code> <span style="color:var(--text-d)">&mdash; типичный сценарий работы от создания объекта до обработчиков</span></li>
+          <li><code>help</code> <span class="hint">&mdash; список всех операций с кратким описанием</span></li>
+          <li><code>help topic=&lt;операция&gt;</code> <span class="hint">&mdash; подробная справка по конкретной операции с примерами</span></li>
+          <li><code>help topic=types</code> <span class="hint">&mdash; каталог типов данных для реквизитов</span></li>
+          <li><code>help topic=objectTypes</code> <span class="hint">&mdash; список всех типов объектов, которые можно создать</span></li>
+          <li><code>help topic=formTypes</code> <span class="hint">&mdash; типы форм</span></li>
+          <li><code>help topic=propertyValues</code> <span class="hint">&mdash; форматы значений свойств</span></li>
+          <li><code>help topic=workflow</code> <span class="hint">&mdash; типичный сценарий работы от создания объекта до обработчиков</span></li>
+          <li><code>help topic=matrixWorkflow</code> <span class="hint">&mdash; рабочий сценарий для матричных отчётов (товары × месяцы)</span></li>
         </ul>
-        <p style="font-size:1.0rem;color:var(--text-dd);margin-top:12px">AI-ассистенту не нужно знать внутреннее устройство EDT &mdash; он спрашивает у инструмента, что доступно, и получает готовые примеры.</p>
+        <p class="sub">AI-ассистенту не нужно знать внутреннее устройство EDT &mdash; он спрашивает у инструмента, что доступно, и получает готовые примеры.</p>
       </div>
 
       <!-- Operations: Metadata Objects -->
@@ -1108,27 +1177,27 @@
 
         <div class="op-item">
           <div class="op-name">createObject</div>
-          <p class="op-desc">Создаёт любой объект метаданных со всеми свойствами по умолчанию (такими же, как при создании через мастер EDT). Поддерживаемые типы (более 30): справочники, документы, обработки, отчёты, перечисления, регистры (сведений, накопления, бухгалтерии, расчёта), планы счетов, планы видов характеристик и расчёта, бизнес-процессы, задачи, планы обмена, общие модули, общие формы, общие команды, подсистемы, роли, константы, параметры сеансов, регламентные задания, функциональные опции, определяемые типы и другие. При создании регистров можно сразу задать измерения, ресурсы и документы-регистраторы &mdash; всё за один вызов.</p>
+          <p class="op-desc">Создаёт любой объект метаданных со всеми свойствами по умолчанию (такими же, как при создании через мастер EDT). Поддерживаемые типы (более 30): справочники, документы, обработки, отчёты, перечисления, регистры (сведений, накопления, бухгалтерии, расчёта), планы счетов, планы видов характеристик и расчёта, бизнес-процессы, задачи, планы обмена, общие модули, общие формы, общие команды, подсистемы, роли, константы, параметры сеансов, регламентные задания, функциональные опции, определяемые типы и другие. При создании регистров можно сразу задать измерения, ресурсы и документы-регистраторы &mdash; всё за один вызов. Обязательные параметры для специфичных типов проверяются на входе &mdash; например, функциональная опция не создастся без ссылки на константу-хранилище.</p>
         </div>
 
         <div class="op-item">
           <div class="op-name">setObjectProperty</div>
-          <p class="op-desc">Изменение свойств объекта: иерархия, тип кода, длина кода, длина наименования, проведение, формы по умолчанию, периодичность регистра, картинка подсистемы и т.д. Картинки принимаются в двух форматах: стандартные (<span class="ic">CreateFolder</span>) и общие картинки конфигурации (<span class="ic">CommonPicture.МояКартинка</span>). Пакетный режим, русские и английские значения.</p>
+          <p class="op-desc">Изменение свойств объекта: иерархия, тип кода, длина кода, длина наименования (<span class="ic">descriptionLength</span>), проведение, формы по умолчанию, периодичность регистра, картинка подсистемы и т.д. Картинки принимаются в двух форматах: стандартные (<span class="ic">CreateFolder</span>) и общие картинки конфигурации (<span class="ic">CommonPicture.МояКартинка</span>). Пакетный режим, русские и английские значения. При неизвестном имени свойства инструмент подсказывает самые близкие по написанию существующие свойства &mdash; защита от опечаток и созвучных имён.</p>
         </div>
 
         <div class="op-item">
           <div class="op-name">addObjectAttribute</div>
-          <p class="op-desc">Добавление реквизитов (примитивные и ссылочные типы). Пакетный режим.</p>
+          <p class="op-desc">Добавление реквизитов на объекты всех типов, у которых они вообще бывают: справочники, документы, обработки, отчёты, все 4 вида регистров, планы счетов, планы видов характеристик и расчёта, бизнес-процессы, задачи, планы обмена. Тип данных можно не указывать &mdash; по умолчанию ставится Строка длиной 10, как при нажатии кнопки &laquo;+ Реквизит&raquo; в EDT. Принимаются все примитивы (включая <span class="ic">ХранилищеЗначения</span>, <span class="ic">ДвоичныеДанные</span>, <span class="ic">УникальныйИдентификатор</span>, <span class="ic">ТабличныйДокумент</span>), ссылочные типы и определяемые типы (<span class="ic">DefinedType.X</span> / <span class="ic">ОпределяемыйТип.X</span>). Имена типов работают и по-русски, и по-английски. Пакетный режим.</p>
         </div>
 
         <div class="op-item">
           <div class="op-name">addTabularSection</div>
-          <p class="op-desc">Создание табличной части сразу с колонками.</p>
+          <p class="op-desc">Создание табличной части сразу с колонками. Тип колонки опциональный &mdash; как в <span class="ic">addObjectAttribute</span>.</p>
         </div>
 
         <div class="op-item">
           <div class="op-name">addTabularSectionAttribute</div>
-          <p class="op-desc">Добавление колонок в уже существующую табличную часть.</p>
+          <p class="op-desc">Добавление колонок в уже существующую табличную часть. Тот же унифицированный формат типов.</p>
         </div>
       </div>
 
@@ -1138,7 +1207,7 @@
 
         <div class="op-item">
           <div class="op-name">addRegisterField / removeRegisterField</div>
-          <p class="op-desc">Добавление и удаление полей регистров: ресурсы, измерения, реквизиты. Вид поля задаётся на русском или английском.</p>
+          <p class="op-desc">Добавление и удаление полей <strong>всех 4 видов регистров</strong> (сведений, накопления, бухгалтерии, расчёта): ресурсы, измерения, реквизиты. Вид поля задаётся на русском или английском. Тип данных опциональный (по умолчанию Строка длиной 10).</p>
         </div>
 
         <div class="op-item">
@@ -1154,6 +1223,11 @@
         <div class="op-item">
           <div class="op-name">setRoleRight</div>
           <p class="op-desc">Назначение прав роли на объекты метаданных. Русские и английские имена прав (<span class="ic">Чтение</span>/<span class="ic">Read</span>, <span class="ic">Добавление</span>/<span class="ic">Insert</span> и др.). Пакетный режим, идемпотентно.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">setDefinedTypeTypes</div>
+          <p class="op-desc">Задаёт состав определяемого типа (ОпределяемыйТип) одним вызовом. Принимает массив FQN входящих типов: <span class="ic">["CatalogRef.Пользователи", "CatalogRef.ВнешниеПользователи"]</span>. После этого определяемый тип можно указывать как тип реквизита через <span class="ic">type: "DefinedType.X"</span>.</p>
         </div>
       </div>
 
@@ -1176,15 +1250,15 @@
           <p class="op-desc">Таблица динамического списка с ручными или автоматически сгенерированными колонками.</p>
         </div>
 
-        <div class="op-item" style="padding:14px 0;border-left:2px solid var(--green-dim);padding-left:16px;margin-left:4px">
-          <p style="font-size:0.95rem;font-weight:600;color:var(--green);margin-bottom:10px">Элементы формы</p>
-          <div style="display:grid;gap:8px;">
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addField</span> &mdash; поле ввода (тип определяется автоматически)</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addGroup</span> &mdash; группа: обычная, страницы, страница, группа колонок, командная панель, группа кнопок</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addButton</span> &mdash; кнопка с автоматически создаваемой командой формы</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addTable</span> &mdash; таблица для табличной части, сразу с колонками</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addDecoration</span> &mdash; надпись для заголовков и пояснений</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addRadioButton</span> &mdash; переключатель (точки или тумблер) с произвольными вариантами</p>
+        <div class="op-item op-group form-green">
+          <p class="op-subheader" style="color:var(--green)">Элементы формы</p>
+          <div class="op-group-stack">
+            <p class="op-desc"><span class="op-name sm">addField</span> &mdash; поле ввода (тип определяется автоматически)</p>
+            <p class="op-desc"><span class="op-name sm">addGroup</span> &mdash; группа: обычная, страницы, страница, группа колонок, командная панель, группа кнопок</p>
+            <p class="op-desc"><span class="op-name sm">addButton</span> &mdash; кнопка с автоматически создаваемой командой формы</p>
+            <p class="op-desc"><span class="op-name sm">addTable</span> &mdash; таблица для табличной части, сразу с колонками</p>
+            <p class="op-desc"><span class="op-name sm">addDecoration</span> &mdash; надпись для заголовков и пояснений</p>
+            <p class="op-desc"><span class="op-name sm">addRadioButton</span> &mdash; переключатель (точки или тумблер) с произвольными вариантами</p>
           </div>
         </div>
 
@@ -1202,6 +1276,34 @@
           <div class="op-name">addCommandHandler</div>
           <p class="op-desc">Создаёт обработчик команды кнопки с правильной директивой. Поддерживает обычные формы и заимствованные (обработчики Перед, После, Вместо).</p>
         </div>
+      </div>
+
+      <!-- Operations: Templates -->
+      <div class="ops-section" id="ops-templates">
+        <h4>Макеты печатных форм (4 операции)</h4>
+        <p class="group-desc" style="margin-bottom:16px">Полная поддержка создания макетов &mdash; от пустого объекта до готовой печатной формы, без переключения в EDT. Макеты можно создавать у справочников, документов, обработок, отчётов, а также как общие макеты конфигурации.</p>
+
+        <div class="op-item">
+          <div class="op-name">addTemplate</div>
+          <p class="op-desc">Создание макета. Поддерживаемые типы: табличный документ (по умолчанию), текстовый документ, схема компоновки данных, макет оформления компоновки, двоичные данные, активный документ, HTML-документ, географическая схема, графическая схема, внешняя компонента. Принимает русские имена типов (<span class="ic">Табличный</span>, <span class="ic">Текстовый</span>, <span class="ic">СКД</span>, <span class="ic">Двоичные данные</span>, &hellip;) и английские.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">setTemplateCell</div>
+          <p class="op-desc">Установка содержимого одной ячейки табличного макета: текст, цвет текста и фона, шрифт (жирный/курсив/подчёркнутый/размер/имя), горизонтальное и вертикальное выравнивание, пометка ячейки как параметра (для подстановки данных при печати).</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">mergeTemplateCells</div>
+          <p class="op-desc">Объединение диапазона ячеек табличного макета (от столбца A строки N до столбца B строки M).</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">drawTemplate</div>
+          <p class="op-desc">Пакетное заполнение макета одним вызовом: массив ячеек, массив объединений, ширины колонок, высоты строк, <strong>именованные области</strong> (<span class="ic">Шапка</span>, <span class="ic">СтрокаТовара</span>, <span class="ic">Подвал</span> &mdash; на эти имена ссылается код печати через <span class="ic">Макет.ПолучитьОбласть("Шапка")</span>). За один вызов можно собрать целый бланк.</p>
+        </div>
+
+        <p class="op-desc" style="margin-top:12px">Типичный сценарий печатной формы: один <span class="ic">createObject</span> + один <span class="ic">addTemplate</span> + один <span class="ic">drawTemplate</span> со всеми ячейками, объединениями и областями &mdash; готовый макет, идентичный нарисованному вручную в EDT. Код вывода печатной формы пишется обычным <span class="ic">write_module_source</span>.</p>
       </div>
 
       <!-- Operations: Extensions -->
@@ -1232,53 +1334,53 @@
         <h4>Отчёты СКД (22 операции)</h4>
         <p class="group-desc" style="margin-bottom:16px">Полный цикл создания отчётов со схемой компоновки данных:</p>
 
-        <div class="op-item" style="padding:14px 0;border-left:2px solid rgba(244,114,182,0.3);padding-left:16px;margin-left:4px">
-          <p style="font-size:0.95rem;font-weight:600;color:#db2777;margin-bottom:10px">Базовое создание</p>
-          <div style="display:grid;gap:6px;">
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">createReportSchema</span> &mdash; создание схемы с готовым скелетом (источник данных, вариант настроек, автополе).</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addDataSet</span> &mdash; набор данных (запрос, объект, объединение).</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addDataSetField</span> &mdash; поле в набор данных.</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSchemaParameter</span> &mdash; параметр схемы.</p>
+        <div class="op-item op-group dcs-pink">
+          <p class="op-subheader" style="color:var(--pink)">Базовое создание</p>
+          <div class="op-group-stack tight">
+            <p class="op-desc"><span class="op-name sm">createReportSchema</span> &mdash; создание схемы с готовым скелетом (источник данных, вариант настроек, автополе).</p>
+            <p class="op-desc"><span class="op-name sm">addDataSet</span> &mdash; набор данных (запрос, объект, объединение).</p>
+            <p class="op-desc"><span class="op-name sm">addDataSetField</span> &mdash; поле в набор данных.</p>
+            <p class="op-desc"><span class="op-name sm">addSchemaParameter</span> &mdash; параметр схемы.</p>
           </div>
         </div>
 
-        <div class="op-item" style="padding:14px 0;border-left:2px solid rgba(244,114,182,0.3);padding-left:16px;margin-left:4px">
-          <p style="font-size:0.95rem;font-weight:600;color:#db2777;margin-bottom:10px">Вычисления и итоги</p>
-          <div style="display:grid;gap:6px;">
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addCalculatedField</span> &mdash; вычисляемое поле (выражение над другими полями).</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addTotalField</span> &mdash; ресурс с агрегацией (Сумма, Количество, Максимум и др.).</p>
+        <div class="op-item op-group dcs-pink">
+          <p class="op-subheader" style="color:var(--pink)">Вычисления и итоги</p>
+          <div class="op-group-stack tight">
+            <p class="op-desc"><span class="op-name sm">addCalculatedField</span> &mdash; вычисляемое поле (выражение над другими полями).</p>
+            <p class="op-desc"><span class="op-name sm">addTotalField</span> &mdash; ресурс с агрегацией (Сумма, Количество, Максимум и др.).</p>
           </div>
         </div>
 
-        <div class="op-item" style="padding:14px 0;border-left:2px solid rgba(244,114,182,0.3);padding-left:16px;margin-left:4px">
-          <p style="font-size:0.95rem;font-weight:600;color:#db2777;margin-bottom:10px">Структура настроек</p>
-          <div style="display:grid;gap:6px;">
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsGroup</span> &mdash; группировка (обычная, детальные записи).</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsTable</span> &mdash; таблица с группировками по строкам и колонкам.</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsChart</span> &mdash; диаграмма с точками и сериями.</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsSelectedField / removeSettingsSelectedField</span> &mdash; управление выбранными полями.</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">removeSettingsItem</span> &mdash; удаление группировки, таблицы или диаграммы.</p>
+        <div class="op-item op-group dcs-pink">
+          <p class="op-subheader" style="color:var(--pink)">Структура настроек</p>
+          <div class="op-group-stack tight">
+            <p class="op-desc"><span class="op-name sm">addSettingsGroup</span> &mdash; группировка (обычная, детальные записи).</p>
+            <p class="op-desc"><span class="op-name sm">addSettingsTable</span> &mdash; таблица с группировками по строкам и колонкам.</p>
+            <p class="op-desc"><span class="op-name sm">addSettingsChart</span> &mdash; диаграмма с точками и сериями.</p>
+            <p class="op-desc"><span class="op-name sm">addSettingsSelectedField / removeSettingsSelectedField</span> &mdash; управление выбранными полями.</p>
+            <p class="op-desc"><span class="op-name sm">removeSettingsItem</span> &mdash; удаление группировки, таблицы или диаграммы.</p>
           </div>
         </div>
 
-        <div class="op-item" style="padding:14px 0;border-left:2px solid rgba(244,114,182,0.3);padding-left:16px;margin-left:4px">
-          <p style="font-size:0.95rem;font-weight:600;color:#db2777;margin-bottom:10px">Отборы, сортировка, оформление</p>
-          <div style="display:grid;gap:6px;">
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsFilter</span> &mdash; элемент отбора (20+ типов сравнения).</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsFilterGroup</span> &mdash; группа отборов (И/ИЛИ/НЕ).</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsOrder</span> &mdash; сортировка.</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addConditionalAppearance / removeConditionalAppearance</span> &mdash; условное оформление с полным набором параметров (формат, цвета, шрифт, отступы и др.).</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">setDataSetFieldAppearance</span> &mdash; статическое оформление поля.</p>
+        <div class="op-item op-group dcs-pink">
+          <p class="op-subheader" style="color:var(--pink)">Отборы, сортировка, оформление</p>
+          <div class="op-group-stack tight">
+            <p class="op-desc"><span class="op-name sm">addSettingsFilter</span> &mdash; элемент отбора (20+ типов сравнения).</p>
+            <p class="op-desc"><span class="op-name sm">addSettingsFilterGroup</span> &mdash; группа отборов (И/ИЛИ/НЕ).</p>
+            <p class="op-desc"><span class="op-name sm">addSettingsOrder</span> &mdash; сортировка.</p>
+            <p class="op-desc"><span class="op-name sm">addConditionalAppearance / removeConditionalAppearance</span> &mdash; условное оформление с полным набором параметров (формат, цвета, шрифт, отступы и др.).</p>
+            <p class="op-desc"><span class="op-name sm">setDataSetFieldAppearance</span> &mdash; статическое оформление поля.</p>
           </div>
         </div>
 
-        <div class="op-item" style="padding:14px 0;border-left:2px solid rgba(244,114,182,0.3);padding-left:16px;margin-left:4px">
-          <p style="font-size:0.95rem;font-weight:600;color:#db2777;margin-bottom:10px">Параметры и варианты</p>
-          <div style="display:grid;gap:6px;">
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">setSettingsParameter</span> &mdash; значение параметра схемы.</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">setOutputParameter</span> &mdash; параметры вывода (заголовок, макет оформления, тип диаграммы и др.). Принимает русские и английские названия.</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addSettingsVariant</span> &mdash; новый вариант отчёта (глубокая копия настроек).</p>
-            <p class="op-desc"><span class="op-name" style="font-size:0.95rem">addUserField</span> &mdash; пользовательское поле.</p>
+        <div class="op-item op-group dcs-pink">
+          <p class="op-subheader" style="color:var(--pink)">Параметры и варианты</p>
+          <div class="op-group-stack tight">
+            <p class="op-desc"><span class="op-name sm">setSettingsParameter</span> &mdash; значение параметра схемы.</p>
+            <p class="op-desc"><span class="op-name sm">setOutputParameter</span> &mdash; параметры вывода (заголовок, макет оформления, тип диаграммы и др.). Принимает русские и английские названия.</p>
+            <p class="op-desc"><span class="op-name sm">addSettingsVariant</span> &mdash; новый вариант отчёта (глубокая копия настроек).</p>
+            <p class="op-desc"><span class="op-name sm">addUserField</span> &mdash; пользовательское поле.</p>
           </div>
         </div>
 
@@ -1310,8 +1412,8 @@
       <div class="limitations" id="not-implemented">
         <h4>Что пока не реализовано</h4>
         <ul>
+          <li>HTTP-сервисы (<span class="ic">HTTPService</span>) &mdash; создавайте вручную в EDT.</li>
           <li>Декорация-картинка (пока только надписи).</li>
-          <li>Общие картинки конфигурации (поддерживаются только системные картинки EDT).</li>
           <li>Создание проекта расширения с нуля (расширение должно уже существовать в рабочем пространстве).</li>
           <li>Создание подписок на события через <span class="ic">createObject</span>.</li>
           <li>Редактирование настроек не-основного варианта отчёта.</li>

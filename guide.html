@@ -37,6 +37,22 @@
       --sidebar-w: 280px;
       --header-h: 64px;
       --radius: 8px;
+
+      /* ===== ЕДИНАЯ ТИПОГРАФИКА =====
+         Все размеры шрифтов централизованы здесь. Поменял одну переменную —
+         поменялось везде одинаково. */
+      --fs-xs:    0.75rem;   /* version-badge, logo-badge */
+      --fs-sm:    0.85rem;   /* nav-link.sub, code в таблицах */
+      --fs-side:  0.9rem;    /* nav-link, header-links, sub-text */
+      --fs-base:  1rem;      /* subtitle */
+      --fs-body:  1.05rem;   /* основной текст, h4 */
+      --fs-md:    1.1rem;    /* logo */
+      --fs-lg:    1.2rem;    /* back-to-top icon */
+      --fs-h4:    1.05rem;   /* h4 */
+      --fs-h3:    1.3rem;    /* h3 */
+      --fs-h2:    1.6rem;    /* h2 */
+      --fs-h1:    2rem;      /* h1 */
+      --fs-mono:  0.95rem;   /* pre code, tree-block, table */
     }
 
     /* ===== BASE ===== */
@@ -44,7 +60,7 @@
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
-      font-size: 1.25rem;
+      font-size: var(--fs-body);
       line-height: 1.75;
       overflow-x: hidden;
     }
@@ -78,7 +94,7 @@
       align-items: center;
       gap: 12px;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: var(--fs-md);
       color: var(--text);
       text-decoration: none;
     }
@@ -87,14 +103,14 @@
       color: #fff;
       padding: 4px 10px;
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-size: var(--fs-xs);
       font-weight: 800;
       letter-spacing: 1px;
     }
     .header-links { display: flex; gap: 20px; align-items: center; }
     .header-links a {
       color: var(--text-m);
-      font-size: 0.9rem;
+      font-size: var(--fs-side);
       font-weight: 500;
       transition: color 0.2s;
     }
@@ -104,7 +120,7 @@
       color: var(--accent);
       padding: 4px 12px;
       border-radius: 20px;
-      font-size: 0.75rem;
+      font-size: var(--fs-xs);
       font-weight: 600;
       border: 1px solid var(--accent-border);
     }
@@ -163,7 +179,7 @@
     .nav-section-title {
       display: block;
       padding: 8px 24px;
-      font-size: 0.8rem;
+      font-size: var(--fs-sm);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1.5px;
@@ -172,7 +188,7 @@
     .nav-link {
       display: block;
       padding: 6px 24px 6px 24px;
-      font-size: 0.9rem;
+      font-size: var(--fs-side);
       color: var(--text-m);
       transition: all 0.15s;
       border-left: 3px solid transparent;
@@ -189,7 +205,7 @@
     }
     .nav-link.sub {
       padding-left: 36px;
-      font-size: 0.85rem;
+      font-size: var(--fs-sm);
     }
 
     /* ===== MAIN ===== */
@@ -206,21 +222,21 @@
 
     /* ===== TYPOGRAPHY ===== */
     h1 {
-      font-size: 2rem;
+      font-size: var(--fs-h1);
       font-weight: 800;
       margin-bottom: 12px;
       line-height: 1.2;
       color: var(--text);
     }
     .subtitle {
-      font-size: 1rem;
+      font-size: var(--fs-base);
       color: var(--text-m);
       margin-bottom: 40px;
       line-height: 1.6;
     }
     .subtitle a { color: var(--accent); }
     h2 {
-      font-size: 1.6rem;
+      font-size: var(--fs-h2);
       font-weight: 700;
       margin-top: 56px;
       margin-bottom: 20px;
@@ -230,7 +246,7 @@
       scroll-margin-top: 80px;
     }
     h3 {
-      font-size: 1.3rem;
+      font-size: var(--fs-h3);
       font-weight: 600;
       margin-top: 36px;
       margin-bottom: 14px;
@@ -238,7 +254,7 @@
       scroll-margin-top: 80px;
     }
     h4 {
-      font-size: 1.05rem;
+      font-size: var(--fs-h4);
       font-weight: 600;
       margin-top: 28px;
       margin-bottom: 10px;
@@ -282,7 +298,7 @@
       background: none;
       border: none;
       padding: 0;
-      font-size: 0.95rem;
+      font-size: var(--fs-mono);
       color: #e2e8f0;
     }
     /* Basic syntax highlighting via CSS */
@@ -298,7 +314,7 @@
       position: absolute;
       top: 8px;
       right: 12px;
-      font-size: 0.65rem;
+      font-size: var(--fs-xs);
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -329,7 +345,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.95rem;
+      font-size: var(--fs-mono);
     }
     thead th {
       background: #f1f5f9;
@@ -362,7 +378,7 @@
       padding: 20px 24px;
       margin-bottom: 20px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.95rem;
+      font-size: var(--fs-mono);
       line-height: 1.7;
       color: var(--text-m);
       overflow-x: auto;
@@ -385,7 +401,7 @@
       border: none;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 1.2rem;
+      font-size: var(--fs-lg);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -664,7 +680,7 @@
         <tbody>
           <tr><td><strong>Аналитик</strong></td><td>18</td><td>Анализ метаданных, Анализ кода, Поиск и навигация</td></tr>
           <tr><td><strong>Разработчик</strong></td><td>25</td><td>+ Редактирование кода и отладка, Валидация, Сборка и управление</td></tr>
-          <tr><td><strong>Архитектор</strong></td><td>26</td><td>+ Редактирование метаданных (~50 операций)</td></tr>
+          <tr><td><strong>Архитектор</strong></td><td>26</td><td>+ Редактирование метаданных (~54 операции)</td></tr>
         </tbody>
       </table>
     </div>
@@ -823,6 +839,16 @@
     <blockquote><p><em>«Подбери стандартную картинку для подсистемы Склад и установи её»</em></p></blockquote>
     <blockquote><p><em>«Добавь на форму таблицу динамического списка по регистру ОстаткиТоваров»</em></p></blockquote>
 
+    <p><strong>Макеты и печатные формы:</strong></p>
+    <blockquote><p><em>«Создай документу Накладная макет печати с шапкой (номер, дата, контрагент), строками товаров и итогом по сумме»</em></p></blockquote>
+    <blockquote><p><em>«Сделай отчёт продаж товаров по месяцам: слева список товаров, сверху Январь/Февраль/Март, в ячейках суммы, снизу итоги по каждому месяцу»</em></p></blockquote>
+    <blockquote><p><em>«Добавь справочнику Контрагенты макет визитки и именованную область ДанныеКонтакта»</em></p></blockquote>
+
+    <p><strong>Типы данных и определяемые типы:</strong></p>
+    <blockquote><p><em>«Добавь справочнику Контрагенты реквизит Фото типа ХранилищеЗначения»</em></p></blockquote>
+    <blockquote><p><em>«Создай определяемый тип ПользовательСистемы из Справочник.Пользователи и Справочник.ВнешниеПользователи, и добавь его реквизитом документу Поручение»</em></p></blockquote>
+    <blockquote><p><em>«Добавь в регистр накопления ТоварыНаСкладах реквизит Комментарий»</em> — реквизиты теперь работают во всех 4 видах регистров</p></blockquote>
+
     <p><strong>Отчёты СКД:</strong></p>
     <blockquote><p><em>«Создай отчёт ПродажиПоКонтрагентам с группировкой по контрагентам и сортировкой по сумме»</em></p></blockquote>
     <blockquote><p><em>«Добавь в отчёт условное оформление: если сумма больше 100000, выделить строку жёлтым»</em></p></blockquote>
@@ -915,11 +941,13 @@
       <table>
         <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
         <tbody>
-          <tr><td><code>get_validation_errors</code></td><td>Ошибки и предупреждения EDT с фильтрацией, объяснением и рекомендациями по исправлению</td></tr>
+          <tr><td><code>get_validation_errors</code></td><td>Ошибки и предупреждения EDT. По умолчанию показывает только файлы, изменённые в текущей сессии (режим <code>session</code>) — без посторонних старых ошибок. Умеет ждать «тишины» от асинхронного коммита маркеров и отдаёт полную инфо по каждой ошибке (текст, файл, строка, описание, автофикс).</td></tr>
           <tr><td><code>validate_query</code></td><td>Синтаксическая проверка запросов на языке запросов 1С</td></tr>
         </tbody>
       </table>
     </div>
+
+    <p><strong><code>get_validation_errors</code></strong> — по умолчанию режим <code>scope=session</code> и <code>severity=ERROR</code>. Показывает только реальные ошибки и только в тех файлах, которые AI или вы сами трогали в текущей сессии EDT. Для полного скана проекта перед релизом — <code>scope=project</code>. Для одного объекта — <code>scope=object + objectName</code>. На крупных базах (ERP, УТ, БП) работает мгновенно — не тянет десятки тысяч старых маркеров. Жалоба «AI правит, в EDT крест, а инструмент возвращает 0» закрыта — инструмент надёжно дожидается, пока EDT доварит маркеры на свежезаписанный файл.</p>
 
     <h4>Сборка и управление (3 инструмента)</h4>
     <div class="table-wrap">
@@ -938,7 +966,7 @@
     <h3 id="profile-arch">Профиль «Архитектор» — 26 инструментов</h3>
     <p>К 25 инструментам разработчика добавляется конструктор конфигурации.</p>
 
-    <h4>Редактирование метаданных (1 инструмент, ~50 операций)</h4>
+    <h4>Редактирование метаданных (1 инструмент, ~54 операции)</h4>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
@@ -956,24 +984,25 @@
 
     <!-- Конструктор конфигурации -->
     <h2 id="edit-metadata">Конструктор конфигурации — edit_metadata</h2>
-    <p>Единый инструмент для создания и настройки объектов метаданных, форм и отчётов. Содержит около <strong>50 операций</strong> в 6 областях. Все изменения выполняются через нативные сервисы EDT — результат идентичен ручному созданию в конструкторе.</p>
+    <p>Единый инструмент для создания и настройки объектов метаданных, форм, макетов печатных форм и отчётов. Содержит около <strong>54 операций</strong> в 7 областях. Все изменения выполняются через нативные сервисы EDT — результат идентичен ручному созданию в конструкторе.</p>
 
     <h3>Дерево операций</h3>
 
-    <div class="tree-block"><span class="node">edit_metadata</span> <span class="desc">(~50 операций)</span>
+    <div class="tree-block"><span class="node">edit_metadata</span> <span class="desc">(~54 операции)</span>
 <span class="branch">│</span>
 <span class="branch">├──</span> <span class="op">Объекты метаданных</span> <span class="desc">(5 операций)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> createObject <span class="desc">— создание (30+ типов: справочники, документы, регистры...)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setObjectProperty <span class="desc">— свойства (иерархия, код, картинка подсистемы...)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addObjectAttribute <span class="desc">— реквизиты (примитивные и ссылочные типы)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> setObjectProperty <span class="desc">— свойства (с подсказками похожих имён при опечатках)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addObjectAttribute <span class="desc">— реквизиты (все объекты с реквизитами, тип опциональный)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addTabularSection <span class="desc">— табличные части с колонками</span>
 <span class="branch">│</span>   <span class="branch">└──</span> addTabularSectionAttribute <span class="desc">— колонки в существующую ТЧ</span>
 <span class="branch">│</span>
 <span class="branch">├──</span> <span class="op">Специализированные объекты</span> <span class="desc">(6 операций)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addRegisterField / removeRegisterField <span class="desc">— поля регистров</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addRegisterField / removeRegisterField <span class="desc">— поля всех 4 видов регистров</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addEnumValue <span class="desc">— значения перечислений</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addSubsystemContent / removeSubsystemContent <span class="desc">— состав подсистем</span>
-<span class="branch">│</span>   <span class="branch">└──</span> setRoleRight <span class="desc">— права ролей (русские и английские имена)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> setRoleRight <span class="desc">— права ролей (русские и английские имена)</span>
+<span class="branch">│</span>   <span class="branch">└──</span> setDefinedTypeTypes <span class="desc">— состав определяемого типа</span>
 <span class="branch">│</span>
 <span class="branch">├──</span> <span class="op">Формы</span> <span class="desc">(14 операций)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> createForm <span class="desc">— создание (элемент, список, выбор, общая, запись регистра)</span>
@@ -984,6 +1013,12 @@
 <span class="branch">│</span>   <span class="branch">├──</span> setProperty <span class="desc">— свойства элементов (цвета, шрифты, картинки)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> listPictures <span class="desc">— поиск среди 763 стандартных картинок</span>
 <span class="branch">│</span>   <span class="branch">└──</span> addCommandHandler <span class="desc">— обработчики кнопок</span>
+<span class="branch">│</span>
+<span class="branch">├──</span> <span class="op">Макеты печатных форм</span> <span class="desc">(4 операции)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addTemplate <span class="desc">— создание макета (табличный, текстовый, СКД и др.)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> setTemplateCell <span class="desc">— содержимое ячейки (текст, шрифт, цвет, выравнивание)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> mergeTemplateCells <span class="desc">— объединение диапазонов ячеек</span>
+<span class="branch">│</span>   <span class="branch">└──</span> drawTemplate <span class="desc">— пакетное заполнение (ячейки, ширины, именованные области)</span>
 <span class="branch">│</span>
 <span class="branch">├──</span> <span class="op">Расширения</span> <span class="desc">(3 операции)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> adoptObject <span class="desc">— заимствовать объект из базовой конфигурации</span>
@@ -1005,8 +1040,11 @@
     <h3>Ключевые возможности</h3>
     <p><strong>Картинки.</strong> Свойства <code>setObjectProperty</code> и <code>setProperty</code> принимают как стандартные картинки EDT (763 шт., поиск через <code>listPictures</code>), так и общие картинки конфигурации в формате <code>CommonPicture.ИмяКартинки</code>.</p>
     <p><strong>Пакетный режим.</strong> Большинство операций поддерживают создание нескольких элементов за один вызов. Справочник с 10 реквизитами, табличной частью и формой — за 3–4 вызова вместо 15.</p>
+    <p><strong>Реквизиты по умолчанию.</strong> Тип реквизита можно не указывать — поставится <strong>Строка длиной 10</strong>, ровно как при нажатии кнопки «+ Реквизит» в EDT. Работает для всех объектов с реквизитами (справочники, документы, все 4 вида регистров, планы счетов, планы видов характеристик и расчёта, бизнес-процессы, задачи, планы обмена).</p>
+    <p><strong>Типы данных.</strong> Принимаются русские и английские имена — <code>Строка</code>/<code>String</code>, <code>Число</code>/<code>Number</code>, <code>ХранилищеЗначения</code>/<code>ValueStorage</code>, <code>ДвоичныеДанные</code>, <code>УникальныйИдентификатор</code>, ссылочные (<code>CatalogRef.X</code>/<code>СправочникСсылка.X</code>), а также определяемые типы (<code>DefinedType.X</code>/<code>ОпределяемыйТип.X</code>).</p>
     <p><strong>Расширения.</strong> При добавлении реквизитов со ссылочными типами инструмент автоматически заимствует связанные объекты.</p>
-    <p><strong>Отчёты СКД.</strong> Полный цикл: схема, наборы данных, параметры, ресурсы, группировки, таблицы, диаграммы, отборы, сортировки, условное оформление, варианты настроек. Минимальный отчёт — 6 вызовов.</p>
+    <p><strong>Макеты печатных форм.</strong> Полный цикл сборки макета: создание объекта, рисование ячеек с оформлением, объединения, ширины колонок, именованные области (<code>Шапка</code>, <code>СтрокаТовара</code>, <code>Подвал</code>). <code>drawTemplate</code> делает всё одним пакетным вызовом — готовый макет, идентичный нарисованному вручную в EDT.</p>
+    <p><strong>Отчёты СКД.</strong> Полный цикл: схема, наборы данных, параметры, ресурсы, группировки, таблицы, диаграммы, отборы, сортировки, условное оформление, варианты настроек. Минимальный отчёт — 6 вызовов. В справке есть готовый рабочий сценарий для матричных отчётов («товары × месяцы»).</p>
 
     <h3>Встроенная справка</h3>
     <p>У инструмента есть собственный справочник, который ИИ-ассистент запрашивает при необходимости:</p>
@@ -1017,6 +1055,7 @@
       <li><code>help topic=objectTypes</code> — типы объектов, которые можно создать</li>
       <li><code>help topic=formTypes</code> — типы форм</li>
       <li><code>help topic=workflow</code> — типичный сценарий работы от создания объекта до обработчиков</li>
+      <li><code>help topic=matrixWorkflow</code> — рабочий сценарий для матричных отчётов (товары × месяцы)</li>
     </ul>
     <p>ИИ-ассистенту не нужно знать внутреннее устройство EDT — он спрашивает у инструмента, что доступно, и получает готовые примеры.</p>
 
