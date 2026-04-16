@@ -201,6 +201,24 @@ section.section {
   border-radius: var(--radius-sm);
   transition: transform .15s, background .15s;
 }
+.nav-tg {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  transition: border-color .15s, color .15s, background .15s;
+}
+.nav-tg:hover {
+  border-color: #29B6F6;
+  color: #0288D1;
+  background: rgba(41, 182, 246, 0.06);
+}
 .nav-cta:hover { transform: translateY(-1px); background: #000000; color: #FFFFFF; }
 
 @media (max-width: 860px) {
