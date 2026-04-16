@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="1C:RSV MCP Server — подробное описание всех 26 инструментов для работы с 1С:EDT через AI-ассистента. 7 групп, 3 профиля, ~54 операции конструктора метаданных.">
+  <meta name="description" content="1C:RSV MCP Server — подробное описание всех 27 инструментов для работы с 1С:EDT через AI-ассистента. 7 групп, 3 профиля, ~54 операции конструктора метаданных. Полная поддержка внешних обработок и отчётов.">
   <title>1C:RSV — Описание инструментов</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,7 +48,7 @@
   </div>
 
   <div class="sidebar-section">
-    <div class="sidebar-section-title">Разработчик <span class="sidebar-badge badge-amber">+7</span></div>
+    <div class="sidebar-section-title">Разработчик <span class="sidebar-badge badge-amber">+8</span></div>
     <a href="#developer" class="sidebar-link">Обзор профиля</a>
     <a href="#code-editing" class="sidebar-link indent">Код и отладка</a>
     <a href="#validation" class="sidebar-link indent">Валидация</a>
@@ -81,7 +81,7 @@
       <div class="hero-meta">
         <span>Автор: Радзивиллович Сергей</span>
       </div>
-      <p>MCP-сервер 1C:RSV предоставляет <strong style="color:var(--text)">26 инструментов</strong> для работы с 1С:EDT через AI-ассистента. Инструменты организованы в <strong style="color:var(--text)">7 групп</strong> и доступны в трёх профилях в зависимости от вашей роли.</p>
+      <p>MCP-сервер 1C:RSV предоставляет <strong style="color:var(--text)">27 инструментов</strong> для работы с 1С:EDT через AI-ассистента. Инструменты организованы в <strong style="color:var(--text)">7 групп</strong> и доступны в трёх профилях в зависимости от вашей роли. Все инструменты работают с любыми типами проектов: конфигурации, расширения, внешние обработки и внешние отчёты.</p>
 
       <p style="margin-top:12px"><strong style="color:var(--text)">Профили</strong> определяют, какие инструменты видит AI-ассистент:</p>
 
@@ -104,14 +104,14 @@
           </tr>
           <tr>
             <td class="profile-name pn-amber">Разработчик</td>
-            <td>Повседневная разработка: анализ + запись кода + валидация</td>
-            <td>25</td>
+            <td>Повседневная разработка: анализ + запись кода + валидация + экспорт</td>
+            <td>26</td>
             <td>6 групп</td>
           </tr>
           <tr>
             <td class="profile-name pn-indigo">Архитектор</td>
             <td>Полный контроль: создание объектов, форм, отчётов СКД</td>
-            <td>26</td>
+            <td>27</td>
             <td>7 групп</td>
           </tr>
         </tbody>
@@ -289,9 +289,9 @@
     <section class="profile-section" id="developer">
       <div class="profile-header">
         <span class="profile-dot dot-amber"></span>
-        <h2>Профиль &laquo;Разработчик&raquo; &mdash; добавляет 7 инструментов</h2>
+        <h2>Профиль &laquo;Разработчик&raquo; &mdash; добавляет 8 инструментов</h2>
       </div>
-      <p class="profile-desc">К 18 инструментам аналитика добавляются инструменты для редактирования кода, отладки, валидации и управления сборкой. Всего у разработчика <strong style="color:var(--text)">25 инструментов</strong>.</p>
+      <p class="profile-desc">К 18 инструментам аналитика добавляются инструменты для редактирования кода, отладки, валидации, управления сборкой и экспорта внешних обработок. Всего у разработчика <strong style="color:var(--text)">26 инструментов</strong>.</p>
 
       <div class="profile-note">
         <strong>Синтаксис-помощник:</strong> разработчику также доступен <span class="ic">get_platform_docs</span> из профиля Аналитика &mdash; полная справка по API платформы 1С, языку запросов, директивам компиляции и функциям СКД. Незаменим при написании кода &mdash; агент проверяет сигнатуры методов и параметры по официальной документации.
@@ -376,7 +376,7 @@
 
       <!-- Build & Management -->
       <div class="group-header" id="build-mgmt">
-        <h3>Сборка и управление (3 инструмента)</h3>
+        <h3>Сборка и управление (4 инструмента)</h3>
       </div>
 
       <div class="tool-card border-amber" id="tool-sync-database">
@@ -396,6 +396,17 @@
         <div class="tool-card-title">Список информационных баз</div>
         <p>Возвращает список зарегистрированных информационных баз для проекта с их идентификаторами, типами и состоянием обновления. Основное назначение &mdash; получить <span class="ic">applicationId</span>, который требуется для запуска отладчика и обновления базы.</p>
       </div>
+
+      <div class="tool-card border-amber" id="tool-export-object">
+        <div class="tool-card-name">export_object</div>
+        <div class="tool-card-title">Экспорт внешних обработок и отчётов</div>
+        <p>Собирает проект внешней обработки или отчёта из EDT в готовый бинарный файл <strong>.epf</strong> / <strong>.erf</strong>, который можно сразу открыть в 1С. Один вызов &mdash; готовый файл за 1&ndash;2 секунды.</p>
+        <ul style="margin-top:8px;margin-bottom:0">
+          <li>Платформа 1С определяется автоматически по версии проекта</li>
+          <li>Расширение файла выбирается автоматически: <strong>.epf</strong> для обработок, <strong>.erf</strong> для отчётов</li>
+          <li>Работает на Windows (требуется установленная платформа 1С)</li>
+        </ul>
+      </div>
     </section>
 
     <!-- ============================================================ -->
@@ -406,7 +417,7 @@
         <span class="profile-dot dot-indigo"></span>
         <h2>Профиль &laquo;Архитектор&raquo; &mdash; добавляет 1 инструмент (~54 операции)</h2>
       </div>
-      <p class="profile-desc">К 25 инструментам разработчика добавляется инструмент для создания и изменения объектов метаданных, форм, схем компоновки данных и расширений. Всего у архитектора <strong style="color:var(--text)">26 инструментов</strong>.</p>
+      <p class="profile-desc">К 26 инструментам разработчика добавляется инструмент для создания и изменения объектов метаданных, форм, схем компоновки данных и расширений. Всего у архитектора <strong style="color:var(--text)">27 инструментов</strong>.</p>
 
       <div class="profile-warning">
         <strong>Важно.</strong> Группа &laquo;Редактирование метаданных&raquo; отключена по умолчанию. Для включения используйте настройки плагина: Window &rarr; Preferences &rarr; 1C:RSV &rarr; включите группу.
