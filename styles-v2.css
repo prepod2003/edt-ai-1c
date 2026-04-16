@@ -1248,3 +1248,90 @@ footer {
 @media (max-width: 560px) {
   .footer-inner { grid-template-columns: 1fr; }
 }
+
+/* ==========================================================================
+   Announcement banner (top bar)
+   ========================================================================== */
+
+.announce-bar {
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  border-bottom: 1px solid #FCD34D;
+  padding: 14px 24px;
+  position: relative;
+  z-index: 101;
+}
+.announce-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.announce-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.announce-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #78350F;
+  text-align: center;
+}
+.announce-text strong {
+  color: #991B1B;
+  font-weight: 800;
+}
+.announce-link {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  white-space: nowrap;
+  padding: 7px 18px;
+  background: #D97706;
+  border-radius: 6px;
+  transition: background .15s, transform .15s, box-shadow .15s;
+  animation: pulse-cta 2s ease-in-out infinite;
+}
+.announce-link:hover {
+  background: #B45309;
+  color: #FFFFFF;
+  transform: scale(1.05);
+}
+@keyframes pulse-cta {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.5); }
+  50%      { box-shadow: 0 0 0 8px rgba(217, 119, 6, 0); }
+}
+.announce-close {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 0;
+  color: #92400E;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: color .15s;
+}
+.announce-close:hover {
+  color: #78350F;
+}
+.announce-bar.hidden {
+  display: none;
+}
+
+/* When banner is visible, shift sticky nav down */
+.nav {
+  top: 0;
+  transition: top .2s;
+}
+
+@media (max-width: 680px) {
+  .announce-text { font-size: 0.82rem; }
+  .announce-link { font-size: 0.82rem; }
+  .announce-close { right: 8px; }
+}
