@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="1C:RSV MCP Server — подробное описание всех 27 инструментов для работы с 1С:EDT через AI-ассистента. 7 групп, 3 профиля, ~54 операции конструктора метаданных. Полная поддержка внешних обработок и отчётов.">
+  <meta name="description" content="1C:RSV MCP Server — подробное описание всех 27 инструментов для работы с 1С:EDT через AI-ассистента. 7 групп, 3 профиля, ~57 операций конструктора метаданных. Полная поддержка внешних обработок и отчётов.">
   <title>1C:RSV — Описание инструментов</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -416,7 +416,7 @@
     <section class="profile-section" id="architect">
       <div class="profile-header">
         <span class="profile-dot dot-indigo"></span>
-        <h2>Профиль &laquo;Архитектор&raquo; &mdash; добавляет 1 инструмент (~54 операции)</h2>
+        <h2>Профиль &laquo;Архитектор&raquo; &mdash; добавляет 1 инструмент (~57 операций)</h2>
       </div>
       <p class="profile-desc">К 26 инструментам разработчика добавляется инструмент для создания и изменения объектов метаданных, форм, схем компоновки данных и расширений. Всего у архитектора <strong style="color:var(--text)">27 инструментов</strong>.</p>
 
@@ -427,19 +427,19 @@
       <!-- edit_metadata overview -->
       <div class="group-header" id="edit-metadata">
         <h3>edit_metadata &mdash; Конструктор конфигурации</h3>
-        <p class="group-desc">Единый инструмент для создания и настройки объектов метаданных, форм, макетов печатных форм и отчётов. Содержит около <strong style="color:var(--text)">54 операций</strong>, организованных в 7 областей. Все изменения выполняются через нативные сервисы EDT &mdash; после операций не нужно вручную перезагружать формы или обновлять дерево объектов.</p>
+        <p class="group-desc">Единый инструмент для создания и настройки объектов метаданных, форм, макетов печатных форм и отчётов. Содержит около <strong style="color:var(--text)">57 операций</strong>, организованных в 7 областей. Все изменения выполняются через нативные сервисы EDT &mdash; после операций не нужно вручную перезагружать формы или обновлять дерево объектов.</p>
       </div>
 
       <!-- Operation tree -->
       <div class="code-tree">
-<span class="tree-root">edit_metadata</span> <span class="tree-branch">(1 инструмент, ~54 операции)</span>
+<span class="tree-root">edit_metadata</span> <span class="tree-branch">(1 инструмент, ~57 операций)</span>
 <span class="tree-branch">│</span>
-<span class="tree-branch">├──</span> <span class="tree-cat cat-meta">Объекты метаданных</span> <span class="tree-branch">(5 операций)</span>
+<span class="tree-branch">├──</span> <span class="tree-cat cat-meta">Объекты метаданных</span> <span class="tree-branch">(8 операций)</span>
 <span class="tree-branch">│   ├──</span> <span class="tree-op">createObject</span> — создание (30+ типов: справочники, документы, регистры...)
 <span class="tree-branch">│   ├──</span> <span class="tree-op">setObjectProperty</span> — свойства объекта (с подсказками похожих имён)
-<span class="tree-branch">│   ├──</span> <span class="tree-op">addObjectAttribute</span> — реквизиты (все объекты с реквизитами, тип опциональный)
-<span class="tree-branch">│   ├──</span> <span class="tree-op">addTabularSection</span> — табличные части с колонками
-<span class="tree-branch">│   └──</span> <span class="tree-op">addTabularSectionAttribute</span> — колонки в существующую ТЧ
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addObjectAttribute / removeObjectAttribute</span> — реквизиты объекта, удаление с автоочисткой полей форм
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addTabularSection / removeTabularSection</span> — табличные части целиком
+<span class="tree-branch">│   └──</span> <span class="tree-op">addTabularSectionAttribute / removeTabularSectionAttribute</span> — колонки табличной части
 <span class="tree-branch">│</span>
 <span class="tree-branch">├──</span> <span class="tree-cat cat-spec">Специализированные объекты</span> <span class="tree-branch">(6 операций)</span>
 <span class="tree-branch">│   ├──</span> <span class="tree-op">addRegisterField / removeRegisterField</span> — поля всех 4 видов регистров
@@ -501,7 +501,7 @@
 
       <!-- Operations: Metadata Objects -->
       <div class="ops-section" id="ops-objects">
-        <h4>Объекты метаданных (5 операций)</h4>
+        <h4>Объекты метаданных (8 операций)</h4>
 
         <div class="op-item">
           <div class="op-name">createObject</div>
@@ -526,6 +526,21 @@
         <div class="op-item">
           <div class="op-name">addTabularSectionAttribute</div>
           <p class="op-desc">Добавление колонок в уже существующую табличную часть. Тот же унифицированный формат типов.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">removeObjectAttribute</div>
+          <p class="op-desc">Удаление реквизита объекта. Работает как правый клик &rarr; &laquo;Удалить&raquo; в дереве объектов EDT плюс <strong>автоматически чистит связанные элементы форм</strong>: поля, которые ссылались на удалённый реквизит, убираются со всех форм объекта. После операции формы валидны, обновление конфигурации базы данных проходит без ошибок. Поддерживаются справочники, документы, планы видов характеристик, задачи, бизнес-процессы, планы обмена, регистры (для ресурсов и измерений регистра &mdash; отдельная операция <span class="ic">removeRegisterField</span>).</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">removeTabularSection</div>
+          <p class="op-desc">Удаление табличной части целиком вместе со всеми её реквизитами. Все таблицы на формах объекта, привязанные к этой ТЧ, удаляются со всеми колонками автоматически. Если нужно убрать только один реквизит, оставив ТЧ &mdash; используйте <span class="ic">removeTabularSectionAttribute</span>.</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">removeTabularSectionAttribute</div>
+          <p class="op-desc">Удаление одного реквизита (колонки) табличной части. Саму ТЧ оставляет. Колонки таблиц на формах, ссылавшиеся на удалённый реквизит, убираются автоматически &mdash; сама таблица и остальные колонки остаются.</p>
         </div>
       </div>
 
@@ -575,7 +590,7 @@
 
         <div class="op-item">
           <div class="op-name">addDynamicListTable</div>
-          <p class="op-desc">Таблица динамического списка с ручными или автоматически сгенерированными колонками.</p>
+          <p class="op-desc">Таблица динамического списка со всеми свойствами, которые появляются у таблицы списка в мастере EDT: строка поиска, автообновление, быстрый отбор над колонками, режим отображения «Список». Колонки задаются вручную или подбираются автоматически по набору полей источника.</p>
         </div>
 
         <div class="op-item op-group form-green">
@@ -584,7 +599,7 @@
             <p class="op-desc"><span class="op-name sm">addField</span> &mdash; поле ввода (тип определяется автоматически)</p>
             <p class="op-desc"><span class="op-name sm">addGroup</span> &mdash; группа: обычная, страницы, страница, группа колонок, командная панель, группа кнопок</p>
             <p class="op-desc"><span class="op-name sm">addButton</span> &mdash; кнопка с автоматически создаваемой командой формы</p>
-            <p class="op-desc"><span class="op-name sm">addTable</span> &mdash; таблица для табличной части, сразу с колонками</p>
+            <p class="op-desc"><span class="op-name sm">addTable</span> &mdash; таблица для табличной части или реквизита-таблицы формы. Колонки подбираются автоматически из источника данных (как при drag-and-drop ТЧ на форму в EDT) или задаются явно.</p>
             <p class="op-desc"><span class="op-name sm">addDecoration</span> &mdash; надпись для заголовков и пояснений</p>
             <p class="op-desc"><span class="op-name sm">addRadioButton</span> &mdash; переключатель (точки или тумблер) с произвольными вариантами</p>
           </div>
