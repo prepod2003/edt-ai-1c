@@ -380,7 +380,8 @@ h2 {
   border-bottom: 1px solid var(--border);
   color: var(--text);
   letter-spacing: -0.015em;
-  scroll-margin-top: 64px;
+  /* scroll-margin-top намеренно не задаём — используется только scroll-padding-top
+     на html, чтобы избежать суммирования эффектов */
 }
 /* Якорные h2 (на которые ведут ссылки навигации) — делаем разделом:
    убираем margin, заменяем на padding + граница сверху. Это даёт чистое
@@ -405,7 +406,8 @@ h3 {
   margin-bottom: 14px;
   color: var(--text);
   letter-spacing: -0.01em;
-  scroll-margin-top: 64px;
+  /* scroll-margin-top намеренно не задаём — используется только scroll-padding-top
+     на html, чтобы избежать суммирования эффектов */
 }
 h4 {
   font-size: var(--fs-h4);
@@ -413,7 +415,8 @@ h4 {
   margin-top: 28px;
   margin-bottom: 10px;
   color: var(--text-m);
-  scroll-margin-top: 64px;
+  /* scroll-margin-top намеренно не задаём — используется только scroll-padding-top
+     на html, чтобы избежать суммирования эффектов */
 }
 p {
   margin-bottom: 14px;
