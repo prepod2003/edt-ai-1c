@@ -778,27 +778,62 @@
     });
   });
 
-  // Active sidebar link on scroll
-  const sections = document.querySelectorAll('[id]');
+  // Active sidebar link on scroll.
+  // Берём только те якоря, у которых реально есть ссылка в sidebar —
+  // иначе мусорные id (tool-card, div'ы) портят логику.
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
+  const idToLink = {};
+  sidebarLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      idToLink[href.slice(1)] = link;
+    }
+  });
+
+  // Собираем только те элементы в порядке DOM, id которых есть в навигации
+  const sections = Array.from(document.querySelectorAll('[id]'))
+    .filter(el => idToLink[el.id]);
+
+  // Блокировка scrollspy на время анимации скролла после клика
+  let scrollspyLockedUntil = 0;
+
+  function setActiveLink(id) {
+    sidebarLinks.forEach(l => l.classList.remove('active'));
+    if (id && idToLink[id]) {
+      idToLink[id].classList.add('active');
+    }
+  }
 
   function updateActiveLink() {
-    const scrollPos = window.scrollY + 120;
-    let currentId = '';
-    sections.forEach(section => {
-      if (section.offsetTop <= scrollPos) {
-        currentId = section.id;
-      }
-    });
-    sidebarLinks.forEach(link => {
-      const href = link.getAttribute('href');
-      if (href && href.substring(1) === currentId) {
-        link.classList.add('active');
-      } else {
-        link.classList.remove('active');
-      }
-    });
+    if (Date.now() < scrollspyLockedUntil) return;
+
+    let current = '';
+    // Порог = высота в верхней трети экрана, минимум 120px.
+    // Секции в порядке DOM, берём последнюю у которой top <= threshold.
+    const threshold = Math.max(120, window.innerHeight / 3);
+    for (const section of sections) {
+      const top = section.getBoundingClientRect().top;
+      if (top <= threshold) current = section.id;
+      else break;
+    }
+    // Если доскроллили до низа — активен последний раздел
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 5) {
+      if (sections.length > 0) current = sections[sections.length - 1].id;
+    }
+    setActiveLink(current);
   }
+
+  // При клике по ссылке — сразу ставим active и блокируем scrollspy
+  // на время плавной прокрутки (800мс)
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        setActiveLink(href.slice(1));
+        scrollspyLockedUntil = Date.now() + 800;
+      }
+    });
+  });
 
   let ticking = false;
   window.addEventListener('scroll', () => {
