@@ -830,10 +830,10 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  // Active nav link on scroll
-  const sections = document.querySelectorAll('h2[id], h3[id], h4[id]');
+  // Active nav link on scroll.
+  // Учитываем только секции, у которых есть ссылка в навигации —
+  // чтобы короткий раздел не "проваливался" через h4 без id.
   const navLinks = document.querySelectorAll('.nav-link');
-
   const idToLink = {};
   navLinks.forEach(link => {
     const href = link.getAttribute('href');
@@ -842,24 +842,39 @@
     }
   });
 
+  // Берём только те заголовки, которые реально представлены в навигации
+  const sections = Array.from(document.querySelectorAll('h2[id], h3[id], h4[id]'))
+    .filter(s => idToLink[s.id]);
+
+  function updateActiveNav() {
+    let current = '';
+    for (const section of sections) {
+      const top = section.getBoundingClientRect().top;
+      if (top <= 130) current = section.id;
+      else break; // секции в порядке DOM, дальше top уже больше
+    }
+    // Если доскроллили до низа страницы — активен последний раздел
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 5) {
+      if (sections.length > 0) current = sections[sections.length - 1].id;
+    }
+    navLinks.forEach(l => l.classList.remove('active'));
+    if (current && idToLink[current]) {
+      idToLink[current].classList.add('active');
+    }
+  }
+
   let ticking = false;
   window.addEventListener('scroll', () => {
     if (!ticking) {
       requestAnimationFrame(() => {
-        let current = '';
-        sections.forEach(section => {
-          const top = section.getBoundingClientRect().top;
-          if (top <= 120) current = section.id;
-        });
-        navLinks.forEach(l => l.classList.remove('active'));
-        if (current && idToLink[current]) {
-          idToLink[current].classList.add('active');
-        }
+        updateActiveNav();
         ticking = false;
       });
       ticking = true;
     }
   });
+  // Первый вызов при загрузке
+  updateActiveNav();
 </script>
 
 </body>
