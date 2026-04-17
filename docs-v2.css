@@ -74,10 +74,10 @@
 
 html {
   scroll-behavior: smooth;
-  /* Отступ при переходе по якорю: высота шапки (64px) + 16px воздуха.
-     Больше — и под шапкой виден хвост предыдущего раздела (margin-top h2
-     становится виден в просвете между шапкой и заголовком). */
-  scroll-padding-top: 80px;
+  /* Отступ при переходе по якорю = ровно высота шапки (64px).
+     Верхняя граница якорного h2 оказывается точно под шапкой —
+     воздух между ними создаётся padding-top самого h2 (48px). */
+  scroll-padding-top: 64px;
 }
 
 body {
@@ -380,7 +380,7 @@ h2 {
   border-bottom: 1px solid var(--border);
   color: var(--text);
   letter-spacing: -0.015em;
-  scroll-margin-top: 80px;
+  scroll-margin-top: 64px;
 }
 /* Якорные h2 (на которые ведут ссылки навигации) — делаем разделом:
    убираем margin, заменяем на padding + граница сверху. Это даёт чистое
@@ -405,7 +405,7 @@ h3 {
   margin-bottom: 14px;
   color: var(--text);
   letter-spacing: -0.01em;
-  scroll-margin-top: 80px;
+  scroll-margin-top: 64px;
 }
 h4 {
   font-size: var(--fs-h4);
@@ -413,7 +413,7 @@ h4 {
   margin-top: 28px;
   margin-bottom: 10px;
   color: var(--text-m);
-  scroll-margin-top: 80px;
+  scroll-margin-top: 64px;
 }
 p {
   margin-bottom: 14px;
