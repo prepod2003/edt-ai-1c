@@ -864,7 +864,7 @@
     // Берём секцию, заголовок которой находится в верхней трети экрана или выше.
     // Порог = треть высоты окна (не фиксированный 130), чтобы корректно работало
     // на больших экранах и при быстром скролле до места назначения.
-    const threshold = Math.max(150, window.innerHeight / 3);
+    const threshold = Math.max(120, window.innerHeight / 3);
     for (const section of sections) {
       const top = section.getBoundingClientRect().top;
       if (top <= threshold) current = section.id;
