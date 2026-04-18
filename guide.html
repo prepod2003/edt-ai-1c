@@ -412,7 +412,7 @@
           <tr><td><code>list_metadata_objects</code></td><td>Каталог объектов метаданных с фильтрацией по типу и имени</td></tr>
           <tr><td><code>get_object_details</code></td><td>Полная структура объекта: реквизиты, табличные части, формы, команды</td></tr>
           <tr><td><code>get_config_properties</code></td><td>Свойства конфигурации: версия, подсистемы, статистика объектов</td></tr>
-          <tr><td><code>get_form_image</code></td><td>Визуализация формы — PNG-картинка или JSON-структура элементов</td></tr>
+          <tr><td><code>get_form_image</code></td><td>Визуализация формы — PNG-картинка или полное JSON-дерево элементов (включая командные панели, позиции, картинки и представление кнопок). Пагинация для больших форм.</td></tr>
           <tr><td><code>get_platform_docs</code></td><td>Синтаксис-помощник: API платформы, язык запросов, директивы, функции СКД</td></tr>
           <tr><td><code>get_object_help</code></td><td>Встроенная справка объекта (HTML-документация по кнопке «?»)</td></tr>
         </tbody>
@@ -431,13 +431,13 @@
           <tr><td><code>get_module_structure</code></td><td>Карта методов: сигнатуры, параметры, области, экспортные/внутренние</td></tr>
           <tr><td><code>read_method_source</code></td><td>Код конкретной процедуры/функции по имени</td></tr>
           <tr><td><code>get_method_call_hierarchy</code></td><td>Иерархия вызовов: входящие и исходящие, до 3 уровней глубины</td></tr>
-          <tr><td><code>ai_context</code></td><td>Умный сборщик контекста — метаданные + код + вызовы за один запрос</td></tr>
+          <tr><td><code>ai_context</code></td><td>Умный сборщик контекста — метаданные объекта, дерево формы с реквизитами и командами, код модуля, вызовы за один запрос</td></tr>
           <tr><td><code>diff_module</code></td><td>Сравнение модуля с версией из git (summary / unified / methods)</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p><strong><code>ai_context</code></strong> — заменяет 5–7 отдельных вызовов. Три режима: <code>minimal</code> (быстрый обзор), <code>standard</code> (для большинства задач), <code>full</code> (максимум: код + вызовы + ссылки). Лучший первый шаг при работе с незнакомым объектом.</p>
+    <p><strong><code>ai_context</code></strong> — заменяет 5–7 отдельных вызовов. Принимает четыре вида цели: объект метаданных (<code>Catalog.Х</code>, <code>Document.Х</code>, регистры, ChartOf*, BusinessProcess, Task и др.), <strong>форма</strong> (<code>Catalog.Х.Form.ФормаСписка</code> — возвращает дерево элементов, реквизиты с типами, команды, обработчики), общий модуль или путь к .bsl-файлу. Три режима: <code>minimal</code> (быстрый обзор), <code>standard</code> (для большинства задач), <code>full</code> (максимум: код + вызовы + ссылки). Для больших форм поддерживается пагинация дерева. Лучший первый шаг при работе с незнакомым объектом или формой.</p>
 
     <h4>Поиск и навигация (3 инструмента)</h4>
     <div class="table-wrap">
@@ -535,10 +535,10 @@
 <span class="branch">│</span>   <span class="branch">├──</span> createForm <span class="desc">— создание (элемент, список, выбор, общая, запись регистра)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addFormAttribute / addFormAttributeColumn <span class="desc">— реквизиты формы</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addDynamicListTable <span class="desc">— таблица динамического списка (отображение «Список», со строкой поиска и автообновлением)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addField, addGroup, addButton <span class="desc">— элементы формы</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addField, addGroup, addButton <span class="desc">— элементы формы (addButton поддерживает и пользовательские команды, и стандартные команды платформы — PostAndClose, Write, Copy и др.)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addTable <span class="desc">— таблица для ТЧ или реквизита-таблицы формы (колонки автоматически из источника или вручную)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addDecoration, addRadioButton <span class="desc">— декорации и переключатели</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setProperty <span class="desc">— свойства элементов (цвета, шрифты, картинки)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> setProperty <span class="desc">— свойства элементов (цвета, шрифты, картинки, представление кнопок, положение заголовка, размеры, выравнивание — всё пакетно)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> listPictures <span class="desc">— поиск среди 763 стандартных картинок</span>
 <span class="branch">│</span>   <span class="branch">└──</span> addCommandHandler <span class="desc">— обработчики кнопок</span>
 <span class="branch">│</span>
