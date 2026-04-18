@@ -531,7 +531,7 @@
 <span class="branch">│</span>   <span class="branch">├──</span> setRoleRight <span class="desc">— права ролей (русские и английские имена)</span>
 <span class="branch">│</span>   <span class="branch">└──</span> setDefinedTypeTypes <span class="desc">— состав определяемого типа</span>
 <span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">Формы</span> <span class="desc">(14 операций)</span>
+<span class="branch">├──</span> <span class="op">Формы</span> <span class="desc">(15 операций)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> createForm <span class="desc">— создание (элемент, список, выбор, общая, запись регистра)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addFormAttribute / addFormAttributeColumn <span class="desc">— реквизиты формы</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addDynamicListTable <span class="desc">— таблица динамического списка (отображение «Список», со строкой поиска и автообновлением)</span>
@@ -540,7 +540,8 @@
 <span class="branch">│</span>   <span class="branch">├──</span> addDecoration, addRadioButton <span class="desc">— декорации и переключатели</span>
 <span class="branch">│</span>   <span class="branch">├──</span> setProperty <span class="desc">— свойства элементов (цвета, шрифты, картинки, представление кнопок, положение заголовка, размеры, выравнивание — всё пакетно)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> listPictures <span class="desc">— поиск среди 763 стандартных картинок</span>
-<span class="branch">│</span>   <span class="branch">└──</span> addCommandHandler <span class="desc">— обработчики кнопок</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addCommandHandler <span class="desc">— обработчики кнопок</span>
+<span class="branch">│</span>   <span class="branch">└──</span> setupSettingsComposerOnForm <span class="desc">— композитор настроек на форме (реквизит + таблицы UI + ExtInfo + BSL-пример в ответе)</span>
 <span class="branch">│</span>
 <span class="branch">├──</span> <span class="op">Макеты печатных форм</span> <span class="desc">(4 операции)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addTemplate <span class="desc">— создание макета (табличный, текстовый, СКД и др.)</span>
@@ -575,6 +576,8 @@
     <p><strong>Расширения.</strong> При добавлении реквизитов со ссылочными типами инструмент автоматически заимствует связанные объекты.</p>
     <p><strong>Макеты печатных форм.</strong> Полный цикл сборки макета: создание объекта, рисование ячеек с оформлением, объединения, ширины колонок, именованные области (<code>Шапка</code>, <code>СтрокаТовара</code>, <code>Подвал</code>). <code>drawTemplate</code> делает всё одним пакетным вызовом — готовый макет, идентичный нарисованному вручную в EDT.</p>
     <p><strong>Отчёты СКД.</strong> Полный цикл: схема, наборы данных, параметры, ресурсы, группировки, таблицы, диаграммы, отборы, сортировки, условное оформление, варианты настроек. Минимальный отчёт — 6 вызовов. В справке есть готовый рабочий сценарий для матричных отчётов («товары × месяцы»).</p>
+    <p><strong>Схема компоновки — не только для отчётов.</strong> Схему компоновки данных (с запросом, группировками, ресурсами, отборами) теперь можно создавать не только в отчётах, но и в обработках, справочниках, документах, планах счетов, бизнес-процессах, задачах и планах обмена — везде, где в 1С бывают макеты типа «Схема компоновки данных». Открывается типовой сценарий «обработка с настраиваемыми отборами»: AI собирает в обработке макет со схемой, форму с реквизитом-композитором и кнопкой «Сформировать» — пользователь в режиме предприятия задаёт отборы и группировки сам.</p>
+    <p><strong>Композитор настроек на форме.</strong> Операция <code>setupSettingsComposerOnForm</code> одним вызовом добавляет на любую форму (обработки, отчёта, общей формы) реквизит типа КомпоновщикНастроек, UI-таблицы настроек (дерево группировок, отборы, сортировка, условное оформление — через параметр <code>standardItems</code>; алиас <code>full</code> = все четыре) и привязку ExtInfo формы. Работает как галочка «Настройки на форме» в мастере EDT, но доступно не только для отчётов. В ответе возвращается готовый BSL-пример для обработчика <code>ПриСозданииНаСервере</code> — с корректной инициализацией композитора из макета со схемой. Полный пошаговый сценарий — в справочнике через <code>help topic=composerWorkflow</code>.</p>
 
     <h3>Встроенная справка</h3>
     <p>У инструмента есть собственный справочник, который ИИ-ассистент запрашивает при необходимости:</p>
@@ -586,6 +589,7 @@
       <li><code>help topic=formTypes</code> — типы форм</li>
       <li><code>help topic=workflow</code> — типичный сценарий работы от создания объекта до обработчиков</li>
       <li><code>help topic=matrixWorkflow</code> — рабочий сценарий для матричных отчётов (товары × месяцы)</li>
+      <li><code>help topic=composerWorkflow</code> — обработка или отчёт с композитором настроек на форме: отборы, группировки, BSL-код инициализации</li>
     </ul>
     <p>ИИ-ассистенту не нужно знать внутреннее устройство EDT — он спрашивает у инструмента, что доступно, и получает готовые примеры.</p>
     <!-- Отладка -->

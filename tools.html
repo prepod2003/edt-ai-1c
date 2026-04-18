@@ -452,7 +452,7 @@
 <span class="tree-branch">│   ├──</span> <span class="tree-op">setRoleRight</span> — права ролей
 <span class="tree-branch">│   └──</span> <span class="tree-op">setDefinedTypeTypes</span> — состав определяемого типа
 <span class="tree-branch">│</span>
-<span class="tree-branch">├──</span> <span class="tree-cat cat-form">Формы</span> <span class="tree-branch">(14 операций)</span>
+<span class="tree-branch">├──</span> <span class="tree-cat cat-form">Формы</span> <span class="tree-branch">(15 операций)</span>
 <span class="tree-branch">│   ├──</span> <span class="tree-op">createForm</span> — создание (все типы форм)
 <span class="tree-branch">│   ├──</span> <span class="tree-op">addFormAttribute / addFormAttributeColumn</span> — реквизиты формы
 <span class="tree-branch">│   ├──</span> <span class="tree-op">addDynamicListTable</span> — таблица динамического списка
@@ -460,7 +460,8 @@
 <span class="tree-branch">│   ├──</span> <span class="tree-op">addDecoration, addRadioButton</span> — декорации и переключатели
 <span class="tree-branch">│   ├──</span> <span class="tree-op">setProperty</span> — свойства элементов (цвета, шрифты, картинки)
 <span class="tree-branch">│   ├──</span> <span class="tree-op">listPictures</span> — поиск среди 763 стандартных картинок
-<span class="tree-branch">│   └──</span> <span class="tree-op">addCommandHandler</span> — обработчики кнопок
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addCommandHandler</span> — обработчики кнопок
+<span class="tree-branch">│   └──</span> <span class="tree-op">setupSettingsComposerOnForm</span> — композитор настроек на форме (реквизит + таблицы + ExtInfo)
 <span class="tree-branch">│</span>
 <span class="tree-branch">├──</span> <span class="tree-cat cat-meta">Макеты печатных форм</span> <span class="tree-branch">(4 операции)</span>
 <span class="tree-branch">│   ├──</span> <span class="tree-op">addTemplate</span> — создание макета (табличный, текстовый, СКД и др.)
@@ -499,6 +500,7 @@
           <li><code>help topic=propertyValues</code> <span class="hint">&mdash; форматы значений свойств</span></li>
           <li><code>help topic=workflow</code> <span class="hint">&mdash; типичный сценарий работы от создания объекта до обработчиков</span></li>
           <li><code>help topic=matrixWorkflow</code> <span class="hint">&mdash; рабочий сценарий для матричных отчётов (товары × месяцы)</span></li>
+          <li><code>help topic=composerWorkflow</code> <span class="hint">&mdash; обработка или отчёт с композитором настроек на форме: отборы, группировки, BSL-код инициализации</span></li>
         </ul>
         <p class="sub">AI-ассистенту не нужно знать внутреннее устройство EDT &mdash; он спрашивает у инструмента, что доступно, и получает готовые примеры.</p>
       </div>
@@ -580,7 +582,7 @@
 
       <!-- Operations: Forms -->
       <div class="ops-section" id="ops-forms">
-        <h4>Формы (14 операций)</h4>
+        <h4>Формы (15 операций)</h4>
 
         <div class="op-item">
           <div class="op-name">createForm</div>
@@ -622,6 +624,11 @@
         <div class="op-item">
           <div class="op-name">addCommandHandler</div>
           <p class="op-desc">Создаёт обработчик команды кнопки с правильной директивой. Поддерживает обычные формы и заимствованные (обработчики Перед, После, Вместо).</p>
+        </div>
+
+        <div class="op-item">
+          <div class="op-name">setupSettingsComposerOnForm</div>
+          <p class="op-desc">Добавляет на любую форму (обработки, отчёта, общей формы, формы документа) реквизит-композитор настроек компоновки данных с UI-таблицами &mdash; как галочка &laquo;Настройки на форме&raquo; в мастере EDT, но доступно не только отчётам. Ставит сразу: реквизит типа <span class="ic">КомпоновщикНастроек</span>, таблицу &laquo;Структура&raquo; (дерево группировок), группу пользовательских настроек и привязку ExtInfo формы. Опциональный параметр <span class="ic">standardItems</span> регулирует, какие UI-таблицы вывести: только структура (по умолчанию), алиас <span class="ic">full</span> &mdash; полный набор (группировки + отборы + сортировка + условное оформление), либо произвольный список. Ответ операции содержит <strong>готовый BSL-пример</strong> для обработчика <span class="ic">ПриСозданииНаСервере</span> &mdash; с корректной передачей схемы через временное хранилище и правильным вызовом <span class="ic">ПолучитьМакет</span> в зависимости от того, где лежит макет (обработка / справочник / отчёт / общий). Полный сценарий сборки от объекта до BSL-кода формирования результата &mdash; в справочнике через <span class="ic">help topic=composerWorkflow</span>.</p>
         </div>
       </div>
 
@@ -684,7 +691,7 @@
       <!-- Operations: DCS Reports -->
       <div class="ops-section" id="ops-dcs">
         <h4>Отчёты СКД (22 операции)</h4>
-        <p class="group-desc" style="margin-bottom:16px">Полный цикл создания отчётов со схемой компоновки данных:</p>
+        <p class="group-desc" style="margin-bottom:16px">Полный цикл создания отчётов со схемой компоновки данных. Все операции работают не только для отчётов: схема компоновки и её наполнение (наборы данных, параметры, группировки, отборы, сортировки и т.д.) теперь доступны также в макетах обработок, справочников, документов, планов счетов, бизнес-процессов, задач и планов обмена &mdash; везде, где в 1С бывают макеты типа &laquo;Схема компоновки данных&raquo;. Для не-отчётов указывается имя макета через параметр <span class="ic">templateName</span>.</p>
 
         <div class="op-item op-group dcs-pink">
           <p class="op-subheader" style="color:var(--pink)">Базовое создание</p>
