@@ -525,7 +525,7 @@
 <span class="branch">│</span>   <span class="branch">└──</span> addTabularSectionAttribute / removeTabularSectionAttribute <span class="desc">— колонки табличной части</span>
 <span class="branch">│</span>
 <span class="branch">├──</span> <span class="op">Специализированные объекты</span> <span class="desc">(6 операций)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addRegisterField / removeRegisterField <span class="desc">— поля всех 4 видов регистров</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addRegisterField / removeRegisterField <span class="desc">— поля всех 4 видов регистров + признаки учёта и субконто плана счетов</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addEnumValue <span class="desc">— значения перечислений</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addSubsystemContent / removeSubsystemContent <span class="desc">— состав подсистем</span>
 <span class="branch">│</span>   <span class="branch">├──</span> setRoleRight <span class="desc">— права ролей (русские и английские имена)</span>
@@ -535,7 +535,7 @@
 <span class="branch">│</span>   <span class="branch">├──</span> createForm <span class="desc">— создание (элемент, список, выбор, общая, запись регистра)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addFormAttribute / addFormAttributeColumn <span class="desc">— реквизиты формы</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addDynamicListTable <span class="desc">— таблица динамического списка (отображение «Список», со строкой поиска и автообновлением)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addField, addGroup, addButton <span class="desc">— элементы формы (addButton поддерживает и пользовательские команды, и стандартные команды платформы — PostAndClose, Write, Copy и др.)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addField, addGroup, addButton <span class="desc">— элементы формы (addButton со стандартной командой сразу получает иконку платформы — «провести и закрыть», «записать», «скопировать» и др.)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addTable <span class="desc">— таблица для ТЧ или реквизита-таблицы формы (колонки автоматически из источника или вручную)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addDecoration, addRadioButton <span class="desc">— декорации и переключатели</span>
 <span class="branch">│</span>   <span class="branch">├──</span> setProperty <span class="desc">— свойства элементов (цвета, шрифты, картинки, представление кнопок, положение заголовка, размеры, выравнивание — всё пакетно)</span>
@@ -548,8 +548,9 @@
 <span class="branch">│</span>   <span class="branch">├──</span> mergeTemplateCells <span class="desc">— объединение диапазонов ячеек</span>
 <span class="branch">│</span>   <span class="branch">└──</span> drawTemplate <span class="desc">— пакетное заполнение (ячейки, ширины, именованные области)</span>
 <span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">Расширения</span> <span class="desc">(3 операции)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> adoptObject <span class="desc">— заимствовать объект из базовой конфигурации</span>
+<span class="branch">├──</span> <span class="op">Расширения</span> <span class="desc">(4 операции)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> adoptObject <span class="desc">— заимствовать один объект из базы (опц. рекурсивно с дочерними элементами)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> adoptObjects <span class="desc">— заимствовать несколько объектов явным списком одним вызовом</span>
 <span class="branch">│</span>   <span class="branch">├──</span> adoptChild <span class="desc">— заимствовать дочерний элемент</span>
 <span class="branch">│</span>   <span class="branch">└──</span> adoptFormItem <span class="desc">— заимствовать элемент формы</span>
 <span class="branch">│</span>
@@ -567,7 +568,8 @@
 
     <h3>Ключевые возможности</h3>
     <p><strong>Картинки.</strong> Свойства <code>setObjectProperty</code> и <code>setProperty</code> принимают как стандартные картинки EDT (763 шт., поиск через <code>listPictures</code>), так и общие картинки конфигурации в формате <code>CommonPicture.ИмяКартинки</code>.</p>
-    <p><strong>Пакетный режим.</strong> Большинство операций поддерживают создание нескольких элементов за один вызов. Справочник с 10 реквизитами, табличной частью и формой — за 3–4 вызова вместо 15.</p>
+    <p><strong>Пакетный режим.</strong> Большинство операций поддерживают создание нескольких элементов за один вызов. Справочник с 10 реквизитами, табличной частью и формой — за 3–4 вызова вместо 15. <code>createObject</code> умеет сразу создавать реквизиты и табличные части (с их колонками), так что полноценный справочник или документ собирается <strong>одним</strong> вызовом.</p>
+    <p><strong>Режим предпросмотра.</strong> К любой операции конструктора метаданных можно добавить параметр <code>dryRun=true</code> — плагин выполнит её в транзакции и откатит. В ответе будет видно, что получилось бы (созданные реквизиты, формы, элементы), но в проекте ничего не меняется. Полезно для перепроверки сложных пакетных вызовов или когда неуверен в правильности типа. Не применяется только к операциям заимствования и удаления реквизитов/ТЧ — там плагин честно говорит, что режим предпросмотра невозможен.</p>
     <p><strong>Реквизиты по умолчанию.</strong> Тип реквизита можно не указывать — поставится <strong>Строка длиной 10</strong>, ровно как при нажатии кнопки «+ Реквизит» в EDT. Работает для всех объектов с реквизитами (справочники, документы, все 4 вида регистров, планы счетов, планы видов характеристик и расчёта, бизнес-процессы, задачи, планы обмена).</p>
     <p><strong>Типы данных.</strong> Принимаются русские и английские имена — <code>Строка</code>/<code>String</code>, <code>Число</code>/<code>Number</code>, <code>ХранилищеЗначения</code>/<code>ValueStorage</code>, <code>ДвоичныеДанные</code>, <code>УникальныйИдентификатор</code>, ссылочные (<code>CatalogRef.X</code>/<code>СправочникСсылка.X</code>), а также определяемые типы (<code>DefinedType.X</code>/<code>ОпределяемыйТип.X</code>).</p>
     <p><strong>Расширения.</strong> При добавлении реквизитов со ссылочными типами инструмент автоматически заимствует связанные объекты.</p>
