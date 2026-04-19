@@ -35,12 +35,10 @@
       border-radius: 6px;
       margin: 20px 0;
     }
-    /* Чтобы якоря из «Содержания» в тексте тоже прокручивались плавно и
-       не уезжали под шапку — scroll-margin-top на всех h2/h3/h4. html уже
-       даёт scroll-padding-top:64px (см. docs-v2.css), этого достаточно для
-       кликов по sidebar; а на заголовки добавим небольшой scroll-margin
-       на случай, если клик инициирован из самого контента. */
-    .main h2[id], .main h3[id], .main h4[id] { scroll-margin-top: 72px; }
+    /* scroll-margin-top намеренно НЕ задаём — это суммировалось бы с
+       scroll-padding-top: 64px на html (см. docs-v2.css) и давало двойной
+       отступ. Единый источник offset-а под шапку — только scroll-padding-top
+       на html. Так же сделано в guide.html / tools.html. */
   </style>
 </head>
 <body>
@@ -187,10 +185,24 @@
       h.id = finalSlug;
     });
 
-    // 2) Строим TOC в сайдбаре из h2
+    // 2) Убираем <hr>, стоящие прямо перед якорным h2 — они дают
+    //    двойной разделитель: сам h2[id] уже отрисован с border-top
+    //    (стиль docs-v2.css), а <hr> даёт ещё одну линию сверху.
+    //    Прогон игнорирует whitespace-текстовые узлы между тегами.
+    content.querySelectorAll('hr').forEach(hr => {
+      let next = hr.nextSibling;
+      while (next && next.nodeType === Node.TEXT_NODE && !next.nodeValue.trim()) {
+        next = next.nextSibling;
+      }
+      if (next && next.nodeType === Node.ELEMENT_NODE && next.tagName === 'H2' && next.id) {
+        hr.remove();
+      }
+    });
+
+    // 3) Строим TOC в сайдбаре из h2 (+ h3 как подпункты .sub)
     buildToc(content);
 
-    // 3) Scrollspy (копия логики из guide.html)
+    // 4) Scrollspy (копия логики из guide.html)
     initScrollspy();
   })();
 
@@ -201,7 +213,9 @@
   }
 
   function buildToc(contentEl) {
-    const headings = contentEl.querySelectorAll('h2');
+    // В сайдбар кладём и h2 (как корневые пункты), и h3 (как подпункты
+    // с классом .sub — такое же оформление как в guide.html).
+    const headings = contentEl.querySelectorAll('h2, h3');
     if (!headings.length) return;
     const toc = document.getElementById('toc');
     const section = document.getElementById('tocSection');
@@ -209,7 +223,7 @@
     headings.forEach(h => {
       const a = document.createElement('a');
       a.href = '#' + h.id;
-      a.className = 'nav-link sub';
+      a.className = h.tagName === 'H3' ? 'nav-link sub' : 'nav-link';
       a.textContent = h.textContent;
       toc.appendChild(a);
     });
