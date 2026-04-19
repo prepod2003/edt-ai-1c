@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="1C:RSV MCP Server — заметки о релизе. Что нового в каждой версии плагина.">
+  <title>Релиз — 1C:RSV MCP Server</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="docs-v2.css">
+  <style>
+    /* Доп.типографика для Markdown-контента, чтобы совпадало со стилем guide/tools */
+    .markdown-body h1 { font-size: 2rem; margin: 0 0 20px; color: var(--text); font-weight: 800; }
+    .markdown-body h2 { font-size: 1.5rem; margin: 44px 0 14px; color: var(--text); font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 10px; scroll-margin-top: 80px; }
+    .markdown-body h3 { font-size: 1.15rem; margin: 28px 0 10px; color: var(--text); font-weight: 700; scroll-margin-top: 80px; }
+    .markdown-body h4 { font-size: 1rem; margin: 22px 0 8px; color: var(--text); font-weight: 600; }
+    .markdown-body p { margin: 0 0 14px; line-height: 1.7; color: var(--text-muted); }
+    .markdown-body ul, .markdown-body ol { margin: 0 0 16px; padding-left: 22px; color: var(--text-muted); }
+    .markdown-body li { margin-bottom: 6px; line-height: 1.65; }
+    .markdown-body li > strong { color: var(--text); }
+    .markdown-body strong { color: var(--text); }
+    .markdown-body a { color: var(--accent-hi); text-decoration: none; }
+    .markdown-body a:hover { text-decoration: underline; }
+    .markdown-body code { font-family: var(--font-mono); font-size: 0.88em; background: var(--bg-surface-2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; color: var(--text); }
+    .markdown-body pre { background: var(--bg-surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; overflow-x: auto; font-size: 0.85rem; line-height: 1.5; margin: 0 0 18px; }
+    .markdown-body pre code { background: transparent; border: 0; padding: 0; font-size: inherit; }
+    .markdown-body blockquote { border-left: 3px solid var(--accent-soft2); background: var(--accent-soft); padding: 10px 14px; margin: 0 0 16px; border-radius: 4px; color: var(--text); }
+    .markdown-body blockquote p { margin-bottom: 0; color: var(--text); }
+    .markdown-body table { width: 100%; border-collapse: collapse; margin: 0 0 18px; font-size: 0.92rem; }
+    .markdown-body th, .markdown-body td { border: 1px solid var(--border); padding: 9px 12px; text-align: left; color: var(--text); vertical-align: top; }
+    .markdown-body th { background: var(--bg-surface); font-weight: 600; }
+    .markdown-body td { color: var(--text-muted); }
+    .markdown-body td strong { color: var(--text); }
+    .markdown-body hr { border: 0; border-top: 1px solid var(--border); margin: 36px 0; }
+    .markdown-body em { color: var(--text); font-style: italic; }
+
+    /* Badge с версией в шапке */
+    .release-version-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-soft2);
+      color: var(--accent-hi);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    /* Плейсхолдер во время загрузки */
+    .loading { color: var(--text-muted); padding: 40px 0; text-align: center; }
+    .error-box {
+      background: #fff3f3;
+      border: 1px solid #ffcdcd;
+      color: #a33;
+      padding: 16px 20px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="index.html" class="logo">
+        <span class="logo-badge">RSV</span>
+        <span class="header-title">1C:RSV MCP Server</span>
+        <span class="header-subtitle" id="pageSubtitle">Релиз</span>
+      </a>
+    </div>
+    <div class="header-links">
+      <a href="index.html#docs" class="hide-mobile">Документация</a>
+      <a href="index.html" class="hide-mobile">Главная</a>
+      <a href="https://t.me/edt_ai_1c" target="_blank">Telegram</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="nav-section">
+    <span class="nav-section-title">Другие релизы</span>
+    <a href="release.html?v=3.3.0" class="nav-link" id="nav-3.3.0">v3.3.0</a>
+    <a href="release.html?v=3.2.0" class="nav-link" id="nav-3.2.0">v3.2.0</a>
+    <a href="release.html?v=3.1.0" class="nav-link" id="nav-3.1.0">v3.1.0</a>
+  </div>
+  <div class="nav-section" id="tocSection" style="display:none;">
+    <span class="nav-section-title">Содержание релиза</span>
+    <div id="toc"></div>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Документация</span>
+    <a href="guide.html" class="nav-link">Руководство пользователя</a>
+    <a href="tools.html" class="nav-link">Описание инструментов</a>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main class="main">
+  <div class="main-inner" style="max-width: 880px;">
+    <div id="versionBadge" class="release-version-badge"></div>
+    <article id="content" class="markdown-body">
+      <div class="loading">Загружаем заметки релиза…</div>
+    </article>
+  </div>
+</main>
+
+<!-- marked.js для рендера Markdown -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  // --- Хамбургер-меню (как в guide/tools) ---
+  (function() {
+    const hamb = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    function toggle() {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+      hamb.classList.toggle('active');
+    }
+    hamb.addEventListener('click', toggle);
+    overlay.addEventListener('click', toggle);
+  })();
+
+  // --- Загрузка и рендер MD ---
+  (async function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const version = (urlParams.get('v') || '3.3.0').trim();
+
+    // Валидируем формат X.Y.Z чтобы не получить fetch на произвольный путь
+    if (!/^\d+\.\d+\.\d+$/.test(version)) {
+      renderError('Неверный формат версии. Ожидается X.Y.Z, например 3.3.0');
+      return;
+    }
+
+    // Подсвечиваем текущий релиз в сайдбаре
+    const activeNav = document.getElementById('nav-' + version);
+    if (activeNav) activeNav.classList.add('active');
+
+    // Обновляем заголовок страницы и badge
+    document.title = 'Релиз v' + version + ' — 1C:RSV MCP Server';
+    document.getElementById('pageSubtitle').textContent = 'Релиз v' + version;
+    document.getElementById('versionBadge').textContent = 'v' + version;
+
+    const mdUrl = 'RELEASE-' + version + '.md';
+    let mdText;
+    try {
+      const res = await fetch(mdUrl, { cache: 'no-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      mdText = await res.text();
+    } catch (e) {
+      renderError('Не удалось загрузить заметки релиза (' + mdUrl + '): ' + e.message);
+      return;
+    }
+
+    // Первый H1 в MD дублирует версию — убираем, чтобы не было "v3.3.0" дважды
+    mdText = mdText.replace(/^#\s+.+\n+/, '');
+
+    // Настройки marked: GFM, переносы строк, безопасный html
+    marked.use({ gfm: true, breaks: false, pedantic: false });
+    const html = marked.parse(mdText);
+
+    const content = document.getElementById('content');
+    content.innerHTML = html;
+
+    // Генерируем TOC из H2
+    buildToc(content);
+  })();
+
+  function renderError(msg) {
+    document.getElementById('content').innerHTML =
+      '<div class="error-box">' + escapeHtml(msg) +
+      '<br><br><a href="index.html#docs">← К списку релизов</a></div>';
+  }
+
+  function buildToc(contentEl) {
+    const headings = contentEl.querySelectorAll('h2');
+    if (!headings.length) return;
+    const toc = document.getElementById('toc');
+    const section = document.getElementById('tocSection');
+    toc.innerHTML = '';
+    headings.forEach((h, i) => {
+      // Проставляем id (slug), если marked его не сделал
+      if (!h.id) {
+        h.id = 'sec-' + (i + 1) + '-' + slugify(h.textContent);
+      }
+      const a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.className = 'nav-link sub';
+      a.textContent = h.textContent;
+      toc.appendChild(a);
+    });
+    section.style.display = '';
+  }
+
+  function slugify(s) {
+    return (s || '').toLowerCase()
+      .replace(/[^\w\u0400-\u04FF\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .slice(0, 60);
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+</script>
+</body>
+</html>

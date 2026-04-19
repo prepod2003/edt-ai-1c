@@ -1118,6 +1118,18 @@ section.section {
   font-weight: 700;
   border-radius: 999px;
   margin-bottom: 10px;
+  text-decoration: none;
+}
+/* Когда версия-пилюля кликабельная (<a class="changelog-version">) */
+a.changelog-version {
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+a.changelog-version:hover {
+  background: var(--accent-soft2);
+  border-color: var(--accent-hi);
+  transform: translateY(-1px);
+  text-decoration: none;
 }
 .changelog-entry h4 { font-size: 1rem; color: var(--text); margin: 0 0 8px; }
 .changelog-entry p  { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
