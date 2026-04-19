@@ -11,47 +11,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="docs-v2.css">
   <style>
-    /* Доп.типографика для Markdown-контента, чтобы совпадало со стилем guide/tools */
-    .markdown-body h1 { font-size: 2rem; margin: 0 0 20px; color: var(--text); font-weight: 800; }
-    .markdown-body h2 { font-size: 1.5rem; margin: 44px 0 14px; color: var(--text); font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 10px; scroll-margin-top: 80px; }
-    .markdown-body h3 { font-size: 1.15rem; margin: 28px 0 10px; color: var(--text); font-weight: 700; scroll-margin-top: 80px; }
-    .markdown-body h4 { font-size: 1rem; margin: 22px 0 8px; color: var(--text); font-weight: 600; }
-    .markdown-body p { margin: 0 0 14px; line-height: 1.7; color: var(--text-muted); }
-    .markdown-body ul, .markdown-body ol { margin: 0 0 16px; padding-left: 22px; color: var(--text-muted); }
-    .markdown-body li { margin-bottom: 6px; line-height: 1.65; }
-    .markdown-body li > strong { color: var(--text); }
-    .markdown-body strong { color: var(--text); }
-    .markdown-body a { color: var(--accent-hi); text-decoration: none; }
-    .markdown-body a:hover { text-decoration: underline; }
-    .markdown-body code { font-family: var(--font-mono); font-size: 0.88em; background: var(--bg-surface-2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; color: var(--text); }
-    .markdown-body pre { background: var(--bg-surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; overflow-x: auto; font-size: 0.85rem; line-height: 1.5; margin: 0 0 18px; }
-    .markdown-body pre code { background: transparent; border: 0; padding: 0; font-size: inherit; }
-    .markdown-body blockquote { border-left: 3px solid var(--accent-soft2); background: var(--accent-soft); padding: 10px 14px; margin: 0 0 16px; border-radius: 4px; color: var(--text); }
-    .markdown-body blockquote p { margin-bottom: 0; color: var(--text); }
-    .markdown-body table { width: 100%; border-collapse: collapse; margin: 0 0 18px; font-size: 0.92rem; }
-    .markdown-body th, .markdown-body td { border: 1px solid var(--border); padding: 9px 12px; text-align: left; color: var(--text); vertical-align: top; }
-    .markdown-body th { background: var(--bg-surface); font-weight: 600; }
-    .markdown-body td { color: var(--text-muted); }
-    .markdown-body td strong { color: var(--text); }
-    .markdown-body hr { border: 0; border-top: 1px solid var(--border); margin: 36px 0; }
-    .markdown-body em { color: var(--text); font-style: italic; }
-
-    /* Badge с версией в шапке */
+    /* Всю типографику даёт docs-v2.css (h1/h2/h3/p/ul/ol/table/code/hr —
+       такие же, как в guide.html и tools.html). Здесь — только
+       специфика страницы релиза. */
     .release-version-badge {
       display: inline-block;
-      padding: 4px 12px;
+      padding: 4px 14px;
       background: var(--accent-soft);
       border: 1px solid var(--accent-soft2);
       color: var(--accent-hi);
       font-family: var(--font-mono);
       font-size: 0.9rem;
-      border-radius: 10px;
-      margin-bottom: 12px;
+      font-weight: 700;
+      border-radius: 999px;
+      margin-bottom: 18px;
     }
-
-    /* Плейсхолдер во время загрузки */
-    .loading { color: var(--text-muted); padding: 40px 0; text-align: center; }
-    .error-box {
+    .release-loading { color: var(--text-muted); padding: 40px 0; text-align: center; }
+    .release-error {
       background: #fff3f3;
       border: 1px solid #ffcdcd;
       color: #a33;
@@ -59,6 +35,12 @@
       border-radius: 6px;
       margin: 20px 0;
     }
+    /* Чтобы якоря из «Содержания» в тексте тоже прокручивались плавно и
+       не уезжали под шапку — scroll-margin-top на всех h2/h3/h4. html уже
+       даёт scroll-padding-top:64px (см. docs-v2.css), этого достаточно для
+       кликов по sidebar; а на заголовки добавим небольшой scroll-margin
+       на случай, если клик инициирован из самого контента. */
+    .main h2[id], .main h3[id], .main h4[id] { scroll-margin-top: 72px; }
   </style>
 </head>
 <body>
@@ -106,17 +88,34 @@
 
 <!-- ===== MAIN ===== -->
 <main class="main">
-  <div class="main-inner" style="max-width: 880px;">
+  <div class="main-inner">
     <div id="versionBadge" class="release-version-badge"></div>
-    <article id="content" class="markdown-body">
-      <div class="loading">Загружаем заметки релиза…</div>
-    </article>
+    <div id="content">
+      <div class="release-loading">Загружаем заметки релиза…</div>
+    </div>
   </div>
 </main>
 
 <!-- marked.js для рендера Markdown -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+  // --- GFM-совместимый slug для заголовков ---
+  // Правила GitHub: lowercase, убрать всё кроме букв/цифр/пробелов/дефисов,
+  // каждый пробел → дефис (НЕ сжимать серии пробелов!).
+  function slugify(s) {
+    return (s || '')
+      .toLowerCase()
+      // оставляем: латиница, цифры, подчёркивание (\w), кириллица, пробел, дефис
+      .replace(/[^\w\u0400-\u04FF\s-]/g, '')
+      .replace(/\s/g, '-');
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
   // --- Хамбургер-меню (как в guide/tools) ---
   (function() {
     const hamb = document.getElementById('hamburger');
@@ -131,22 +130,22 @@
     overlay.addEventListener('click', toggle);
   })();
 
-  // --- Загрузка и рендер MD ---
+  // --- Загрузка, рендер MD, установка id, сборка TOC и scrollspy ---
   (async function() {
     const urlParams = new URLSearchParams(window.location.search);
     const version = (urlParams.get('v') || '3.3.0').trim();
 
-    // Валидируем формат X.Y.Z чтобы не получить fetch на произвольный путь
+    // Валидируем формат X.Y.Z, чтобы не было fetch на произвольный путь
     if (!/^\d+\.\d+\.\d+$/.test(version)) {
       renderError('Неверный формат версии. Ожидается X.Y.Z, например 3.3.0');
       return;
     }
 
-    // Подсвечиваем текущий релиз в сайдбаре
-    const activeNav = document.getElementById('nav-' + version);
-    if (activeNav) activeNav.classList.add('active');
+    // Подсвечиваем текущий релиз в «Других релизах»
+    const activeRelLink = document.getElementById('nav-' + version);
+    if (activeRelLink) activeRelLink.classList.add('active');
 
-    // Обновляем заголовок страницы и badge
+    // Шапка страницы
     document.title = 'Релиз v' + version + ' — 1C:RSV MCP Server';
     document.getElementById('pageSubtitle').textContent = 'Релиз v' + version;
     document.getElementById('versionBadge').textContent = 'v' + version;
@@ -162,23 +161,42 @@
       return;
     }
 
-    // Первый H1 в MD дублирует версию — убираем, чтобы не было "v3.3.0" дважды
+    // Первый H1 в MD дублирует версию — убираем, чтобы не было «v3.3.0» дважды
     mdText = mdText.replace(/^#\s+.+\n+/, '');
 
-    // Настройки marked: GFM, переносы строк, безопасный html
+    // Настройки marked
     marked.use({ gfm: true, breaks: false, pedantic: false });
     const html = marked.parse(mdText);
 
     const content = document.getElementById('content');
     content.innerHTML = html;
 
-    // Генерируем TOC из H2
+    // 1) Ставим id ВСЕМ h1–h4 внутри контента — чтобы ссылки из MD
+    //    вида [раздел](#работа-с-формами) действительно работали.
+    //    Алгоритм slug совпадает с GFM.
+    const used = Object.create(null);
+    content.querySelectorAll('h1, h2, h3, h4').forEach(h => {
+      let slug = slugify(h.textContent);
+      // GFM-коллизии: -1, -2, -3…
+      let finalSlug = slug;
+      let n = 1;
+      while (used[finalSlug]) {
+        finalSlug = slug + '-' + (n++);
+      }
+      used[finalSlug] = true;
+      h.id = finalSlug;
+    });
+
+    // 2) Строим TOC в сайдбаре из h2
     buildToc(content);
+
+    // 3) Scrollspy (копия логики из guide.html)
+    initScrollspy();
   })();
 
   function renderError(msg) {
     document.getElementById('content').innerHTML =
-      '<div class="error-box">' + escapeHtml(msg) +
+      '<div class="release-error">' + escapeHtml(msg) +
       '<br><br><a href="index.html#docs">← К списку релизов</a></div>';
   }
 
@@ -188,11 +206,7 @@
     const toc = document.getElementById('toc');
     const section = document.getElementById('tocSection');
     toc.innerHTML = '';
-    headings.forEach((h, i) => {
-      // Проставляем id (slug), если marked его не сделал
-      if (!h.id) {
-        h.id = 'sec-' + (i + 1) + '-' + slugify(h.textContent);
-      }
+    headings.forEach(h => {
       const a = document.createElement('a');
       a.href = '#' + h.id;
       a.className = 'nav-link sub';
@@ -202,18 +216,51 @@
     section.style.display = '';
   }
 
-  function slugify(s) {
-    return (s || '').toLowerCase()
-      .replace(/[^\w\u0400-\u04FF\s-]/g, '')
-      .trim()
-      .replace(/\s+/g, '-')
-      .slice(0, 60);
-  }
+  function initScrollspy() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    const idToLink = {};
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) idToLink[href.slice(1)] = link;
+    });
+    const sections = Array.from(document.querySelectorAll('h2[id], h3[id], h4[id]'))
+      .filter(s => idToLink[s.id]);
 
-  function escapeHtml(s) {
-    return String(s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    let scrollspyLockedUntil = 0;
+    function setActive(id) {
+      // Снимаем active только у тех, которые внутри tocSection —
+      // чтобы не затирать подсветку «nav-3.3.0» (текущий релиз).
+      navLinks.forEach(l => {
+        const href = l.getAttribute('href');
+        if (href && href.startsWith('#')) l.classList.remove('active');
+      });
+      if (id && idToLink[id]) idToLink[id].classList.add('active');
+    }
+    function updateActiveNav() {
+      if (Date.now() < scrollspyLockedUntil) return;
+      let current = '';
+      const threshold = Math.max(120, window.innerHeight / 3);
+      for (const section of sections) {
+        const top = section.getBoundingClientRect().top;
+        if (top <= threshold) current = section.id;
+        else break;
+      }
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 5) {
+        if (sections.length > 0) current = sections[sections.length - 1].id;
+      }
+      setActive(current);
+    }
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          setActive(href.slice(1));
+          scrollspyLockedUntil = Date.now() + 800;
+        }
+      });
+    });
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    updateActiveNav();
   }
 </script>
 </body>
