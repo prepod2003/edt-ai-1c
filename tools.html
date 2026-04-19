@@ -332,8 +332,17 @@
           <li>По умолчанию работает в режиме симуляции (<span class="ic">dryRun=true</span>) &mdash; показывает, что изменится, без реальной записи.</li>
           <li>Автоматически создаёт резервную копию модуля перед записью.</li>
           <li>Блокирует запись, если удаляется более 50% строк модуля (защита от случайной потери кода).</li>
-          <li>Проверяет синтаксис BSL после записи.</li>
+          <li>Проверяет базовую структуру BSL (парность <span class="ic">Процедура</span> / <span class="ic">КонецПроцедуры</span>, <span class="ic">Функция</span> / <span class="ic">КонецФункции</span>, <span class="ic">Если</span> / <span class="ic">КонецЕсли</span>) до записи &mdash; повреждённый код в файл не попадает.</li>
         </ul>
+
+        <p style="margin-top:14px"><strong style="color:var(--text)">Встроенная валидация EDT (автомат).</strong> После успешной записи (не dry-run) плагин <strong>сам</strong> дожидается полной валидации EDT по записанному файлу и возвращает её результат в том же ответе, в поле <span class="ic">validation</span>. AI-ассистенту не нужно отдельно звать <span class="ic">get_validation_errors</span> &mdash; в ответе записи уже лежит:</p>
+        <ul style="margin-top:6px">
+          <li>список ошибок с текстом, номером строки и файлом;</li>
+          <li>счётчики <span class="ic">errorCount</span> / <span class="ic">warningCount</span>;</li>
+          <li>подсказка: <em>«3 ошибок в записанном файле. Исправь их перед продолжением»</em> или <em>«0 ошибок &mdash; код корректен»</em>.</li>
+        </ul>
+        <p style="margin-top:10px">Агент сразу видит, получилось ли что-то полезное. Если <span class="ic">errorCount &gt; 0</span> &mdash; исправляет и записывает ещё раз, пока не будет нуля. Цикл «записал &rarr; проверил &rarr; исправил» замыкается без обращения к пользователю и без вызова ещё одного инструмента.</p>
+        <p style="margin-top:10px">Важно: в поле <span class="ic">validation</span> попадают <strong>только ошибки по записанному файлу</strong>, а не весь проект. Посторонние старые ошибки демо-конфигурации не засоряют ответ. Для серии быстрых правок валидацию можно выключить параметром <span class="ic">validateAfterWrite=false</span> и позвать её вручную в конце через <span class="ic">get_validation_errors</span>.</p>
       </div>
 
       <div class="tool-card border-amber" id="tool-launch-debugger">
