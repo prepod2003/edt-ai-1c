@@ -225,6 +225,87 @@
       color: var(--text);
     }
     .lead-callout strong { color: var(--accent-hi); }
+
+    /* Видео-блок */
+    .video-card {
+      margin: 28px 0 36px;
+      padding: 22px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .video-card-eyebrow {
+      display: inline-block;
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .video-card h4 {
+      margin: 0 0 6px;
+      padding: 0;
+      border: 0;
+      font-size: var(--fs-md);
+      font-weight: 700;
+      color: var(--text);
+    }
+    .video-card p {
+      font-size: var(--fs-sm);
+      color: var(--text-muted);
+      margin: 0 0 14px;
+      line-height: 1.55;
+    }
+    .video-embed {
+      position: relative;
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000 center/cover no-repeat;
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .video-embed:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px -12px rgba(0,0,0,0.30);
+    }
+    .video-embed::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.45) 100%);
+      z-index: 1;
+    }
+    .video-embed::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 72px; height: 50px;
+      background: rgba(0,0,0,0.75);
+      border-radius: 14px;
+      z-index: 2;
+      transition: background .2s, transform .2s;
+    }
+    .video-embed:hover::after {
+      background: #FF0000;
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+    .video-embed .play-icon {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 0; height: 0;
+      border-left: 18px solid #FFFFFF;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      margin-left: 4px;
+      z-index: 3;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -309,6 +390,19 @@
       Простое введение в плагин 1C:RSV MCP Server: что это за зверь, как он работает изнутри, чем отличается от прямой
       правки XML и как подключить к нему ИИ-ассистента. С аналогиями из мира 1С.
     </p>
+
+    <!-- Видео-версия гайда -->
+    <div class="video-card">
+      <span class="video-card-eyebrow">Если удобнее посмотреть, чем читать</span>
+      <h4>Видео-гайд: подключаем ИИ к 1С через плагин 1C:RSV</h4>
+      <p>На видео всё показано на экране в боевом режиме: установка, подключение Roo Code, настройка через OpenRouter, тестирование на дешёвой модели DeepSeek V4 Flash. 60+ минут, на русском, без ВПН.</p>
+      <a href="https://youtu.be/qyp3BtEBgxY" target="_blank" rel="noopener"
+         class="video-embed"
+         style="background-image:url('https://i.ytimg.com/vi/qyp3BtEBgxY/maxresdefault.jpg');"
+         aria-label="Открыть видео на YouTube">
+        <span class="play-icon"></span>
+      </a>
+    </div>
 
     <!-- ==========================================================
          РАЗДЕЛ 1. Зачем эта статья
@@ -1158,7 +1252,9 @@
       <li><a href="index.html#download">Скачайте</a> и установите плагин (по инструкции выше).</li>
       <li>Активируйте 14-дневный пробный период с полным доступом к Архитектору.</li>
       <li>Подключите ИИ-клиент. Если выбрали бюджетный вариант — смотрите
-        <a href="presentation-openrouter.html">конспект про OpenRouter + Roo Code</a>.</li>
+        <a href="presentation-openrouter.html">конспект про OpenRouter + Roo Code</a> или
+        <a href="https://youtu.be/qyp3BtEBgxY" target="_blank" rel="noopener">видео-гайд на YouTube</a>
+        — там весь процесс показан на экране.</li>
       <li>Прочитайте <a href="guide.html">руководство пользователя</a> — там есть готовые примеры запросов
         для каждого профиля (Аналитик / Разработчик / Архитектор).</li>
       <li>Просмотрите <a href="tools.html">описание всех инструментов</a> — это поможет вам формулировать
