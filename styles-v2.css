@@ -441,11 +441,6 @@ section.section {
   border-color: var(--accent);
   box-shadow: var(--accent-glow);
 }
-.doc-card.is-featured .doc-card-icon {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #FFFFFF;
-}
 .doc-card-badge {
   display: inline-block;
   padding: 4px 11px;
