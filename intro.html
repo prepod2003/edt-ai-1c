@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="1C:RSV MCP Server — введение для программиста 1С. Что такое плагин, как он работает, как подключить ИИ-ассистента. Простыми словами с аналогиями из мира 1С.">
+  <title>Введение для программиста 1С — 1C:RSV MCP Server</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="docs-v2.css">
+
+  <style>
+    /* ==========================================================
+       Локальные стили: SVG-схемы и аналогии "1С → EDT"
+       ========================================================== */
+
+    .figure {
+      margin: 28px 0 32px;
+      padding: 24px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .figure h4 {
+      margin: 0 0 8px;
+      padding: 0;
+      border: 0;
+      font-size: var(--fs-base);
+      font-weight: 700;
+      color: var(--text);
+    }
+    .figure .figure-sub {
+      font-size: var(--fs-sm);
+      color: var(--text-dim);
+      margin: 0 0 18px;
+      line-height: 1.55;
+    }
+    .figure .figure-svg-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .figure svg {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    @media (max-width: 640px) {
+      .figure svg.is-wide {
+        width: auto;
+        max-width: none;
+        min-width: 540px;
+      }
+      .figure-svg-wrap.is-wide {
+        mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+        -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+      }
+    }
+
+    /* Аналогия "1С ↔ EDT" — таблица из двух колонок */
+    .analogy {
+      margin: 22px 0 28px;
+      border: 1px solid var(--accent-soft2);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .analogy-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .analogy-row + .analogy-row { border-top: 1px solid var(--border); }
+    .analogy-side {
+      padding: 14px 18px;
+      font-size: var(--fs-body);
+      line-height: 1.55;
+    }
+    .analogy-side.is-1c {
+      background: var(--bg-elevated);
+      color: var(--text);
+    }
+    .analogy-side.is-edt {
+      background: var(--accent-soft);
+      color: var(--text);
+      border-left: 1px solid var(--border);
+    }
+    .analogy-row.is-header .analogy-side {
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 10px 18px;
+    }
+    .analogy-row.is-header .analogy-side.is-1c { background: var(--bg-sunken); color: var(--text-muted); }
+    .analogy-row.is-header .analogy-side.is-edt { background: var(--bg-sunken); color: var(--accent); }
+    @media (max-width: 640px) {
+      .analogy-row { grid-template-columns: 1fr; }
+      .analogy-row .analogy-side.is-edt { border-left: 0; border-top: 1px solid var(--border); }
+    }
+
+    /* Карточки "плюс/минус" */
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 22px 0 28px;
+    }
+    @media (max-width: 700px) { .pros-cons { grid-template-columns: 1fr; } }
+    .pros, .cons {
+      padding: 18px 20px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+    }
+    .pros { border-left: 3px solid var(--green); }
+    .cons { border-left: 3px solid var(--amber); }
+    .pros h5, .cons h5 {
+      margin: 0 0 10px;
+      font-size: var(--fs-base);
+      font-weight: 700;
+      color: var(--text);
+    }
+    .pros ul, .cons ul {
+      margin: 0;
+      padding-left: 20px;
+      font-size: var(--fs-base);
+      color: var(--text-muted);
+    }
+    .pros li, .cons li { margin-bottom: 6px; line-height: 1.55; }
+
+    /* "Шаги установки" */
+    .step-list {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+      margin: 22px 0 28px;
+    }
+    .step-list li {
+      counter-increment: step;
+      position: relative;
+      padding: 12px 14px 12px 56px;
+      margin-bottom: 10px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-muted);
+      font-size: var(--fs-body);
+      line-height: 1.55;
+    }
+    .step-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: 14px;
+      top: 12px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+    .step-list strong { color: var(--text); }
+
+    /* "Цепочка стека" */
+    .stack-list {
+      list-style: none;
+      padding: 0;
+      margin: 22px 0 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .stack-list li {
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      font-size: var(--fs-body);
+      color: var(--text-muted);
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+    .stack-list .stack-num {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      color: var(--accent-hi);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .stack-list strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+    /* Подсказка-маршрут "Справка → ..." */
+    .menu-path {
+      display: inline-block;
+      padding: 4px 10px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.86em;
+      color: var(--text);
+      white-space: normal;
+    }
+
+    /* Простой "блок-маркер" для быстрых выводов */
+    .lead-callout {
+      padding: 18px 22px;
+      background: linear-gradient(135deg, var(--accent-soft) 0%, var(--bg-surface) 100%);
+      border: 1px solid var(--accent-soft2);
+      border-radius: var(--radius);
+      margin: 16px 0 24px;
+      font-size: var(--fs-md);
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .lead-callout strong { color: var(--accent-hi); }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <button class="hamburger" id="hamburger" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="index.html" class="logo">
+        <span class="logo-badge">RSV</span>
+        <span class="header-title">1C:RSV MCP Server</span>
+        <span class="header-subtitle">Введение для программиста 1С</span>
+      </a>
+    </div>
+    <div class="header-links">
+      <a href="index.html" class="hide-mobile">Главная</a>
+      <a href="guide.html" class="hide-mobile">Руководство</a>
+      <a href="tools.html" class="hide-mobile">Инструменты</a>
+      <a href="https://t.me/edt_ai_1c" target="_blank">Telegram</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="nav-section">
+    <span class="nav-section-title">О чём это</span>
+    <a href="#why" class="nav-link">Зачем эта статья</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Как устроен плагин</span>
+    <a href="#what-is" class="nav-link">Что такое 1C:RSV</a>
+    <a href="#analogy" class="nav-link sub">Аналогия с расширением 1С</a>
+    <a href="#native-api" class="nav-link sub">Штатные API EDT</a>
+    <a href="#vs-xml" class="nav-link sub">Почему не правка XML</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Что плагин умеет</span>
+    <a href="#features" class="nav-link">Программное расширение</a>
+    <a href="#feat-meta" class="nav-link sub">Создание объектов</a>
+    <a href="#feat-search" class="nav-link sub">Поиск через индексы</a>
+    <a href="#feat-debug" class="nav-link sub">Отладка</a>
+    <a href="#feat-validate" class="nav-link sub">Валидация</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Две роли плагина</span>
+    <a href="#two-roles" class="nav-link">Расширение и MCP</a>
+    <a href="#what-is-mcp" class="nav-link sub">Что такое MCP-сервер</a>
+    <a href="#how-mcp-works" class="nav-link sub">Как устроен обмен</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Установка</span>
+    <a href="#install" class="nav-link">Удаление и установка</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">MCP подробнее</span>
+    <a href="#tools" class="nav-link">Инструменты MCP</a>
+    <a href="#tools-simple" class="nav-link sub">Простой инструмент</a>
+    <a href="#tools-complex" class="nav-link sub">Сложный (edit_metadata)</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Подключение ИИ</span>
+    <a href="#models" class="nav-link">Какие модели бывают</a>
+    <a href="#payment" class="nav-link sub">Варианты оплаты</a>
+    <a href="#ide" class="nav-link sub">IDE и расширения</a>
+    <a href="#providers" class="nav-link sub">Провайдеры моделей</a>
+    <a href="#stack" class="nav-link">Финальный стек</a>
+  </div>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main">
+  <div class="content">
+
+    <!-- Title -->
+    <h1>Что такое 1C:RSV — для программиста 1С</h1>
+    <p class="subtitle">
+      Простое введение в плагин 1C:RSV MCP Server: что это за зверь, как он работает изнутри, чем отличается от прямой
+      правки XML и как подключить к нему ИИ-ассистента. С аналогиями из мира 1С.
+    </p>
+
+    <!-- ==========================================================
+         РАЗДЕЛ 1. Зачем эта статья
+         ========================================================== -->
+    <h2 id="why">Зачем эта статья</h2>
+    <p>Если вы программист 1С и слышали про «AI-разработку через MCP» — но толком не понимаете, как это устроено,
+       какие там нужны куски и что за чем подключается, — этот текст для вас.</p>
+    <p>Я объясню всё <strong>простыми словами и с аналогиями из 1С</strong>, потому что термины из мира Java и
+       Eclipse поначалу кажутся неподъёмными. Когда вы дочитаете до конца, у вас в голове сложится полная
+       картина: что такое плагин 1C:RSV, что такое MCP-сервер, какая модель, какой клиент, какой провайдер,
+       и как это всё в итоге собирается в рабочий инструмент.</p>
+
+    <div class="lead-callout">
+      Главная мысль одной строкой:
+      <br><strong>1C:RSV — это плагин для 1С:EDT, который позволяет ИИ-агенту работать с конфигурацией так же,
+      как это делает разработчик руками: создавать справочники, документы, формы, отчёты, писать BSL,
+      отлаживать. Не редактируя XML напрямую, а вызывая те же штатные сервисы EDT.</strong>
+    </div>
+
+    <!-- ==========================================================
+         РАЗДЕЛ 2. Что такое 1C:RSV
+         ========================================================== -->
+    <h2 id="what-is">Что такое 1C:RSV</h2>
+
+    <p><strong>1C:RSV MCP Server</strong> — это <strong>плагин для 1С:EDT</strong>, написанный на Java. Слово
+      «плагин» в мире Eclipse / 1С:EDT означает то же, что «расширение» в мире 1С: некий внешний модуль, который
+      подключается к основной программе и расширяет её возможности.</p>
+
+    <h3 id="analogy">Аналогия из 1С: плагин EDT — это как расширение конфигурации</h3>
+
+    <p>Чтобы было сразу понятно, проведём аналогию между двумя мирами:</p>
+
+    <div class="analogy">
+      <div class="analogy-row is-header">
+        <div class="analogy-side is-1c">В 1С (привычный мир)</div>
+        <div class="analogy-side is-edt">В 1С:EDT (мир Eclipse)</div>
+      </div>
+      <div class="analogy-row">
+        <div class="analogy-side is-1c">Основная конфигурация</div>
+        <div class="analogy-side is-edt">1С:EDT — сама среда разработки</div>
+      </div>
+      <div class="analogy-row">
+        <div class="analogy-side is-1c">Расширение конфигурации (.cfe)</div>
+        <div class="analogy-side is-edt">Плагин EDT (.jar)</div>
+      </div>
+      <div class="analogy-row">
+        <div class="analogy-side is-1c">Подсистемы, общие модули, экспортные функции БСП</div>
+        <div class="analogy-side is-edt">Сервисы EDT, штатные API (внутренние процедуры/функции на Java)</div>
+      </div>
+      <div class="analogy-row">
+        <div class="analogy-side is-1c">Расширение программно создаёт документы, заполняет регистры,
+          вызывает <code>ОбщегоНазначения.СообщитьПользователю()</code></div>
+        <div class="analogy-side is-edt">Плагин 1C:RSV программно создаёт справочники, открывает формы,
+          вызывает встроенные сервисы EDT</div>
+      </div>
+    </div>
+
+    <p>То есть представьте: у вас есть типовая ERP, и вы пишете для неё расширение. В этом расширении вы
+      программно создаёте документы, формируете движения, вызываете экспортные функции из БСП — потому что
+      у БСП внутри уже всё реализовано, и нет смысла писать своё.</p>
+    <p>1C:RSV устроен по той же логике, только применительно к 1С:EDT. Он подключается к EDT как плагин и
+      программно использует то, что уже реализовано <strong>внутри самой EDT</strong>: создание объектов
+      метаданных через те же конструкторы, что открываются по двойному клику; запись BSL-кода через тот же
+      парсер, что подсвечивает синтаксис; поиск по проекту через те же индексы, что работают на F3.</p>
+
+    <h3 id="native-api">Что такое «штатные API EDT» простыми словами</h3>
+
+    <p>В 1С вы привыкли к терминам «процедура», «функция», «модуль», «экспортная процедура из общего модуля».
+      В мире Java те же сущности называются по-другому, но смысл идентичный:</p>
+
+    <div class="analogy">
+      <div class="analogy-row is-header">
+        <div class="analogy-side is-1c">Слово в 1С</div>
+        <div class="analogy-side is-edt">Слово в Java / EDT</div>
+      </div>
+      <div class="analogy-row">
+        <div class="analogy-side is-1c">Процедура / Функция</div>
+        <div class="analogy-side is-edt">Метод (method)</div>
+      </div>
+      <div class="analogy-row">
+        <div class="analogy-side is-1c">Экспортная процедура общего модуля</div>
+        <div class="analogy-side is-edt">Публичный метод сервиса (service API)</div>
+      </div>
+      <div class="analogy-row">
+        <div class="analogy-side is-1c">БСП — библиотека повторно используемого функционала</div>
+        <div class="analogy-side is-edt">Внутренние сервисы EDT — набор готовых API для работы с метаданными,
+          формами, валидатором, отладчиком</div>
+      </div>
+      <div class="analogy-row">
+        <div class="analogy-side is-1c">«Используем функцию из БСП»</div>
+        <div class="analogy-side is-edt">«Вызываем сервис EDT» / «вызываем API EDT»</div>
+      </div>
+    </div>
+
+    <p>Когда вы в EDT нажимаете в дереве конфигурации правой кнопкой → «Создать справочник», EDT внутри себя
+      вызывает определённый набор методов: создаёт объект в EMF-модели, добавляет его в Configuration,
+      генерирует .mdo-файл с правильной структурой, обновляет ссылки в индексах, перерисовывает дерево.
+      Этот набор методов и есть <strong>штатный API EDT</strong>.</p>
+
+    <p>Плагин 1C:RSV вызывает <strong>те же самые методы</strong> — только не в ответ на ваш клик мышью, а в
+      ответ на запрос ИИ-агента. Поэтому результат гарантированно идентичен ручному действию: тот же файл,
+      те же связи, та же индексация. Никаких «своих» парсеров, никакого ручного формирования XML.</p>
+
+    <div class="lead-callout">
+      <strong>Это даёт высокую надёжность.</strong> Эти штатные сервисы написаны и оттестированы командой EDT.
+      Конечно, плагин в активной разработке, и иногда встречаются мелкие шероховатости — но они оперативно
+      исправляются, и в целом надёжность сопоставима с надёжностью самой EDT.
+    </div>
+
+    <h3 id="vs-xml">Почему не получится просто редактировать XML</h3>
+
+    <p>Метаданные 1С:EDT хранятся в XML-файлах: <code>.mdo</code> для объектов метаданных, <code>.form</code>
+      для форм, <code>.dcs</code> для схем компоновки, и так далее. Возникает законный вопрос: а может,
+      попросить ИИ просто редактировать эти XML напрямую? Получится же?</p>
+
+    <p>Простой <em>справочник с двумя реквизитами</em> — может быть, и получится. Но как только нужно сделать
+      что-то реальное:</p>
+
+    <ul>
+      <li>форма с десятками элементов и нестандартным размещением;</li>
+      <li>СКД-схема с группировками, отборами, условным оформлением;</li>
+      <li>табличный макет с объединениями ячеек и именованными областями;</li>
+      <li>регистр с измерениями, ресурсами и реквизитами правильных типов;</li>
+      <li>расширение с заимствованными объектами и реквизитами на них;</li>
+      <li>картинка на кнопке формы с правильной привязкой к <code>ОбщаяКартинка.*</code>;</li>
+      <li>подписка на событие, привязанная к нужному типу объектов;</li>
+    </ul>
+
+    <p>...всё это XML становится огромным, со ссылками между файлами, EMF-связями (внутренние идентификаторы
+      объектов), специфическими порядками тегов. Любая мелкая ошибка ломает проект целиком: пропадают
+      ссылки, EDT начинает показывать красные крестики, объект становится «битым».</p>
+
+    <p>Что в этой ситуации делает ИИ:</p>
+
+    <div class="pros-cons">
+      <div class="cons">
+        <h5>ИИ редактирует XML напрямую</h5>
+        <ul>
+          <li>На простых задачах — может справиться</li>
+          <li>На сложных — ломает связи, проект разваливается</li>
+          <li>Сжигает огромное количество токенов на одну попытку</li>
+          <li>Часто нужно много итераций и всё равно не получается</li>
+        </ul>
+      </div>
+      <div class="pros">
+        <h5>ИИ работает через 1C:RSV</h5>
+        <ul>
+          <li>Использует те же конструкторы, что и сама EDT</li>
+          <li>Безопасные дефолты — если параметр не указан, подставится разумное</li>
+          <li>Ранний отказ вместо битого результата</li>
+          <li>Слабая модель справится — топовая тем более</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>Именно поэтому в плагине 1C:RSV выбран путь «нативные сервисы», а не «прямая правка XML». Это не
+      идеология, это инженерное требование: иначе полноценная разработка через ИИ просто не работает.</p>
+
+    <!-- ==========================================================
+         РАЗДЕЛ 3. Что плагин умеет
+         ========================================================== -->
+    <h2 id="features">Что плагин умеет: программное расширение функционала EDT</h2>
+
+    <p>До этого момента мы говорили в общем: «плагин использует штатные API EDT». Теперь — конкретно, что
+      именно он делает. Это первая из <strong>двух ролей</strong> плагина (вторая — MCP-сервер, про неё ниже).</p>
+
+    <h3 id="feat-meta">Создание и изменение объектов конфигурации</h3>
+
+    <p>Плагин умеет программно создавать и изменять:</p>
+    <ul>
+      <li><strong>Справочники, документы, обработки, перечисления, константы, роли, подсистемы.</strong></li>
+      <li><strong>Регистры всех четырёх видов</strong> — накопления, сведений, бухгалтерии, расчёта (с измерениями,
+        ресурсами и реквизитами).</li>
+      <li><strong>Отчёты с СКД</strong> — на отчётах и на любых других объектах со схемами компоновки.</li>
+      <li>Реквизиты любых типов — простые, ссылочные, составные. Табличные части.</li>
+      <li><strong>Формы</strong> любого вида: формы элемента, списка, выбора, группы, записи регистра, общие.
+        Со всеми элементами интерфейса — поля, группы, кнопки, таблицы, декорации, динамические списки,
+        обработчики команд, цвета, шрифты, картинки.</li>
+      <li><strong>Макеты табличных документов</strong> — ячейки с оформлением, объединения, именованные
+        области, в том числе матричные отчёты.</li>
+      <li><strong>Макеты схем компоновки данных (СКД)</strong> — наборы данных, поля, группировки, отборы,
+        условное оформление, ресурсы, варианты, композитор настроек на форме.</li>
+      <li><strong>Расширения</strong> — полная поддержка: заимствование объектов поштучно, пакетно или
+        рекурсивно, реквизиты и формы в расширении, автозаимствование связанных ссылочных типов.</li>
+      <li><strong>Подписки на события</strong> — создание одним вызовом с заглушкой-обработчиком в общем модуле.</li>
+    </ul>
+
+    <p>Каждый из этих видов работ опирается на штатный конструктор EDT — тот самый, который открывается,
+      когда вы кликаете на дереве правой кнопкой и выбираете «Создать».</p>
+
+    <h3 id="feat-search">Поиск и навигация — через нативные индексы и графы</h3>
+
+    <p>Очень важная вещь, на которую мало кто обращает внимание. Когда ИИ-агент работает с проектом, ему
+      постоянно нужно <em>что-то найти</em>: где определена функция, кто её вызывает, где упоминается
+      объект, какие у объекта связи. Без специальных средств агент будет тупо читать файлы один за другим,
+      сжигая огромное количество токенов и время.</p>
+
+    <p>1С:EDT внутри себя строит <strong>индексы и графы</strong> по всему проекту — это то, благодаря чему
+      работают:</p>
+    <ul>
+      <li>F3 (Перейти к объявлению);</li>
+      <li>«Найти ссылки» (Find References);</li>
+      <li>«Иерархия вызовов» (Call Hierarchy);</li>
+      <li>автодополнение, подсветка ошибок, refactoring.</li>
+    </ul>
+
+    <p>Плагин 1C:RSV даёт ИИ-агенту инструменты, которые обращаются к этим же самым индексам:</p>
+
+    <div class="figure">
+      <h4>Поиск через нативные средства EDT</h4>
+      <p class="figure-sub">Агент не читает файлы — он спрашивает у EDT, и EDT отвечает мгновенно из своих индексов</p>
+      <ul>
+        <li><code>search_in_code</code> — полнотекстовый поиск по BSL с поддержкой регулярных выражений
+          (как Ctrl+H в EDT, но с фильтрами).</li>
+        <li><code>find_object_references</code> — все ссылки на объект метаданных. Поддерживает «глубокий»
+          режим: показывает ссылки и на производные типы (например, на массивы и таблицы значений с этим типом).</li>
+        <li><code>get_method_call_hierarchy</code> — кто вызывает метод (incoming) или кого вызывает он
+          (outgoing). Используется для оценки влияния перед изменением.</li>
+        <li><code>get_module_structure</code> — карта всех методов модуля, с фильтрами и пагинацией. Чтобы
+          ИИ не загружал весь модуль ради одного метода.</li>
+        <li><code>read_method_source</code> — читает <em>конкретный метод</em>, не весь модуль. Огромная
+          экономия токенов на больших модулях.</li>
+      </ul>
+    </div>
+
+    <p>Это даёт ИИ-агенту огромное преимущество: он работает с проектом, как опытный программист с IDE —
+      «прыгает» по ссылкам, смотрит иерархию вызовов, точечно читает нужное. А не пытается удержать в
+      контексте всю конфигурацию целиком.</p>
+
+    <h3 id="feat-debug">Полноценная отладка через Eclipse Debug API</h3>
+
+    <p>Ещё одна важная вещь — отладка. У EDT внутри есть полноценный отладчик 1С (Eclipse Debug API),
+      который умеет всё то, что есть в Конфигураторе и даже больше: точки останова, шаги (step over,
+      step into), стек вызовов, чтение переменных, и — что особенно ценно — <strong>выполнение
+      произвольных BSL-выражений</strong> в текущем контексте отладки.</p>
+
+    <p>Плагин 1C:RSV пробрасывает этот отладчик ИИ-агенту:</p>
+    <ul>
+      <li>Скажите агенту: «поставь точку останова в обработчике <code>ПриЗаписи</code> у документа
+        <code>ЗаказПокупателя</code>, я сейчас его проведу».</li>
+      <li>Проведите документ в 1С:Предприятии.</li>
+      <li>Агент видит, что попали в точку останова, читает значения переменных, выполняет
+        <code>evaluate</code> любых выражений, шагает по коду.</li>
+      <li>Может тут же предложить вам, что не так и где.</li>
+    </ul>
+
+    <p>Всё это через инструмент <code>launch_debugger</code> с полным набором действий — около 16 операций.</p>
+
+    <h3 id="feat-validate">Валидация — встроена в запись кода</h3>
+
+    <p>Когда ИИ-агент пишет BSL-код через инструмент <code>write_module_source</code>, плагин <strong>сам
+      дожидается валидации EDT</strong> и возвращает результат прямо в ответе. Если есть синтаксические
+      ошибки или нарушения правил — агент видит их и исправляет в следующей итерации, пока количество ошибок
+      не станет равным нулю.</p>
+
+    <p>Это очень удобно: не нужно отдельно «прогонять валидатор» — он вызывается автоматически после каждой
+      записи. Можно сказать агенту «напиши процедуру X и убедись, что без ошибок», и он сам всё доведёт до конца.</p>
+
+    <!-- ==========================================================
+         РАЗДЕЛ 4. Две роли плагина
+         ========================================================== -->
+    <h2 id="two-roles">Две роли плагина: расширение функционала + MCP-сервер</h2>
+
+    <p>Всё, что мы обсуждали выше — это плагин <strong>как расширение функционала EDT</strong>. Программная
+      часть, которая умеет создавать объекты, искать, отлаживать, валидировать.</p>
+
+    <p>Но это только половина дела. Чтобы весь этот функционал стал доступен <strong>внешнему
+      ИИ-агенту</strong> (Claude Code, Cursor, Roo Code, Gemini CLI, любому другому), плагин должен уметь
+      ещё и <strong>принимать запросы извне</strong> и отдавать ответы. Это и есть его вторая роль —
+      <strong>MCP-сервер</strong>.</p>
+
+    <h3 id="what-is-mcp">Что такое MCP-сервер — простыми словами</h3>
+
+    <p><strong>MCP</strong> = Model Context Protocol. Это открытый стандарт, придуманный Anthropic, чтобы
+      ИИ-модели могли общаться с внешними инструментами по единому протоколу.</p>
+
+    <p>Самая простая аналогия — <strong>почтальон</strong>, или ещё точнее — <strong>переводчик-посыльный</strong>.</p>
+
+    <p>Представьте: есть две стороны.</p>
+    <ul>
+      <li><strong>Слева</strong> — ИИ-агент. Он живёт в вашей IDE (или в браузере, или в терминале) и говорит
+        на «языке моделей»: получает текст пользователя, формирует JSON-запросы, обрабатывает JSON-ответы.</li>
+      <li><strong>Справа</strong> — функциональная часть плагина 1C:RSV. Она живёт внутри EDT и говорит
+        на «языке Java/EDT»: знает, как вызвать конструктор справочника, как поставить точку останова, как
+        прочитать модуль.</li>
+    </ul>
+
+    <p>Между ними — пропасть. Им нужен посредник, который умеет принимать сообщения от одной стороны и
+      переводить их так, чтобы другая поняла. Этот посредник и есть <strong>MCP-сервер</strong>.</p>
+
+    <h3 id="how-mcp-works">Как устроен обмен — пошагово</h3>
+
+    <div class="figure">
+      <h4>Маршрут одного запроса от пользователя до результата в дереве конфигурации</h4>
+      <p class="figure-sub">Каждый шаг занимает миллисекунды; пользователь видит результат как одно непрерывное действие</p>
+      <div class="figure-svg-wrap is-wide">
+        <svg class="is-wide" viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Схема обмена ИИ — MCP — Плагин — EDT">
+          <defs>
+            <marker id="arr-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#7C3AED"/>
+            </marker>
+            <marker id="arr-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#10B981"/>
+            </marker>
+          </defs>
+
+          <!-- 1. Пользователь -->
+          <rect x="20" y="40" width="170" height="70" rx="10" fill="#FFFFFF" stroke="#E8E3DA"/>
+          <text x="105" y="68" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#1A1A1A">Программист 1С</text>
+          <text x="105" y="88" text-anchor="middle" font-family="Inter" font-size="11" fill="#57534E">«создай справочник</text>
+          <text x="105" y="102" text-anchor="middle" font-family="Inter" font-size="11" fill="#57534E">Контрагенты»</text>
+
+          <!-- стрелка вниз -->
+          <line x1="105" y1="118" x2="105" y2="148" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-purple)"/>
+
+          <!-- 2. ИИ-агент -->
+          <rect x="20" y="155" width="170" height="70" rx="10" fill="#F5F3FF" stroke="#DDD6FE"/>
+          <text x="105" y="183" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#6D28D9">ИИ-агент</text>
+          <text x="105" y="201" text-anchor="middle" font-family="Inter" font-size="11" fill="#5B21B6">формирует JSON-вызов</text>
+          <text x="105" y="217" text-anchor="middle" font-family="Inter" font-size="11" fill="#5B21B6">edit_metadata</text>
+
+          <!-- горизонтальная стрелка вправо -->
+          <line x1="195" y1="190" x2="245" y2="190" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-purple)"/>
+
+          <!-- 3. MCP-сервер -->
+          <rect x="250" y="155" width="170" height="70" rx="10" fill="#7C3AED"/>
+          <text x="335" y="183" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#FFFFFF">MCP-сервер</text>
+          <text x="335" y="201" text-anchor="middle" font-family="Inter" font-size="11" fill="#EDE9FE">принимает JSON</text>
+          <text x="335" y="217" text-anchor="middle" font-family="Inter" font-size="11" fill="#EDE9FE">по HTTP :8770</text>
+
+          <!-- стрелка вправо -->
+          <line x1="425" y1="190" x2="475" y2="190" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-purple)"/>
+
+          <!-- 4. Функциональная часть -->
+          <rect x="480" y="155" width="180" height="70" rx="10" fill="#F5F3FF" stroke="#DDD6FE"/>
+          <text x="570" y="183" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#6D28D9">Функциональная</text>
+          <text x="570" y="200" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#6D28D9">часть плагина</text>
+          <text x="570" y="217" text-anchor="middle" font-family="Inter" font-size="11" fill="#5B21B6">алгоритм createCatalog</text>
+
+          <!-- стрелка вправо -->
+          <line x1="665" y1="190" x2="715" y2="190" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-purple)"/>
+
+          <!-- 5. EDT -->
+          <rect x="720" y="155" width="140" height="70" rx="10" fill="#FFFFFF" stroke="#E8E3DA"/>
+          <text x="790" y="183" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#1A1A1A">1С:EDT</text>
+          <text x="790" y="201" text-anchor="middle" font-family="Inter" font-size="11" fill="#57534E">штатный конструктор</text>
+          <text x="790" y="217" text-anchor="middle" font-family="Inter" font-size="11" fill="#57534E">справочника</text>
+
+          <!-- обратная стрелка вниз с EDT -->
+          <line x1="790" y1="230" x2="790" y2="280" stroke="#10B981" stroke-width="2" marker-end="url(#arr-green)"/>
+
+          <rect x="640" y="285" width="220" height="50" rx="10" fill="#10B981"/>
+          <text x="750" y="307" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#FFFFFF">Справочник создан ✓</text>
+          <text x="750" y="324" text-anchor="middle" font-family="Inter" font-size="11" fill="#D1FAE5">появился в дереве конфигурации</text>
+
+          <!-- обратные стрелки JSON-ответ -->
+          <line x1="640" y1="310" x2="425" y2="310" stroke="#10B981" stroke-width="2" stroke-dasharray="4 3"/>
+          <line x1="425" y1="310" x2="195" y2="310" stroke="#10B981" stroke-width="2" stroke-dasharray="4 3"/>
+          <text x="540" y="305" text-anchor="middle" font-family="Inter" font-size="10" fill="#10B981" font-style="italic">JSON-ответ</text>
+        </svg>
+      </div>
+    </div>
+
+    <p>Что произошло:</p>
+    <ol>
+      <li>Пользователь сказал ИИ-агенту человеческими словами: «<em>создай справочник Контрагенты с реквизитами
+        ИНН и КПП</em>».</li>
+      <li>Агент <strong>знает</strong>, что у него подключён MCP-сервер 1C:RSV с инструментом
+        <code>edit_metadata</code>. Он формирует JSON-запрос: вызвать инструмент с операцией <code>createCatalog</code>,
+        параметры — имя <code>Контрагенты</code>, реквизиты <code>ИНН</code> и <code>КПП</code>.</li>
+      <li>JSON по HTTP уходит на <code>127.0.0.1:8770</code> — это и есть MCP-сервер плагина внутри EDT.</li>
+      <li>MCP-сервер передаёт запрос в функциональную часть плагина — Java-код, который реализует операцию
+        <code>createCatalog</code>.</li>
+      <li>Этот Java-код вызывает <strong>штатный конструктор справочника EDT</strong> — тот самый, что
+        работает при ручном создании. Объект появляется в дереве конфигурации.</li>
+      <li>EDT возвращает результат «успешно». Плагин упаковывает его в JSON и отправляет агенту.</li>
+      <li>Агент видит ответ и сообщает пользователю: «справочник создан».</li>
+    </ol>
+
+    <p>Все эти шаги занимают миллисекунды. Для пользователя это выглядит как одно непрерывное действие:
+      попросил — получил.</p>
+
+    <!-- ==========================================================
+         РАЗДЕЛ 5. Установка
+         ========================================================== -->
+    <h2 id="install">Установка плагина в 1С:EDT</h2>
+
+    <p>Прежде чем подключать ИИ — нужно поставить плагин. Делается это через стандартный механизм Eclipse,
+      и в русскоязычной EDT все пункты меню называются по-русски.</p>
+
+    <h3 id="install-uninstall">Если у вас уже стоит старая версия — сначала удалите её</h3>
+
+    <p>Это <em>не обязательно</em>, но <strong>надёжнее</strong>: Eclipse P2 кэширует архивы установки, и
+      при обновлении бывают конфликты. Чистая переустановка их исключает.</p>
+
+    <ol class="step-list">
+      <li>Меню <span class="menu-path">Справка → О программе</span>.</li>
+      <li>В открывшемся окне «О программе» нажмите <span class="menu-path">Детали установки</span>.</li>
+      <li>В списке установленных компонентов найдите <strong>1C:RSV</strong> (или похожее имя), выделите.</li>
+      <li>Нажмите <span class="menu-path">Удалить</span> внизу.</li>
+      <li>Подтвердите и <strong>перезапустите EDT</strong>.</li>
+    </ol>
+
+    <h3 id="install-new">Установка новой версии</h3>
+
+    <ol class="step-list">
+      <li>Скачайте дистрибутив <code>1C-RSV-MCP-X.Y.Z-distr.zip</code> с
+        <a href="index.html#download" target="_blank">сайта плагина</a>.</li>
+      <li>Меню <span class="menu-path">Справка → Установить новое ПО…</span></li>
+      <li>В открывшемся окне нажмите <span class="menu-path">Добавить…</span> справа.</li>
+      <li>В диалоге «Добавить репозиторий» нажмите <span class="menu-path">Архив…</span>, выберите скачанный ZIP,
+        дайте имя (например, «1C:RSV») и нажмите <span class="menu-path">Добавить</span>.</li>
+      <li>В списке доступных компонентов поставьте галочку напротив <strong>1C:RSV MCP Server</strong>
+        и нажмите <span class="menu-path">Далее</span>.</li>
+      <li>Примите лицензионное соглашение, нажмите <span class="menu-path">Готово</span>.</li>
+      <li>Если появится предупреждение о цифровой подписи — нажмите <span class="menu-path">Trust all (Доверять)</span>.</li>
+      <li>EDT попросит <strong>перезапуститься</strong> — соглашайтесь.</li>
+    </ol>
+
+    <p>После перезапуска плагин активен. Откройте <span class="menu-path">Окно → Настройки → 1C:RSV</span> —
+      там увидите порт сервера (по умолчанию 8770) и состояние лицензии. При первом запуске вам
+      <strong>14 дней бесплатно</strong> доступен профиль «Архитектор» — с полным набором инструментов,
+      без карты и без регистрации.</p>
+
+    <!-- ==========================================================
+         РАЗДЕЛ 6. MCP подробнее
+         ========================================================== -->
+    <h2 id="tools">MCP-серверы подробнее: что такое инструменты</h2>
+
+    <p>Шагнём чуть глубже — что MCP-сервер на самом деле предлагает агенту.</p>
+
+    <p>Любой MCP-сервер имеет <strong>набор инструментов</strong>. Один инструмент — это, как правило,
+      одна функция или одно функциональное направление. У инструмента есть:</p>
+    <ul>
+      <li><strong>Имя</strong> (например, <code>show_edt_version</code>);</li>
+      <li><strong>Описание</strong> — что он делает, человеческими словами;</li>
+      <li><strong>Схема параметров</strong> — какие у него входы, какого типа, какие обязательные.</li>
+    </ul>
+
+    <p>Когда ИИ-агент впервые подключается к MCP-серверу, он <strong>спрашивает</strong> у сервера: «дай мне
+      список твоих инструментов с описаниями». Сервер отдаёт. Теперь агент знает, что у него «в руках» —
+      и при следующих запросах пользователя умеет правильно интерпретировать их в вызовы нужных инструментов.</p>
+
+    <p>То есть пользователь говорит «найди все ссылки на справочник Контрагенты» — агент видит, что у MCP-сервера
+      1C:RSV есть инструмент <code>find_object_references</code>, читает его описание, понимает, что нужно
+      передать имя объекта, формирует вызов. Никаких хитростей.</p>
+
+    <h3 id="tools-simple">Пример простого инструмента</h3>
+
+    <p>Самые простые инструменты в 1C:RSV — это, например:</p>
+
+    <ul>
+      <li><code>show_edt_version</code> — возвращает версию 1С:EDT, которая сейчас запущена. Параметров нет,
+        возвращается строка вроде <code>2025.2</code>.</li>
+      <li><code>list_workspace_projects</code> — возвращает список проектов в текущем workspace EDT. Тоже без
+        параметров, на выходе — массив имён проектов.</li>
+    </ul>
+
+    <p>Это «один инструмент = одна простая функция». Полный список и описания всех инструментов смотрите на
+      странице <a href="tools.html" target="_blank"><strong>Описание инструментов</strong></a> — она специально
+      написана для того, чтобы ИИ-агент (и вы) знали, что доступно и как этим пользоваться.</p>
+
+    <div class="lead-callout">
+      <strong>Совет:</strong> просматривайте <a href="tools.html">tools.html</a> сами — это поможет вам
+      эффективнее формулировать запросы агенту. Когда вы понимаете, что у плагина есть, например,
+      <code>get_method_call_hierarchy</code>, вы спокойно говорите агенту «покажи иерархию вызовов
+      <em>такого-то метода</em>» — и точно знаете, что результат будет.
+    </div>
+
+    <h3 id="tools-complex">Сложный инструмент на примере edit_metadata</h3>
+
+    <p>Бывает по-другому: один инструмент содержит <strong>десятки операций</strong>. Так сделан главный
+      «конструктор конфигурации» — <code>edit_metadata</code>.</p>
+
+    <p>Он один — но внутри него <strong>около 59 операций</strong>: создать справочник, добавить реквизит,
+      создать форму, добавить поле на форму, создать макет, добавить именованную область в макет,
+      настроить СКД, заимствовать объект в расширение, и так далее.</p>
+
+    <p>Зачем так? Потому что если каждую операцию сделать <em>отдельным инструментом</em>, у MCP-сервера их
+      станет несколько сотен — и ИИ-агент <strong>захлебнётся в их описаниях</strong>. Контекст переполнится
+      ещё до начала работы. Поэтому несколько десятков операций упакованы в один «зонтичный» инструмент с
+      встроенной системой подсказок.</p>
+
+    <p>У <code>edit_metadata</code> есть встроенная справка:</p>
+
+    <ul>
+      <li><code>edit_metadata operation=help</code> — список всех операций с кратким описанием каждой.</li>
+      <li><code>edit_metadata operation=help topic=createCatalog</code> — подробная справка по конкретной
+        операции с примерами вызова.</li>
+      <li><code>edit_metadata operation=help topic=workflow</code> — типичный сценарий «от создания объекта
+        до обработчиков».</li>
+      <li><code>edit_metadata operation=help topic=types</code> — каталог типов данных для реквизитов.</li>
+      <li>...и ещё несколько подсказок по сценариям (формы, СКД, матричные отчёты, табличные макеты).</li>
+    </ul>
+
+    <p>По сути <code>edit_metadata</code> — это <strong>несколько десятков «скиллов», зашитых в код плагина</strong>.
+      Агент не загружает все их описания сразу — он подгружает справку только по той операции, которая ему
+      нужна сейчас. Контекст не разрастается, а функционал — огромный.</p>
+
+    <div class="figure">
+      <h4>Как агент работает с edit_metadata</h4>
+      <p class="figure-sub">Сначала спрашивает help, потом вызывает нужную операцию</p>
+      <div class="figure-svg-wrap is-wide">
+        <svg class="is-wide" viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Схема работы edit_metadata через help">
+          <defs>
+            <marker id="arr-p2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#7C3AED"/>
+            </marker>
+          </defs>
+
+          <!-- ИИ-агент -->
+          <rect x="20" y="100" width="160" height="70" rx="10" fill="#F5F3FF" stroke="#DDD6FE"/>
+          <text x="100" y="130" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#6D28D9">ИИ-агент</text>
+          <text x="100" y="148" text-anchor="middle" font-family="Inter" font-size="11" fill="#5B21B6">пользователь попросил</text>
+          <text x="100" y="162" text-anchor="middle" font-family="Inter" font-size="11" fill="#5B21B6">создать справочник</text>
+
+          <!-- Шаг 1: help -->
+          <line x1="185" y1="135" x2="240" y2="80" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-p2)"/>
+          <text x="195" y="103" font-family="Inter" font-size="10" fill="#6D28D9" font-style="italic">1. help</text>
+
+          <rect x="245" y="40" width="240" height="70" rx="10" fill="#FFFFFF" stroke="#E8E3DA"/>
+          <text x="365" y="64" text-anchor="middle" font-family="Inter" font-size="12" font-weight="700" fill="#1A1A1A">edit_metadata operation=help</text>
+          <text x="365" y="82" text-anchor="middle" font-family="Inter" font-size="11" fill="#57534E">topic=createCatalog</text>
+          <text x="365" y="98" text-anchor="middle" font-family="Inter" font-size="11" fill="#7C3AED">→ возвращает справку с примерами</text>
+
+          <!-- Шаг 2: вызов операции -->
+          <line x1="185" y1="155" x2="240" y2="210" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-p2)"/>
+          <text x="195" y="195" font-family="Inter" font-size="10" fill="#6D28D9" font-style="italic">2. createCatalog</text>
+
+          <rect x="245" y="170" width="240" height="70" rx="10" fill="#7C3AED"/>
+          <text x="365" y="194" text-anchor="middle" font-family="Inter" font-size="12" font-weight="700" fill="#FFFFFF">edit_metadata operation=createCatalog</text>
+          <text x="365" y="212" text-anchor="middle" font-family="Inter" font-size="11" fill="#EDE9FE">name=Контрагенты, attrs=[ИНН, КПП]</text>
+          <text x="365" y="228" text-anchor="middle" font-family="Inter" font-size="11" fill="#EDE9FE">→ справочник создан</text>
+
+          <!-- одно "хранилище" сбоку: вся справка -->
+          <rect x="540" y="80" width="240" height="120" rx="10" fill="#F5F1EA" stroke="#E8E3DA" stroke-dasharray="4 4"/>
+          <text x="660" y="108" text-anchor="middle" font-family="Inter" font-size="12" font-weight="700" fill="#1A1A1A">~59 операций edit_metadata</text>
+          <text x="660" y="128" text-anchor="middle" font-family="Inter" font-size="10" fill="#57534E">createCatalog · createDocument</text>
+          <text x="660" y="142" text-anchor="middle" font-family="Inter" font-size="10" fill="#57534E">addAttribute · createForm</text>
+          <text x="660" y="156" text-anchor="middle" font-family="Inter" font-size="10" fill="#57534E">addFormField · createTemplate</text>
+          <text x="660" y="170" text-anchor="middle" font-family="Inter" font-size="10" fill="#57534E">setupDcs · adoptObject ...</text>
+          <text x="660" y="190" text-anchor="middle" font-family="Inter" font-size="10" fill="#8B8680" font-style="italic">встроенная справка по каждой</text>
+        </svg>
+      </div>
+    </div>
+
+    <p>Такой же приём (один зонтичный инструмент с многими операциями и встроенным <code>help</code>)
+      используется и в других сложных инструментах плагина — например, <code>launch_debugger</code> с
+      ~16 действиями.</p>
+
+    <!-- ==========================================================
+         РАЗДЕЛ 7. Подключение ИИ
+         ========================================================== -->
+    <h2 id="models">Подключение ИИ — какие модели бывают</h2>
+
+    <p>Мы разобрались с плагином и MCP. Теперь — про вторую сторону: ИИ-агента и модель, которая его
+      «питает».</p>
+
+    <p>Языковых моделей сейчас выпускают много компаний. Самые известные:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Компания</th>
+            <th>Страна</th>
+            <th>Модели</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Anthropic</strong></td><td>США</td><td>Claude (Opus, Sonnet, Haiku)</td></tr>
+          <tr><td><strong>OpenAI</strong></td><td>США</td><td>GPT (GPT-5, GPT-5 mini, GPT-5 nano)</td></tr>
+          <tr><td><strong>Google</strong></td><td>США</td><td>Gemini (Pro, Flash)</td></tr>
+          <tr><td><strong>DeepSeek</strong></td><td>Китай</td><td>DeepSeek (V3, R1, V4-Flash) — высокое качество, низкая цена</td></tr>
+          <tr><td><strong>Alibaba / Qwen</strong></td><td>Китай</td><td>Qwen (Qwen3-Coder, Qwen3.5-Flash)</td></tr>
+          <tr><td><strong>Mistral</strong></td><td>Франция</td><td>Mistral, Codestral</td></tr>
+          <tr><td><strong>Meta, NVIDIA, прочие</strong></td><td>—</td><td>Llama, Nemotron — преимущественно открытые модели</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Есть отдельный класс моделей — <strong>открытые (open-weight)</strong>: их веса можно скачать и
+      запустить у себя на компьютере (Llama, Qwen-7B, и пр.). Звучит соблазнительно, но на практике:</p>
+    <ul>
+      <li>На обычной видеокарте (12–24 ГБ) запускаются только маленькие версии — 7–13 миллиардов параметров.</li>
+      <li>Маленькие версии сильно проигрывают облачным моделям — путаются в инструментах, плохо держат
+        длинный контекст 1С-проекта, медленно работают.</li>
+      <li>Серьёзная open-weight модель (200B+) требует мощного сервера с несколькими GPU за десятки тысяч
+        долларов — это уже не «домашний» сценарий.</li>
+    </ul>
+
+    <p>Для реальной работы с 1С через 1C:RSV практически всегда выбираются <strong>облачные модели</strong>:
+      запрос отправляется на сервер провайдера, ответ возвращается обратно. Стоит копейки за вызов и работает
+      намного быстрее и надёжнее.</p>
+
+    <h3 id="payment">Варианты оплаты — два основных</h3>
+
+    <p>Есть два подхода, как вы платите за работу с моделью.</p>
+
+    <div class="pros-cons">
+      <div class="pros">
+        <h5>Подписка (фиксированная плата за месяц)</h5>
+        <ul>
+          <li>Платите фиксированную сумму в месяц, получаете «пакет лимитов»</li>
+          <li>Лимиты обычно сбрасываются каждые 5 часов и каждую неделю</li>
+          <li>Пример: <strong>Claude Pro</strong> — около $20/мес, 5h-сессии</li>
+          <li>Пример: <strong>Claude Max</strong> — $100 или $200/мес, более высокие лимиты</li>
+          <li>Удобно, если вы работаете каждый день — экономия на больших объёмах</li>
+          <li>Минус: нужно следить, когда кончатся лимиты в очередной 5-часовой блок</li>
+        </ul>
+      </div>
+      <div class="pros">
+        <h5>Pay-as-you-go (за токены)</h5>
+        <ul>
+          <li>Платите за каждый токен в запросе и в ответе</li>
+          <li>У каждой модели — своя цена за 1M входных и за 1M выходных токенов</li>
+          <li>Минимальный пополняемый баланс — обычно от $5–10</li>
+          <li>Удобно при неравномерной нагрузке — не платите, когда не работаете</li>
+          <li>На дешёвых моделях (DeepSeek, Qwen) часто выходит <strong>в разы дешевле подписки</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <p>Программистам 1С, которые только пробуют ИИ-разработку, обычно проще начать с <strong>pay-as-you-go</strong>:
+      пополнили баланс на $10–20, попробовали разные модели, поняли, какая подходит — и дальше выбираете
+      оптимальный вариант под свою нагрузку.</p>
+
+    <div class="lead-callout">
+      <strong>Для серьёзной профессиональной работы</strong> — когда программист 1С много и плотно делает
+      сложные разработки в течение всего рабочего дня — основная рекомендация всё-таки <strong>ежемесячная
+      подписка на топовую модель</strong>. Лучший выбор сегодня — <strong>Claude Max за $200/мес</strong>:
+      высокие лимиты, сильнейшая модель Claude Opus / Sonnet, стабильная работа в долгих сессиях с большим
+      контекстом проекта. На сложных задачах (расширения, СКД, формы с десятками элементов) разница в
+      качестве относительно бюджетных моделей становится заметной — топовая модель закрывает их
+      с первого-второго раза, бюджетная может застрять или сделать неполный результат.
+    </div>
+
+    <h3 id="ide">IDE и расширения для работы с ИИ</h3>
+
+    <p>ИИ-агент должен где-то «жить». Это либо отдельная программа, либо расширение к привычной IDE. Самые
+      популярные варианты:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Инструмент</th>
+            <th>Что это</th>
+            <th>Цена</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cursor</strong></td>
+            <td>Отдельная IDE — форк VS Code со встроенной ИИ-поддержкой. Своя модель Composer, можно
+              подключать сторонние через API.</td>
+            <td>~$20/мес подписка</td>
+          </tr>
+          <tr>
+            <td><strong>VS Code + Roo Code</strong></td>
+            <td>Бесплатное расширение к VS Code (или Cline, или Continue). Работает с любой моделью через её
+              API-ключ. Поддерживает MCP «из коробки».</td>
+            <td>Бесплатно (платите только за модель)</td>
+          </tr>
+          <tr>
+            <td><strong>Claude Code</strong></td>
+            <td>Официальный ИИ-клиент Anthropic. Доступен сразу в нескольких форм-факторах: <strong>терминал (CLI)</strong>,
+              <strong>расширение для VS Code</strong> (работает и в Cursor), <strong>плагин для JetBrains</strong>
+              (IntelliJ, PyCharm, WebStorm), <strong>десктопное приложение</strong> (macOS и Windows),
+              <strong>веб-версия</strong> на <code>claude.ai/code</code>. Один и тот же движок и настройки во всех вариантах.
+              MCP поддерживается везде.</td>
+            <td>Включено в подписку Claude Pro/Max или по API</td>
+          </tr>
+          <tr>
+            <td><strong>Gemini CLI / Qwen Code / Codex</strong></td>
+            <td>Аналогичные консольные клиенты от Google / Alibaba / OpenAI. Все поддерживают MCP.</td>
+            <td>По подписке или по API</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Все эти варианты <strong>умеют подключаться к MCP-серверу 1C:RSV</strong> — потому что MCP это
+      открытый стандарт, и все современные ИИ-клиенты его поддерживают.</p>
+
+    <p>Если вы пробуете в первый раз — рекомендую связку <strong>VS Code + Roo Code + бюджетная
+      модель через OpenRouter</strong>. Это самый недорогой и гибкий вариант, описанный в отдельном
+      <a href="presentation-openrouter.html" target="_blank">конспекте к видео</a>.</p>
+
+    <h3 id="providers">Провайдеры моделей — у кого «брать» модель</h3>
+
+    <p>Есть два пути получить доступ к модели.</p>
+
+    <div class="analogy">
+      <div class="analogy-row is-header">
+        <div class="analogy-side is-1c">Прямой доступ</div>
+        <div class="analogy-side is-edt">Через маркетплейс</div>
+      </div>
+      <div class="analogy-row">
+        <div class="analogy-side is-1c">
+          <strong>Регистрируетесь у самой компании</strong> (например, на console.anthropic.com),
+          получаете API-ключ, платите этой компании.
+          <br><br>Доступны только модели этой компании.
+        </div>
+        <div class="analogy-side is-edt">
+          <strong>Регистрируетесь на маркетплейсе</strong> (например, OpenRouter), получаете один
+          API-ключ — а через него доступны модели десятков провайдеров.
+          <br><br>Удобно сравнивать модели, не заводя 5 разных аккаунтов.
+        </div>
+      </div>
+    </div>
+
+    <p>Маркетплейсов сейчас довольно много — <strong>OpenRouter</strong> самый известный, но не единственный
+      (есть Together AI, Fireworks, DeepInfra, и др.). Они выгодны тем, что:</p>
+    <ul>
+      <li>Один аккаунт = десятки моделей и провайдеров.</li>
+      <li>Цены часто ниже официальных (за счёт оптовых тарифов).</li>
+      <li>Принимают разные способы оплаты, включая криптовалюту — что особенно полезно в регионах, где сложно
+        напрямую оплатить иностранному сервису.</li>
+      <li>Можно поставить лимит расхода в долларах — страховка от «убежавших» агентов.</li>
+    </ul>
+
+    <!-- ==========================================================
+         ФИНАЛЬНЫЙ СТЕК
+         ========================================================== -->
+    <h2 id="stack">Финальный стек — как всё собирается вместе</h2>
+
+    <p>Когда у вас в голове сложилась полная картина, вы видите всю систему как стек из нескольких слоёв.
+      Снизу вверх:</p>
+
+    <ul class="stack-list">
+      <li>
+        <span class="stack-num">1</span>
+        <div>
+          <strong>1С:EDT с вашей конфигурацией</strong>
+          Ваш проект, метаданные, BSL-код, формы, отчёты. Ничего не меняется в привычном.
+        </div>
+      </li>
+      <li>
+        <span class="stack-num">2</span>
+        <div>
+          <strong>Плагин 1C:RSV — встроен в EDT как расширение</strong>
+          Программная часть (умеет создавать объекты, искать, отлаживать) + MCP-сервер на <code>127.0.0.1:8770</code>.
+        </div>
+      </li>
+      <li>
+        <span class="stack-num">3</span>
+        <div>
+          <strong>ИИ-клиент</strong>
+          Cursor / VS Code + Roo Code / Claude Code / Gemini CLI / любой другой с поддержкой MCP. Подключается
+          к 1C:RSV по адресу <code>http://127.0.0.1:8770/mcp</code>.
+        </div>
+      </li>
+      <li>
+        <span class="stack-num">4</span>
+        <div>
+          <strong>Провайдер модели</strong>
+          Anthropic напрямую / OpenAI напрямую / OpenRouter / Together / любой другой. Даёт API-ключ.
+        </div>
+      </li>
+      <li>
+        <span class="stack-num">5</span>
+        <div>
+          <strong>Языковая модель</strong>
+          Claude Sonnet, GPT-5, Gemini, DeepSeek-V4-Flash, Qwen3.5-Flash — что выбрали. «Мозг» агента.
+        </div>
+      </li>
+      <li>
+        <span class="stack-num">6</span>
+        <div>
+          <strong>Вы и естественный язык</strong>
+          Просто говорите агенту: «создай справочник Контрагенты с реквизитами ИНН, КПП», «найди где
+          используется метод <em>такой-то</em>», «поставь точку останова и отладь проведение документа».
+        </div>
+      </li>
+    </ul>
+
+    <div class="figure">
+      <h4>Финальная связка</h4>
+      <p class="figure-sub">Каждый слой делает свою работу, общаются между собой через стандартизованные интерфейсы</p>
+      <div class="figure-svg-wrap is-wide">
+        <svg class="is-wide" viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Финальный стек">
+          <defs>
+            <marker id="arr-final" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#7C3AED"/>
+            </marker>
+            <linearGradient id="grad-rsv" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#7C3AED"/>
+              <stop offset="100%" stop-color="#5B21B6"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Пользователь -->
+          <rect x="20" y="130" width="130" height="60" rx="10" fill="#FFFFFF" stroke="#E8E3DA"/>
+          <text x="85" y="158" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#1A1A1A">Вы</text>
+          <text x="85" y="178" text-anchor="middle" font-family="Inter" font-size="11" fill="#57534E">обычная речь</text>
+
+          <line x1="155" y1="160" x2="195" y2="160" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-final)"/>
+
+          <!-- Модель -->
+          <rect x="200" y="120" width="130" height="80" rx="10" fill="#FFFFFF" stroke="#E8E3DA"/>
+          <text x="265" y="148" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#1A1A1A">Модель</text>
+          <text x="265" y="168" text-anchor="middle" font-family="Inter" font-size="11" fill="#57534E">Claude / GPT / DeepSeek</text>
+          <text x="265" y="184" text-anchor="middle" font-family="Inter" font-size="11" fill="#57534E">через провайдера</text>
+
+          <line x1="335" y1="160" x2="375" y2="160" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-final)"/>
+
+          <!-- ИИ-клиент -->
+          <rect x="380" y="120" width="130" height="80" rx="10" fill="#F5F3FF" stroke="#DDD6FE"/>
+          <text x="445" y="148" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#6D28D9">ИИ-клиент</text>
+          <text x="445" y="168" text-anchor="middle" font-family="Inter" font-size="11" fill="#5B21B6">Roo Code / Cursor</text>
+          <text x="445" y="184" text-anchor="middle" font-family="Inter" font-size="11" fill="#5B21B6">Claude Code</text>
+
+          <line x1="515" y1="160" x2="555" y2="160" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-final)"/>
+
+          <!-- 1C:RSV -->
+          <rect x="560" y="120" width="140" height="80" rx="10" fill="url(#grad-rsv)"/>
+          <text x="630" y="148" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#FFFFFF">1C:RSV MCP</text>
+          <text x="630" y="168" text-anchor="middle" font-family="Inter" font-size="11" fill="#EDE9FE">плагин в EDT</text>
+          <text x="630" y="184" text-anchor="middle" font-family="Inter" font-size="11" fill="#DDD6FE">127.0.0.1:8770</text>
+
+          <line x1="705" y1="160" x2="745" y2="160" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-final)"/>
+
+          <!-- EDT -->
+          <rect x="750" y="130" width="120" height="60" rx="10" fill="#FFFFFF" stroke="#E8E3DA"/>
+          <text x="810" y="158" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#1A1A1A">1С:EDT</text>
+          <text x="810" y="178" text-anchor="middle" font-family="Inter" font-size="11" fill="#57534E">ваша конфигурация</text>
+
+          <!-- Подпись снизу -->
+          <text x="440" y="260" text-anchor="middle" font-family="Inter" font-size="13" font-weight="600" fill="#1A1A1A">
+            Вы говорите простыми словами — система делает сложную работу
+          </text>
+          <text x="440" y="282" text-anchor="middle" font-family="Inter" font-size="11" fill="#8B8680">
+            На каждом стыке — стандартизованный протокол: HTTP API у провайдера, MCP у плагина
+          </text>
+        </svg>
+      </div>
+    </div>
+
+    <h2 id="closing">Что дальше</h2>
+
+    <p>Теперь у вас в голове есть полная картина: что это за плагин, как он работает изнутри, что такое
+      MCP, какие модели бывают, и как всё это собирается в рабочий инструмент.</p>
+
+    <p>Логичные следующие шаги:</p>
+    <ol>
+      <li><a href="index.html#download">Скачайте</a> и установите плагин (по инструкции выше).</li>
+      <li>Активируйте 14-дневный пробный период с полным доступом к Архитектору.</li>
+      <li>Подключите ИИ-клиент. Если выбрали бюджетный вариант — смотрите
+        <a href="presentation-openrouter.html">конспект про OpenRouter + Roo Code</a>.</li>
+      <li>Прочитайте <a href="guide.html">руководство пользователя</a> — там есть готовые примеры запросов
+        для каждого профиля (Аналитик / Разработчик / Архитектор).</li>
+      <li>Просмотрите <a href="tools.html">описание всех инструментов</a> — это поможет вам формулировать
+        запросы к агенту точнее.</li>
+      <li>Если что-то непонятно — пишите в <a href="https://t.me/edt_ai_1c" target="_blank">Telegram-канал</a>
+        или на почту <a href="mailto:prepod2003@yandex.ru">prepod2003@yandex.ru</a>.</li>
+    </ol>
+
+  </div>
+</main>
+
+<!-- ===== BACK TO TOP ===== -->
+<button class="back-to-top" id="backToTop" aria-label="Наверх">&#8593;</button>
+
+<script>
+  // Sidebar toggle
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+  overlay.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+
+  sidebar.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        hamburger.classList.remove('active');
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+      }
+    });
+  });
+
+  // Back to top
+  const btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 400);
+  });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Active nav link on scroll
+  const navLinks = document.querySelectorAll('.nav-link');
+  const idToLink = {};
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      idToLink[href.slice(1)] = link;
+    }
+  });
+
+  const sections = Array.from(document.querySelectorAll('h2[id], h3[id]'))
+    .filter(s => idToLink[s.id]);
+
+  let scrollspyLockedUntil = 0;
+
+  function setActive(id) {
+    navLinks.forEach(l => l.classList.remove('active'));
+    if (id && idToLink[id]) {
+      idToLink[id].classList.add('active');
+    }
+  }
+
+  function updateActiveNav() {
+    if (Date.now() < scrollspyLockedUntil) return;
+    let current = '';
+    const threshold = Math.max(120, window.innerHeight / 3);
+    for (const section of sections) {
+      const top = section.getBoundingClientRect().top;
+      if (top <= threshold) current = section.id;
+      else break;
+    }
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 5) {
+      if (sections.length > 0) current = sections[sections.length - 1].id;
+    }
+    setActive(current);
+  }
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        setActive(href.slice(1));
+        scrollspyLockedUntil = Date.now() + 800;
+      }
+    });
+  });
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateActiveNav();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+  updateActiveNav();
+</script>
+
+</body>
+</html>

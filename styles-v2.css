@@ -378,12 +378,12 @@ section.section {
 
 .docs-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 .doc-card {
   display: block;
-  padding: 36px;
+  padding: 32px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -417,7 +417,7 @@ section.section {
   font-size: 1.5rem;
   margin-bottom: 20px;
 }
-.doc-card h3 { color: var(--text); margin-bottom: 10px; font-size: 1.3rem; }
+.doc-card h3 { color: var(--text); margin-bottom: 10px; font-size: 1.25rem; }
 .doc-card p { color: var(--text-muted); margin-bottom: 0; }
 .doc-card-link {
   display: inline-flex;
@@ -429,7 +429,38 @@ section.section {
   font-size: 0.92rem;
 }
 
-@media (max-width: 760px) { .docs-grid { grid-template-columns: 1fr; } }
+/* Главная (featured) карточка — выделенная фиолетовым акцентом, с бейджем «Начните здесь» */
+.doc-card.is-featured {
+  background: linear-gradient(135deg, var(--accent-soft) 0%, var(--bg-surface) 70%);
+  border-color: var(--accent-soft2);
+}
+.doc-card.is-featured::before {
+  background: linear-gradient(135deg, var(--accent-soft2) 0%, transparent 60%);
+}
+.doc-card.is-featured:hover {
+  border-color: var(--accent);
+  box-shadow: var(--accent-glow);
+}
+.doc-card.is-featured .doc-card-icon {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #FFFFFF;
+}
+.doc-card-badge {
+  display: inline-block;
+  padding: 4px 11px;
+  background: var(--accent);
+  color: #FFFFFF;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 1080px) { .docs-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 700px)  { .docs-grid { grid-template-columns: 1fr; } }
 
 /* ==========================================================================
    Feature cards — generic 2-column grid
