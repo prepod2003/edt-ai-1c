@@ -228,7 +228,7 @@
         <tbody>
           <tr><td><strong>Аналитик</strong></td><td>18</td><td>Анализ метаданных, Анализ кода, Поиск и навигация</td></tr>
           <tr><td><strong>Разработчик</strong></td><td>26</td><td>+ Редактирование кода и отладка, Валидация, Сборка и управление (вкл. экспорт)</td></tr>
-          <tr><td><strong>Архитектор</strong></td><td>27</td><td>+ Редактирование метаданных (~59 операций)</td></tr>
+          <tr><td><strong>Архитектор</strong></td><td>27</td><td>+ Редактирование метаданных (~64 операций)</td></tr>
         </tbody>
       </table>
     </div>
@@ -521,7 +521,7 @@
     <h3 id="profile-arch">Профиль «Архитектор» — 27 инструментов</h3>
     <p>К 26 инструментам разработчика добавляется конструктор конфигурации.</p>
 
-    <h4>Редактирование метаданных (1 инструмент, ~59 операций)</h4>
+    <h4>Редактирование метаданных (1 инструмент, ~64 операций)</h4>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
@@ -536,11 +536,11 @@
     </blockquote>
     <!-- Конструктор конфигурации -->
     <h2 id="edit-metadata">Конструктор конфигурации — edit_metadata</h2>
-    <p>Единый инструмент для создания и настройки объектов метаданных, форм, макетов печатных форм и отчётов. Содержит около <strong>59 операций</strong> в 7 областях. Все изменения выполняются через нативные сервисы EDT — результат идентичен ручному созданию в конструкторе.</p>
+    <p>Единый инструмент для создания и настройки объектов метаданных, форм, макетов печатных форм и отчётов. Содержит около <strong>64 операций</strong> в 7 областях. Все изменения выполняются через нативные сервисы EDT — результат идентичен ручному созданию в конструкторе.</p>
 
     <h3>Дерево операций</h3>
 
-    <div class="tree-block"><span class="node">edit_metadata</span> <span class="desc">(~59 операций)</span>
+    <div class="tree-block"><span class="node">edit_metadata</span> <span class="desc">(~64 операций)</span>
 <span class="branch">│</span>
 <span class="branch">├──</span> <span class="op">Объекты метаданных</span> <span class="desc">(8 операций)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> createObject <span class="desc">— создание (30+ типов: справочники, документы, регистры...)</span>
@@ -582,13 +582,15 @@
 <span class="branch">│</span>   <span class="branch">├──</span> adoptFormItem <span class="desc">— заимствовать элемент формы</span>
 <span class="branch">│</span>   <span class="branch">└──</span> adoptModule <span class="desc">— включить участие модуля заимствованного объекта в расширении (при записи кода это происходит автоматически)</span>
 <span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">Отчёты СКД</span> <span class="desc">(22 операции)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> createReportSchema, addDataSet, addDataSetField <span class="desc">— структура</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addSchemaParameter, addCalculatedField, addTotalField <span class="desc">— вычисления</span>
+<span class="branch">├──</span> <span class="op">Отчёты СКД</span> <span class="desc">(27 операций)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> createReportSchema, addDataSet, addDataSetField, removeDataSet <span class="desc">— структура</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addSchemaParameter, setSchemaParameter, removeSchemaParameter, moveSchemaParameter <span class="desc">— параметры схемы</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addCalculatedField, addTotalField <span class="desc">— вычисления и итоги</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addSettingsGroup/Table/Chart <span class="desc">— группировки и визуализация</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addSettingsFilter/Order <span class="desc">— отборы и сортировки</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addConditionalAppearance <span class="desc">— условное оформление</span>
-<span class="branch">│</span>   <span class="branch">└──</span> setOutputParameter, addSettingsVariant <span class="desc">— настройки вывода</span>
+<span class="branch">│</span>   <span class="branch">├──</span> setOutputParameter, addSettingsVariant <span class="desc">— настройки вывода</span>
+<span class="branch">│</span>   <span class="branch">└──</span> repairReportSchema <span class="desc">— лечение схем-фантомов в расширениях</span>
 <span class="branch">│</span>
 <span class="branch">└──</span> <span class="op">Общее</span> <span class="desc">(2 операции)</span>
     <span class="branch">├──</span> moveItem <span class="desc">— перемещение элементов</span>
