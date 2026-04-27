@@ -18,18 +18,6 @@
 <body>
 
 <!-- ==========================================================================
-     ANNOUNCEMENT BANNER (удалить когда неактуально)
-     ========================================================================== -->
-<div class="announce-bar" id="announceBar">
-  <div class="announce-inner">
-    <span class="announce-icon">⚠️</span>
-    <span class="announce-text">В версиях до 3.3.0 обнаружен <strong>критический баг</strong> при работе с расширениями. Рекомендуем обновиться до актуальной версии.</span>
-    <a href="#download" class="announce-link">Скачать обновление</a>
-    <button class="announce-close" onclick="closeAnnounce()" aria-label="Закрыть">&times;</button>
-  </div>
-</div>
-
-<!-- ==========================================================================
      NAVBAR
      ========================================================================== -->
 <nav class="nav">
@@ -1063,14 +1051,6 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-/* Announcement banner */
-function closeAnnounce() {
-  document.getElementById('announceBar').classList.add('hidden');
-  sessionStorage.setItem('announceClosed', '1');
-}
-if (sessionStorage.getItem('announceClosed') === '1') {
-  document.getElementById('announceBar').classList.add('hidden');
-}
 </script>
 
 </body>
