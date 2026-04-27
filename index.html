@@ -74,7 +74,7 @@
           <a href="#pricing" class="btn btn-secondary btn-lg">Посмотреть тарифы</a>
         </div>
         <div class="hero-meta">
-          <span><b>v3.6.0</b> · для 1C:EDT 2025.2</span>
+          <span><b>v3.7.0</b> · для 1C:EDT 2025.2</span>
           <span>Java 17 · Windows, macOS</span>
         </div>
       </div>
@@ -507,28 +507,28 @@
     <div class="section-header">
       <span class="eyebrow">📥 Актуальный релиз</span>
       <h2>Скачать 1C:RSV MCP Server</h2>
-      <p data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 3.6.0 · для 1C:EDT 2025.2 · Windows, macOS · пробный период 14 дней.</p>
+      <p data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 3.7.0 · для 1C:EDT 2025.2 · Windows, macOS · пробный период 14 дней.</p>
     </div>
 
     <div class="download-card">
       <div class="download-file">
         <div class="download-file-icon">📦</div>
         <div>
-          <div class="download-file-name" data-v="1C-RSV-MCP-{v}-distr.zip">1C-RSV-MCP-3.6.0-distr.zip</div>
-          <div class="download-file-meta" data-v="Версия {v} · ~2.7 MB">Версия 3.6.0 · ~2.7 MB</div>
+          <div class="download-file-name" data-v="1C-RSV-MCP-{v}-distr.zip">1C-RSV-MCP-3.7.0-distr.zip</div>
+          <div class="download-file-meta" data-v="Версия {v} · ~2.7 MB">Версия 3.7.0 · ~2.7 MB</div>
         </div>
       </div>
 
       <div class="download-includes">
-        <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-3.6.0-SNAPSHOT.zip</span>
+        <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-3.7.0-SNAPSHOT.zip</span>
         <span>✅ guide.html — руководство пользователя</span>
         <span>✅ tools.html — описание инструментов</span>
         <span>✅ CLAUDE.md — правила для AI</span>
-        <span>✅ RELEASE-3.6.0.md — что нового</span>
-        <span>✅ RELEASE-3.5.0.md — предыдущий релиз</span>
+        <span>✅ RELEASE-3.7.0.md — что нового</span>
+        <span>✅ RELEASE-3.6.0.md — предыдущий релиз</span>
       </div>
 
-      <a href="./1C-RSV-MCP-3.6.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./1C-RSV-MCP-{v}-distr.zip" download>⬇ Скачать бесплатно</a>
+      <a href="./1C-RSV-MCP-3.7.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./1C-RSV-MCP-{v}-distr.zip" download>⬇ Скачать бесплатно</a>
 
       <div class="download-note">
         При первом запуске откроется диалог активации — нажмите «Пробный период» или введите код активации
@@ -537,6 +537,12 @@
 
     <div class="changelog">
       <h3>История версий</h3>
+
+      <div class="changelog-entry">
+        <a href="release.html?v=3.7.0" class="changelog-version" title="Открыть заметки релиза v3.7.0">v3.7.0</a>
+        <h4>Запись СКД-схем в расширениях, новые операции для отчётов и авто-валидация запросов</h4>
+        <p>Главный фикс: схемы компоновки данных в расширениях теперь физически записываются на диск — раньше изменения через MCP теряли результат после перезапуска EDT и ломали deploy в инфобазу. Новая операция <code>repairReportSchema</code> лечит унаследованные битые отчёты. Понятная ошибка вместо порчи XML, если шрифт/цвет передан JSON-объектом. Новые операции для СКД: <code>removeDataSet</code>, <code>setSchemaParameter</code>, <code>removeSchemaParameter</code>, <code>moveSchemaParameter</code>, параметр в шапку отчёта через <code>viewMode=QuickAccess</code>. Авто-валидация текста запроса и выражений СКД до записи в схему. <a href="release.html?v=3.7.0">Полный список →</a></p>
+      </div>
 
       <div class="changelog-entry">
         <a href="release.html?v=3.6.0" class="changelog-version" title="Открыть заметки релиза v3.6.0">v3.6.0</a>
@@ -663,7 +669,7 @@
           <li><a href="#features">Возможности</a></li>
           <li><a href="#how">Как устроено</a></li>
           <li><a href="#pricing">Тарифы</a></li>
-          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v3.6.0</a></li>
+          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v3.7.0</a></li>
           <li><a href="guide.html">Руководство пользователя</a></li>
           <li><a href="tools.html">Описание инструментов</a></li>
         </ul>
@@ -694,7 +700,7 @@
     </div>
     <div class="footer-bottom">
       <div>Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a></div>
-      <div data-v="1C:RSV v{v} · 2026">1C:RSV v3.6.0 · 2026</div>
+      <div data-v="1C:RSV v{v} · 2026">1C:RSV v3.7.0 · 2026</div>
     </div>
   </div>
 </footer>
