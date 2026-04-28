@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="1C:RSV MCP Server — руководство пользователя. Установка, настройка, примеры использования, описание инструментов.">
-  <title>Руководство — 1C:RSV MCP Server</title>
+  <meta name="description" content="MCP:RSV — руководство пользователя. Установка, настройка, примеры использования, описание инструментов.">
+  <title>Руководство — MCP:RSV</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
       </button>
       <a href="index.html" class="logo">
         <span class="logo-badge">RSV</span>
-        <span class="header-title">1C:RSV MCP Server</span>
+        <span class="header-title">MCP:RSV</span>
         <span class="header-subtitle">Руководство пользователя</span>
       </a>
     </div>
@@ -93,7 +93,7 @@
     </p>
     <!-- Что такое плагин -->
     <h2 id="what">Что такое плагин</h2>
-    <p><strong>1C:RSV MCP Server</strong> — плагин для 1C:EDT, встраивающий MCP-сервер (Model Context Protocol) прямо в среду разработки. Плагин даёт ИИ-ассистентам (Claude Code, Cursor, Windsurf, Roo Code, Gemini CLI, Qwen Code) прямой доступ к конфигурациям 1С: метаданным, коду, формам, справке платформы, валидации и даже отладчику.</p>
+    <p><strong>MCP:RSV</strong> — плагин для 1C:EDT, встраивающий MCP-сервер (Model Context Protocol) прямо в среду разработки. Плагин даёт ИИ-ассистентам (Claude Code, Cursor, Windsurf, Roo Code, Gemini CLI, Qwen Code) прямой доступ к конфигурациям 1С: метаданным, коду, формам, справке платформы, валидации и даже отладчику.</p>
     <p>Плагин запускает HTTP-сервер на <code>127.0.0.1:8770</code> внутри EDT. ИИ-ассистент подключается по протоколу MCP (JSON-RPC 2.0 over HTTP) и получает <strong>27 инструментов</strong> в <strong>7 группах</strong>, распределённых по <strong>3 профилям</strong>.</p>
     <p>Все данные обрабатываются <strong>локально</strong> — код конфигурации не передаётся в интернет. Сервер работает прямо внутри IDE, без внешних серверов и SaaS-посредников.</p>
     <!-- Быстрый старт -->
@@ -111,7 +111,7 @@
       <li>Скачать ZIP-архив <code>edt-rsv-repository-3.0.0-SNAPSHOT.zip</code> из релизов</li>
       <li>В EDT: <strong>Справка &rarr; Установить новое ПО...</strong></li>
       <li><strong>Добавить...</strong> &rarr; <strong>Архив...</strong> &rarr; выбрать скачанный ZIP</li>
-      <li>Отметить <strong>1C:RSV MCP Server</strong> &rarr; <strong>Далее</strong> &rarr; <strong>Готово</strong></li>
+      <li>Отметить <strong>MCP:RSV</strong> &rarr; <strong>Далее</strong> &rarr; <strong>Готово</strong></li>
       <li>Перезапустить EDT</li>
       <li>Проверить: <code>curl http://localhost:8770/health</code></li>
     </ol>
@@ -220,7 +220,7 @@
     <h2 id="licensing">Лицензирование</h2>
 
     <h3>Тарифные планы</h3>
-    <p>1C:RSV MCP Server распространяется по подписке. Доступны три тарифа:</p>
+    <p>MCP:RSV распространяется по подписке. Доступны три тарифа:</p>
 
     <div class="table-wrap">
       <table>
@@ -242,7 +242,7 @@
     <ol>
       <li>Оформите подписку на нужный тариф — подробности в Telegram-канале <a href="https://t.me/edt_ai_1c" target="_blank">@edt_ai_1c</a></li>
       <li>Получите <strong>код активации</strong> (формат: <code>ACT-DEV-XXXXXXXX</code>)</li>
-      <li>В EDT откройте <strong>Окно &rarr; Настройки &rarr; 1C:RSV &rarr; Лицензия</strong> &rarr; нажмите <strong>«Активировать новый код...»</strong></li>
+      <li>В EDT откройте <strong>Окно &rarr; Настройки &rarr; MCP:RSV &rarr; Лицензия</strong> &rarr; нажмите <strong>«Активировать новый код...»</strong></li>
       <li>Введите код &rarr; нажмите <strong>«Активировать»</strong></li>
     </ol>
     <p>Привязка к компьютеру происходит автоматически.</p>
@@ -256,7 +256,7 @@
     </ul>
 
     <h3>Управление лицензией</h3>
-    <p><strong>Окно &rarr; Настройки &rarr; 1C:RSV &rarr; Лицензия</strong></p>
+    <p><strong>Окно &rarr; Настройки &rarr; MCP:RSV &rarr; Лицензия</strong></p>
 
     <div class="table-wrap">
       <table>
@@ -281,7 +281,7 @@
     <h2 id="ui">Интерфейс управления в EDT</h2>
 
     <h3>Индикатор в строке состояния</h3>
-    <p>В нижней строке состояния EDT появляется значок <strong>1C:RSV</strong> с цветным индикатором:</p>
+    <p>В нижней строке состояния EDT появляется значок <strong>MCP:RSV</strong> с цветным индикатором:</p>
 
     <div class="table-wrap">
       <table>
@@ -312,7 +312,7 @@
     <p><strong>3. Группы инструментов</strong> — тонкая настройка. Каждая группа имеет чекбокс для включения/отключения независимо от профиля.</p>
 
     <h3>Страница настроек</h3>
-    <p><strong>Окно &rarr; Настройки &rarr; 1C:RSV</strong> — порт сервера (1024–65535, по умолчанию 8770) и управление группами.</p>
+    <p><strong>Окно &rarr; Настройки &rarr; MCP:RSV</strong> — порт сервера (1024–65535, по умолчанию 8770) и управление группами.</p>
     <!-- Примеры запросов -->
     <h2 id="examples">Что умеет плагин — примеры запросов</h2>
     <p>Главное преимущество MCP-сервера — вы общаетесь с ИИ-ассистентом <strong>на естественном языке</strong>. Не нужно знать имена инструментов и их параметры. Просто опишите задачу — ассистент сам подберёт нужные инструменты.</p>
@@ -532,7 +532,7 @@
     </div>
 
     <blockquote>
-      <p><strong>Важно.</strong> Группа «Редактирование метаданных» отключена по умолчанию. Для включения: <strong>Окно &rarr; Настройки &rarr; 1C:RSV</strong> &rarr; включите группу.</p>
+      <p><strong>Важно.</strong> Группа «Редактирование метаданных» отключена по умолчанию. Для включения: <strong>Окно &rarr; Настройки &rarr; MCP:RSV</strong> &rarr; включите группу.</p>
     </blockquote>
     <!-- Конструктор конфигурации -->
     <h2 id="edit-metadata">Конструктор конфигурации — edit_metadata</h2>
@@ -755,7 +755,7 @@
       </table>
     </div>
     <p style="text-align:center;color:var(--text-dim);margin-top:40px;font-size:0.9rem;">
-      <em>1C:RSV MCP Server — самый функциональный MCP-сервер для работы ИИ-ассистентов с 1С:EDT</em>
+      <em>MCP:RSV — самый функциональный MCP-сервер для работы ИИ-ассистентов с 1С:EDT</em>
     </p>
 
   </div>
