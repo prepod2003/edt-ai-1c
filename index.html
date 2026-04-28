@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MCP:RSV — AI внутри 1С:EDT</title>
+  <title>MCP:RSV Server — AI внутри 1С:EDT</title>
   <meta name="description" content="Плагин для 1С:EDT, который даёт AI-ассистенту полный доступ к конфигурации — создание объектов, запись кода, валидация, отладка. Через открытый стандарт MCP.">
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -48,7 +48,7 @@
   <div class="container">
     <div class="hero-inner">
       <div>
-        <span class="eyebrow">MCP:RSV · MCP-плагин для 1С:EDT</span>
+        <span class="eyebrow">MCP:RSV Server · MCP-плагин для 1С:EDT</span>
         <h1>Дайте искусственному интеллекту<br><span>полный доступ к 1С:EDT</span></h1>
         <p class="hero-lead">Единственный в мире плагин, в котором AI работает внутри среды разработки <strong>как опытный 1С-разработчик</strong>.</p>
         <ul class="hero-bullets">
@@ -68,7 +68,7 @@
         </div>
       </div>
       <div class="hero-image-wrap">
-        <img src="images/hero.png" alt="MCP:RSV — мост между AI-ассистентом и 1С:EDT">
+        <img src="images/hero.png" alt="MCP:RSV Server — мост между AI-ассистентом и 1С:EDT">
       </div>
     </div>
   </div>
@@ -211,7 +211,7 @@
   <div class="container">
     <div class="section-header">
       <span class="eyebrow">Видео-гайд</span>
-      <h2>Подключаем ИИ к 1С через плагин MCP:RSV — полный гайд</h2>
+      <h2>Подключаем ИИ к 1С через плагин MCP:RSV Server — полный гайд</h2>
       <p>Видео идёт <strong>в паре с текстовой статьёй «Введение для программиста 1С»</strong>: статья даёт концепцию и теорию, видео показывает весь процесс на экране в боевом режиме — установка плагина, подключение Roo Code, получение API-ключа OpenRouter и тестирование на дешёвой модели DeepSeek V4 Flash. Максимальная польза — посмотреть и прочитать.</p>
     </div>
 
@@ -261,7 +261,7 @@
       </li>
     </ul>
     <div class="summary-card">
-      <p>Ни один из них не даёт AI возможности <strong>реально управлять 1С:EDT</strong> — так, как это делает человек через интерфейс. Именно этот разрыв закрывает MCP:RSV: плагин предоставляет искусственному интеллекту полный рабочий цикл — от первичного анализа конфигурации до создания новых объектов, написания кода, отладки и проверки результата.</p>
+      <p>Ни один из них не даёт AI возможности <strong>реально управлять 1С:EDT</strong> — так, как это делает человек через интерфейс. Именно этот разрыв закрывает MCP:RSV Server: плагин предоставляет искусственному интеллекту полный рабочий цикл — от первичного анализа конфигурации до создания новых объектов, написания кода, отладки и проверки результата.</p>
       <p>Справка по платформе 1С у AI тоже есть — мощнейший синтаксис-помощник по API платформы, языку запросов, директивам компиляции, аннотациям расширений и функциям СКД. Возможности конкурентов входят в наш продукт как подмножество.</p>
     </div>
   </div>
@@ -312,11 +312,11 @@
     </div>
 
     <div class="arch-image">
-      <img src="images/architecture.png" alt="Архитектура MCP:RSV: AI-клиент подключается к MCP-серверу плагина, который через нативные сервисы EDT работает с конфигурацией 1С">
+      <img src="images/architecture.png" alt="Архитектура MCP:RSV Server: AI-клиент подключается к MCP-серверу плагина, который через нативные сервисы EDT работает с конфигурацией 1С">
     </div>
 
     <div class="container-narrow" style="padding:0;">
-      <p class="lead">MCP:RSV — это плагин для 1С:EDT, который при старте среды разработки поднимает локальный HTTP-сервер по открытому стандарту MCP (Model Context Protocol). К этому серверу подключается любой MCP-совместимый AI-клиент — Claude Code, Cursor, Windsurf, Roo Code, Gemini CLI, Qwen Code — и получает доступ к инструментам плагина.</p>
+      <p class="lead">MCP:RSV Server — это плагин для 1С:EDT, который при старте среды разработки поднимает локальный HTTP-сервер по открытому стандарту MCP (Model Context Protocol). К этому серверу подключается любой MCP-совместимый AI-клиент — Claude Code, Cursor, Windsurf, Roo Code, Gemini CLI, Qwen Code — и получает доступ к инструментам плагина.</p>
       <p>Все операции выполняются через <strong style="color:var(--text)">нативные сервисы платформы 1С:EDT</strong>: отладчик Eclipse Debug API и десятки других внутренних API. Когда AI создаёт через плагин справочник, система выполняет ровно те же шаги, что и мастер создания объектов в EDT при клике мышью. Когда AI пишет метод, код проходит через тот же парсер Xtext, что ловит ваши опечатки в редакторе. Когда AI ставит точку останова, она становится обычной точкой останова Eclipse — вы можете её увидеть, отключить, модифицировать вручную.</p>
       <div class="summary-card" style="margin-top:32px;">
         <p><strong>Это принципиально другой уровень интеграции.</strong> Плагин не подменяет и не эмулирует поведение EDT — он делегирует работу самой EDT. Отсюда и уровень надёжности: всё, что делает через плагин AI, идентично ручным действиям разработчика в EDT.</p>
@@ -336,10 +336,10 @@
     </div>
     <div class="video-grid">
       <div class="video-wrap">
-        <iframe src="https://www.youtube.com/embed/7BoQUxoi_hw" title="MCP:RSV — YouTube demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/7BoQUxoi_hw" title="MCP:RSV Server — YouTube demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
       <div class="video-wrap">
-        <iframe src="https://vk.com/video_ext.php?oid=-236008654&id=456239023" title="MCP:RSV — VK demo" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen frameborder="0"></iframe>
+        <iframe src="https://vk.com/video_ext.php?oid=-236008654&id=456239023" title="MCP:RSV Server — VK demo" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen frameborder="0"></iframe>
       </div>
     </div>
   </div>
@@ -460,7 +460,7 @@
         <span class="step-number">1</span>
         <div>
           <h3>Установка плагина</h3>
-          <p>Скачайте ZIP-архив из файлов публикации. В 1С:EDT откройте меню «Справка» -> «Установить новое ПО...» -> «Добавить...» -> «Архив...» и выберите скачанный файл. Отметьте «MCP:RSV», нажмите «Далее» и «Готово», после установки перезапустите среду.</p>
+          <p>Скачайте ZIP-архив из файлов публикации. В 1С:EDT откройте меню «Справка» -> «Установить новое ПО...» -> «Добавить...» -> «Архив...» и выберите скачанный файл. Отметьте «MCP:RSV Server», нажмите «Далее» и «Готово», после установки перезапустите среду.</p>
         </div>
       </div>
       <div class="step">
@@ -495,7 +495,7 @@
   <div class="container">
     <div class="section-header">
       <span class="eyebrow">📥 Актуальный релиз</span>
-      <h2>Скачать MCP:RSV</h2>
+      <h2>Скачать MCP:RSV Server</h2>
       <p data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 3.7.0 · для 1C:EDT 2025.2 · Windows, macOS · пробный период 14 дней.</p>
     </div>
 
@@ -632,7 +632,7 @@
       <h2>Попробуйте прямо сейчас — это бесплатно</h2>
       <p>Скачайте ZIP-архив, установите его в 1С:EDT и активируйте 14-дневный пробный период одним кликом из плагина. Без регистрации, без платёжных данных, без ограничений функциональности — полный доступ к профилю «Архитектор» с первой минуты.</p>
       <div class="hero-ctas" style="justify-content:center;">
-        <a href="#download" class="btn btn-primary btn-lg">⬇ Скачать MCP:RSV</a>
+        <a href="#download" class="btn btn-primary btn-lg">⬇ Скачать MCP:RSV Server</a>
         <a href="#pricing" class="btn btn-secondary btn-lg">Тарифы</a>
       </div>
     </div>
@@ -689,10 +689,10 @@
     </div>
     <div class="footer-bottom">
       <div>Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a></div>
-      <div data-v="MCP:RSV v{v} · 2026">MCP:RSV v3.7.0 · 2026</div>
+      <div data-v="MCP:RSV Server v{v} · 2026">MCP:RSV Server v3.7.0 · 2026</div>
     </div>
     <div class="footer-disclaimer">
-      <p>«1С», «1С:Предприятие», «1С:EDT» — товарные знаки фирмы «1С». Продукт <strong>MCP:RSV</strong> является независимой разработкой Радзивилловича С.В., не входит в линейку продуктов фирмы «1С» и не является официальным продуктом фирмы «1С».</p>
+      <p>«1С», «1С:Предприятие», «1С:EDT» — товарные знаки фирмы «1С». Продукт <strong>MCP:RSV Server</strong> является независимой разработкой Радзивилловича С.В., не входит в линейку продуктов фирмы «1С» и не является официальным продуктом фирмы «1С».</p>
     </div>
   </div>
 </footer>

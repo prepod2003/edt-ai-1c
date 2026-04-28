@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MCP:RSV и vibecoding1c.ru — сравнение двух подходов</title>
-  <meta name="description" content="Подробное сравнение MCP-инструментов для AI-разработки на 1С: vibecoding1c (7 RAG-серверов вокруг Cursor) и MCP:RSV (нативный плагин 1С:EDT). Архитектура, возможности, сценарии применения.">
+  <title>MCP:RSV Server и vibecoding1c.ru — сравнение двух подходов</title>
+  <meta name="description" content="Подробное сравнение MCP-инструментов для AI-разработки на 1С: vibecoding1c (7 RAG-серверов вокруг Cursor) и MCP:RSV Server (нативный плагин 1С:EDT). Архитектура, возможности, сценарии применения.">
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.svg">
@@ -450,7 +450,7 @@
 <header class="cmp-hero">
   <div class="container">
     <span class="eyebrow">Сравнение</span>
-    <h1>MCP:RSV и <span>vibecoding1c.ru</span><br>— два подхода к AI-разработке на 1С</h1>
+    <h1>MCP:RSV Server и <span>vibecoding1c.ru</span><br>— два подхода к AI-разработке на 1С</h1>
     <p class="cmp-hero-lead">
       Технический разбор двух MCP-инструментов для AI-разработки на 1С: <strong>архитектура, возможности, сценарии применения</strong>. Чтобы помочь выбрать инструмент под конкретные задачи.
     </p>
@@ -493,7 +493,7 @@
               <p>Семь Docker-контейнеров: RAG по метаданным, по коду, по справке платформы и БСП, граф Neo4j, обёртка над BSL Language Server, интеграция с 1С:Напарник. Это <strong>поисковики контекста</strong> — они помогают AI найти и понять, как сделать. Дальше Cursor редактирует <code>.bsl</code>-файлы и XML как обычный текст.</p>
             </div>
             <div class="approach-card is-rsv">
-              <span class="approach-tag is-rsv">MCP:RSV</span>
+              <span class="approach-tag is-rsv">MCP:RSV Server</span>
               <h3>Один плагин внутри 1С:EDT</h3>
               <p>Сам плагин становится MCP-сервером для любого AI-клиента. AI <strong>не правит файлы</strong> — он вызывает операции, а EDT выполняет их через свои штатные сервисы (EMF-модель, конструкторы метаданных, парсер Xtext, валидатор, Eclipse Debug API). Любое действие AI идентично ручным действиям разработчика в EDT. Три профиля — <strong>Аналитик</strong>, <strong>Разработчик</strong>, <strong>Архитектор</strong> — закрывают весь спектр задач: от изучения любой конфигурации до её модификации.</p>
             </div>
@@ -515,7 +515,7 @@
             <li><strong>Расширение конфигурации</strong> — заимствованные объекты с правильными ссылками на базовую конфигурацию.</li>
           </ul>
           <p>vibecoding1c в эту зону осознанно не идёт — их семь серверов про <strong>поиск и контекст</strong>, а не про модификацию структурных XML. Изменения метаданных и форм остаются на стороне Cursor и AI.</p>
-          <p><strong>MCP:RSV эту проблему обходит архитектурно</strong>: AI не видит XML вообще. Он вызывает операцию <code>add_form_field</code>, <code>set_cell_text</code>, <code>add_dataset</code> — а EDT сам собирает корректную EMF-модель и сериализует её, ровно так же, как при клике мышкой в IDE.</p>
+          <p><strong>MCP:RSV Server эту проблему обходит архитектурно</strong>: AI не видит XML вообще. Он вызывает операцию <code>add_form_field</code>, <code>set_cell_text</code>, <code>add_dataset</code> — а EDT сам собирает корректную EMF-модель и сериализует её, ровно так же, как при клике мышкой в IDE.</p>
 
           <!-- Архитектурные блок-схемы -->
           <div class="arch-grid">
@@ -555,7 +555,7 @@
             </div>
 
             <div class="arch-block is-rsv">
-              <h3>Путь AI → результат у MCP:RSV</h3>
+              <h3>Путь AI → результат у MCP:RSV Server</h3>
               <svg viewBox="0 0 360 260" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
@@ -569,7 +569,7 @@
 
                   <!-- 1 MCP plugin in EDT -->
                   <rect x="60"  y="76" width="240" height="36" rx="8" fill="#7C3AED" stroke="#6D28D9"/>
-                  <text x="180" y="99" text-anchor="middle" font-weight="700" fill="#FFFFFF">MCP:RSV — плагин внутри 1С:EDT</text>
+                  <text x="180" y="99" text-anchor="middle" font-weight="700" fill="#FFFFFF">MCP:RSV Server — плагин внутри 1С:EDT</text>
 
                   <!-- Native EDT services -->
                   <rect x="20"  y="138" width="320" height="36" rx="8" fill="#FFFFFF" stroke="#7C3AED"/>
@@ -659,7 +659,7 @@
             </svg>
             </div>
             <div class="chart-legend">
-              <span><span class="lg-dot" style="background:#7C3AED;"></span>MCP:RSV</span>
+              <span><span class="lg-dot" style="background:#7C3AED;"></span>MCP:RSV Server</span>
               <span><span class="lg-dot" style="background:#D4CDC0;"></span>vibecoding1c</span>
             </div>
           </div>
@@ -673,7 +673,7 @@
             <thead>
               <tr>
                 <th>Возможность</th>
-                <th>MCP:RSV</th>
+                <th>MCP:RSV Server</th>
                 <th>vibecoding1c</th>
               </tr>
             </thead>
@@ -771,7 +771,7 @@
         <article class="content-section" id="templates">
           <h2>Про базу из 2500+ шаблонов</h2>
           <p>Это одно из самых заметных преимуществ vibecoding1c, и оно действительно ценное — особенно для типовых конфигураций. Шаблоны накапливают коллективный опыт: если задача похожа на то, с чем уже сталкивались, AI быстро находит готовое решение. Плюс есть «долговременная память» — пользователь сам пополняет базу своими паттернами.</p>
-          <p>Подход MCP:RSV принципиально другой: <strong>источник знаний — сама 1С:EDT и сам проект пользователя</strong>.</p>
+          <p>Подход MCP:RSV Server принципиально другой: <strong>источник знаний — сама 1С:EDT и сам проект пользователя</strong>.</p>
           <ul>
             <li><strong>Код пишется в стиле проекта.</strong> Через <code>search_in_code</code>, <code>read_method_source</code>, <code>get_method_call_hierarchy</code> AI видит реальные паттерны конкретно вашего кода — как у вас принято выводить сообщения, формировать движения, оформлять запросы.</li>
             <li><strong>Справка платформы — встроенная, нативная.</strong> Тысячи топиков по API, языку запросов, директивам компиляции, ~130 функциям СКД — те же самые, что открываются в EDT по F1.</li>
@@ -799,14 +799,14 @@
             <li><code>find_object_references</code>, <code>get_method_call_hierarchy</code> — все вызовы функции, кто её зовёт, кого зовёт она.</li>
             <li>Найденные паттерны можно сохранить в <code>.ai/project-knowledge.md</code> — и в следующих сессиях AI начнёт сразу с них.</li>
           </ul>
-          <p>Ключевое отличие подходов: vibecoding1c даёт «семантический поиск по описаниям функций БСП <strong>из заранее собранного индекса</strong>» — быстро и удобно для типовой БСП. MCP:RSV даёт AI <strong>сами функции БСП в вашем проекте</strong> — с кодом, комментариями, вызовами, контекстом. Со всеми патчами, форками, локальными правками, если они есть.</p>
+          <p>Ключевое отличие подходов: vibecoding1c даёт «семантический поиск по описаниям функций БСП <strong>из заранее собранного индекса</strong>» — быстро и удобно для типовой БСП. MCP:RSV Server даёт AI <strong>сами функции БСП в вашем проекте</strong> — с кодом, комментариями, вызовами, контекстом. Со всеми патчами, форками, локальными правками, если они есть.</p>
         </article>
 
         <!-- UNIVERSAL -->
         <article class="content-section" id="universal">
           <h2>Любая конфигурация, а не только типовая</h2>
           <p>Подход <strong>vibecoding1c сильнее всего раскрывается на типовых конфигурациях</strong>. Заранее собранные шаблоны, RAG-индекс по справке БСП и платформе — всё это работает тем лучше, чем ближе ваша конфигурация к стандартной ERP/УТ/БП. Это сильная сторона на типовом стеке.</p>
-          <p>Подход <strong>MCP:RSV принципиально универсален</strong>. Источник знаний — <strong>сама конфигурация</strong>, какой бы она ни была. AI работает с проектом через <strong>нативные индексы и графы 1С:EDT</strong> — те же самые, на которые опираются Go to Definition, Find References, Call Hierarchy, поиск по коду, валидатор и парсер Xtext. То есть AI <strong>видит конфигурацию глазами профессионального разработчика 1С</strong>, который только что открыл проект в EDT — но в сотни и даже тысячи раз быстрее.</p>
+          <p>Подход <strong>MCP:RSV Server принципиально универсален</strong>. Источник знаний — <strong>сама конфигурация</strong>, какой бы она ни была. AI работает с проектом через <strong>нативные индексы и графы 1С:EDT</strong> — те же самые, на которые опираются Go to Definition, Find References, Call Hierarchy, поиск по коду, валидатор и парсер Xtext. То есть AI <strong>видит конфигурацию глазами профессионального разработчика 1С</strong>, который только что открыл проект в EDT — но в сотни и даже тысячи раз быстрее.</p>
           <p>Из этого следуют конкретные практические следствия:</p>
           <ul>
             <li><strong>Самописная конфигурация с нуля.</strong> AI открывает проект и через <code>list_metadata_objects</code>, <code>ai_context</code>, <code>get_module_structure</code>, <code>read_method_source</code> строит понимание архитектуры за минуты.</li>
@@ -815,7 +815,7 @@
             <li><strong>Редкая или старая БСП.</strong> AI видит ровно тот код БСП, который реально лежит в вашей конфигурации.</li>
             <li><strong>Расширения с нестандартными объектами.</strong> Заимствование, доработка форм, добавление реквизитов — всё через нативные API EDT.</li>
           </ul>
-          <p>Грубо говоря: vibecoding1c сильнее всего работает там, где задача <strong>типовая</strong>. MCP:RSV даёт AI <strong>возможность изучить любую конкретную конфигурацию на лету</strong>, поэтому одинаково хорошо работает и на типовой, и на самописной, и на отраслевой.</p>
+          <p>Грубо говоря: vibecoding1c сильнее всего работает там, где задача <strong>типовая</strong>. MCP:RSV Server даёт AI <strong>возможность изучить любую конкретную конфигурацию на лету</strong>, поэтому одинаково хорошо работает и на типовой, и на самописной, и на отраслевой.</p>
         </article>
 
         <!-- RADAR CHART -->
@@ -871,7 +871,7 @@
                   <text x="145" y="100" text-anchor="end">Граф связей</text>
                 </g>
 
-                <!-- MCP:RSV polygon -->
+                <!-- MCP:RSV Server polygon -->
                 <!-- Values: метаданные=5, BSL=5, отладка=5, универсальность=5, установка=5, шаблоны=2, RAG=4 (живой поиск), граф=4 -->
                 <!-- helper: pt(angle_deg, value) -->
                 <!--
@@ -925,7 +925,7 @@
             </svg>
             </div>
             <div class="chart-legend">
-              <span><span class="lg-dot" style="background:#7C3AED;"></span>MCP:RSV</span>
+              <span><span class="lg-dot" style="background:#7C3AED;"></span>MCP:RSV Server</span>
               <span><span class="lg-dot" style="background:#8B8680;"></span>vibecoding1c</span>
             </div>
           </div>
@@ -934,12 +934,12 @@
         <!-- COMPONENTS -->
         <article class="content-section" id="components">
           <h2>Итоговый разбор: что у каждого инструмента в ядре</h2>
-          <p>Если разобрать ключевые компоненты vibecoding1c и сопоставить с возможностями MCP:RSV:</p>
+          <p>Если разобрать ключевые компоненты vibecoding1c и сопоставить с возможностями MCP:RSV Server:</p>
           <table class="cmp-table">
             <thead>
               <tr>
                 <th>Компонент vibecoding1c</th>
-                <th>Аналог в MCP:RSV</th>
+                <th>Аналог в MCP:RSV Server</th>
               </tr>
             </thead>
             <tbody>
@@ -973,7 +973,7 @@
               </tr>
               <tr>
                 <td>1С:Напарник (требует отдельный платный ключ)</td>
-                <td class="cell-yes">MCP:RSV сам пишет, валидирует и отлаживает код через нативные API EDT</td>
+                <td class="cell-yes">MCP:RSV Server сам пишет, валидирует и отлаживает код через нативные API EDT</td>
               </tr>
             </tbody>
           </table>
@@ -988,7 +988,7 @@
               <span class="approach-tag is-vc">vibecoding1c</span>
               <h3>Подойдёт, если:</h3>
               <ul>
-                <li>вы работаете в <strong>Конфигураторе</strong> (а не в EDT) — vibecoding1c это поддерживает, MCP:RSV нет;</li>
+                <li>вы работаете в <strong>Конфигураторе</strong> (а не в EDT) — vibecoding1c это поддерживает, MCP:RSV Server нет;</li>
                 <li>ключевая задача AI — <strong>поиск, подсказки, ревью</strong> существующего кода, без активной модификации метаданных;</li>
                 <li>вам комфортна экосистема <strong>Cursor + Docker</strong>, и вы готовы поднимать семь контейнеров;</li>
                 <li>нужны большие <strong>RAG-индексы по справке БСП и платформы</strong> и база готовых шаблонов кода;</li>
@@ -996,7 +996,7 @@
               </ul>
             </div>
             <div class="when-card is-rsv">
-              <span class="approach-tag is-rsv">MCP:RSV</span>
+              <span class="approach-tag is-rsv">MCP:RSV Server</span>
               <h3>Подойдёт, если:</h3>
               <ul>
                 <li>вы работаете в <strong>1С:EDT</strong>;</li>
@@ -1016,10 +1016,10 @@
           <h2>Заключение</h2>
           <div class="closing">
             <p>Команда vibecoding1c сделала большое дело: показала российскому 1С-сообществу, что AI может реально помогать в разработке, а не быть игрушкой. Их продукт — серьёзный шаг вперёд для рынка, и для своих задач он отлично работает.</p>
-            <p>MCP:RSV даёт AI <strong>полный рабочий цикл аналитика, разработчика и архитектора 1С:EDT через нативные API платформы</strong>: от изучения любой конфигурации (типовой, отраслевой, самописной, на любой версии БСП) до создания справочников, форм с любыми элементами, печатных макетов, схем компоновки, расширений, написания и отладки BSL-кода. Архитектурно это сегодня единственное на рынке решение такого рода.</p>
-            <p>Честно говоря, при работе в 1С:EDT функционал vibecoding1c полностью покрывается возможностями MCP:RSV — и значительно расширяется за счёт прямого доступа к API EDT. vibecoding1c остаётся релевантным выбором главным образом для тех, кто работает в <strong>Конфигураторе</strong> (1С:EDT не использует), либо как способ начать пробовать AI-разработку на типовых конфигурациях через Cursor.</p>
+            <p>MCP:RSV Server даёт AI <strong>полный рабочий цикл аналитика, разработчика и архитектора 1С:EDT через нативные API платформы</strong>: от изучения любой конфигурации (типовой, отраслевой, самописной, на любой версии БСП) до создания справочников, форм с любыми элементами, печатных макетов, схем компоновки, расширений, написания и отладки BSL-кода. Архитектурно это сегодня единственное на рынке решение такого рода.</p>
+            <p>Честно говоря, при работе в 1С:EDT функционал vibecoding1c полностью покрывается возможностями MCP:RSV Server — и значительно расширяется за счёт прямого доступа к API EDT. vibecoding1c остаётся релевантным выбором главным образом для тех, кто работает в <strong>Конфигураторе</strong> (1С:EDT не использует), либо как способ начать пробовать AI-разработку на типовых конфигурациях через Cursor.</p>
             <div class="ctas">
-              <a href="index.html#download" class="btn btn-primary btn-lg">⬇ Попробовать MCP:RSV бесплатно</a>
+              <a href="index.html#download" class="btn btn-primary btn-lg">⬇ Попробовать MCP:RSV Server бесплатно</a>
               <a href="index.html#features" class="btn btn-secondary btn-lg">Узнать о возможностях</a>
             </div>
           </div>
@@ -1036,7 +1036,7 @@
 <footer class="cmp-footer">
   <div class="container">
     <p>
-      Подробнее о MCP:RSV: <a href="index.html">prepod2003.github.io/edt-ai-1c</a> ·
+      Подробнее о MCP:RSV Server: <a href="index.html">prepod2003.github.io/edt-ai-1c</a> ·
       Подробнее о vibecoding1c: <a href="https://vibecoding1c.ru/" target="_blank" rel="noopener">vibecoding1c.ru</a> ·
       Telegram: <a href="https://t.me/edt_ai_1c" target="_blank" rel="noopener">@edt_ai_1c</a>
     </p>
@@ -1046,7 +1046,7 @@
 
 <script>
 // Подставляем data-col на ячейки таблиц на основе заголовка колонки —
-// чтобы на мобилке (стек-карточный режим) показывались метки "MCP:RSV: ...", "vibecoding1c: ..." и т. д.
+// чтобы на мобилке (стек-карточный режим) показывались метки "MCP:RSV Server: ...", "vibecoding1c: ..." и т. д.
 (function () {
   document.querySelectorAll('.cmp-table').forEach(table => {
     const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());

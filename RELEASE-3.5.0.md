@@ -1,4 +1,4 @@
-# 1C:RSV MCP Server — Релиз 3.5.0
+# MCP:RSV Server — Релиз 3.5.0
 
 ## Содержание
 

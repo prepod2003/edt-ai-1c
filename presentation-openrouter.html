@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Полноценная разработка в 1С без дорогих подписок — OpenRouter + Roo Code + MCP:RSV</title>
-  <meta name="description" content="Конспект к видео: как с дешёвыми моделями OpenRouter (DeepSeek-V4-Flash, Qwen3.5-Flash) и расширением Roo Code вести полноценную разработку в 1С через плагин MCP:RSV. Бюджет ≈$30/мес вместо сотен.">
+  <title>Полноценная разработка в 1С без дорогих подписок — OpenRouter + Roo Code + MCP:RSV Server</title>
+  <meta name="description" content="Конспект к видео: как с дешёвыми моделями OpenRouter (DeepSeek-V4-Flash, Qwen3.5-Flash) и расширением Roo Code вести полноценную разработку в 1С через плагин MCP:RSV Server. Бюджет ≈$30/мес вместо сотен.">
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
@@ -432,7 +432,7 @@
       line-height: 1.5;
     }
 
-    /* --- Цепочка "OpenRouter → Roo Code → MCP:RSV" --- */
+    /* --- Цепочка "OpenRouter → Roo Code → MCP:RSV Server" --- */
     .stack-chain {
       display: flex;
       align-items: stretch;
@@ -782,7 +782,7 @@
       <span class="pres-hero-eyebrow"><span class="dot"></span>Конспект к видео</span>
       <h1>Полноценная разработка в&nbsp;1С без&nbsp;дорогих <span class="accent">подписок</span></h1>
       <p class="pres-hero-lead">
-        Связка <strong>OpenRouter + Roo Code + MCP:RSV</strong> позволяет вести разработку 1С на дешёвых моделях
+        Связка <strong>OpenRouter + Roo Code + MCP:RSV Server</strong> позволяет вести разработку 1С на дешёвых моделях
         уровня DeepSeek-V4-Flash и Qwen3.5-Flash — со справочниками, документами, регистрами, формами, отчётами СКД,
         табличными макетами и расширениями. Без подписки топовой модели, без иностранной карты, без VPN.
       </p>
@@ -801,14 +801,14 @@
 
       <p style="margin-top:18px; font-size:0.95rem;">
         🎥 <strong>Есть видео-версия этого конспекта</strong> —
-        <a href="https://youtu.be/qyp3BtEBgxY" target="_blank" rel="noopener">«Подключаем ИИ к 1С через плагин MCP:RSV»</a>
+        <a href="https://youtu.be/qyp3BtEBgxY" target="_blank" rel="noopener">«Подключаем ИИ к 1С через плагин MCP:RSV Server»</a>
         (60+ минут, всё показано на экране, тестирование DeepSeek V4 Flash).
       </p>
     </div>
 
     <!-- Визуальный блок: упрощённая схема связки. Под заголовком, по центру. -->
     <div class="pres-hero-visual">
-        <svg viewBox="0 0 460 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Схема связки OpenRouter + Roo Code + MCP:RSV">
+        <svg viewBox="0 0 460 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Схема связки OpenRouter + Roo Code + MCP:RSV Server">
           <defs>
             <linearGradient id="grad-accent" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stop-color="#7C3AED"/>
@@ -840,11 +840,11 @@
           <line x1="120" y1="245" x2="120" y2="278" stroke="#7C3AED" stroke-width="2"/>
           <polygon points="115,273 125,273 120,283" fill="#7C3AED"/>
 
-          <!-- MCP:RSV -->
+          <!-- MCP:RSV Server -->
           <rect x="20" y="290" width="200" height="78" rx="14" fill="url(#grad-accent)"/>
           <rect x="36" y="308" width="28" height="42" rx="6" fill="#FFFFFF" opacity="0.18"/>
           <text x="50" y="336" text-anchor="middle" font-family="Inter" font-size="13" font-weight="800" fill="#FFFFFF">1С</text>
-          <text x="74" y="318" font-family="Inter" font-size="14" font-weight="700" fill="#FFFFFF">MCP:RSV</text>
+          <text x="74" y="318" font-family="Inter" font-size="14" font-weight="700" fill="#FFFFFF">MCP:RSV Server</text>
           <text x="74" y="336" font-family="Inter" font-size="11" fill="#EDE9FE">Плагин 1С:EDT</text>
           <text x="74" y="353" font-family="Inter" font-size="11" fill="#DDD6FE">14 дней бесплатно</text>
 
@@ -899,7 +899,7 @@
 
         <div class="compare-grid">
           <div class="compare-card is-bad">
-            <span class="compare-tag is-bad">Без MCP:RSV</span>
+            <span class="compare-tag is-bad">Без MCP:RSV Server</span>
             <h3>Модель пишет XML руками</h3>
             <ul>
               <li>Ломаются EMF-связи, теряются ссылки на объекты</li>
@@ -910,7 +910,7 @@
             </ul>
           </div>
           <div class="compare-card is-good">
-            <span class="compare-tag is-good">С MCP:RSV</span>
+            <span class="compare-tag is-good">С MCP:RSV Server</span>
             <h3>Модель вызывает штатный API EDT</h3>
             <ul>
               <li>Реальную работу делает 1С:EDT, а не модель</li>
@@ -965,7 +965,7 @@
               <polygon points="535,176 535,184 543,180" fill="#7C3AED"/>
 
               <rect x="550" y="150" width="160" height="60" rx="10" fill="#7C3AED"/>
-              <text x="630" y="178" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#fff">MCP:RSV</text>
+              <text x="630" y="178" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#fff">MCP:RSV Server</text>
               <text x="630" y="196" text-anchor="middle" font-family="Inter" font-size="11" fill="#EDE9FE">edit_metadata</text>
 
               <path d="M 710 180 L 770 180" stroke="#7C3AED" stroke-width="2"/>
@@ -1044,7 +1044,7 @@
         <span class="section-eyebrow">Раздел 3 · Выбор модели</span>
         <h2>Какие модели реально брать для 1С</h2>
         <p class="section-lead">
-          Для разработки в 1С через MCP:RSV важны три вещи: понимание русского, поддержка <strong>tool calling</strong>
+          Для разработки в 1С через MCP:RSV Server важны три вещи: понимание русского, поддержка <strong>tool calling</strong>
           (вызов инструментов) и достаточный контекст. Под это попадают свежие «flash»-модели DeepSeek и Qwen
           плюс Sonnet 4.x как запасной вариант под сложные задачи.
         </p>
@@ -1172,7 +1172,7 @@
         <span class="section-eyebrow">Раздел 4 · Клиент</span>
         <h2>Roo Code — мост от модели к плагину</h2>
         <p class="section-lead">
-          OpenRouter — это только провайдер моделей. Чтобы модель «увидела» MCP-сервер плагина MCP:RSV, нужен ИИ-клиент,
+          OpenRouter — это только провайдер моделей. Чтобы модель «увидела» MCP-сервер плагина MCP:RSV Server, нужен ИИ-клиент,
           который умеет одновременно говорить с моделью и с MCP. Бесплатный, открытый, ставится в VS Code за минуту —
           расширение <strong>Roo Code</strong>.
         </p>
@@ -1226,7 +1226,7 @@
       <!-- ===================== 5. MCP ===================== -->
       <section class="pres-section" id="mcp">
         <span class="section-eyebrow">Раздел 5 · Подключение плагина</span>
-        <h2>Подключение MCP-сервера MCP:RSV</h2>
+        <h2>Подключение MCP:RSV Server</h2>
         <p class="section-lead">
           Плагин запускает HTTP-сервер на <code>127.0.0.1:8770</code> прямо внутри 1С:EDT. Roo Code подключается к нему
           по транспорту <strong>streamable-http</strong> — пара строк JSON, и появляются 18–27 инструментов плагина.
@@ -1234,7 +1234,7 @@
 
         <h3>Шаг 1. Проверьте, что плагин запущен</h3>
         <ul class="dot-list">
-          <li>Откройте 1С:EDT и убедитесь, что плагин активен: <strong>Window → Preferences → MCP:RSV</strong> (порт по умолчанию 8770).</li>
+          <li>Откройте 1С:EDT и убедитесь, что плагин активен: <strong>Window → Preferences → MCP:RSV Server</strong> (порт по умолчанию 8770).</li>
           <li>В терминале: <code>curl http://localhost:8770/health</code> — должен вернуть OK.</li>
         </ul>
 
@@ -1291,7 +1291,7 @@
       <!-- ===================== 6. ЧТО МОЖНО ===================== -->
       <section class="pres-section" id="what-can">
         <span class="section-eyebrow">Раздел 6 · Возможности</span>
-        <h2>Что можно делать через MCP:RSV</h2>
+        <h2>Что можно делать через MCP:RSV Server</h2>
         <p class="section-lead">
           Полноценная разработка, а не «генерация кода по описанию». Всё работает через штатный API 1С:EDT —
           никакого ручного XML, никаких испорченных EMF-связей.
@@ -1420,7 +1420,7 @@
             </div>
             <span class="chain-arrow" aria-hidden="true">→</span>
             <div class="chain-box is-rsv">
-              <span class="chain-name">MCP:RSV</span>
+              <span class="chain-name">MCP:RSV Server</span>
               <span class="chain-sub">плагин 1С:EDT<br>14 дней бесплатно</span>
             </div>
           </div>
@@ -1429,7 +1429,7 @@
 
         <ul class="dot-list">
           <li>ИИ <strong>без</strong> специнструмента в 1С разработку <strong>не тянет</strong> — даже топ-модели.</li>
-          <li>ИИ <strong>с MCP:RSV</strong> тянет даже на дешёвых платных моделях уровня DeepSeek-V4-Flash и Qwen3.5-Flash.</li>
+          <li>ИИ <strong>с MCP:RSV Server</strong> тянет даже на дешёвых платных моделях уровня DeepSeek-V4-Flash и Qwen3.5-Flash.</li>
           <li>Реалистичный бюджет — <strong>$20–40 в месяц</strong>. В разы меньше любой топовой подписки.</li>
           <li>Бесплатные модели не используем — для серьёзной разработки они не подходят.</li>
           <li>Roo Code — <strong>бесплатный мост</strong> между OpenRouter и MCP-сервером плагина.</li>
@@ -1455,7 +1455,7 @@
 
 <footer class="pres-footer-mini">
   <div class="pres-container">
-    Конспект к видео · MCP:RSV · <a href="https://prepod2003.github.io/edt-ai-1c/" target="_blank" rel="noopener">prepod2003.github.io/edt-ai-1c</a>
+    Конспект к видео · MCP:RSV Server · <a href="https://prepod2003.github.io/edt-ai-1c/" target="_blank" rel="noopener">prepod2003.github.io/edt-ai-1c</a>
   </div>
 </footer>
 
