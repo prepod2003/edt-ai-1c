@@ -64,7 +64,7 @@
           <a href="#pricing" class="btn btn-secondary btn-lg">Посмотреть тарифы</a>
         </div>
         <div class="hero-meta">
-          <span><b>v4.0.0</b> · для 1C:EDT 2025.2</span>
+          <span><b>v4.1.0</b> · для 1C:EDT 2025.2</span>
           <span>Java 17 · Windows, macOS</span>
         </div>
       </div>
@@ -502,28 +502,28 @@
     <div class="section-header">
       <span class="eyebrow">📥 Актуальный релиз</span>
       <h2>Скачать MCP:RSV Server</h2>
-      <p data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 4.0.0 · для 1C:EDT 2025.2 · Windows, macOS · пробный период 14 дней.</p>
+      <p data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 4.1.0 · для 1C:EDT 2025.2 · Windows, macOS · пробный период 14 дней.</p>
     </div>
 
     <div class="download-card">
       <div class="download-file">
         <div class="download-file-icon">📦</div>
         <div>
-          <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-4.0.0-distr.zip</div>
-          <div class="download-file-meta" data-v="Версия {v} · ~2.8 MB">Версия 4.0.0 · ~2.8 MB</div>
+          <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-4.1.0-distr.zip</div>
+          <div class="download-file-meta" data-v="Версия {v} · ~2.8 MB">Версия 4.1.0 · ~2.9 MB</div>
         </div>
       </div>
 
       <div class="download-includes">
-        <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-4.0.0-SNAPSHOT.zip</span>
+        <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-4.1.0-SNAPSHOT.zip</span>
         <span>✅ guide.html — руководство пользователя</span>
         <span>✅ tools.html — описание инструментов</span>
         <span>✅ CLAUDE.md — правила для AI</span>
-        <span>✅ RELEASE-4.0.0.md — что нового</span>
-        <span>✅ RELEASE-3.8.0.md — предыдущий релиз</span>
+        <span>✅ RELEASE-4.1.0.md — что нового</span>
+        <span>✅ RELEASE-4.0.0.md — предыдущий релиз</span>
       </div>
 
-      <a href="./MCP-RSV-Server-4.0.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./MCP-RSV-Server-{v}-distr.zip" download="MCP-RSV-Server-4.0.0-distr.zip">⬇ Скачать бесплатно</a>
+      <a href="./MCP-RSV-Server-4.1.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./MCP-RSV-Server-{v}-distr.zip" download="MCP-RSV-Server-4.1.0-distr.zip">⬇ Скачать бесплатно</a>
 
       <div class="download-note">
         При первом запуске откроется диалог активации — нажмите «Пробный период» или введите код активации
@@ -534,13 +534,19 @@
       <h3>История версий</h3>
 
       <div class="changelog-entry">
-        <a href="release.html?v=4.0.0" class="changelog-version" title="Открыть заметки релиза v4.0.0">v4.0.0</a>
-        <h4>AI замкнул цикл разработки 1С — юнит-тесты YAxUnit с автономной отладкой</h4>
-        <p>Новый инструмент <code>yaxunit_tests</code> запускает юнит-тесты YAxUnit в проекте, читает JUnit-отчёт и возвращает Markdown с упавшими тестами и стеком вызовов. В режиме <code>mode=debug</code> AI сам ставит точки останова, смотрит переменные через <code>launch_debugger</code>, доходит до причины бага и продолжает выполнение — всё без клика мышью. Информбаза обновляется перед прогоном автоматически (модальный диалог EDT больше не появляется). Встроенная справка по 5 темам (<code>writing</code>/<code>assertions</code>/<code>setup</code>/<code>events</code>/<code>advanced</code>) позволяет писать тесты даже слабым моделям. <a href="release.html?v=4.0.0">Полный список →</a></p>
+        <a href="release.html?v=4.1.0" class="changelog-version" title="Открыть заметки релиза v4.1.0">v4.1.0</a>
+        <h4>YAxUnit на серверных ИБ, защита от опечаток в edit_metadata, фикс палитры свойств у реквизитов-перечислений</h4>
+        <p>Автономный YAxUnit-цикл теперь работает на клиент-серверной информбазе: новый параметр <code>terminateActiveSessions</code> сам завершает живые сеансы перед обновлением, повторный <code>yaxunit_tests</code> возвращает готовый отчёт без перезапуска 1С, pre-flight проверка отсекает «0 тестов» из-за <code>serverCall=true</code> ещё до запуска. В <code>edit_metadata</code> — жёсткий отказ при опечатках в параметрах вместо «success:true + пустая таблица», <code>setProperty</code> теперь принимает <code>dataPath</code> строкой, защита от создания объекта с уже занятым именем в workspace, и фикс палитры свойств у новых реквизитов ссылочного типа (<code>EnumRef</code>/<code>CatalogRef</code>/<code>DocumentRef</code>). Read-операции <code>ai_context</code> и <code>get_form_image</code> теперь видят <code>CommonForm</code>. <a href="release.html?v=4.1.0">Полный список →</a></p>
       </div>
 
       <details class="changelog-archive">
-        <summary>Показать предыдущие версии (v3.8.0 и старше)</summary>
+        <summary>Показать предыдущие версии (v4.0.0 и старше)</summary>
+
+        <div class="changelog-entry">
+          <a href="release.html?v=4.0.0" class="changelog-version" title="Открыть заметки релиза v4.0.0">v4.0.0</a>
+          <h4>AI замкнул цикл разработки 1С — юнит-тесты YAxUnit с автономной отладкой</h4>
+          <p>Новый инструмент <code>yaxunit_tests</code> запускает юнит-тесты YAxUnit в проекте, читает JUnit-отчёт и возвращает Markdown с упавшими тестами и стеком вызовов. В режиме <code>mode=debug</code> AI сам ставит точки останова, смотрит переменные через <code>launch_debugger</code>, доходит до причины бага и продолжает выполнение — всё без клика мышью. Информбаза обновляется перед прогоном автоматически (модальный диалог EDT больше не появляется). Встроенная справка по 5 темам (<code>writing</code>/<code>assertions</code>/<code>setup</code>/<code>events</code>/<code>advanced</code>) позволяет писать тесты даже слабым моделям. <a href="release.html?v=4.0.0">Полный список →</a></p>
+        </div>
 
         <div class="changelog-entry">
           <a href="release.html?v=3.8.0" class="changelog-version" title="Открыть заметки релиза v3.8.0">v3.8.0</a>
@@ -676,7 +682,7 @@
           <li><a href="#features">Возможности</a></li>
           <li><a href="#how">Как устроено</a></li>
           <li><a href="#pricing">Тарифы</a></li>
-          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v4.0.0</a></li>
+          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v4.1.0</a></li>
           <li><a href="guide.html">Руководство пользователя</a></li>
           <li><a href="tools.html">Описание инструментов</a></li>
         </ul>
@@ -707,7 +713,7 @@
     </div>
     <div class="footer-bottom">
       <div>Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a></div>
-      <div data-v="MCP:RSV Server v{v} · 2026">MCP:RSV Server v4.0.0 · 2026</div>
+      <div data-v="MCP:RSV Server v{v} · 2026">MCP:RSV Server v4.1.0 · 2026</div>
     </div>
     <div class="footer-disclaimer">
       <p>«1С», «1С:Предприятие», «1С:EDT» — товарные знаки фирмы «1С». Продукт <strong>MCP:RSV Server</strong> является независимой разработкой Радзивилловича С.В., не входит в линейку продуктов фирмы «1С» и не является официальным продуктом фирмы «1С».</p>
