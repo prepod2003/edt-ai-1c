@@ -743,7 +743,11 @@ tbody td code {
   line-height: 1.85;
   overflow-x: auto;
   color: var(--text-muted);
-  white-space: pre;
+  /* pre-wrap — сохраняем переводы строк ASCII-art дерева,
+     но разрешаем перенос длинных строк по словам */
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .code-tree .tree-root,
 .tree-block .node {
