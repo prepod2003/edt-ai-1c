@@ -38,6 +38,9 @@
     <div style="display:flex;gap:10px;align-items:center;">
       <a href="https://t.me/edt_ai_1c" target="_blank" rel="noopener" class="nav-tg">✈ Telegram</a>
       <a href="#download" class="nav-cta">⬇ Скачать</a>
+      <button class="nav-toggle" aria-label="Меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
@@ -360,6 +363,21 @@
 
 <!-- ==========================================================================
      REVIEWS — user testimonials (clickable screenshots → Telegram)
+
+     КАК ДОБАВИТЬ НОВЫЙ ОТЗЫВ:
+     1) Положить скриншот в landing/images/reviews/ как N.jpg — N это
+        следующий по порядку номер (4.jpg, 5.jpg, ...).
+     2) Получить прямую ссылку на сообщение в Telegram:
+        правый клик на сообщение → "Копировать ссылку".
+        Формат ссылки: https://t.me/edt_ai_1c/<post_id>?comment=<comment_id>
+     3) Скопировать блок <a class="review-card">…</a> и подставить
+        новый src, href и подпись.
+     4) Размещение:
+        — первые 4 отзыва идут в основной блок div.reviews-grid (видны сразу);
+        — 5-й и далее — внутрь details.reviews-more > div.reviews-grid
+          (открываются по клику "Показать другие отзывы").
+     5) Обновить число в <summary>: "Показать другие отзывы (N)".
+        Если "других" пока нет — целиком убрать блок details.reviews-more.
      ========================================================================== -->
 <section class="section" id="reviews">
   <div class="container">
@@ -369,29 +387,85 @@
       <p>Сообщения, которые присылают подписчики канала. Кликните по скриншоту, чтобы открыть оригинал в Telegram.</p>
     </div>
 
+    <!-- ОСНОВНЫЕ ОТЗЫВЫ — первые до 4 штук, видны без раскрытия.
+
+         У карточки две кликабельные зоны:
+         — клик по картинке (button.review-shot) → открывает lightbox с полным размером;
+         — клик по "Открыть в Telegram →" (a.review-link) → ведёт на оригинал в Telegram. -->
     <div class="reviews-grid">
-      <a class="review-card" href="https://t.me/edt_ai_1c/60?comment=1026" target="_blank" rel="noopener">
-        <div class="review-shot">
+      <div class="review-card">
+        <button type="button" class="review-shot" aria-label="Открыть отзыв в полном размере">
           <img src="images/reviews/1.jpg" alt="Отзыв Игоря — сеньор-разработчик в финтехе">
-        </div>
+        </button>
         <div class="review-meta">
           <span class="review-author">Игорь · Senior Dev, финтех</span>
-          <span class="review-link">Открыть в Telegram →</span>
+          <a class="review-link" href="https://t.me/edt_ai_1c/60?comment=1026" target="_blank" rel="noopener">Открыть в Telegram →</a>
         </div>
-      </a>
+      </div>
 
-      <a class="review-card" href="https://t.me/edt_ai_1c/60?comment=1027" target="_blank" rel="noopener">
-        <div class="review-shot">
+      <div class="review-card">
+        <button type="button" class="review-shot" aria-label="Открыть отзыв в полном размере">
           <img src="images/reviews/2.jpg" alt="Отзыв Андрея К. — ИП, 1С-разработчик с 2014 года">
-        </div>
+        </button>
         <div class="review-meta">
           <span class="review-author">Андрей К. · ИП, 1С с 2014</span>
-          <span class="review-link">Открыть в Telegram →</span>
+          <a class="review-link" href="https://t.me/edt_ai_1c/60?comment=1027" target="_blank" rel="noopener">Открыть в Telegram →</a>
         </div>
-      </a>
+      </div>
+
+      <div class="review-card">
+        <button type="button" class="review-shot" aria-label="Открыть отзыв в полном размере">
+          <img src="images/reviews/3.jpg" alt="Отзыв Виталия Остапенко">
+        </button>
+        <div class="review-meta">
+          <span class="review-author">Виталий Остапенко</span>
+          <a class="review-link" href="https://t.me/edt_ai_1c/59?comment=1012" target="_blank" rel="noopener">Открыть в Telegram →</a>
+        </div>
+      </div>
+
+      <!-- Сюда добавляется 4-й отзыв, когда появится. Шаблон карточки:
+      <div class="review-card">
+        <button type="button" class="review-shot" aria-label="Открыть отзыв в полном размере">
+          <img src="images/reviews/4.jpg" alt="Отзыв ИМЯ — короткое описание">
+        </button>
+        <div class="review-meta">
+          <span class="review-author">Имя · Роль</span>
+          <a class="review-link" href="https://t.me/edt_ai_1c/POST?comment=COMMENT" target="_blank" rel="noopener">Открыть в Telegram →</a>
+        </div>
+      </div>
+      -->
     </div>
+
+    <!-- ДОПОЛНИТЕЛЬНЫЕ ОТЗЫВЫ — раскрывающийся блок, показывается с 5-го отзыва.
+         Пока меньше 5 отзывов — блок целиком закомментирован. Раскомментируй
+         и наполняй карточками по тому же шаблону.
+
+    <div class="reviews-more-wrap">
+      <details class="reviews-more">
+        <summary>Показать другие отзывы (N)</summary>
+        <div class="reviews-grid">
+          <div class="review-card">
+            <button type="button" class="review-shot" aria-label="Открыть отзыв в полном размере">
+              <img src="images/reviews/5.jpg" alt="Отзыв ИМЯ">
+            </button>
+            <div class="review-meta">
+              <span class="review-author">Имя · Роль</span>
+              <a class="review-link" href="https://t.me/edt_ai_1c/POST?comment=COMMENT" target="_blank" rel="noopener">Открыть в Telegram →</a>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+    -->
+
   </div>
 </section>
+
+<!-- Lightbox — общий контейнер для просмотра скриншотов отзывов в полном размере -->
+<div class="lightbox" id="lightbox" hidden>
+  <button type="button" class="lightbox-close" aria-label="Закрыть">×</button>
+  <img class="lightbox-img" src="" alt="">
+</div>
 
 <!-- ==========================================================================
      PRICING — PRESERVED FUNCTIONALITY
@@ -880,6 +954,63 @@
      JS — pricing + upgrade + particles — all preserved functionally
      ========================================================================== -->
 <script>
+/* ============================================================
+   Mobile nav — гамбургер-меню
+   ============================================================ */
+(function() {
+  var toggle = document.querySelector('.nav-toggle');
+  var links = document.querySelector('.nav-links');
+  if (!toggle || !links) return;
+  toggle.addEventListener('click', function() {
+    var open = links.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  links.addEventListener('click', function(e) {
+    if (e.target.tagName === 'A') {
+      links.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+
+/* ============================================================
+   Reviews lightbox — клик по картинке отзыва открывает её во весь экран
+   ============================================================ */
+(function() {
+  var lb = document.getElementById('lightbox');
+  if (!lb) return;
+  var lbImg = lb.querySelector('.lightbox-img');
+  var btnClose = lb.querySelector('.lightbox-close');
+
+  function open(src, alt) {
+    lbImg.src = src;
+    lbImg.alt = alt || '';
+    lb.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    lb.setAttribute('hidden', '');
+    lbImg.src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.review-shot').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var img = btn.querySelector('img');
+      if (img) open(img.getAttribute('src'), img.getAttribute('alt'));
+    });
+  });
+
+  btnClose.addEventListener('click', close);
+  lb.addEventListener('click', function(e) {
+    // клик по фону (не по самой картинке) — закрыть
+    if (e.target === lb) close();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !lb.hasAttribute('hidden')) close();
+  });
+})();
+
 /* ============================================================
    Pricing — unchanged from production landing
    ============================================================ */
