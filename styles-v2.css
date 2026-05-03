@@ -832,6 +832,58 @@ section.section {
 @media (max-width: 860px) { .video-grid { grid-template-columns: 1fr; } }
 
 /* ==========================================================================
+   Reviews — user testimonials grid (clickable screenshots → Telegram)
+   ========================================================================== */
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.review-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.review-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-hi);
+  box-shadow: 0 12px 32px -16px rgba(0, 0, 0, 0.15);
+}
+.review-shot {
+  background: var(--bg-elevated);
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+}
+.review-shot img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+.review-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+.review-author { font-weight: 600; color: var(--text); }
+.review-link { color: var(--accent-hi); font-weight: 500; white-space: nowrap; }
+.review-card:hover .review-link { color: var(--text); }
+@media (max-width: 860px) { .reviews-grid { grid-template-columns: 1fr; } }
+
+/* ==========================================================================
    Pricing — PRESERVED FUNCTIONALITY, dark restyle
    ========================================================================== */
 
