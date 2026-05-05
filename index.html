@@ -852,7 +852,7 @@
   <div class="email-modal-box">
     <h3>Введите email</h3>
     <p>На него придёт код активации после оплаты. Проверьте правильность адреса.</p>
-    <input type="email" id="pricing-email-input" placeholder="your@email.com" autocomplete="email" oninput="pricingValidate()">
+    <input type="email" id="pricing-email-input" placeholder="your@email.com" autocomplete="email" oninput="emailChanged()">
     <div class="em-promo-row">
       <span class="em-promo-label">Промокод (если есть)</span>
       <input type="text" id="pricing-promo-input" placeholder="Введите промокод" autocomplete="off" oninput="promoChanged()">
@@ -1086,6 +1086,16 @@ function pricingCloseModal() {
   document.body.style.overflow = '';
 }
 
+function emailChanged() {
+  pricingValidate();
+  // Если промокод введён, перепроверить — для индивидуальных промокодов
+  // результат зависит от email покупателя.
+  var promoInput = document.getElementById('pricing-promo-input').value.trim();
+  if (promoInput) {
+    promoChanged();
+  }
+}
+
 function promoChanged() {
   var input = document.getElementById('pricing-promo-input');
   var pr = document.getElementById('promo-result');
@@ -1104,7 +1114,13 @@ function promoChanged() {
 
 function checkPromo(code) {
   var tierCode = pricingTier + '-' + pricingPeriod;
+  // Передаём email — для индивидуальных промокодов сервер сверяет привязку.
+  // Для партнёрских email сервер игнорирует, так что отправлять можно всегда.
+  var email = document.getElementById('pricing-email-input').value.trim();
   var url = PRICING_GAS + '?action=check-promo&code=' + encodeURIComponent(code) + '&tier=' + encodeURIComponent(tierCode);
+  if (email) {
+    url += '&email=' + encodeURIComponent(email);
+  }
   var input = document.getElementById('pricing-promo-input');
   var pr    = document.getElementById('promo-result');
   promoChecking = true;
