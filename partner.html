@@ -149,7 +149,7 @@
       <h3>Список ваших клиентов</h3>
       <div class="wl-explainer">
         <strong>Как это работает.</strong> Ваш промокод действует только для клиентов, email которых добавлен в этот список. Это защищает от того, чтобы промокодом воспользовались случайные люди, которым вы его не давали.<br><br>
-        Когда у вас появляется новый клиент — добавьте его email сюда. Когда клиент сделает покупку и введёт ваш промокод, скидка применится. После этого <strong>все его последующие покупки в течение 2 лет</strong> приносят вам комиссию <span id="wl-commission-percent">25</span>% — даже если он сам уже не вводит промокод.
+        Когда у вас появляется новый клиент — добавьте его email сюда. Когда клиент сделает покупку и введёт ваш промокод, скидка применится. После этого <strong>все его последующие покупки в течение <span id="wl-lifetime-period">24 месяцев</span></strong> приносят вам комиссию <span id="wl-commission-percent">25</span>% — даже если он сам уже не вводит промокод.
       </div>
       <div class="wl-add-form">
         <input type="email" id="wl-email-input" placeholder="email клиента" autocomplete="off">
@@ -237,6 +237,7 @@
     if (data.whitelistMode) {
       document.getElementById('whitelist-section').style.display = 'block';
       document.getElementById('wl-commission-percent').textContent = data.commissionPercent;
+      document.getElementById('wl-lifetime-period').textContent = formatLifetimePeriod(data.lifetimeMonths);
       renderWhitelist(data.whitelist || []);
     } else {
       document.getElementById('whitelist-section').style.display = 'none';
@@ -317,6 +318,28 @@
     return String(s || '').replace(/[&<>"']/g, function(c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
+  }
+
+  function formatLifetimePeriod(months) {
+    var n = parseInt(months, 10);
+    if (isNaN(n) || n <= 0) return '—';
+    // Грубая локализация для месяцев
+    var word;
+    var mod10 = n % 10, mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) word = 'месяц';
+    else if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) word = 'месяца';
+    else word = 'месяцев';
+    // Если ровно годы — добавим в скобках
+    if (n % 12 === 0) {
+      var years = n / 12;
+      var yWord;
+      var ym10 = years % 10, ym100 = years % 100;
+      if (ym10 === 1 && ym100 !== 11) yWord = 'год';
+      else if (ym10 >= 2 && ym10 <= 4 && (ym100 < 12 || ym100 > 14)) yWord = 'года';
+      else yWord = 'лет';
+      return n + ' ' + word + ' (' + years + ' ' + yWord + ')';
+    }
+    return n + ' ' + word;
   }
 
   function showWhitelistMsg(text, ok) {
