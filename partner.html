@@ -59,6 +59,21 @@
   .badge-no { background: #fef3c7; color: #92400e; }
   .empty-state { text-align: center; padding: 40px; color: #94a3b8; }
 
+  /* Whitelist */
+  .wl-explainer { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; font-size: 0.9rem; color: #1e3a8a; line-height: 1.55; }
+  .wl-add-form { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .wl-add-form input { flex: 1; min-width: 240px; padding: 11px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 0.95rem; outline: none; font-family: inherit; }
+  .wl-add-form input:focus { border-color: #2563eb; }
+  .wl-add-form button { padding: 11px 20px; background: #2563eb; color: white; border: none; border-radius: 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .wl-add-form button:hover { background: #1d4ed8; }
+  .wl-add-form button:disabled { background: #cbd5e1; cursor: not-allowed; }
+  .wl-msg { margin-bottom: 16px; padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; display: none; }
+  .wl-msg.ok { background: #dcfce7; color: #15803d; display: block; }
+  .wl-msg.err { background: #fee2e2; color: #991b1b; display: block; }
+  .wl-remove-btn { background: none; border: 1px solid #e2e8f0; color: #64748b; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-family: inherit; }
+  .wl-remove-btn:hover { border-color: #dc2626; color: #dc2626; }
+  .wl-remove-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
   @media (max-width: 600px) {
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
     .ref-table { overflow-x: auto; }
@@ -127,6 +142,22 @@
       <div class="stat-card">
         <div class="stat-label">К выплате</div>
         <div class="stat-value green" id="dash-balance">0 &#8381;</div>
+      </div>
+    </div>
+
+    <div class="table-section" id="whitelist-section" style="display:none; margin-bottom: 40px;">
+      <h3>Список ваших клиентов</h3>
+      <div class="wl-explainer">
+        <strong>Как это работает.</strong> Ваш промокод действует только для клиентов, email которых добавлен в этот список. Это защищает от того, чтобы промокодом воспользовались случайные люди, которым вы его не давали.<br><br>
+        Когда у вас появляется новый клиент — добавьте его email сюда. Когда клиент сделает покупку и введёт ваш промокод, скидка применится. После этого <strong>все его последующие покупки в течение 2 лет</strong> приносят вам комиссию <span id="wl-commission-percent">25</span>% — даже если он сам уже не вводит промокод.
+      </div>
+      <div class="wl-add-form">
+        <input type="email" id="wl-email-input" placeholder="email клиента" autocomplete="off">
+        <button id="wl-add-btn" onclick="addWhitelistEmail()">Добавить</button>
+      </div>
+      <div class="wl-msg" id="wl-msg"></div>
+      <div class="ref-table" id="wl-table">
+        <div class="empty-state">Загрузка...</div>
       </div>
     </div>
 
@@ -202,6 +233,15 @@
     document.getElementById('dash-discount').textContent = data.discountPercent + '%';
     document.getElementById('dash-commission').textContent = data.commissionPercent + '%';
 
+    // Whitelist (только если включён режим)
+    if (data.whitelistMode) {
+      document.getElementById('whitelist-section').style.display = 'block';
+      document.getElementById('wl-commission-percent').textContent = data.commissionPercent;
+      renderWhitelist(data.whitelist || []);
+    } else {
+      document.getElementById('whitelist-section').style.display = 'none';
+    }
+
     var s = data.stats;
     document.getElementById('dash-total-refs').textContent = s.totalReferrals;
     document.getElementById('dash-total-paid').textContent = fmt(s.totalPaidAmount) + ' \u20bd';
@@ -249,6 +289,100 @@
     }
   }
 
+  function renderWhitelist(items) {
+    var el = document.getElementById('wl-table');
+    if (!items || items.length === 0) {
+      el.innerHTML = '<div class="empty-state">Список пуст. Добавьте email клиента, чтобы он мог воспользоваться промокодом.</div>';
+      return;
+    }
+    var html = '<table><thead><tr><th>Email клиента</th><th>Добавлен</th><th>Воспользовался</th><th></th></tr></thead><tbody>';
+    items.forEach(function(it) {
+      html += '<tr>';
+      html += '<td>' + escapeHtml(it.email) + '</td>';
+      html += '<td>' + (it.addedAt || '—') + '</td>';
+      if (it.used) {
+        html += '<td><span class="badge badge-yes">Да, ' + (it.usedAt || '') + '</span></td>';
+        html += '<td></td>';
+      } else {
+        html += '<td><span class="badge badge-no">Ещё нет</span></td>';
+        html += '<td><button class="wl-remove-btn" onclick="removeWhitelistEmail(\'' + encodeURIComponent(it.email) + '\')">Удалить</button></td>';
+      }
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    el.innerHTML = html;
+  }
+
+  function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, function(c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function showWhitelistMsg(text, ok) {
+    var el = document.getElementById('wl-msg');
+    el.textContent = text;
+    el.className = 'wl-msg ' + (ok ? 'ok' : 'err');
+    setTimeout(function() { el.className = 'wl-msg'; }, 4000);
+  }
+
+  function addWhitelistEmail() {
+    var emailInput = document.getElementById('wl-email-input');
+    var email = emailInput.value.trim();
+    if (!email || email.indexOf('@') === -1) {
+      showWhitelistMsg('Укажите корректный email', false);
+      return;
+    }
+    var code = sessionStorage.getItem('partner_code');
+    var pass = sessionStorage.getItem('partner_pass');
+    if (!code || !pass) return;
+
+    var btn = document.getElementById('wl-add-btn');
+    btn.disabled = true;
+
+    var url = GAS_URL + '?action=partner-whitelist-add'
+      + '&code=' + encodeURIComponent(code)
+      + '&password=' + encodeURIComponent(pass)
+      + '&email=' + encodeURIComponent(email);
+    fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+      btn.disabled = false;
+      if (!data.success) {
+        showWhitelistMsg(data.message || 'Не удалось добавить', false);
+        return;
+      }
+      emailInput.value = '';
+      showWhitelistMsg(data.alreadyExists ? 'Этот email уже был в списке' : 'Email добавлен', true);
+      renderWhitelist(data.items || []);
+    }).catch(function() {
+      btn.disabled = false;
+      showWhitelistMsg('Ошибка соединения', false);
+    });
+  }
+
+  function removeWhitelistEmail(emailEncoded) {
+    var email = decodeURIComponent(emailEncoded);
+    if (!confirm('Удалить ' + email + ' из списка?')) return;
+
+    var code = sessionStorage.getItem('partner_code');
+    var pass = sessionStorage.getItem('partner_pass');
+    if (!code || !pass) return;
+
+    var url = GAS_URL + '?action=partner-whitelist-remove'
+      + '&code=' + encodeURIComponent(code)
+      + '&password=' + encodeURIComponent(pass)
+      + '&email=' + encodeURIComponent(email);
+    fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+      if (!data.success) {
+        showWhitelistMsg(data.message || 'Не удалось удалить', false);
+        return;
+      }
+      showWhitelistMsg('Удалён', true);
+      renderWhitelist(data.items || []);
+    }).catch(function() {
+      showWhitelistMsg('Ошибка соединения', false);
+    });
+  }
+
   function doLogout() {
     sessionStorage.removeItem('partner_code');
     sessionStorage.removeItem('partner_pass');
@@ -274,6 +408,9 @@
     });
     document.getElementById('login-code').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') document.getElementById('login-password').focus();
+    });
+    document.getElementById('wl-email-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') addWhitelistEmail();
     });
   })();
 </script>
