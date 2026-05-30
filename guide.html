@@ -232,7 +232,7 @@
         <tbody>
           <tr><td><strong>Аналитик</strong></td><td>15</td><td>Анализ метаданных, Анализ кода, Поиск и навигация</td></tr>
           <tr><td><strong>Разработчик</strong></td><td>23</td><td>+ Редактирование кода и отладка, Валидация, Сборка и управление (вкл. экспорт)</td></tr>
-          <tr><td><strong>Архитектор</strong></td><td>25</td><td>+ Редактирование метаданных (~82 операции), Юнит-тесты YAxUnit</td></tr>
+          <tr><td><strong>Архитектор</strong></td><td>25</td><td>+ Редактирование метаданных (~104 операции), Юнит-тесты YAxUnit</td></tr>
         </tbody>
       </table>
     </div>
@@ -404,6 +404,10 @@
     <blockquote><p><em>«Создай отчёт ПродажиПоКонтрагентам с группировкой по контрагентам и сортировкой по сумме»</em></p></blockquote>
     <blockquote><p><em>«Добавь в отчёт условное оформление: если сумма больше 100000, выделить строку жёлтым»</em></p></blockquote>
     <blockquote><p><em>«Добавь в отчёт отбор по периоду и контрагенту»</em></p></blockquote>
+    <blockquote><p><em>«В отчёте ПродажиПоКонтрагентам переименуй набор данных и убери лишний отбор по складу, остальное не трогай»</em> — точечная правка готовой схемы, без пересборки</p></blockquote>
+    <blockquote><p><em>«Свяжи в отчёте набор Продажи с набором РеквизитыОрганизаций по полю Организация»</em></p></blockquote>
+    <blockquote><p><em>«Сделай у отчёта второй вариант "Продажи по номенклатуре" — скопируй текущий и поменяй группировку на номенклатуру»</em></p></blockquote>
+    <blockquote><p><em>«Вынеси в шапку отчёта быстрые настройки: период и отбор по организации»</em></p></blockquote>
 
     <p><strong>Расширения:</strong></p>
     <blockquote><p><em>«Заимствуй документ ЗаказКлиента в расширение и добавь реквизит КодПроекта»</em></p></blockquote>
@@ -527,7 +531,7 @@
     <h3 id="profile-arch">Профиль «Архитектор» — 25 инструментов</h3>
     <p>К 23 инструментам разработчика добавляются конструктор конфигурации и юнит-тесты.</p>
 
-    <h4>Редактирование метаданных (1 инструмент, ~82 операции)</h4>
+    <h4>Редактирование метаданных (1 инструмент, ~104 операции)</h4>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
@@ -548,11 +552,11 @@
     </div>
     <!-- Конструктор конфигурации -->
     <h2 id="edit-metadata">Конструктор конфигурации — edit_metadata</h2>
-    <p>Единый инструмент для создания и настройки объектов метаданных, форм, макетов печатных форм и отчётов. Содержит около <strong>82 операций</strong> в 8 областях. Все изменения выполняются через нативные сервисы EDT — результат идентичен ручному созданию в конструкторе.</p>
+    <p>Единый инструмент для создания и настройки объектов метаданных, форм, макетов печатных форм и отчётов. Содержит около <strong>104 операций</strong> в 9 областях. Все изменения выполняются через нативные сервисы EDT — результат идентичен ручному созданию в конструкторе.</p>
 
     <h3>Дерево операций</h3>
 
-    <div class="tree-block"><span class="node">edit_metadata</span> <span class="desc">(~82 операции)</span>
+    <div class="tree-block"><span class="node">edit_metadata</span> <span class="desc">(~104 операции)</span>
 <span class="branch">│</span>
 <span class="branch">├──</span> <span class="op">Объекты метаданных</span> <span class="desc">(11 операций)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> createObject / removeObject <span class="desc">— создание объекта (30+ типов) и удаление целиком</span>
@@ -605,18 +609,23 @@
 <span class="branch">│</span>   <span class="branch">├──</span> addUrlTemplate / removeUrlTemplate <span class="desc">— URL-шаблоны внутри сервиса (пути вида /users/{id}, параметры в фигурных скобках)</span>
 <span class="branch">│</span>   <span class="branch">└──</span> addHttpServiceMethod / removeHttpServiceMethod <span class="desc">— HTTP-методы (GET/POST/PUT/DELETE/...) с автозаглушкой обработчика в модуле сервиса</span>
 <span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">Отчёты СКД</span> <span class="desc">(27 операций)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> createReportSchema, addDataSet, removeDataSet, addDataSetField <span class="desc">— структура</span>
+<span class="branch">├──</span> <span class="op">Отчёты СКД</span> <span class="desc">(48 операций)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> createReportSchema, repairReportSchema <span class="desc">— создание схемы и восстановление при рассинхроне</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addDataSet, setDataSetProperty, removeDataSet <span class="desc">— наборы данных (запрос, объект, объединение)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addDataSetField, removeDataSetField <span class="desc">— поля набора данных</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addQueryField, removeQueryField, addQueryCondition <span class="desc">— точечная правка запроса набора</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addDataSetLink, setDataSetLinkProperty, removeDataSetLink <span class="desc">— связи наборов данных</span>
 <span class="branch">│</span>   <span class="branch">├──</span> addSchemaParameter, setSchemaParameter, removeSchemaParameter, moveSchemaParameter <span class="desc">— параметры схемы</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addCalculatedField, addTotalField, addUserField <span class="desc">— вычисляемые поля, итоги, пользовательские поля</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setDataSetFieldAppearance <span class="desc">— оформление поля набора данных (формат, цвет)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addSettingsGroup/Table/Chart <span class="desc">— группировки и визуализация</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addSettingsSelectedField, removeSettingsSelectedField, removeSettingsItem <span class="desc">— выбранные поля, удаление группировок</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addSettingsFilter, addSettingsFilterGroup, addSettingsOrder <span class="desc">— отборы (с группами И/ИЛИ/НЕ) и сортировки</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addConditionalAppearance, removeConditionalAppearance <span class="desc">— условное оформление</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setSettingsParameter, setOutputParameter <span class="desc">— параметры данных и вывода (Заголовок, ТипДиаграммы)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addSettingsVariant <span class="desc">— новый вариант отчёта</span>
-<span class="branch">│</span>   <span class="branch">└──</span> repairReportSchema <span class="desc">— лечение схем-фантомов в расширениях</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addCalculatedField, setCalculatedField, removeCalculatedField <span class="desc">— вычисляемые поля</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addTotalField, setTotalField, removeTotalField <span class="desc">— итоги (ресурсы)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addSettingsGroup/Table/Chart, removeSettingsItem <span class="desc">— группировки, таблицы, диаграммы</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addSettingsSelectedField, removeSettingsSelectedField, clearSettingsSelectedFields <span class="desc">— выводимые поля</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addSettingsFilter, addSettingsFilterGroup, removeSettingsFilter <span class="desc">— отборы (с группами И/ИЛИ/НЕ)</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addSettingsOrder, removeSettingsOrder <span class="desc">— сортировки</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addConditionalAppearance, setConditionalAppearance, removeConditionalAppearance, setDataSetFieldAppearance <span class="desc">— оформление</span>
+<span class="branch">│</span>   <span class="branch">├──</span> addSettingsVariant, cloneSettingsVariant, setSettingsVariantProperty, removeSettingsVariant <span class="desc">— варианты отчёта</span>
+<span class="branch">│</span>   <span class="branch">├──</span> setSettingsParameter, removeSettingsParameter, setOutputParameter <span class="desc">— значения параметров и вывод</span>
+<span class="branch">│</span>   <span class="branch">└──</span> setSettingsItemUserMode, addUserField <span class="desc">— быстрые настройки в шапку, пользовательские поля</span>
 <span class="branch">│</span>
 <span class="branch">├──</span> <span class="op">Общее</span> <span class="desc">(2 операции)</span>
 <span class="branch">│</span>   <span class="branch">├──</span> moveItem <span class="desc">— перемещение элементов формы</span>
@@ -636,7 +645,10 @@
     <p><strong>Подписки на события.</strong> Подписка создаётся одним вызовом <code>createObject</code>: источник (один тип или массив), имя события (<code>ОбработкаПроведения</code> / <code>Posting</code>, <code>ПриЗаписи</code> / <code>OnWrite</code> и т.д.) и обработчик <code>ОбщийМодуль.Метод</code>. Сразу после создания в общий модуль <strong>автоматически дописывается процедура-заглушка</strong> с правильной сигнатурой — первым параметром идёт Источник, остальные берутся из описания события, в конце стоит <code>Экспорт</code>. Агенту остаётся написать только тело. Если общий модуль создали позже подписки или изменилось имя метода — отдельная операция <code>addEventSubscriptionHandler</code> допишет заглушку по готовой подписке.</p>
     <p><strong>Общие модули.</strong> У <code>createObject</code> общего модуля теперь есть параметры-флаги контекста исполнения: <code>server</code>, <code>serverCall</code>, <code>clientManagedApplication</code>, <code>clientOrdinaryApplication</code>, <code>externalConnection</code>, <code>privileged</code>, <code>global</code> и <code>returnValuesReuse</code> (с русскими алиасами «НеИспользовать» / «НаВремяВызова» / «НаВремяСеанса»). Агент явно указывает, какой модуль ему нужен — «серверный с вызовом с клиента», «клиент-серверный без экспортных вызовов» и т.д. — и получает модуль с правильными галочками сразу, без ручной правки в EDT.</p>
     <p><strong>Макеты печатных форм.</strong> Полный цикл сборки макета: создание объекта, рисование ячеек с оформлением, объединения, ширины колонок, именованные области (<code>Шапка</code>, <code>СтрокаТовара</code>, <code>Подвал</code>). <code>drawTemplate</code> делает всё одним пакетным вызовом — готовый макет, идентичный нарисованному вручную в EDT.</p>
-    <p><strong>Отчёты СКД.</strong> Полный цикл: схема, наборы данных, параметры, ресурсы, группировки, таблицы, диаграммы, отборы, сортировки, условное оформление, варианты настроек. Минимальный отчёт — 6 вызовов. В справке есть готовый рабочий сценарий для матричных отчётов («товары × месяцы»).</p>
+    <p><strong>Отчёты СКД.</strong> Полный цикл: схема, наборы данных, параметры, ресурсы, группировки, таблицы, диаграммы, отборы, сортировки, условное оформление, варианты настроек. Минимальный отчёт — 6 вызовов. В справке есть готовый рабочий сценарий для матричных отчётов («товары × месяцы»). Схему можно не только собрать с нуля, но и <strong>править точечно</strong> — у каждого элемента есть «создать / изменить / удалить»: переименовать набор, поменять формулу итога, убрать лишний отбор, не пересобирая отчёт целиком.</p>
+    <p><strong>Связи наборов данных.</strong> Когда отчёт собирает данные из нескольких источников (продажи в одном наборе, реквизиты организаций в другом, связь по «Организация»), связь можно создать, изменить и удалить. Плагин сам поддерживает порядок: при удалении набора висящие на нём связи убираются, при переименовании — переключаются на новое имя, без ручной чистки.</p>
+    <p><strong>Варианты отчёта.</strong> Вариант можно добавить, скопировать целиком под новым именем (со всеми группировками, отборами и оформлением), переименовать и удалить. Любую настройку можно адресовать конкретному варианту — многовариантные отчёты («Продажи по организациям» и «Продажи по номенклатуре») собираются полностью через MCP.</p>
+    <p><strong>Быстрые настройки и точечная правка запроса.</strong> Любую настройку (отбор, сортировку, оформление, параметр) можно вынести в шапку отчёта быстрыми настройками или спрятать — пользователю не придётся лезть в «Изменить вариант…». А чтобы добавить в запрос набора одно поле или условие, больше не нужно передавать весь текст запроса заново — есть точечные операции, остальной запрос остаётся нетронутым.</p>
     <p><strong>Схема компоновки — не только для отчётов.</strong> Схему компоновки данных (с запросом, группировками, ресурсами, отборами) теперь можно создавать не только в отчётах, но и в обработках, справочниках, документах, планах счетов, бизнес-процессах, задачах и планах обмена — везде, где в 1С бывают макеты типа «Схема компоновки данных». Открывается типовой сценарий «обработка с настраиваемыми отборами»: AI собирает в обработке макет со схемой, форму с реквизитом-композитором и кнопкой «Сформировать» — пользователь в режиме предприятия задаёт отборы и группировки сам.</p>
     <p><strong>HTTP-сервисы.</strong> Полный цикл сборки сервиса из 1С: сам сервис с корневым URL, URL-шаблоны вида <code>/users/{id}</code>, HTTP-методы (GET, POST, PUT, DELETE, PATCH и другие). Можно собирать по частям («добавь шаблон, добавь метод»), а можно одним вызовом <code>createObject</code> — пустой сервис превращается в готовый REST-API со всеми шаблонами, методами и заглушками обработчиков за один проход. В модуле сервиса автоматически появляется процедура с правильной сигнатурой на каждый HTTP-метод и пометкой <code>Экспорт</code> — после обновления информбазы сервис уже отвечает (пустым ответом), тело обработчика дописывается обычной фразой агенту через <code>write_module_source</code>.</p>
     <p><strong>Композитор настроек на форме.</strong> Операция <code>setupSettingsComposerOnForm</code> одним вызовом добавляет на любую форму (обработки, отчёта, общей формы) реквизит типа КомпоновщикНастроек, UI-таблицы настроек (дерево группировок, отборы, сортировка, условное оформление — через параметр <code>standardItems</code>; алиас <code>full</code> = все четыре) и привязку ExtInfo формы. Работает как галочка «Настройки на форме» в мастере EDT, но доступно не только для отчётов. В ответе возвращается готовый BSL-пример для обработчика <code>ПриСозданииНаСервере</code> — с корректной инициализацией композитора из макета со схемой. Полный пошаговый сценарий — в справочнике через <code>help topic=composerWorkflow</code>.</p>
@@ -958,7 +970,7 @@
       <table>
         <thead><tr><th>Параметр</th><th>Значение</th></tr></thead>
         <tbody>
-          <tr><td>Инструментов</td><td>28 в 8 группах</td></tr>
+          <tr><td>Инструментов</td><td>25 в 8 группах</td></tr>
           <tr><td>Профилей</td><td>3 (Аналитик, Разработчик, Архитектор)</td></tr>
           <tr><td>Протокол</td><td>MCP Streamable HTTP (2025-11-25 / 2024-11-05)</td></tr>
           <tr><td>Порт по умолчанию</td><td>8770 (настраиваемый, 1024–65535)</td></tr>
