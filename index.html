@@ -69,7 +69,7 @@
           <a href="#pricing" class="btn btn-secondary btn-lg">Посмотреть тарифы</a>
         </div>
         <div class="hero-meta">
-          <span><b>v5.2.0</b> · для 1C:EDT 2025.x и 2026.1</span>
+          <span><b>v5.3.0</b> · для 1C:EDT 2025.x и 2026.1</span>
           <span>Java 17 · Windows, macOS</span>
         </div>
       </div>
@@ -128,6 +128,11 @@
         <h3>Полная автоматизация тестирования — юнит-тесты YAxUnit и сценарные UI-тесты Vanessa</h3>
         <p>AI замыкает тестирование 1С с двух сторон сразу. <strong>Юнит-тесты YAxUnit</strong> проверяют код изнутри: AI сам пишет тесты, прогоняет их и разбирается с упавшими через отладчик. Цикл «правка кода → прогон тестов → пошаговая отладка → результат» проходит без человека: AI стартует 1С в специальном режиме, читает JUnit-отчёт и возвращает Markdown — что прошло, что упало, время, стек вызовов. При <code>mode=debug</code> точки останова срабатывают как обычно — AI смотрит переменные, вычисляет BSL-выражения, шагает по коду и забирает финальный отчёт.</p>
         <p><strong>Сценарные UI-тесты Vanessa</strong> проверяют программу снаружи, глазами пользователя: открывают формы, нажимают кнопки, заполняют поля, сверяют результат. Сценарий пишется обычным текстом на русском (Gherkin: «Дано… Когда… Тогда…») — AI составляет его сам, а плагин при первом запуске сам ставит Vanessa Automation, поднимает 1С в режиме тестирования и возвращает понятный отчёт: какой шаг упал и почему. Оба инструмента ходят в одну базу и обновляют её перед прогоном автоматически — без модального окна «Обновить конфигурацию?». <strong>Один объект проверяется и кодом, и интерфейсом — полный цикл разработки замыкается без единого клика мышью.</strong> Подробнее — про <a href="guide.html#unit-tests">юнит-тесты</a> и <a href="guide.html#vanessa">сценарное тестирование Vanessa</a> в руководстве.</p>
+      </div>
+
+      <div class="card">
+        <h3>Код-ревью BSL по стандартам разработки 1С</h3>
+        <p>Инструмент <code>code_review</code> проверяет не работу кода, а его качество: магические числа, устаревшие методы, чрезмерную сложность процедур, хардкод путей и адресов, code smells — то, что обычно отмечает старший разработчик при вычитке. AI прогоняет ревью одного модуля или всего проекта и получает список замечаний с номерами строк и пояснениями на русском, после чего может сразу предложить и внести исправления. Работает на отдельном <strong>бесплатном компоненте MCP:RSV Code Review</strong> (движок — open-source BSL Language Server от 1c-syntax, LGPL): его можно поставить и <strong>самостоятельно</strong> и делать ревью руками прямо в EDT — правый клик по модулю → «Проверить код». Подробнее — <a href="guide.html#code-review">раздел про код-ревью</a> в руководстве.</p>
       </div>
 
     </div>
@@ -221,7 +226,7 @@
       <a href="tools.html" class="doc-card">
         <div class="doc-card-icon">🔧</div>
         <h3>Описание инструментов</h3>
-        <p>24 инструмента, около 140 операций конструктора <code>edit_metadata</code>, отдельные инструменты для юнит-тестов YAxUnit и сценарных UI-тестов Vanessa, примеры для каждого тарифа, параметры и форматы ответов.</p>
+        <p>25 инструментов, около 140 операций конструктора <code>edit_metadata</code>, код-ревью BSL, отдельные инструменты для юнит-тестов YAxUnit и сценарных UI-тестов Vanessa, примеры для каждого тарифа, параметры и форматы ответов.</p>
         <span class="doc-card-link">Открыть описание →</span>
       </a>
     </div>
@@ -526,7 +531,7 @@
       <div class="pricing-card">
         <div class="pc-tier-label">Тариф</div>
         <div class="pc-name">Разработчик</div>
-        <div class="pc-tools">Для повседневной разработки: анализ, запись кода, валидация и отладка. <strong>21 инструмент.</strong></div>
+        <div class="pc-tools">Для повседневной разработки: анализ, запись кода, валидация, код-ревью и отладка. <strong>22 инструмента.</strong></div>
         <div><span class="pc-amount" id="pc-amount-DEV">2 590</span><span class="pc-currency"> ₽</span></div>
         <div class="pc-per" id="pc-per-DEV"></div>
         <div class="pc-total" id="pc-total-DEV"></div>
@@ -548,7 +553,7 @@
       <div class="pricing-card pc-featured">
         <div class="pc-tier-label">Тариф</div>
         <div class="pc-name">Архитектор</div>
-        <div class="pc-tools">Полный контроль над конфигурацией: всё из предыдущих профилей плюс флагманский конструктор, юнит-тесты YAxUnit и сценарные UI-тесты Vanessa. <strong>24 инструмента.</strong></div>
+        <div class="pc-tools">Полный контроль над конфигурацией: всё из предыдущих профилей плюс флагманский конструктор, юнит-тесты YAxUnit и сценарные UI-тесты Vanessa. <strong>25 инструментов.</strong></div>
         <div><span class="pc-amount" id="pc-amount-ARC">4 490</span><span class="pc-currency"> ₽</span></div>
         <div class="pc-per" id="pc-per-ARC"></div>
         <div class="pc-total" id="pc-total-ARC"></div>
@@ -634,31 +639,59 @@
     <div class="section-header">
       <span class="eyebrow">📥 Актуальный релиз</span>
       <h2>Скачать MCP:RSV Server</h2>
-      <p data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 5.2.0 · для 1C:EDT 2025.x и 2026.1 · Windows, macOS · пробный период 14 дней.</p>
+      <p data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 5.3.0 · для 1C:EDT 2025.x и 2026.1 · Windows, macOS · пробный период 14 дней.</p>
     </div>
 
-    <div class="download-card">
-      <div class="download-file">
-        <div class="download-file-icon">📦</div>
-        <div>
-          <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-5.2.0-distr.zip</div>
-          <div class="download-file-meta" data-v="Версия {v} · ~2.8 MB">Версия 5.2.0 · ~4.2 MB</div>
+    <div class="download-grid">
+      <div class="download-card">
+        <div class="download-card-label">Основной плагин</div>
+        <div class="download-file">
+          <div class="download-file-icon">📦</div>
+          <div>
+            <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-5.3.0-distr.zip</div>
+            <div class="download-file-meta" data-v="Версия {v} · ~4.2 MB">Версия 5.3.0 · ~4.2 MB</div>
+          </div>
+        </div>
+
+        <div class="download-includes">
+          <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-5.3.0-SNAPSHOT.zip</span>
+          <span>✅ guide.html — руководство пользователя</span>
+          <span>✅ tools.html — описание инструментов</span>
+          <span>✅ CLAUDE.md — правила для AI</span>
+          <span>✅ RELEASE-5.3.0.md — что нового</span>
+          <span>✅ RELEASE-5.2.0.md — предыдущий релиз</span>
+        </div>
+
+        <a href="./MCP-RSV-Server-5.3.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./MCP-RSV-Server-{v}-distr.zip" download="MCP-RSV-Server-5.3.0-distr.zip">⬇ Скачать бесплатно</a>
+
+        <div class="download-note">
+          При первом запуске откроется диалог активации — нажмите «Пробный период» или введите код активации
         </div>
       </div>
 
-      <div class="download-includes">
-        <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-5.2.0-SNAPSHOT.zip</span>
-        <span>✅ guide.html — руководство пользователя</span>
-        <span>✅ tools.html — описание инструментов</span>
-        <span>✅ CLAUDE.md — правила для AI</span>
-        <span>✅ RELEASE-5.2.0.md — что нового</span>
-        <span>✅ RELEASE-5.0.0.md — предыдущий релиз</span>
-      </div>
+      <div class="download-card download-card-secondary">
+        <div class="download-card-label">Компонент код-ревью (бесплатно)</div>
+        <div class="download-file">
+          <div class="download-file-icon">🔍</div>
+          <div>
+            <div class="download-file-name">MCP-RSV-CodeReview.zip</div>
+            <div class="download-file-meta">Бесплатный компонент · ~110 MB</div>
+          </div>
+        </div>
 
-      <a href="./MCP-RSV-Server-5.2.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./MCP-RSV-Server-{v}-distr.zip" download="MCP-RSV-Server-5.2.0-distr.zip">⬇ Скачать бесплатно</a>
+        <div class="download-includes">
+          <span>✅ Код-ревью BSL по стандартам разработки 1С</span>
+          <span>✅ Нужен для инструмента <code>code_review</code></span>
+          <span>✅ Работает и отдельно — ревью по правому клику в EDT</span>
+          <span>✅ На базе BSL Language Server (1c-syntax, LGPL)</span>
+          <span>✅ Ставится один раз, обновлять не нужно</span>
+        </div>
 
-      <div class="download-note">
-        При первом запуске откроется диалог активации — нажмите «Пробный период» или введите код активации
+        <a href="https://github.com/prepod2003/mcp-rsv-codereview/releases/latest/download/MCP-RSV-CodeReview.zip" class="btn btn-primary btn-lg" target="_blank" rel="noopener">⬇ Скачать компонент</a>
+
+        <div class="download-note">
+          Большой файл (~110 МБ) — устанавливается дольше обычного, но только один раз. Подробнее — в <a href="guide.html#code-review">руководстве</a>.
+        </div>
       </div>
     </div>
 
@@ -666,19 +699,25 @@
       <h3>История версий</h3>
 
       <div class="changelog-entry">
+        <a href="release.html?v=5.3.0" class="changelog-version" title="Открыть заметки релиза v5.3.0">v5.3.0</a>
+        <h4>Код-ревью BSL по стандартам разработки 1С</h4>
+        <p>Новый инструмент <code>code_review</code> — автоматическая проверка качества кода: сложность методов, code smells, магические числа, устаревшие методы и другие нарушения соглашений 1С. Работает на бесплатном открытом компоненте «MCP:RSV Code Review» (на базе BSL Language Server), который можно ставить и отдельно. <a href="release.html?v=5.3.0">Полный список →</a></p>
+      </div>
+
+      <div class="changelog-entry">
         <a href="release.html?v=5.2.0" class="changelog-version" title="Открыть заметки релиза v5.2.0">v5.2.0</a>
         <h4>Виды поля формы, субконто, планы обмена и XDTO-пакеты</h4>
         <p>Поле на форме теперь любого вида — поле HTML-документа (с JavaScript внутри), картинки, календарь и другие. План счетов работает с субконто, план обмена наполняется составом с авторегистрацией изменений, XDTO-пакеты собираются целиком через агента. А Vanessa делает снимок экрана в момент падения сценария. <a href="release.html?v=5.2.0">Полный список →</a></p>
       </div>
 
-      <div class="changelog-entry">
-        <a href="release.html?v=5.0.0" class="changelog-version" title="Открыть заметки релиза v5.0.0">v5.0.0</a>
-        <h4>Сверхбыстрое чтение кода, надёжность и полный цикл тестирования</h4>
-        <p>Поиск и чтение кода стали мгновенными даже на конфигурациях масштаба ERP — даже слабый агент раскапывает сложную логику за секунды и с минимумом токенов. Плагин сам удерживает агента от ручной правки файлов проекта и точнее подсказывает ошибки в запросах и коде. А новый инструмент Vanessa замыкает полный цикл автоматизированного тестирования: юнит-тесты YAxUnit и сценарные UI-тесты — без участия человека. <a href="release.html?v=5.0.0">Полный список →</a></p>
-      </div>
-
       <details class="changelog-archive">
-        <summary>Показать предыдущие версии (v4.7.0 и старше)</summary>
+        <summary>Показать предыдущие версии (v5.0.0 и старше)</summary>
+
+        <div class="changelog-entry">
+          <a href="release.html?v=5.0.0" class="changelog-version" title="Открыть заметки релиза v5.0.0">v5.0.0</a>
+          <h4>Сверхбыстрое чтение кода, надёжность и полный цикл тестирования</h4>
+          <p>Поиск и чтение кода стали мгновенными даже на конфигурациях масштаба ERP — даже слабый агент раскапывает сложную логику за секунды и с минимумом токенов. Плагин сам удерживает агента от ручной правки файлов проекта и точнее подсказывает ошибки в запросах и коде. А новый инструмент Vanessa замыкает полный цикл автоматизированного тестирования: юнит-тесты YAxUnit и сценарные UI-тесты — без участия человека. <a href="release.html?v=5.0.0">Полный список →</a></p>
+        </div>
 
         <div class="changelog-entry">
           <a href="release.html?v=4.7.0" class="changelog-version" title="Открыть заметки релиза v4.7.0">v4.7.0</a>
@@ -817,7 +856,7 @@
       </details>
       <details>
         <summary>Что даёт бесплатный пробный период?</summary>
-        <p>Полный доступ к профилю «Архитектор» — все 24 инструмента, включая флагманский конструктор объектов конфигурации, инструмент юнит-тестов YAxUnit и сценарное тестирование Vanessa — на 14 дней. Пробный период активируется одной кнопкой прямо из плагина, не требует ввода платёжных данных и регистрации. За 14 дней можно полноценно оценить все возможности на реальном проекте.</p>
+        <p>Полный доступ к профилю «Архитектор» — все 25 инструментов, включая флагманский конструктор объектов конфигурации, инструмент юнит-тестов YAxUnit и сценарное тестирование Vanessa — на 14 дней. Пробный период активируется одной кнопкой прямо из плагина, не требует ввода платёжных данных и регистрации. За 14 дней можно полноценно оценить все возможности на реальном проекте.</p>
       </details>
       <details>
         <summary>Как происходит продление подписки?</summary>
@@ -854,7 +893,7 @@
           <span class="nav-brand-badge">RSV</span>
           MCP Server
         </a>
-        <p>Интеллектуальный мост между AI-ассистентами и средой разработки 1C:EDT. 24 инструмента, встроены в EDT, 0 JAR-зависимостей.</p>
+        <p>Интеллектуальный мост между AI-ассистентами и средой разработки 1C:EDT. 25 инструментов, встроены в EDT, 0 JAR-зависимостей.</p>
       </div>
       <div class="footer-links-section">
         <h5>Продукт</h5>
@@ -863,7 +902,7 @@
           <li><a href="#how">Как устроено</a></li>
           <li><a href="#reviews">Отзывы</a></li>
           <li><a href="#pricing">Тарифы</a></li>
-          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v5.2.0</a></li>
+          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v5.3.0</a></li>
           <li><a href="guide.html">Руководство пользователя</a></li>
           <li><a href="tools.html">Описание инструментов</a></li>
         </ul>
@@ -894,7 +933,7 @@
     </div>
     <div class="footer-bottom">
       <div>Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a></div>
-      <div data-v="MCP:RSV Server v{v} · 2026">MCP:RSV Server v5.2.0 · 2026</div>
+      <div data-v="MCP:RSV Server v{v} · 2026">MCP:RSV Server v5.3.0 · 2026</div>
     </div>
     <div class="footer-disclaimer">
       <p>«1С», «1С:Предприятие», «1С:EDT» — товарные знаки фирмы «1С». Продукт <strong>MCP:RSV Server</strong> является независимой разработкой Радзивилловича С.В., не входит в линейку продуктов фирмы «1С» и не является официальным продуктом фирмы «1С».</p>

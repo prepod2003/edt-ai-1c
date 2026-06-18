@@ -544,6 +544,28 @@ blockquote em { color: var(--text); font-style: italic; }
 blockquote strong { color: var(--text); }
 
 /* ==========================================================================
+   Figures (screenshots)
+   ========================================================================== */
+
+.figure {
+  margin: 24px 0;
+}
+.figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  background: var(--bg-surface);
+}
+.figure figcaption {
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ==========================================================================
    Tables
    ========================================================================== */
 
