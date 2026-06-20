@@ -1451,6 +1451,36 @@ section.section {
 }
 .download-card-secondary .download-file-icon { color: var(--accent-hi); }
 @media (max-width: 860px) { .download-grid { grid-template-columns: 1fr; } }
+
+/* Флагман — основной платный плагин, выделен фиолетовым (язык .pc-featured) */
+.download-card-flagship {
+  position: relative;
+  border: 1.5px solid var(--accent);
+  background: linear-gradient(180deg, rgba(124,58,237,.07) 0%, var(--bg-surface) 55%);
+  box-shadow: 0 18px 48px -18px rgba(124,58,237,.35);
+}
+.download-card-flagship .download-card-label { color: var(--accent-hi); }
+/* Два бесплатных дополнения — компактнее флагмана, в один ряд под ним */
+.download-addons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 760px;
+  margin: 24px auto 0;
+  align-items: stretch;
+}
+.download-addons .download-card {
+  max-width: none;
+  margin: 0;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.download-addons .download-card .download-file { align-self: flex-start; }
+.download-addons .download-card .btn { margin-top: auto; }
+.download-addons .download-includes { grid-template-columns: 1fr; }
+@media (max-width: 680px) { .download-addons { grid-template-columns: 1fr; } }
 .download-file {
   display: inline-flex;
   align-items: center;

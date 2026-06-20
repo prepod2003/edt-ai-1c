@@ -642,35 +642,61 @@
       <p data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 5.4.0 · для 1C:EDT 2025.x и 2026.1 · Windows, macOS · пробный период 14 дней.</p>
     </div>
 
-    <div class="download-grid">
-      <div class="download-card">
-        <div class="download-card-label">Основной плагин</div>
+    <!-- Флагман — основной платный плагин (выделен фиолетовым) -->
+    <div class="download-card download-card-flagship">
+      <div class="download-card-label">Основной плагин</div>
+      <div class="download-file">
+        <div class="download-file-icon">📦</div>
+        <div>
+          <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-5.4.0-distr.zip</div>
+          <div class="download-file-meta" data-v="Версия {v} · ~4.2 MB">Версия 5.4.0 · ~4.2 MB</div>
+        </div>
+      </div>
+
+      <div class="download-includes">
+        <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-5.4.0-SNAPSHOT.zip</span>
+        <span>✅ guide.html — руководство пользователя</span>
+        <span>✅ tools.html — описание инструментов</span>
+        <span>✅ CLAUDE.md — правила для AI</span>
+        <span>✅ RELEASE-5.3.0.md — что нового</span>
+        <span>✅ RELEASE-5.2.0.md — предыдущий релиз</span>
+      </div>
+
+      <a href="./MCP-RSV-Server-5.4.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./MCP-RSV-Server-{v}-distr.zip" download="MCP-RSV-Server-5.4.0-distr.zip">⬇ Скачать бесплатно</a>
+
+      <div class="download-note">
+        При первом запуске откроется диалог активации — нажмите «Пробный период» или введите код активации
+      </div>
+    </div>
+
+    <!-- Бесплатные дополнения линейки RSV -->
+    <div class="download-addons">
+      <div class="download-card download-card-secondary">
+        <div class="download-card-label">MCP:RSV Data · бесплатно</div>
         <div class="download-file">
-          <div class="download-file-icon">📦</div>
+          <div class="download-file-icon">📊</div>
           <div>
-            <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-5.4.0-distr.zip</div>
-            <div class="download-file-meta" data-v="Версия {v} · ~4.2 MB">Версия 5.4.0 · ~4.2 MB</div>
+            <div class="download-file-name">MCP-RSV-Data.zip</div>
+            <div class="download-file-meta">Бесплатный продукт · ~5 MB</div>
           </div>
         </div>
 
         <div class="download-includes">
-          <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-5.4.0-SNAPSHOT.zip</span>
-          <span>✅ guide.html — руководство пользователя</span>
-          <span>✅ tools.html — описание инструментов</span>
-          <span>✅ CLAUDE.md — правила для AI</span>
-          <span>✅ RELEASE-5.3.0.md — что нового</span>
-          <span>✅ RELEASE-5.2.0.md — предыдущий релиз</span>
+          <span>✅ ИИ читает данные базы 1С — остатки, документы, отчёты</span>
+          <span>✅ Без языка запросов — агент описывает, что хочет</span>
+          <span>✅ Плюс актуальная структура метаданных любой конфигурации</span>
+          <span>✅ Любая конфигурация, только чтение, открытый код (MIT)</span>
         </div>
 
-        <a href="./MCP-RSV-Server-5.4.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./MCP-RSV-Server-{v}-distr.zip" download="MCP-RSV-Server-5.4.0-distr.zip">⬇ Скачать бесплатно</a>
+        <a href="https://github.com/prepod2003/mcp-rsv-data/releases/latest/download/MCP-RSV-Data.zip" class="btn btn-primary" target="_blank" rel="noopener">⬇ Скачать бесплатно</a>
 
         <div class="download-note">
-          При первом запуске откроется диалог активации — нажмите «Пробный период» или введите код активации
+          Отдельный продукт — работа с данными базы. Исходники на <a href="https://github.com/prepod2003/mcp-rsv-data" target="_blank" rel="noopener">GitHub</a>.
         </div>
       </div>
 
       <div class="download-card download-card-secondary">
-        <div class="download-card-label">Компонент код-ревью (бесплатно)</div>
+        <div class="download-card-label">MCP:RSV Code Review · бесплатно</div>
         <div class="download-file">
           <div class="download-file-icon">🔍</div>
           <div>
@@ -684,13 +710,12 @@
           <span>✅ Нужен для инструмента <code>code_review</code></span>
           <span>✅ Работает и отдельно — ревью по правому клику в EDT</span>
           <span>✅ На базе BSL Language Server (1c-syntax, LGPL)</span>
-          <span>✅ Ставится один раз, обновлять не нужно</span>
         </div>
 
-        <a href="https://github.com/prepod2003/mcp-rsv-codereview/releases/latest/download/MCP-RSV-CodeReview.zip" class="btn btn-primary btn-lg" target="_blank" rel="noopener">⬇ Скачать компонент</a>
+        <a href="https://github.com/prepod2003/mcp-rsv-codereview/releases/latest/download/MCP-RSV-CodeReview.zip" class="btn btn-primary" target="_blank" rel="noopener">⬇ Скачать компонент</a>
 
         <div class="download-note">
-          Большой файл (~110 МБ) — устанавливается дольше обычного, но только один раз. Подробнее — в <a href="guide.html#code-review">руководстве</a>.
+          Большой файл (~110 МБ) — ставится дольше, но один раз. Подробнее — в <a href="guide.html#code-review">руководстве</a>.
         </div>
       </div>
     </div>
