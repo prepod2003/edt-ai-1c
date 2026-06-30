@@ -64,17 +64,14 @@
   </div>
   <div class="nav-section">
     <span class="nav-section-title">Инструменты</span>
-    <a href="#profiles" class="nav-link">Профили и группы</a>
-    <a href="#profile-analyst" class="nav-link sub">Аналитик (13)</a>
-    <a href="#profile-dev" class="nav-link sub">Разработчик (22)</a>
-    <a href="#profile-arch" class="nav-link sub">Архитектор (25)</a>
+    <a href="#profiles" class="nav-link">Профили доступа</a>
+    <a href="tools.html" class="nav-link sub">Полный каталог &rarr;</a>
   </div>
   <div class="nav-section">
     <span class="nav-section-title">Подробнее</span>
     <a href="#edit-metadata" class="nav-link">Конструктор конфигурации</a>
     <a href="#code-search" class="nav-link">Поиск по коду</a>
     <a href="#code-search-features" class="nav-link sub">Возможности</a>
-    <a href="#code-search-tests" class="nav-link sub">Результаты тестов</a>
     <a href="#debugger" class="nav-link">Отладка через ИИ</a>
     <a href="#external-objects" class="nav-link">Внешние обработки</a>
     <a href="#unit-tests" class="nav-link">Юнит-тесты YAxUnit</a>
@@ -380,6 +377,12 @@
     <p><strong>Внешние обработки и отчёты:</strong></p>
     <blockquote><p><em>«Собери внешнюю обработку ПроверкаКурсов в файл D:/Обмен/ПроверкаКурсов.epf»</em></p></blockquote>
     <blockquote><p><em>«Выгрузи отчёт АнализПродаж в .erf — путь спросишь у меня»</em></p></blockquote>
+
+    <h4>Проверка кода и запросов — почти на автомате</h4>
+    <p>После записи кода <code>write_module_source</code> <em>сам</em> дожидается проверки EDT и возвращает её результат в том же ответе: список ошибок со строками и готовую подсказку «N ошибок — исправь перед продолжением» либо «0 ошибок — код корректен». Поэтому ИИ-ассистент видит свои ошибки сразу и исправляет их сам, без вашего участия и без отдельного запроса — цикл «записал → проверил → исправил» замыкается автоматически.</p>
+    <p>Запросы проверяются настоящим парсером 1С (как в редакторе EDT) — достаточно попросить: <em>«проверь запрос»</em>, <em>«в процедуре N модуля M есть запрос — проверь его»</em>, <em>«пройдись по менеджер-модулю отчёта X и проверь каждый запрос»</em>. <em>Ограничение:</em> существование конкретных таблиц и полей в вашей конфигурации проверка пока не контролирует — только синтаксис и структуру.</p>
+    <p><strong>Можно поставить на автомат.</strong> Чтобы не просить каждый раз, пропишите в правилах своего ИИ-ассистента (в Claude Code — <code>CLAUDE.md</code> проекта, в Cursor — Rules for AI, в Windsurf — memories): <em>«перед каждой записью модуля, если в коде есть запрос (присваивание <code>Запрос.Текст = "…"</code>), сначала проверь его и, если есть ошибки, исправь — только потом записывай»</em>. Сильные модели соблюдают такое правило стабильно.</p>
+
     <h3 id="examples-arch">Архитектор — создание объектов, форм, отчётов</h3>
 
     <p><strong>Создание объектов:</strong></p>
@@ -446,242 +449,19 @@
     <blockquote><p><em>«Напиши сценарий Vanessa: открыть список Контрагентов, создать элемент с наименованием "Тест", записать и проверить, что он появился в списке. Прогони»</em> — интерфейс проверяется как живым пользователем</p></blockquote>
     <blockquote><p><em>«Я добавил в Заказ функцию расчёта суммы со скидкой и кнопку "Пересчитать" на форме. Напиши юнит-тест на функцию и сценарий Vanessa на кнопку, прогони и то, и другое»</em> — полный цикл: и логика, и интерфейс одним заданием. Подробнее — разделы <a href="#unit-tests">«Юнит-тесты»</a> и <a href="#vanessa">«Сценарное тестирование Vanessa»</a></p></blockquote>
     <!-- Профили и группы -->
-    <h2 id="profiles">Профили и группы инструментов</h2>
+    <h2 id="profiles">Три профиля доступа</h2>
+    <p>Набор доступных инструментов определяется профилем — он выбирается на странице настроек плагина в EDT. Полный каталог всех инструментов с описаниями — на странице <a href="tools.html">«Описание инструментов»</a>.</p>
+    <ul>
+      <li><strong>Аналитик</strong> — только чтение: изучение и документирование конфигурации, поиск и чтение кода, визуализация форм, справка платформы. Ничего не меняет в проекте.</li>
+      <li><strong>Разработчик</strong> — всё из «Аналитика» плюс запись BSL-кода с встроенной валидацией, проверка запросов, отладка через ИИ, сборка и экспорт внешних обработок и отчётов в .epf/.erf.</li>
+      <li><strong>Архитектор</strong> — всё из «Разработчика» плюс конструктор конфигурации (создание объектов, форм, отчётов СКД, макетов, расширений — около 140 операций) и полный цикл тестирования: юнит-тесты YAxUnit и сценарные UI-тесты Vanessa.</li>
+    </ul>
 
-    <h3 id="profile-analyst">Профиль «Аналитик» — 13 инструментов</h3>
-    <p>Профиль только для чтения. Для изучения и документирования конфигураций без внесения изменений.</p>
-
-    <h4>Анализ метаданных (8 инструментов)</h4>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
-        <tbody>
-          <tr><td><code>show_edt_version</code></td><td>Версия и сборка EDT, информация о JVM и ОС</td></tr>
-          <tr><td><code>list_workspace_projects</code></td><td>Список проектов в текущем workspace</td></tr>
-          <tr><td><code>list_metadata_objects</code></td><td>Каталог объектов метаданных с фильтрацией по типу и имени</td></tr>
-          <tr><td><code>get_object_details</code></td><td>Полная структура объекта: реквизиты, табличные части, формы, команды. Типы — с подробностями: длина строки (Строка(100), Строка(0) — неограниченная), разрядность и точность числа (Число(15,2)), состав даты, индексирование, состав составного типа; у плана видов характеристик — тип значения характеристик и дополнительные значения. Большие отчёты СКД — компактной картой с дозапросом деталей и чтением длинного запроса частями.</td></tr>
-          <tr><td><code>get_config_properties</code></td><td>Свойства конфигурации: версия, подсистемы, статистика объектов</td></tr>
-          <tr><td><code>get_form_image</code></td><td>Визуализация формы — PNG-картинка или полное JSON-дерево элементов (включая командные панели, позиции, картинки и представление кнопок). Пагинация для больших форм. По каждому динамическому списку показывает его имя, основную таблицу и текст запроса (длинный читается частями).</td></tr>
-          <tr><td><code>get_platform_docs</code></td><td>Синтаксис-помощник: API платформы, язык запросов, директивы, функции СКД</td></tr>
-          <tr><td><code>get_object_help</code></td><td>Встроенная справка объекта (HTML-документация по кнопке «?»)</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p><strong><code>get_platform_docs</code></strong> — полноценный синтаксис-помощник для ИИ. Покрывает тысячи топиков: все типы платформы (Запрос, ТаблицаЗначений, HTTPСоединение...) с методами, свойствами и конструкторами. Язык запросов, директивы компиляции, аннотации расширений, ~130 функций СКД. Поиск без учёта регистра, русские и английские имена, точечная нотация (<code>Запрос.Выполнить</code>).</p>
-
-    <h4>Анализ кода (4 инструмента)</h4>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
-        <tbody>
-          <tr><td><code>list_modules</code></td><td>Все BSL-модули проекта с типом, размером, количеством строк</td></tr>
-          <tr><td><code>code_structure</code></td><td>Карта модуля и методов (<code>outline</code>, в т.ч. переменные модуля), тело метода по имени (<code>readMethod</code>), модуль целиком или диапазон (<code>readModule</code>), поиск текста/regex внутри модуля с номерами строк (<code>find</code>) — через штатную модель 1С:EDT: точные сигнатуры, типы параметров, области</td></tr>
-          <tr><td><code>ai_context</code></td><td>Умный сборщик контекста — метаданные объекта, дерево формы с реквизитами и командами, код модуля, вызовы за один запрос</td></tr>
-          <tr><td><code>diff_module</code></td><td>Сравнение модуля с версией из git (summary / unified / methods)</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p><strong><code>ai_context</code></strong> — заменяет 5–7 отдельных вызовов. Принимает четыре вида цели: объект метаданных (<code>Catalog.Х</code>, <code>Document.Х</code>, регистры, ChartOf*, BusinessProcess, Task и др.), <strong>форма</strong> (<code>Catalog.Х.Form.ФормаСписка</code> — возвращает дерево элементов, реквизиты с типами, команды, обработчики), общий модуль или путь к .bsl-файлу. Три режима: <code>minimal</code> (быстрый обзор), <code>standard</code> (для большинства задач), <code>full</code> (максимум: код + вызовы + ссылки). Для больших форм поддерживается пагинация дерева. Типы реквизитов и измерений/ресурсов показываются с подробностями (длина строки, точность числа, состав даты, индексирование, составной тип; тип значения характеристик у плана видов характеристик); схема компоновки больших отчётов выводится компактно, детали дозапрашиваются. Лучший первый шаг при работе с незнакомым объектом или формой.</p>
-
-    <h4>Поиск и навигация (1 инструмент)</h4>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
-        <tbody>
-          <tr><td><code>code_search</code></td><td>Единая точка входа для всех задач поиска по коду 1С: шесть операций (<code>textSearch</code>, <code>objectReferences</code>, <code>methodReferences</code>, <code>resolveSymbol</code>, <code>callHierarchy</code>, <code>help</code>) под одним инструментом. Авто-определение области поиска по дереву проектов, защита от ложных совпадений по префиксу, пагинация. Подробнее — раздел <a href="#code-search">«Поиск по коду»</a>.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h3 id="profile-dev">Профиль «Разработчик» — 22 инструмента</h3>
-    <p>К 13 инструментам аналитика добавляются инструменты для редактирования кода, отладки, валидации и сборки.</p>
-
-    <h4>Редактирование кода и отладка (2 инструмента)</h4>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
-        <tbody>
-          <tr><td><code>write_module_source</code></td><td>Запись BSL-кода (6 режимов: replace, replaceLines, replaceMethod, append, insertBefore, insertAfter)</td></tr>
-          <tr><td><code>launch_debugger</code></td><td>Полноценная отладка 1С — 16 действий (запуск, breakpoints, пошаговое выполнение, переменные, evaluate)</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p><strong><code>write_module_source</code></strong> — по умолчанию работает в режиме симуляции (<code>dryRun=true</code>). Автоматический бэкап перед каждой записью, проверка базовой структуры BSL (парность <code>Процедура</code>/<code>КонецПроцедуры</code>, <code>Функция</code>/<code>КонецФункции</code>, <code>Если</code>/<code>КонецЕсли</code>), блокировка при удалении &gt;50% строк. Замена диапазона строк требует ожидаемого текста первой строки (<code>expectedFirstLine</code>): если номера сдвинулись, правка отклоняется, а не портит соседний код. Для изменения метода надёжнее всего <code>replaceMethod</code> — адресуется по имени, не зависит от номеров строк.</p>
-
-    <p><strong>Встроенная валидация EDT сразу в ответе записи.</strong> После успешной записи (не dry-run) <code>write_module_source</code> <em>сам</em> дожидается полной валидации EDT по записанному файлу и возвращает её результат в том же ответе, в поле <code>validation</code>: список ошибок с текстом/строкой/файлом, счётчики <code>errorCount</code>/<code>warningCount</code>, готовая подсказка <em>«3 ошибок в записанном файле. Исправь их перед продолжением»</em> или <em>«0 ошибок — код корректен»</em>. AI-ассистенту не нужно отдельно звать <code>get_validation_errors</code> — ошибки уже в ответе. Цикл «записал → проверил → исправил → записал ещё раз» замыкается без обращения к пользователю и без дополнительного вызова инструмента. Попадают только ошибки по записанному файлу — посторонние старые ошибки демо-конфигурации не засоряют ответ. Для серии быстрых правок валидацию можно выключить параметром <code>validateAfterWrite=false</code> и позвать её вручную в конце.</p>
-
-    <h4>Валидация (3 инструмента)</h4>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
-        <tbody>
-          <tr><td><code>get_validation_errors</code></td><td>Ошибки и предупреждения EDT. По умолчанию показывает только файлы, изменённые в текущей сессии (режим <code>session</code>) — без посторонних старых ошибок. Умеет ждать «тишины» от асинхронного коммита маркеров и отдаёт полную инфо по каждой ошибке (текст, файл, строка, описание, автофикс).</td></tr>
-          <tr><td><code>validate_query</code></td><td>Проверка запросов 1С через настоящий парсер языка запросов — тот же, что в редакторе EDT. Ловит все синтаксические ошибки (опечатки в ключевых словах, лишние/пропущенные скобки, незакрытые литералы), типовые проверки языка и структурные ошибки СКД. Поддерживает обычные запросы и запросы СКД (<code>isDcs=true</code>).</td></tr>
-          <tr><td><code>code_review</code></td><td>Автоматическое код-ревью BSL по стандартам разработки 1С: магические числа, устаревшие методы, сложность кода, хардкод путей и адресов, code smells. Работает на бесплатном компоненте MCP:RSV Code Review (движок — open-source BSL Language Server, 1c-syntax). Ревью одного модуля или всего проекта. Подробно — раздел <a href="#code-review">«Код-ревью BSL»</a>.</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p><strong><code>get_validation_errors</code></strong> — по умолчанию режим <code>scope=session</code> и <code>severity=ERROR</code>. Показывает только реальные ошибки и только в тех файлах, которые AI или вы сами трогали в текущей сессии EDT. Для полного скана проекта перед релизом — <code>scope=project</code>. Для одного объекта — <code>scope=object + objectName</code>. На крупных базах (ERP, УТ, БП) работает мгновенно — не тянет десятки тысяч старых маркеров. Жалоба «AI правит, в EDT крест, а инструмент возвращает 0» закрыта — инструмент надёжно дожидается, пока EDT доварит маркеры на свежезаписанный файл.</p>
-
-    <p><strong><code>validate_query</code></strong> — запускает настоящий разбор текста запроса, как если бы вы открыли его в редакторе EDT. Подхватывает те же подчёркивания и сообщения. В ответе по каждой ошибке — уровень (ERROR / WARNING / INFO), текст на русском, точные координаты (строка, колонка, смещение и длина проблемного фрагмента) и код диагностики. Этого достаточно, чтобы AI сразу указал на проблемное слово и предложил исправление. Параметр <code>isDcs=true</code> переключает на парсер DCS — проверяются блоки <code>{ВЫБРАТЬ ...}</code> / <code>{ГДЕ ...}</code> и параметры виртуальных таблиц. Типичный сценарий: AI проверяет запрос перед <code>write_module_source</code>, исправляет и перепроверяет — в код попадает уже чистый запрос. <em>Ограничение:</em> не проверяет существование конкретных таблиц и полей в вашей конфигурации (это требует полного контекста проекта и в EDT есть только в редакторе запросов) — запланировано на будущие релизы.</p>
-
-    <p><strong>Как вы запускаете проверку.</strong> Отдельной «автоматической» привязки к другим инструментам пока нет — вы просто просите AI-ассистента проверить запрос. Дальше AI сам решает, передавать ли готовый текст или сначала прочитать его из модуля/схемы СКД. Частые формулировки: «<em>проверь запрос: …</em>», «<em>в процедуре N модуля M есть запрос — проверь его</em>», «<em>пройдись по менеджер-модулю отчёта X и проверь каждый запрос</em>», «<em>проверь запрос из схемы компоновки отчёта Y</em>», «<em>напиши метод выборки …, проверь запрос перед вставкой в модуль</em>». Примеры — в разделе «<a href="#examples-dev">Разработчик — код, валидация, отладка</a>».</p>
-
-    <p><strong>Можно поставить на автомат через настройки AI.</strong> Если не хочется каждый раз говорить «проверь запрос», пропишите в правилах своего AI-ассистента (в Claude Code — <code>CLAUDE.md</code> проекта, в Cursor — Rules for AI, в Windsurf — memories): <em>«перед каждым <code>write_module_source</code>, если в коде есть строковый литерал с запросом (присваивание <code>Запрос.Текст = &quot;…&quot;</code> или аналогичное), сначала вызови <code>validate_query</code> на извлечённый текст; если есть ошибки — исправь и перепроверь, только потом записывай модуль»</em>. Сильные модели соблюдают такое правило стабильно.</p>
-
-    <p><strong>Встроенная автоматика на уровне плагина</strong> — запланирована на будущий релиз. По аналогии с тем, как <code>write_module_source</code> уже сам возвращает ошибки EDT в поле <code>validation</code> ответа, плагин будет сам извлекать QL-литералы из записываемого BSL (и <code>queryText</code> из DCS-наборов данных) и возвращать проверку запросов в том же ответе — агенту не придётся помнить про отдельный вызов.</p>
-
-    <h4>Сборка и управление (4 инструмента)</h4>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
-        <tbody>
-          <tr><td><code>sync_database</code></td><td>Обновление информационной базы из проекта EDT</td></tr>
-          <tr><td><code>rebuild_project</code></td><td>Очистка кэша и пересборка проекта</td></tr>
-          <tr><td><code>list_applications</code></td><td>Список зарегистрированных информационных баз (нужен для отладчика)</td></tr>
-          <tr><td><code>export_object</code></td><td>Экспорт внешней обработки/отчёта в бинарный .epf/.erf файл</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p><strong><code>export_object</code></strong> — собирает проект внешней обработки или отчёта в готовый бинарный файл <strong>.epf</strong> / <strong>.erf</strong>, который можно сразу открыть в 1С. Платформа 1С и тип файла определяются автоматически, один вызов. <em>(Проверено на Windows; на Linux и macOS должно работать — но прогона пока не было.)</em></p>
-    <h3 id="profile-arch">Профиль «Архитектор» — 25 инструментов</h3>
-    <p>К 22 инструментам разработчика добавляются конструктор конфигурации, юнит-тесты YAxUnit и сценарное тестирование Vanessa.</p>
-
-    <h4>Редактирование метаданных (1 инструмент, ~140 операций)</h4>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
-        <tbody>
-          <tr><td><code>edit_metadata</code></td><td>Единый конструктор: создание объектов, реквизитов, форм, элементов, отчётов СКД, расширений</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h4>Юнит-тесты YAxUnit (1 инструмент)</h4>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
-        <tbody>
-          <tr><td><code>yaxunit_tests</code></td><td>Прогон юнит-тестов YAxUnit (run / debug), автообновление информбазы, Markdown-отчёт, встроенная справка для AI по написанию тестов. Подробно — раздел <a href="#unit-tests">«Юнит-тесты YAxUnit»</a>.</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h4>Сценарное тестирование Vanessa (1 инструмент)</h4>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Инструмент</th><th>Описание</th></tr></thead>
-        <tbody>
-          <tr><td><code>vanessa</code></td><td>Сценарное UI-тестирование через Vanessa Automation: прогон <code>.feature</code>-сценариев (Gherkin), словарь шагов (<code>steps</code>), проверка синтаксиса до запуска (<code>checkSyntax</code>), автоустановка Vanessa и автообновление информбазы. Подробно — раздел <a href="#vanessa">«Сценарное тестирование Vanessa»</a>.</td></tr>
-        </tbody>
-      </table>
-    </div>
     <!-- Конструктор конфигурации -->
     <h2 id="edit-metadata">Конструктор конфигурации — edit_metadata</h2>
     <p>Единый инструмент для создания и настройки объектов метаданных, форм, макетов печатных форм и отчётов. Содержит около <strong>140 операций</strong> в 10 областях. Все изменения выполняются через нативные сервисы EDT — результат идентичен ручному созданию в конструкторе.</p>
 
-    <h3>Дерево операций</h3>
-
-    <div class="tree-block"><span class="node">edit_metadata</span> <span class="desc">(~140 операций)</span>
-<span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">Объекты метаданных</span> <span class="desc">(18 операций)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> createObject / removeObject <span class="desc">— создание объекта (30+ типов) и удаление целиком</span>
-<span class="branch">│</span>   <span class="branch">├──</span> renameObject <span class="desc">— переименование объекта/формы/реквизита/ТЧ как «Рефакторинг → Переименовать» (синоним, ссылки, файлы, заимствованные копии)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setObjectProperty <span class="desc">— свойства объекта (подсказки при опечатках, проверка имени картинки)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setHelp <span class="desc">— справочная информация объекта (кнопка «?»/F1) из markdown или текста</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addObjectAttribute / removeObjectAttribute <span class="desc">— реквизиты объекта (удаление с очисткой полей форм)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addPredefined / removePredefined <span class="desc">— предопределённые элементы (группы/элементы справочников, счета планов счетов, виды характеристик и расчёта) и их удаление</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addTabularSection / removeTabularSection <span class="desc">— табличные части целиком</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addTabularSectionAttribute / removeTabularSectionAttribute <span class="desc">— колонки табличной части</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setValueType <span class="desc">— тип значения характеристик плана видов характеристик; тип реквизита, колонки ТЧ, измерения/ресурса регистра, значения константы (один или составной, с длиной/точностью/составом даты)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> changeAttributeType <span class="desc">— смена типа существующего реквизита без удаления, с сохранением порядка и ссылок</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setBaseProject <span class="desc">— привязка проекта внешних обработок/отчётов к базовой конфигурации</span>
-<span class="branch">│</span>   <span class="branch">└──</span> createObjectCommand / removeCommand <span class="desc">— объектные команды Catalog/Document/... с заглушкой ОбработкаКоманды</span>
-<span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">Специализированные объекты</span> <span class="desc">(19 операций)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addRegisterField / removeRegisterField <span class="desc">— поля всех 4 видов регистров + признаки учёта и субконто плана счетов</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addRecorder / removeRecorder <span class="desc">— документы-регистраторы существующего регистра</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addEnumValue <span class="desc">— значения перечислений</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addSubsystemContent / removeSubsystemContent <span class="desc">— состав подсистем</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setRoleRight <span class="desc">— права ролей (русские и английские имена)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setDefinedTypeTypes <span class="desc">— состав определяемого типа</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addEventSubscriptionHandler <span class="desc">— дописать процедуру-заглушку обработчика подписки на событие</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addAccountExtDimensionType / removeAccountExtDimensionType <span class="desc">— виды субконто предопределённому счёту плана счетов (оборотное субконто, лимит)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addExchangePlanContent / removeExchangePlanContent <span class="desc">— состав плана обмена с авторегистрацией изменений (Allow/Deny)</span>
-<span class="branch">│</span>   <span class="branch">└──</span> setXdtoNamespace, addXdtoObjectType, addXdtoValueType, addXdtoProperty, removeXdtoType, removeXdtoProperty <span class="desc">— содержимое XDTO-пакета: пространство имён, типы объектов/значений и их свойства</span>
-<span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">Формы</span> <span class="desc">(26 операций)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> createForm <span class="desc">— создание (элемент, список, выбор, общая, запись регистра)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addFormAttribute / addFormAttributeColumn <span class="desc">— реквизиты формы и колонки таблицы-реквизита</span>
-<span class="branch">│</span>   <span class="branch">├──</span> removeFormAttribute / removeFormAttributeColumn <span class="desc">— удаление реквизита формы или одной колонки (с очисткой связанных элементов)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addDynamicListTable <span class="desc">— таблица динамического списка из объекта или произвольного запроса; настройка как у отчёта (отбор, порядок, группировка, оформление, выбранные/вычисляемые поля, параметры), смена запроса/основной таблицы/ключей; колонки по пути Список.Поле или [Список, Поле] из просмотра формы; в расширении источники запроса заимствуются автоматически</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addField, addGroup, addButton <span class="desc">— элементы формы (addField с видом поля через fieldType — HTML-документ, картинка, календарь и др.; addButton со стандартной командой сразу с иконкой платформы)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addTable <span class="desc">— таблица для ТЧ или реквизита-таблицы (колонки авто или вручную)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addDecoration, addRadioButton <span class="desc">— декорации и переключатели</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setProperty <span class="desc">— свойства элементов формы пакетно (цвета, шрифты, картинки, размеры; проверка имени картинки)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> listPictures <span class="desc">— поиск среди 763 стандартных картинок</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addEventHandler <span class="desc">— обработчик события на форму или элемент (ПриОткрытии, ПриИзменении и т.д.)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addCommandHandler <span class="desc">— обработчик кнопки + процедура-заглушка в Module.bsl</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setupSettingsComposerOnForm <span class="desc">— композитор настроек на форме (реквизит + таблицы UI + BSL-пример)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addFormConditionalAppearance / listFormConditionalAppearance / removeFormConditionalAppearance <span class="desc">— условное оформление формы (подсветка строки, поля, колонки по условию)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> removeFormCommand <span class="desc">— удалить команду формы и её кнопки (чистка сирот и дублей)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addFormCommandInterfaceItem <span class="desc">— ссылка на команду в навигационной панели/панели команд формы</span>
-<span class="branch">│</span>   <span class="branch">├──</span> removeFormCommandInterfaceItem <span class="desc">— убрать ссылку</span>
-<span class="branch">│</span>   <span class="branch">└──</span> setFormCommandInterfaceItemProperty <span class="desc">— группа размещения, видимость, индекс пункта</span>
-<span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">Макеты печатных форм</span> <span class="desc">(8 операций)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addTemplate <span class="desc">— создание макета (табличный, текстовый, СКД и др.)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setTemplateCell <span class="desc">— содержимое ячейки (текст, шрифт, цвет, выравнивание)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> mergeTemplateCells <span class="desc">— объединение диапазонов ячеек</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setTemplateArea <span class="desc">— именованная область макета (для Макет.ПолучитьОбласть)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addTemplateDrawing / listTemplateDrawings / removeTemplateDrawing <span class="desc">— рисунки в табличном макете (факсимиле, печати, вшитые картинки)</span>
-<span class="branch">│</span>   <span class="branch">└──</span> drawTemplate <span class="desc">— пакетное заполнение (ячейки, ширины, именованные области)</span>
-<span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">Расширения</span> <span class="desc">(6 операций)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> createExtensionProject <span class="desc">— создание проекта расширения с привязкой к базовой конфигурации</span>
-<span class="branch">│</span>   <span class="branch">├──</span> adoptObject <span class="desc">— заимствовать один объект из базы (опц. рекурсивно с дочерними элементами)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> adoptObjects <span class="desc">— заимствовать несколько объектов явным списком одним вызовом</span>
-<span class="branch">│</span>   <span class="branch">├──</span> adoptChild <span class="desc">— заимствовать дочерний элемент</span>
-<span class="branch">│</span>   <span class="branch">├──</span> adoptFormItem <span class="desc">— заимствовать элемент формы</span>
-<span class="branch">│</span>   <span class="branch">└──</span> adoptModule <span class="desc">— включить участие модуля заимствованного объекта в расширении</span>
-<span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">Расширения в информационной базе (.cfe)</span> <span class="desc">(3 операции)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> installExtension <span class="desc">— подключить готовое расширение к базе (файл, ссылка или GitHub-релиз)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> listExtensions <span class="desc">— список расширений информационной базы</span>
-<span class="branch">│</span>   <span class="branch">└──</span> uninstallExtension <span class="desc">— удалить расширение из базы по имени</span>
-<span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">HTTP-сервисы</span> <span class="desc">(4 операции)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addUrlTemplate / removeUrlTemplate <span class="desc">— URL-шаблоны внутри сервиса (пути вида /users/{id}, параметры в фигурных скобках)</span>
-<span class="branch">│</span>   <span class="branch">└──</span> addHttpServiceMethod / removeHttpServiceMethod <span class="desc">— HTTP-методы (GET/POST/PUT/DELETE/...) с автозаглушкой обработчика в модуле сервиса</span>
-<span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">Отчёты СКД</span> <span class="desc">(48 операций)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> createReportSchema, repairReportSchema <span class="desc">— создание схемы и восстановление при рассинхроне</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addDataSet, setDataSetProperty, removeDataSet <span class="desc">— наборы данных (запрос, объект, объединение)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addDataSetField, removeDataSetField <span class="desc">— поля набора данных</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addQueryField, removeQueryField, addQueryCondition <span class="desc">— точечная правка запроса набора</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addDataSetLink, setDataSetLinkProperty, removeDataSetLink <span class="desc">— связи наборов данных</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addSchemaParameter, setSchemaParameter, removeSchemaParameter, moveSchemaParameter <span class="desc">— параметры схемы</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addCalculatedField, setCalculatedField, removeCalculatedField <span class="desc">— вычисляемые поля</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addTotalField, setTotalField, removeTotalField <span class="desc">— итоги (ресурсы)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addSettingsGroup/Table/Chart, removeSettingsItem <span class="desc">— группировки, таблицы, диаграммы</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addSettingsSelectedField, removeSettingsSelectedField, clearSettingsSelectedFields <span class="desc">— выводимые поля</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addSettingsFilter, addSettingsFilterGroup, removeSettingsFilter <span class="desc">— отборы (с группами И/ИЛИ/НЕ)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addSettingsOrder, removeSettingsOrder <span class="desc">— сортировки</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addConditionalAppearance, setConditionalAppearance, removeConditionalAppearance, setDataSetFieldAppearance <span class="desc">— оформление</span>
-<span class="branch">│</span>   <span class="branch">├──</span> addSettingsVariant, cloneSettingsVariant, setSettingsVariantProperty, removeSettingsVariant <span class="desc">— варианты отчёта</span>
-<span class="branch">│</span>   <span class="branch">├──</span> setSettingsParameter, removeSettingsParameter, setOutputParameter <span class="desc">— значения параметров и вывод</span>
-<span class="branch">│</span>   <span class="branch">└──</span> setSettingsItemUserMode, addUserField <span class="desc">— быстрые настройки в шапку, пользовательские поля</span>
-<span class="branch">│</span>
-<span class="branch">├──</span> <span class="op">Общее</span> <span class="desc">(2 операции)</span>
-<span class="branch">│</span>   <span class="branch">├──</span> moveItem <span class="desc">— перемещение элементов формы</span>
-<span class="branch">│</span>   <span class="branch">└──</span> removeItem <span class="desc">— удаление элементов формы</span>
-<span class="branch">│</span>
-<span class="branch">└──</span> <span class="op">Сервис</span> <span class="desc">(1 операция)</span>
-    <span class="branch">└──</span> syncExport <span class="desc">— дождаться завершения всех запланированных записей проекта на диск</span></div>
+    <p>Полный список всех операций по 10 областям — на странице <a href="tools.html">«Описание инструментов»</a>. Ниже — ключевые возможности конструктора простыми словами.</p>
 
     <h3>Ключевые возможности</h3>
     <p><strong>Картинки.</strong> Свойства <code>setObjectProperty</code> и <code>setProperty</code> принимают как стандартные картинки EDT (763 шт., поиск через <code>listPictures</code>), так и общие картинки конфигурации в формате <code>CommonPicture.ИмяКартинки</code>.</p>
@@ -693,7 +473,9 @@
     <p><strong>Расширения.</strong> При добавлении реквизитов со ссылочными типами инструмент автоматически заимствует связанные объекты. При записи кода через <code>write_module_source</code> в модуль заимствованного объекта (объектный, менеджера, набора записей и т.д.) плагин <strong>автоматически</strong> включает участие этого модуля в расширении — ту самую галочку на вкладке «Расширение» в редакторе объекта в EDT. Без неё файл модуля на диске есть, но платформа при исполнении его игнорирует — получался тихий баг. Теперь не нужно лазить в EDT после каждой записи кода в заимствованный модуль. Если модуль нужно включить без записи кода (например, чтобы унаследовать базовое поведение as-is) — отдельная операция <code>adoptModule</code>.</p>
     <p><strong>Подписки на события.</strong> Подписка создаётся одним вызовом <code>createObject</code>: источник (один тип или массив), имя события (<code>ОбработкаПроведения</code> / <code>Posting</code>, <code>ПриЗаписи</code> / <code>OnWrite</code> и т.д.) и обработчик <code>ОбщийМодуль.Метод</code>. Сразу после создания в общий модуль <strong>автоматически дописывается процедура-заглушка</strong> с правильной сигнатурой — первым параметром идёт Источник, остальные берутся из описания события, в конце стоит <code>Экспорт</code>. Агенту остаётся написать только тело. Если общий модуль создали позже подписки или изменилось имя метода — отдельная операция <code>addEventSubscriptionHandler</code> допишет заглушку по готовой подписке.</p>
     <p><strong>Общие модули.</strong> У <code>createObject</code> общего модуля теперь есть параметры-флаги контекста исполнения: <code>server</code>, <code>serverCall</code>, <code>clientManagedApplication</code>, <code>clientOrdinaryApplication</code>, <code>externalConnection</code>, <code>privileged</code>, <code>global</code> и <code>returnValuesReuse</code> (с русскими алиасами «НеИспользовать» / «НаВремяВызова» / «НаВремяСеанса»). Агент явно указывает, какой модуль ему нужен — «серверный с вызовом с клиента», «клиент-серверный без экспортных вызовов» и т.д. — и получает модуль с правильными галочками сразу, без ручной правки в EDT.</p>
+    <p><strong>Бизнес-процессы и задачи.</strong> Бизнес-процесс собирается через агента целиком: карту маршрута — точки (Старт, Действие, Условие, Завершение и др.) и переходы между ними — рисует одна команда <code>createRouteMap</code>, плагин сам расставляет точки ярусами и заводит в модуле заготовки обработчиков с правильной сигнатурой. У задачи настраивается адресация (<code>setTaskAddressing</code>): регистр адресации, реквизиты адресации, основной реквизит и параметр сеанса «текущий исполнитель». Карта маршрута и адресация видны и при чтении объекта через <code>get_object_details</code> / <code>ai_context</code>.</p>
     <p><strong>Макеты печатных форм.</strong> Полный цикл сборки макета: создание объекта, рисование ячеек с оформлением, объединения, ширины колонок, именованные области (<code>Шапка</code>, <code>СтрокаТовара</code>, <code>Подвал</code>). <code>drawTemplate</code> делает всё одним пакетным вызовом — готовый макет, идентичный нарисованному вручную в EDT.</p>
+    <p><strong>Содержимое макетов.</strong> <code>addTemplate</code> теперь не только создаёт макет, но и сразу наполняет его: текстовому — текст, HTML-макету — разметку, а внешней компоненте, двоичному макету и графической/географической схеме — путь к файлу-источнику на диске. У готового макета содержимое можно прочитать и заменить (<code>getTemplateContent</code> / <code>setTemplateContent</code>) — удобный сценарий «поправить кусок текста»: агент читает текущее содержимое, меняет нужное и записывает обратно.</p>
     <p><strong>Отчёты СКД.</strong> Полный цикл: схема, наборы данных, параметры, ресурсы, группировки, таблицы, диаграммы, отборы, сортировки, условное оформление, варианты настроек. Минимальный отчёт — 6 вызовов. В справке есть готовый рабочий сценарий для матричных отчётов («товары × месяцы»). Схему можно не только собрать с нуля, но и <strong>править точечно</strong> — у каждого элемента есть «создать / изменить / удалить»: переименовать набор, поменять формулу итога, убрать лишний отбор, не пересобирая отчёт целиком.</p>
     <p><strong>Связи наборов данных.</strong> Когда отчёт собирает данные из нескольких источников (продажи в одном наборе, реквизиты организаций в другом, связь по «Организация»), связь можно создать, изменить и удалить. Плагин сам поддерживает порядок: при удалении набора висящие на нём связи убираются, при переименовании — переключаются на новое имя, без ручной чистки.</p>
     <p><strong>Варианты отчёта.</strong> Вариант можно добавить, скопировать целиком под новым именем (со всеми группировками, отборами и оформлением), переименовать и удалить. Любую настройку можно адресовать конкретному варианту — многовариантные отчёты («Продажи по организациям» и «Продажи по номенклатуре») собираются полностью через MCP.</p>
@@ -704,8 +486,11 @@
     <p><strong>Подсистемы и поиск объекта в меню.</strong> Типовой вопрос пользователя: «в каком разделе интерфейса найти этот документ/отчёт?». Один вызов <code>get_object_details</code> на объект даёт поле <code>subsystems</code> со всеми полными путями подсистем, в которых он числится. Агент сразу отвечает: «этот документ лежит в разделе <strong>Продажи → Документы</strong>». Для самой подсистемы <code>get_object_details</code> возвращает <code>content</code> (включённые объекты), <code>children</code> (вложенные подсистемы) и <code>parent</code> (путь к родителю). В имени принимается полный путь <code>Subsystem.A.Subsystem.B</code> на любую глубину. Бонусом: <code>createObject</code> с тем же форматом пути сразу создаёт новую подсистему как вложенную — раньше через плагин иерархию не собрать было.</p>
     <p><strong>Расширяемый справочник платформы.</strong> Встроенная документация EDT по некоторым темам только отсылает на 1С:ИТС без конкретики — например, параметры форматной строки <code>ЧН</code>, <code>ЧДЦ</code>, <code>ДФ</code>, <code>БИ</code> там не описаны. Плагин дополняет синтаксис-помощник собственным слоем справок: <code>get_platform_docs typeName=ФорматнаяСтрока</code> возвращает полный справочник параметров с типовыми кейсами, сверенный с официальным международным порталом 1С:Предприятие. А <code>setProperty</code> при установке свойств <code>format</code>/<code>editFormat</code> сразу возвращает маяк <code>formatHelp</code> с короткой подсказкой про самую частую ловушку (<code>ЧН</code> не указан — ноль скрывается; <code>ЧН=0</code> — ноль показывается как «0») и указателем на справочник. Механизм расширяемый — в будущем таким же способом можно дополнять и другие темы.</p>
     <p><strong>Динамические списки на форме.</strong> Список создаётся из справочника, документа, регистра или произвольного запроса — колонки подбираются автоматически из полей запроса или объекта-источника. Доступна полная настройка как у отчёта (отбор, порядок, группировка, условное оформление, выбранные и вычисляемые поля, параметры), смена запроса, основной таблицы, ключей и режимов работы, а также добавление, переименование и удаление колонок. Колонку можно добавить по пути в обоих видах — <code>Список.Поле</code> и ровно так, как путь показан в просмотре формы (<code>[Список, Поле]</code>); в ответе возвращаются фактические имена созданных колонок. Сам текст запроса списка виден в просмотре формы через <code>get_form_image</code> (длинный — читается частями). В расширении объекты-источники запроса заимствуются автоматически. Сценарий — <code>help topic=dynamicListSettings</code>.</p>
+    <p><strong>Динамический список без основной таблицы.</strong> Список на форме можно отвязать от конкретного объекта — оставить на произвольном запросе без «основной таблицы». Тогда на его таблице не появляются лишние кнопки объекта (Создать, Провести, Пометить на удаление), и список работает чисто на своём запросе. Такой список корректно отображается и в собранной внешней обработке (.epf) — его колонки видны в 1С:Предприятии.</p>
     <p><strong>Планы видов характеристик — тип значения и дополнительные значения.</strong> Операция <code>setValueType</code> задаёт «Тип значения характеристик» плана видов характеристик, а также тип реквизита, колонки табличной части, измерения или ресурса регистра и значение константы — один тип или составной, с уточнением длины строки, точности числа и состава даты. <code>changeAttributeType</code> меняет тип уже существующего реквизита без удаления и пересоздания — порядок и ссылки на реквизит сохраняются. Отдельно собирается механизм «дополнительных значений»: через <code>setObjectProperty</code> справочник делается подчинённым плану видов характеристик (свойство <code>owners</code>) и указывается как «Дополнительные значения характеристик» (свойство <code>characteristicExtValues</code>). Готовый сценарий «создать справочник значений → подчинить плану видов характеристик → привязать как дополнительные значения → включить в тип значения» — в справке через <code>help topic=characteristicExtValuesWorkflow</code>. В расширении ссылочные типы при установке заимствуются автоматически.</p>
     <p><strong>Виды поля формы.</strong> Раньше поле на форме всегда было обычным «полем ввода». Теперь можно задать конкретный вид: поле HTML-документа, текстового, табличного или форматированного документа, поле картинки, календарь, поле периода, индикатор, полосу регулирования, диаграмму, графическую и географическую схему и другие. Достаточно сказать «положи на форму поле HTML-документа» — вид задаётся при создании параметром <code>fieldType</code> или меняется у существующего поля свойством <code>view</code>. Особенно полезно поле HTML-документа: в нём отображается размеченный HTML и работает встроенный JavaScript — удобно для дашбордов и нестандартного интерфейса прямо на форме обработки. Плагин проверяет совместимость вида с типом реквизита (календарь — для даты, HTML-поле — для строки) и при несоответствии честно сообщает, какие виды доступны, а не оставляет форму в неожиданном состоянии.</p>
+    <p><strong>Параметры открытия формы.</strong> Кроме реквизитов у формы можно создать параметр открытия (<code>addFormParameter</code>) — «вход», через который значение передают форме в момент её открытия (например, открыть форму заказа сразу с нужным заказом — оно придёт в обработчик <code>ПриСозданииНаСервере</code>). Это не то же, что реквизит: реквизит хранит данные внутри формы, а параметр принимает их при открытии; при необходимости параметр помечается «ключевым».</p>
+    <p><strong>Синонимы на разных языках.</strong> Если в конфигурации несколько языков, синонимы объектов и реквизитов видны и задаются на каждом. При чтении (<code>get_object_details</code>) возвращается синоним на основном языке и полный набор по языкам; при установке (<code>setObjectProperty</code> со свойством <code>synonym</code>) можно передать одну строку — запишется на основном языке — или набор «язык → значение» сразу на нескольких языках.</p>
     <p><strong>Планы счетов с субконто.</strong> План счетов поддерживается вместе с субконто — аналитикой на счетах. Плагин связывает план счетов с планом видов характеристик, где описаны виды субконто (свойство <code>extDimensionTypes</code>), и назначает конкретному счёту или субсчёту его виды субконто — то, что в конфигураторе настраивается в табличной части «Виды субконто» счёта (операция <code>addAccountExtDimensionType</code>, можно пометить субконто оборотным). Благодаря этому документ проводится в хозрасчётный регистр и пишет движения со счетами дебета и кредита, суммой и аналитикой по субконто. Если чего-то не хватает (не задан план видов характеристик, нет такого счёта или вида субконто, превышен лимит) — плагин сразу честно сообщает, что сделать. Назначенные субконто и предопределённые счета видны и при чтении через <code>get_object_details</code>; настройки можно менять и удалять (<code>removeAccountExtDimensionType</code>, <code>removePredefined</code>).</p>
     <p><strong>Планы обмена с составом.</strong> План обмена наполняется составом одной серией команд: операция <code>addExchangePlanContent</code> указывает, какие справочники, документы и регистры участвуют в обмене, и задаёт каждому авторегистрацию изменений — <code>Allow</code> (изменения автоматически попадают в очередь на выгрузку узлам) или <code>Deny</code>. Объекты добавляются по одному или списком с разной авторегистрацией; повторное добавление обновляет авторегистрацию, обратная операция убирает объект из состава. План обмена помечается как распределённая ИБ (РИБ) свойством <code>distributedInfoBase</code>. После наполнения в нём можно заводить узлы и регистрировать изменения. Состав виден и при чтении через <code>get_object_details</code>.</p>
     <p><strong>XDTO-пакеты.</strong> XDTO-пакет создаётся и наполняется целиком через агента: пространство имён (<code>setXdtoNamespace</code>), типы объектов со свойствами (<code>addXdtoObjectType</code>) и типы значений на базе XSD (<code>addXdtoValueType</code>), а каждому типу объекта — свойства (<code>addXdtoProperty</code>) с типом-примитивом, ссылкой на другой тип пакета, кратностью (необязательное, список) и формой представления в XML (элемент, атрибут, текст). Раньше пакет можно было только создать пустым. Готовые типы сразу работают во встроенном языке через <code>ФабрикаXDTO</code> — по ним создаются объекты, заполняются свойства, сериализуются в XML и читаются обратно. Содержимое видно при чтении и меняется симметрично (<code>removeXdtoType</code>, <code>removeXdtoProperty</code>).</p>
@@ -757,69 +542,6 @@
 
     <p><strong>Контролируемый размер ответа.</strong> Пагинация во всех операциях, возвращающих коллекцию (<code>limit</code> 1–500, <code>offset</code>), и режим <code>compact=true</code> для экономии контекста. Даже на 350 000 совпадений в большой типовой конфигурации инструмент по умолчанию возвращает первые 20 и подсказывает «есть ещё страницы, сужай запрос». ИИ-агент не «захлёбывается» в данных.</p>
 
-    <h3 id="code-search-tests">Результаты тестов</h3>
-
-    <p>Инструмент проверен на 12 сценариях в условиях, максимально близких к реальной работе 1С-программиста: типовая <strong>«1С:Комплексная автоматизация» 2.5</strong> (~10 758 объектов метаданных) + 5 расширений + 1 внешняя обработка. Все тесты выполнял ИИ-агент, который не знает заранее структуру проекта — действует как программист, увидевший задачу впервые.</p>
-
-    <p>Для каждого теста замерялось <strong>время</strong> работы инструмента и <strong>размер ответа в токенах</strong> — это важно потому, что у ИИ-агентов есть лимит контекста (обычно от 128 000 до 1 000 000 токенов на всю задачу). Чем меньше ответ — тем больше места остаётся под собственно работу.</p>
-
-    <p><strong>Сводная таблица всех 12 тестов:</strong></p>
-
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Тест</th><th>Что искали</th><th style="text-align:right;">Время</th><th style="text-align:right;">Размер ответа</th></tr></thead>
-        <tbody>
-          <tr><td>A1</td><td>Определение метода БСП (<code>resolveSymbol</code> на <code>ОбщегоНазначения.СообщитьПользователю</code>)</td><td style="text-align:right;">0,014 с</td><td style="text-align:right;">~1 800 токенов</td></tr>
-          <tr><td>A2</td><td>Все ссылки на справочник Контрагенты (837 совпадений в 362 файлах, вернулись первые 20)</td><td style="text-align:right;">28,4 с</td><td style="text-align:right;">~2 700 токенов</td></tr>
-          <tr><td>A3</td><td>Конкретный редкий идентификатор <code>ИмяЛистаДляДаты</code> (2 совпадения)</td><td style="text-align:right;">6,0 с</td><td style="text-align:right;">~370 токенов</td></tr>
-          <tr><td>B1</td><td>Кто вызывает метод (между расширениями — соседние extension попали в scope автоматически)</td><td style="text-align:right;">6,0 с</td><td style="text-align:right;">~830 токенов</td></tr>
-          <tr><td>B2</td><td>Что вызывает метод (отсев комментариев, ключевых слов, параметров)</td><td style="text-align:right;">0,004 с</td><td style="text-align:right;">~630 токенов</td></tr>
-          <tr><td>B3</td><td>Дерево вызовов рекурсивно на 3 уровня вглубь</td><td style="text-align:right;">0,018 с</td><td style="text-align:right;">~1 170 токенов</td></tr>
-          <tr><td>C1</td><td>Защита от ложных совпадений по префиксу (<code>КурсыВалют</code> ≠ <code>КурсыВалютРасчетов</code>)</td><td style="text-align:right;">6,6 с</td><td style="text-align:right;">~2 900 токенов</td></tr>
-          <tr><td>C2</td><td>Очень частое слово <code>Возврат</code> (352 189 совпадений в 14 377 файлах — вернулись первые 20)</td><td style="text-align:right;">25,7 с</td><td style="text-align:right;">~1 800 токенов</td></tr>
-          <tr><td>C3</td><td>Поиск по шаблону <code>GoogleSheets*</code> (wildcards)</td><td style="text-align:right;">0,020 с</td><td style="text-align:right;">~430 токенов</td></tr>
-          <tr><td>C4</td><td>Внешняя обработка как объект поиска (правильный нулевой результат)</td><td style="text-align:right;">5,7 с</td><td style="text-align:right;">~270 токенов</td></tr>
-          <tr><td>D</td><td>Полная архитектура механизма «Длительные операции» БСП за 3 вызова</td><td style="text-align:right;">~12 с</td><td style="text-align:right;">~9 200 токенов</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p><strong>Совокупно за 12 тестов:</strong> ~85 секунд работы инструмента и ~22 100 токенов в контексте ИИ-агента. Это <strong>17 % от стандартного бюджета</strong> в 128 000 токенов — то есть ИИ-агенту остаётся 83 % контекста на собственно решение задачи программиста.</p>
-
-    <h4>Подробнее по каждому тесту</h4>
-
-    <p><strong>A1 — определение метода БСП.</strong> Один вызов <code>resolveSymbol</code> на <code>ОбщегоНазначения.СообщитьПользователю</code>. На выходе: путь к модулю, полная сигнатура с параметрами и значениями по умолчанию, исходный код метода целиком, doc-комментарий с примерами использования, признак экспортного метода. Программист одним вызовом получает всё, что нужно для понимания метода — не нужно открывать модуль вручную и искать процедуру глазами.</p>
-
-    <p><strong>A2 — все ссылки на справочник Контрагенты.</strong> Поиск без указания проекта — инструмент сам определил область. Найдено 837 совпадений в 362 файлах, в ответ ушли первые 20 в виде «проект:файл:строка: текст», 13 разных шаблонов поиска (<code>Catalog.Контрагенты</code>, <code>Справочники.Контрагенты</code>, <code>СправочникСсылка.Контрагенты</code>, <code>СправочникМенеджер.Контрагенты</code> и т. д.), топ-5 файлов по числу упоминаний и признак «есть ещё страницы». В большой конфигурации легко тысяча упоминаний одного объекта — инструмент не «свалил» контекст агента, а отдал по делу.</p>
-
-    <p><strong>A3 — конкретный редкий идентификатор.</strong> Программист помнит имя <code>ИмяЛистаДляДаты</code>, но не помнит где. Один вызов <code>textSearch</code> — два точных совпадения: определение функции в одном расширении и одно её использование в том же модуле. Идеальный случай — программист получил ровно то, что искал, без лишнего шума.</p>
-
-    <p><strong>B1 — кто вызывает мой метод (между расширениями).</strong> Прежде чем менять метод <code>СопоставитьСтроку</code> в общем модуле своего расширения, программист хочет понять, кто его вызывает — может, в другом расширении на него тоже завязан код. Метод определён в расширении <code>ДопДДС</code>, а вызывают его 5 тестовых процедур в <strong>другом расширении</strong> — <code>Тест2</code>. Инструмент сам это понял и поискал в обоих расширениях, потому что они «соседи» по дереву зависимостей. Если бы инструмент искал только в одном расширении, программист подумал бы «никто метод не вызывает, можно безопасно менять» — и сломал бы тесты, не заметив этого.</p>
-
-    <p><strong>B2 — что вызывает мой метод.</strong> Тот же метод, направление <code>outgoing</code>. На выходе — 11 реальных вызовов (<code>Структура</code>, <code>ПустаяСсылка</code>, <code>ВРег</code>, <code>СокрЛП</code>, <code>НайтиКандидатовВНаименовании</code>, <code>ПолучитьОсновноеНаправлениеДеятельности</code> и т. д.). При этом инструмент <strong>не</strong> принял за вызовы: ключевые слова <code>Если</code> / <code>Возврат</code> / <code>Тогда</code>, слова из строк-комментариев и параметры самой функции. Чистый список реальных зависимостей — на нём можно строить картину «что сломается, если это поменять».</p>
-
-    <p><strong>B3 — раскрой все вызовы вглубь на 3 уровня.</strong> Тот же метод, <code>depth=3</code>. На выходе — дерево вызовов: уровень 1 — <code>ПолучитьОсновноеНаправлениеДеятельности</code>; уровень 2 (что вызывает он) — <code>НайтиПоНаименованию</code>, <code>ЗначениеЗаполнено</code>, <code>СоздатьНаправлениеДеятельности</code>; уровень 3 (что вызывает <code>СоздатьНаправлениеДеятельности</code>) — <code>СоздатьЭлемент</code>, <code>СокрЛП</code>, <code>Записать</code>. Повторяющиеся вызовы помечены <code>recursive=true</code>, чтобы не разворачивать одно и то же дважды. Видна вся «глубина» — от верхнего метода до низкоуровневых операций с объектом — за 18 миллисекунд.</p>
-
-    <p><strong>C1 — защита от ложных срабатываний по префиксу.</strong> Программист ищет ссылки на регистр сведений <code>КурсыВалют</code>, но в конфигурации есть похожие <code>КурсыВалютРасчетовПоДоговорам</code>, <code>КурсыВалютЦБ</code>. Инструмент вернул 24 совпадения — <strong>все до одного</strong> точно <code>КурсыВалют</code>, без похожих имён. Серьёзная проблема обычного текстового поиска (через <code>grep</code> сюда попали бы все имена, начинающиеся с этих букв) здесь решена — <code>code_search</code> понимает границы слова.</p>
-
-    <p><strong>C2 — поиск служебного слова в большой конфигурации.</strong> Поиск слова <code>Возврат</code> — это служебное слово BSL, его очень много. Найдено 352 189 совпадений в 14 377 файлах. Инструмент не пытается отдать программисту 352 тысячи строк — это «убило» бы контекст агента. Вместо этого вернулись первые 20 совпадений + общая статистика + топ-5 файлов с наибольшим числом совпадений (например, в <code>ДокументооборотСКонтролирующимиОрганами/ObjectModule.bsl</code> — 3 623 совпадения) + признак <code>hasMore=true</code>. Программист видит цифры и понимает «я ищу слишком общее, надо сузить».</p>
-
-    <p><strong>C3 — поиск по шаблону (wildcards).</strong> Поиск всего, что начинается с <code>GoogleSheets</code>. Два совпадения: <code>ДопДДС_ИнтеграцияGoogleSheets.ЗаписатьСопоставленияИДанные</code> и <code>ДопДДС_ИнтеграцияGoogleSheets.СоздатьНаправлениеДеятельности</code>. Wildcards работают как ожидается: <code>*</code> — любая последовательность символов, <code>?</code> — один символ.</p>
-
-    <p><strong>C4 — внешняя обработка как объект поиска.</strong> Поиск ссылок на внешнюю обработку <code>БюджетДДС</code>. Ноль совпадений — и это правильный результат: внешние обработки используются как самостоятельные файлы и в коде конфигурации на них напрямую не ссылаются. Инструмент это корректно показал, не выдав ошибку и не накопав ложных совпадений. Граничный случай отработан правильно.</p>
-
-    <p><strong>D — полное понимание механизма «Длительные операции» БСП.</strong> Самая сложная задача: программист только что услышал про механизм длительных операций в БСП и хочет понять — а как это работает в коде моей конфигурации? Какие методы вызывать? Какой шаблон использования? Три вызова: (1) <code>objectReferences</code> на <code>CommonModule.ДлительныеОперации</code> — узнать, какие методы этого модуля вызываются и где (~6 с, ~2 600 токенов; сразу виден список ключевых методов <code>ВыполнитьВФоне</code>, <code>ВыполнитьФункцию</code>, <code>ЗаданиеВыполнено</code>, <code>ОтменитьВыполнениеЗадания</code> и топ-5 модулей, чаще всего использующих этот механизм); (2) <code>resolveSymbol</code> на главную серверную функцию <code>ДлительныеОперации.ВыполнитьВФоне</code> — её исходный код целиком (175 строк) <strong>и полный комментарий с примером использования из 4 шагов</strong>: как объявить экспортную процедуру, как запустить на сервере, как подключить обработчик ожидания на клиенте, как обработать результат (~5 мс, ~4 700 токенов); (3) <code>resolveSymbol</code> на парный клиентский метод <code>ДлительныеОперацииКлиент.ОжидатьЗавершение</code>, упомянутый в комментарии серверной функции — её код целиком (~2 мс, ~1 900 токенов). На выходе программист (или ИИ-агент за него) понимает: что главная функция запуска — <code>ВыполнитьВФоне</code>, какие у неё параметры, какой шаблон вызова, какая клиентская процедура её обрабатывает, какая структура у callback-уведомления о завершении, и имеет готовый пример из 4 шагов, который можно прямо скопировать. До появления <code>code_search</code> такая задача требовала десятка ручных переходов по коду или открытия документации БСП. Самый показательный сценарий ради которого инструмент создавался.</p>
-
-    <h4>Главные выводы</h4>
-
-    <ol>
-      <li><strong>Скорость предсказуемая.</strong> Точечные операции (определение метода, иерархия вызовов уже разобранного метода) работают за миллисекунды. Полнотекстовый поиск по большой конфигурации — единицы или десятки секунд, в пределах MCP-таймаута.</li>
-      <li><strong>Размер ответа всегда контролируем.</strong> Даже на 352 000 совпадений инструмент по умолчанию возвращает 20 первых и сообщает, что есть ещё.</li>
-      <li><strong>Семантический поиск без ложных совпадений.</strong> Поиск ссылок на объект учитывает все формы обращения и не путает похожие имена.</li>
-      <li><strong>Понимание границ.</strong> Слова <code>Если</code>, <code>Возврат</code> — это не методы; слова в комментариях — не вызовы. На таких чистых данных ИИ-агент уверенно делает выводы.</li>
-      <li><strong>Авто-определение области поиска.</strong> Если программист не указал, в каком проекте искать — инструмент сам выбирает разумную область: основная конфигурация и её зависимые расширения. Это решает классическую проблему «ИИ-агент ищет не там, где нужно».</li>
-    </ol>
-    <!-- Отладка -->
     <h2 id="debugger">Отладка через ИИ-агента — launch_debugger</h2>
     <p>Инструмент <code>launch_debugger</code> позволяет ИИ-агенту отлаживать код 1С так же, как это делает разработчик в EDT:</p>
     <ul>
@@ -831,19 +553,6 @@
       <li><strong>Стек вызовов</strong> — текущая строка, метод, цепочка вызовов</li>
       <li><strong>Управление выполнением</strong> — продолжить, приостановить, завершить</li>
     </ul>
-
-    <h3>Все 16 действий</h3>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Группа</th><th>Действия</th><th>Описание</th></tr></thead>
-        <tbody>
-          <tr><td>Сессия</td><td><code>launch</code>, <code>status</code>, <code>terminate</code></td><td>Запуск отладки, статус сессий, завершение</td></tr>
-          <tr><td>Выполнение</td><td><code>resume</code>, <code>stepOver</code>, <code>stepInto</code>, <code>stepReturn</code>, <code>suspend</code></td><td>Пошаговое выполнение</td></tr>
-          <tr><td>Состояние</td><td><code>getState</code>, <code>getVariables</code>, <code>getVariable</code>, <code>evaluate</code></td><td>Стек вызовов, переменные, вычисление</td></tr>
-          <tr><td>Breakpoints</td><td><code>listBreakpoints</code>, <code>addBreakpoint</code>, <code>removeBreakpoint</code>, <code>toggleBreakpoint</code></td><td>Управление точками останова</td></tr>
-        </tbody>
-      </table>
-    </div>
 
     <h3>Примеры вычислений через evaluate</h3>
     <div class="table-wrap">
@@ -884,6 +593,7 @@
     <blockquote><p><em>&laquo;Собери мою внешнюю обработку <code>ПроверкаКурсов</code> в файл <code>D:/Отчёты/Передача/ПроверкаКурсов.epf</code>&raquo;</em></p></blockquote>
 
     <p><em>Проверено на Windows. На Linux и macOS должно работать &mdash; платформа 1С и шаги сборки кросс-платформенные &mdash; но прогона на этих системах пока не было; если пользуетесь &mdash; напишите, как себя ведёт.</em></p>
+
     <!-- Юнит-тесты YAxUnit -->
     <h2 id="unit-tests">Юнит-тесты YAxUnit &mdash; полный цикл AI-разработки</h2>
 
