@@ -48,6 +48,72 @@
     .build-list strong{color:var(--text);font-weight:600;}
     @media(max-width:980px){.build-grid{grid-template-columns:1fr 1fr;}}
     @media(max-width:640px){.build-grid{grid-template-columns:1fr;}}
+
+    /* Живая hero-сцена: ИИ собирает конфигурацию у вас на глазах */
+    .hero-live{position:relative;display:flex;flex-direction:column;gap:14px;transform:translateY(-8px);min-width:0;max-width:100%;}
+    .hero-live::before{content:'';position:absolute;inset:-60px;background:radial-gradient(ellipse at center, rgba(124,58,237,.24) 0%, transparent 65%);filter:blur(50px);z-index:0;pointer-events:none;}
+    .hero-live>*{position:relative;z-index:1;min-width:0;}
+    .hl-chat{background:var(--bg-surface);border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:14px 18px;font-size:.92rem;line-height:1.55;color:var(--text);box-shadow:0 10px 30px -18px rgba(30,20,60,.3);min-height:104px;}
+    .hl-chat-who{display:flex;align-items:center;gap:8px;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;}
+    .hl-chat-who .hl-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);}
+    .hl-caret{display:inline-block;width:2px;height:1.05em;background:var(--accent);vertical-align:-.15em;margin-left:1px;animation:hlBlink 1s steps(1) infinite;}
+    @keyframes hlBlink{50%{opacity:0}}
+    .hl-agent{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:.76rem;color:var(--accent-hi);min-height:20px;padding-left:6px;opacity:0;transition:opacity .3s;}
+    .hl-agent.on{opacity:1;}
+    .hl-agent .hl-pulse{width:9px;height:9px;border-radius:50%;background:var(--accent);position:relative;flex:none;}
+    .hl-agent .hl-pulse::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(124,58,237,.4);animation:hlPing 1.4s ease-out infinite;}
+    @keyframes hlPing{0%{transform:scale(.4);opacity:1}100%{transform:scale(1.3);opacity:0}}
+    .hl-panel{background:var(--bg-surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;font-family:var(--font-mono);font-size:.8rem;box-shadow:0 10px 30px -18px rgba(30,20,60,.25);min-height:372px;min-width:0;}
+    .hl-title{font-family:var(--font-sans);font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+    .hl-title .hl-ptitle{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+    .hl-title .hl-tright{display:inline-flex;align-items:center;gap:8px;flex:none;}
+    .hl-title .hl-prof{font-size:.6rem;font-weight:700;letter-spacing:.05em;color:var(--accent-hi);background:var(--accent-soft);border-radius:999px;padding:2px 9px;}
+    .hl-title .hl-scn{color:var(--border-hi);font-weight:500;text-transform:none;letter-spacing:0;}
+    .hl-tree{list-style:none;margin:0;padding:0;}
+    .hl-tree li{display:flex;align-items:center;gap:9px;padding:4px 0 4px calc(var(--d,0)*20px);opacity:0;transform:translateY(6px) scale(.97);transition:opacity .35s ease,transform .45s cubic-bezier(.2,1.4,.4,1);color:var(--text);white-space:nowrap;overflow:hidden;min-width:0;}
+    .hl-tree li.on{opacity:1;transform:none;}
+    .hl-tree .hl-txt{min-width:0;overflow:hidden;text-overflow:ellipsis;}
+    .hl-tree li .hl-ico{flex:none;width:17px;height:17px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:700;color:var(--accent-hi);background:var(--accent-soft2);font-family:var(--font-sans);}
+    .hl-tree li.hl-branch{color:var(--text-muted);}
+    .hl-tree li .hl-new{font-family:var(--font-sans);font-size:.6rem;font-weight:700;color:#0B7A5C;background:rgba(16,185,129,.12);border-radius:999px;padding:1px 8px;margin-left:4px;flex:none;}
+    .hl-tree li .hl-st{font-family:var(--font-sans);font-size:.6rem;font-weight:700;color:var(--accent-hi);background:var(--accent-soft);border-radius:999px;padding:1px 8px;margin-left:4px;flex:none;}
+    .hl-form{display:none;margin-top:12px;border:1px solid var(--border);border-radius:10px;padding:11px;background:var(--bg-base);opacity:0;transform:translateY(8px);transition:opacity .4s,transform .5s cubic-bezier(.2,1.2,.4,1);}
+    .hl-form.show{display:block;}
+    .hl-form.on{opacity:1;transform:none;}
+    .hl-fbar{display:flex;gap:6px;margin-bottom:9px;}
+    .hl-fbtn{height:13px;border-radius:4px;background:var(--accent-soft2);width:54px;opacity:0;transition:opacity .3s;}
+    .hl-fbtn.hl-primary{background:var(--accent);width:74px;}
+    .hl-frow{display:flex;gap:8px;align-items:center;margin-bottom:6px;opacity:0;transform:translateX(-6px);transition:opacity .3s,transform .35s;}
+    .hl-frow .hl-lbl{width:80px;height:8px;border-radius:3px;background:var(--border-hi);}
+    .hl-frow .hl-inp{flex:1;height:15px;border-radius:4px;background:var(--bg-surface);border:1px solid var(--border);}
+    .hl-ftable{margin-top:8px;border:1px solid var(--border);border-radius:6px;overflow:hidden;opacity:0;transition:opacity .35s;}
+    .hl-ftable .hl-tr{display:flex;border-top:1px solid var(--border);}
+    .hl-ftable .hl-tr:first-child{border-top:0;background:var(--accent-soft);}
+    .hl-ftable .hl-td{flex:1;height:14px;border-left:1px solid var(--border);}
+    .hl-ftable .hl-td:first-child{border-left:0;}
+    .hl-fon{opacity:1 !important;transform:none !important;}
+    .hl-code{display:none;margin-top:12px;border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--bg-base);font-size:.74rem;line-height:1.7;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .5s cubic-bezier(.2,1.2,.4,1);}
+    .hl-code.show{display:block;}
+    .hl-code.on{opacity:1;transform:none;}
+    .hl-cline{opacity:0;transform:translateX(-6px);transition:opacity .3s,transform .35s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-muted);}
+    .hl-cline.on{opacity:1;transform:none;}
+    .hl-ind1{padding-left:16px;}
+    .hl-ind2{padding-left:32px;}
+    .hl-ind3{padding-left:48px;}
+    .hl-kw{color:var(--accent-hi);font-weight:500;}
+    .hl-str{color:#0B7A5C;}
+    .hl-badge{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-family:var(--font-mono);font-size:.74rem;color:#0B7A5C;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.35);border-radius:999px;padding:5px 13px;opacity:0;transform:translateY(6px);transition:opacity .4s,transform .45s cubic-bezier(.2,1.4,.4,1);}
+    .hl-badge.on{opacity:1;transform:none;}
+    .hl-badge .hl-chk{color:var(--success);font-weight:700;}
+    @media(max-width:960px){.hero-live{transform:none;max-width:560px;margin:0 auto;width:100%;}}
+    @media(max-width:480px){
+      .hl-panel{font-size:.72rem;padding:14px 12px;min-height:336px;}
+      .hl-tree li{padding-left:calc(var(--d,0)*12px);gap:7px;}
+      .hl-chat{font-size:.86rem;min-height:96px;padding:12px 14px;}
+      .hl-code{font-size:.66rem;padding:10px;}
+      .hl-title .hl-scn{display:none;}
+    }
+    @media (prefers-reduced-motion:reduce){.hl-caret{animation:none;}.hl-agent .hl-pulse::after{animation:none;}}
   </style>
 </head>
 <body>
@@ -106,8 +172,37 @@
           <span>Java 17 · Windows, macOS</span>
         </div>
       </div>
-      <div class="hero-image-wrap">
-        <img src="images/hero.png" alt="MCP:RSV Server — мост между AI-ассистентом и 1С:EDT">
+      <div class="hero-live" aria-hidden="true">
+        <div class="hl-chat">
+          <div class="hl-chat-who"><span class="hl-dot"></span><span id="hlWho">Программист — своему AI-агенту</span></div>
+          <span id="hlPrompt"></span><span class="hl-caret" id="hlCaret"></span>
+        </div>
+        <div class="hl-agent" id="hlAgent"><span class="hl-pulse"></span><span id="hlAgentTxt"></span></div>
+        <div class="hl-panel">
+          <div class="hl-title"><span class="hl-ptitle" id="hlPTitle">Конфигурация · 1С:EDT</span><span class="hl-tright"><span class="hl-prof" id="hlProf"></span><span class="hl-scn" id="hlScn"></span></span></div>
+          <ul class="hl-tree" id="hlTree"></ul>
+          <div class="hl-form" id="hlForm">
+            <div class="hl-fbar"><div class="hl-fbtn hl-primary" data-s></div><div class="hl-fbtn" data-s></div><div class="hl-fbtn" data-s></div></div>
+            <div class="hl-frow" data-s><div class="hl-lbl"></div><div class="hl-inp"></div></div>
+            <div class="hl-frow" data-s><div class="hl-lbl"></div><div class="hl-inp"></div></div>
+            <div class="hl-ftable" data-s>
+              <div class="hl-tr"><div class="hl-td"></div><div class="hl-td"></div><div class="hl-td"></div></div>
+              <div class="hl-tr"><div class="hl-td"></div><div class="hl-td"></div><div class="hl-td"></div></div>
+              <div class="hl-tr"><div class="hl-td"></div><div class="hl-td"></div><div class="hl-td"></div></div>
+            </div>
+          </div>
+          <div class="hl-code" id="hlCode">
+            <div class="hl-cline"><span class="hl-kw">&amp;После</span>(<span class="hl-str">"ПриЗаписи"</span>)</div>
+            <div class="hl-cline"><span class="hl-kw">Процедура</span> рсв_ПриЗаписи(Отказ)</div>
+            <div class="hl-cline hl-ind1"><span class="hl-kw">Если</span> рсв_ЕстьДубльИНН(ИНН) <span class="hl-kw">Тогда</span></div>
+            <div class="hl-cline hl-ind2">ОбщегоНазначения.СообщитьПользователю(</div>
+            <div class="hl-cline hl-ind3"><span class="hl-str">"Контрагент с таким ИНН уже существует"</span>, , , , Отказ);</div>
+            <div class="hl-cline hl-ind1"><span class="hl-kw">КонецЕсли</span>;</div>
+            <div class="hl-cline"><span class="hl-kw">КонецПроцедуры</span></div>
+          </div>
+          <div class="hl-badge" id="hlBadge"><span class="hl-chk">✓</span><span id="hlBadgeTxt"></span></div>
+        </div>
+        <noscript><img src="images/hero.png" alt="MCP:RSV Server — мост между AI-ассистентом и 1С:EDT"></noscript>
       </div>
     </div>
   </div>
@@ -1423,6 +1518,232 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
+</script>
+
+<!-- Живая hero-сцена: ИИ собирает конфигурацию у вас на глазах -->
+<script>
+(function(){
+  'use strict';
+  var aPrompt = document.getElementById('hlPrompt');
+  if (!aPrompt) return;
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function sleep(ms){ return new Promise(function(r){ setTimeout(r, reduced ? 0 : ms); }); }
+
+  var scenarios = [
+    {
+      label: '1/4',
+      profile: 'Аналитик',
+      title: 'Анализ · 1С:ERP',
+      who: 'Аналитик — своему AI-агенту',
+      prompt: 'Изучи механизм комиссионной торговли в 1С:ERP и напиши инструкцию для пользователя.',
+      agent: ['ищу объекты комиссионной торговли…','читаю код и связи механизма…','строю схему процесса…','пишу инструкцию для пользователя…'],
+      tree: [
+        {t:'Механизм · Комиссионная торговля', d:0, i:'КТ'},
+        {t:'Документ · РеализацияТоваровУслуг', d:1, i:'Д', st:'изучено'},
+        {t:'Документ · ОтчётКомитенту', d:1, i:'Д', st:'изучено'},
+        {t:'Регистр · ТоварыПринятыеНаКомиссию', d:1, i:'РН', st:'изучено'},
+        {t:'Модуль · РасчётКомиссии', d:1, i:'М', st:'изучено'},
+        {t:'Инструкция для пользователя', d:0, i:'И', nw:'готова'}
+      ],
+      badge: 'Инструкция готова — 14 шагов · 6 разделов'
+    },
+    {
+      label: '2/4',
+      profile: 'Разработчик',
+      title: 'Расширение · 1С:EDT',
+      who: 'Разработчик — своему AI-агенту',
+      prompt: 'Добавь в расширении проверку дублей по ИНН при записи контрагента — с сообщением пользователю.',
+      agent: ['читаю модуль справочника Контрагенты…','заимствую модуль в расширение…','пишу код проверки…','запускаю валидацию EDT…'],
+      tree: [
+        {t:'Расширение · МоёРасширение', d:0, i:'Рш'},
+        {t:'Справочник Контрагенты · МодульОбъекта', d:1, i:'М', st:'заимствован'}
+      ],
+      code: true,
+      badge: 'Валидация EDT — 0 ошибок · ревью пройдено'
+    },
+    {
+      label: '3/4',
+      profile: 'Архитектор',
+      title: 'Конфигурация · 1С:EDT',
+      who: 'Архитектор — своему AI-агенту',
+      prompt: 'Создай HTTP-сервис приёма заказов из интернет-магазина: методы GET и POST.',
+      agent: ['создаю HTTP-сервис…','добавляю шаблон URL и методы…','пишу обработчики методов…','запускаю валидацию EDT…'],
+      tree: [
+        {t:'HTTP-сервис · ПриёмЗаказов', d:0, i:'HS', nw:true},
+        {t:'Шаблон URL · /orders/{id}', d:1, i:'U', nw:true},
+        {t:'Метод GET — статус заказа', d:2, i:'G', nw:true},
+        {t:'Метод POST — создание заказа', d:2, i:'P', nw:true},
+        {t:'Модуль · обработчики методов', d:1, i:'М', nw:true},
+        {t:'Готов к публикации на веб-сервере', d:0, i:'✓', branch:true}
+      ],
+      badge: 'Валидация EDT — 0 ошибок'
+    },
+    {
+      label: '4/4',
+      profile: 'Архитектор',
+      title: 'Конфигурация · 1С:EDT',
+      who: 'Архитектор — своему AI-агенту',
+      prompt: 'Создай АРМ менеджера: обработку с формой — список заказов клиентов и команды.',
+      agent: ['создаю обработку…','добавляю форму и динамический список…','настраиваю колонки и команды…','запускаю валидацию EDT…'],
+      tree: [
+        {t:'Обработка · РабочееМестоМенеджера', d:0, i:'О', nw:true},
+        {t:'Форма · РабочееМесто', d:1, i:'Ф', nw:true},
+        {t:'Динамический список · ЗаказыКлиентов', d:2, i:'ДС', nw:true},
+        {t:'Колонки: Номер · Клиент · Сумма · Статус', d:2, i:'К', nw:true},
+        {t:'Команды: Провести · Отгрузить · Печать', d:2, i:'К', nw:true}
+      ],
+      form: true,
+      badge: 'Валидация EDT — 0 ошибок'
+    }
+  ];
+
+  var aCaret  = document.getElementById('hlCaret'),
+      aAgent  = document.getElementById('hlAgent'),
+      aAgentTxt = document.getElementById('hlAgentTxt'),
+      aTree   = document.getElementById('hlTree'),
+      aForm   = document.getElementById('hlForm'),
+      aCode   = document.getElementById('hlCode'),
+      aBadge  = document.getElementById('hlBadge'),
+      aBadgeTxt = document.getElementById('hlBadgeTxt'),
+      aScn    = document.getElementById('hlScn'),
+      aProf   = document.getElementById('hlProf'),
+      aPTitle = document.getElementById('hlPTitle'),
+      aWho    = document.getElementById('hlWho');
+
+  function buildTree(scn){
+    aTree.innerHTML = '';
+    scn.tree.forEach(function(n){
+      var li = document.createElement('li');
+      li.style.setProperty('--d', n.d);
+      if (n.branch) li.className = 'hl-branch';
+      if (n.i){
+        var ico = document.createElement('span');
+        ico.className = 'hl-ico'; ico.textContent = n.i;
+        li.appendChild(ico);
+      }
+      var tx = document.createElement('span');
+      tx.className = 'hl-txt';
+      tx.textContent = n.t;
+      li.appendChild(tx);
+      if (n.nw){
+        var b = document.createElement('span');
+        b.className = 'hl-new'; b.textContent = (n.nw === true ? 'new' : n.nw);
+        li.appendChild(b);
+      }
+      if (n.st){
+        var s = document.createElement('span');
+        s.className = 'hl-st'; s.textContent = n.st;
+        li.appendChild(s);
+      }
+      aTree.appendChild(li);
+    });
+  }
+
+  function typeText(el, text){
+    el.textContent = '';
+    if (reduced){ el.textContent = text; return Promise.resolve(); }
+    var i = 0;
+    return new Promise(function(resolve){
+      (function tick(){
+        if (i >= text.length){ resolve(); return; }
+        el.textContent += text[i];
+        var ch = text[i]; i++;
+        setTimeout(tick, ch === ' ' ? 12 : 22);
+      })();
+    });
+  }
+
+  function applyHeader(scn){
+    aScn.textContent = scn.label;
+    aProf.textContent = scn.profile;
+    aPTitle.textContent = scn.title;
+    aWho.textContent = scn.who;
+  }
+
+  async function runScenario(scn){
+    applyHeader(scn);
+    aBadge.classList.remove('on');
+    aForm.classList.remove('on'); aForm.classList.remove('show');
+    aForm.querySelectorAll('[data-s]').forEach(function(e){ e.classList.remove('hl-fon'); });
+    aCode.classList.remove('on'); aCode.classList.remove('show');
+    aCode.querySelectorAll('.hl-cline').forEach(function(e){ e.classList.remove('on'); });
+    aAgent.classList.remove('on');
+    buildTree(scn);
+    aCaret.style.display = 'inline-block';
+
+    await typeText(aPrompt, scn.prompt);
+    await sleep(350);
+    aCaret.style.display = 'none';
+
+    aAgent.classList.add('on');
+    aAgentTxt.textContent = scn.agent[0];
+    var items = aTree.querySelectorAll('li');
+
+    for (var i = 0; i < items.length; i++){
+      items[i].classList.add('on');
+      if (i === Math.floor(items.length * 0.45) && scn.agent[1]){ aAgentTxt.textContent = scn.agent[1]; }
+      await sleep(340);
+    }
+
+    if (scn.form){
+      aAgentTxt.textContent = scn.agent[2];
+      await sleep(300);
+      aForm.classList.add('show');
+      await sleep(40);
+      aForm.classList.add('on');
+      var parts = aForm.querySelectorAll('[data-s]');
+      for (var j = 0; j < parts.length; j++){
+        parts[j].classList.add('hl-fon');
+        await sleep(190);
+      }
+    } else if (scn.code){
+      aAgentTxt.textContent = scn.agent[2];
+      await sleep(300);
+      aCode.classList.add('show');
+      await sleep(40);
+      aCode.classList.add('on');
+      var lines = aCode.querySelectorAll('.hl-cline');
+      for (var c = 0; c < lines.length; c++){
+        lines[c].classList.add('on');
+        await sleep(260);
+      }
+    } else {
+      aAgentTxt.textContent = scn.agent[2];
+      await sleep(500);
+    }
+
+    aAgentTxt.textContent = scn.agent[3];
+    await sleep(700);
+    aBadgeTxt.textContent = scn.badge;
+    aBadge.classList.add('on');
+    aAgentTxt.textContent = 'готово';
+    await sleep(3400);
+  }
+
+  function showStatic(){
+    var scn = scenarios[0];
+    applyHeader(scn);
+    aPrompt.textContent = scn.prompt;
+    aCaret.style.display = 'none';
+    buildTree(scn);
+    aTree.querySelectorAll('li').forEach(function(li){ li.classList.add('on'); });
+    aBadgeTxt.textContent = scn.badge;
+    aBadge.classList.add('on');
+    aAgent.classList.add('on');
+    aAgentTxt.textContent = 'готово';
+  }
+
+  async function loop(){
+    if (reduced){ showStatic(); return; }
+    var k = 0;
+    for (;;){
+      await runScenario(scenarios[k % scenarios.length]);
+      k++;
+    }
+  }
+  loop();
+})();
 </script>
 
 </body>
