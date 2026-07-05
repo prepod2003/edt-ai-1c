@@ -114,6 +114,23 @@
       .hl-title .hl-scn{display:none;}
     }
     @media (prefers-reduced-motion:reduce){.hl-caret{animation:none;}.hl-agent .hl-pulse::after{animation:none;}}
+
+    /* Вариант C: «Пульс агента» — световой перелив заголовка + живая строка статуса */
+    .hc-shimmer{
+      background:linear-gradient(100deg,var(--accent-hi) 0%,var(--accent) 32%,#C084FC 50%,var(--accent) 68%,var(--accent-hi) 100%);
+      background-size:220% 100%;
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      animation:hcShimmer 5.5s linear infinite;
+    }
+    @keyframes hcShimmer{0%{background-position:120% 0}100%{background-position:-120% 0}}
+    .hc-status{display:inline-flex;align-items:center;gap:11px;font-family:var(--font-mono);font-size:.83rem;color:var(--text-muted);background:var(--bg-surface);border:1px solid var(--border);border-radius:999px;padding:9px 18px;margin:-8px 0 26px;box-shadow:0 8px 24px -14px rgba(30,20,60,.3);max-width:100%;}
+    .hc-status .hc-pulse{width:9px;height:9px;border-radius:50%;background:var(--success);position:relative;flex:none;}
+    .hc-status .hc-pulse::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(16,185,129,.45);animation:hcPing 1.6s ease-out infinite;}
+    @keyframes hcPing{0%{transform:scale(.4);opacity:1}100%{transform:scale(1.3);opacity:0}}
+    .hc-status .hc-txt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .hc-status .hc-txt b{color:var(--text);font-weight:600;}
+    .hc-status .hc-caret{display:inline-block;width:2px;height:1.05em;background:var(--text-muted);vertical-align:-.15em;margin-left:1px;animation:hlBlink 1s steps(1) infinite;}
+    @media (prefers-reduced-motion:reduce){.hc-shimmer{animation:none;}.hc-status .hc-pulse::after{animation:none;}.hc-status .hc-caret{animation:none;}}
   </style>
 </head>
 <body>
@@ -154,7 +171,8 @@
     <div class="hero-inner">
       <div>
         <span class="eyebrow">MCP:RSV Server · MCP-плагин для 1С:EDT</span>
-        <h1>Дайте искусственному интеллекту<br><span>полный доступ к 1С:EDT</span></h1>
+        <h1>Дайте искусственному интеллекту<br><span class="hc-shimmer">полный доступ к 1С:EDT</span></h1>
+        <div class="hc-status" aria-hidden="true"><span class="hc-pulse"></span><span class="hc-txt">агент сейчас: <b id="hcStatus"></b><span class="hc-caret"></span></span></div>
         <p class="hero-lead">Плагин для 1С:EDT, в котором AI работает внутри среды разработки <strong>как опытный 1С-разработчик</strong> — анализирует конфигурацию, пишет код, создаёт объекты и тестирует.</p>
         <ul class="hero-bullets">
           <li>Совместим с Claude, Cursor, Windsurf и любым MCP-клиентом</li>
@@ -1749,6 +1767,38 @@ document.addEventListener('keydown', function(e) {
     }
   }
   loop();
+})();
+</script>
+
+<!-- Вариант C: «Пульс агента» — живая строка статуса под hero-заголовком -->
+<script>
+(function(){
+  'use strict';
+  var el = document.getElementById('hcStatus');
+  if (!el) return;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function sleep(ms){ return new Promise(function(r){ setTimeout(r, reduced ? 0 : ms); }); }
+  var statuses = [
+    'пишет БСЛ-код…',
+    'создаёт форму списка…',
+    'валидирует модуль — 0 ошибок',
+    'прогоняет тесты YAxUnit…',
+    'собирает отчёт СКД…',
+    'заимствует объект в расширение…'
+  ];
+  if (reduced){ el.textContent = statuses[0]; return; }
+  (async function loopC(){
+    var k = 0;
+    for (;;){
+      var txt = statuses[k % statuses.length];
+      el.textContent = '';
+      for (var i=0;i<txt.length;i++){ el.textContent += txt[i]; await sleep(26); }
+      await sleep(2300);
+      while (el.textContent.length){ el.textContent = el.textContent.slice(0,-1); await sleep(9); }
+      await sleep(250);
+      k++;
+    }
+  })();
 })();
 </script>
 
