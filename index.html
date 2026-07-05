@@ -127,9 +127,10 @@
     .hc-status .hc-pulse{width:9px;height:9px;border-radius:50%;background:var(--success);position:relative;flex:none;}
     .hc-status .hc-pulse::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(16,185,129,.45);animation:hcPing 1.6s ease-out infinite;}
     @keyframes hcPing{0%{transform:scale(.4);opacity:1}100%{transform:scale(1.3);opacity:0}}
-    .hc-status .hc-txt{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .hc-status .hc-txt{min-width:0;}
     .hc-status .hc-txt b{color:var(--text);font-weight:600;}
     .hc-status .hc-caret{display:inline-block;width:2px;height:1.05em;background:var(--text-muted);vertical-align:-.15em;margin-left:1px;animation:hlBlink 1s steps(1) infinite;}
+    @media(max-width:480px){.hc-status{font-size:.75rem;padding:8px 15px;margin:-4px 0 22px;}.hc-pre{display:none;}}
     @media (prefers-reduced-motion:reduce){.hc-shimmer{animation:none;}.hc-status .hc-pulse::after{animation:none;}.hc-status .hc-caret{animation:none;}}
   </style>
 </head>
@@ -172,7 +173,7 @@
       <div>
         <span class="eyebrow">MCP:RSV Server · MCP-плагин для 1С:EDT</span>
         <h1>Дайте искусственному интеллекту<br><span class="hc-shimmer">полный доступ к 1С:EDT</span></h1>
-        <div class="hc-status" aria-hidden="true"><span class="hc-pulse"></span><span class="hc-txt">агент сейчас: <b id="hcStatus"></b><span class="hc-caret"></span></span></div>
+        <div class="hc-status" aria-hidden="true"><span class="hc-pulse"></span><span class="hc-txt"><span class="hc-pre">агент сейчас: </span><b id="hcStatus"></b><span class="hc-caret"></span></span></div>
         <p class="hero-lead">Плагин для 1С:EDT, в котором AI работает внутри среды разработки <strong>как опытный 1С-разработчик</strong> — анализирует конфигурацию, пишет код, создаёт объекты и тестирует.</p>
         <ul class="hero-bullets">
           <li>Совместим с Claude, Cursor, Windsurf и любым MCP-клиентом</li>
