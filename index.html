@@ -30,6 +30,8 @@
     .profile-list li{position:relative;padding-left:28px;font-size:.95rem;color:var(--text-muted);line-height:1.5;}
     .profile-list li::before{content:"";position:absolute;left:2px;top:.42em;width:13px;height:13px;border-radius:50%;background:var(--accent-soft2);box-shadow:inset 0 0 0 2px var(--accent);}
     .profile-list strong{color:var(--text);font-weight:600;}
+    .profile-list li.li-hi{background:var(--accent-soft);border-radius:10px;padding:9px 12px 9px 28px;}
+    .profile-list li.li-hi::before{top:calc(.42em + 9px);}
     .profile-foot{margin-top:auto;padding-top:16px;border-top:1px solid var(--border);font-size:.9rem;color:var(--text-dim);}
     .profile-foot b{color:var(--text-muted);font-weight:600;}
     .profiles-note{text-align:center;margin-top:36px;font-size:.98rem;color:var(--text-muted);}
@@ -187,7 +189,7 @@
           <a href="#pricing" class="btn btn-secondary btn-lg">Посмотреть тарифы</a>
         </div>
         <div class="hero-meta">
-          <span><b>v5.10.0</b> · для 1C:EDT 2025.x и 2026.1</span>
+          <span><b>v6.0.0</b> · для 1C:EDT 2025.x и 2026.1</span>
           <span>Java 17 · Windows, macOS</span>
         </div>
       </div>
@@ -264,6 +266,7 @@
           <li><strong>Безопасная запись BSL-кода</strong> — без дублей, с предпросмотром изменений (dry-run) и автоблокировкой опасных правок, стирающих модуль.</li>
           <li><strong>Автовалидация прямо при записи</strong> — ИИ сразу видит ошибки EDT и сам доводит код до нуля замечаний, без участия человека.</li>
           <li><strong>Полноценный отладчик 1С</strong> — точки останова, шаги по коду, реальные значения переменных и вычисление выражений на лету.</li>
+          <li class="li-hi"><strong>Диагностика</strong> — замер производительности, полная поддержка технологического журнала, журнал регистрации. Всё необходимое для поиска узких мест и оптимизации.</li>
           <li><strong>Код-ревью по стандартам разработки 1С</strong> — код готов пройти строгую проверку конфигурации.</li>
           <li><strong>Расширенный синтаксис-помощник платформы</strong> — тысячи топиков по API, языку запросов и СКД всегда под рукой у ИИ.</li>
         </ul>
@@ -280,7 +283,7 @@
           <li><strong>Создание объектов метаданных</strong> — от справочников и документов до регистров, бизнес-процессов и печатных макетов. Покрыто более 90% типов платформы.</li>
           <li><strong>Работа с расширениями</strong> — заимствование любых объектов и их кастомизация; ссылочные типы заимствуются автоматически.</li>
           <li><strong>Внешние обработки и отчёты под ключ</strong> — ИИ создаёт, наполняет и собирает готовый файл <code>.epf</code> / <code>.erf</code> одним вызовом.</li>
-          <li><strong>Автотестирование без человека</strong> — юнит-тесты YAxUnit и сценарные UI-тесты Vanessa: ИИ сам пишет, прогоняет и отлаживает упавшее.</li>
+          <li class="li-hi"><strong>Автотестирование без человека</strong> — юнит-тесты YAxUnit и сценарные UI-тесты Vanessa: ИИ сам пишет, прогоняет и отлаживает упавшее.</li>
         </ul>
         <div class="profile-foot"><b>Кому:</b> архитекторам и ведущим разработчикам · <a href="#flagship">подробнее о конструкторе ↓</a></div>
       </div>
@@ -418,7 +421,7 @@
       <a href="tools.html" class="doc-card">
         <div class="doc-card-icon">🔧</div>
         <h3>Описание инструментов</h3>
-        <p>25 инструментов, около 150 операций конструктора <code>edit_metadata</code>, код-ревью BSL, отдельные инструменты для юнит-тестов YAxUnit и сценарных UI-тестов Vanessa, примеры для каждого тарифа, параметры и форматы ответов.</p>
+        <p>26 инструментов, около 150 операций конструктора <code>edit_metadata</code>, код-ревью BSL, диагностика производительности, отдельные инструменты для юнит-тестов YAxUnit и сценарных UI-тестов Vanessa, примеры для каждого тарифа, параметры и форматы ответов.</p>
         <span class="doc-card-link">Открыть описание →</span>
       </a>
     </div>
@@ -697,7 +700,7 @@
       <div class="pricing-card">
         <div class="pc-tier-label">Тариф</div>
         <div class="pc-name">Разработчик</div>
-        <div class="pc-tools">Для повседневной разработки: анализ, запись кода, валидация, код-ревью и отладка. <strong>22 инструмента.</strong></div>
+        <div class="pc-tools">Для повседневной разработки: анализ, запись кода, валидация, код-ревью, отладка и диагностика производительности. <strong>23 инструмента.</strong></div>
         <div><span class="pc-amount" id="pc-amount-DEV">2 590</span><span class="pc-currency"> ₽</span></div>
         <div class="pc-per" id="pc-per-DEV"></div>
         <div class="pc-total" id="pc-total-DEV"></div>
@@ -709,6 +712,7 @@
           <li>Автоматическая проверка синтаксиса</li>
           <li>Список ошибок валидации EDT с автофиксами</li>
           <li>Полноценная отладка (16 действий)</li>
+          <li>Диагностика: замер производительности, технологический журнал, журнал регистрации</li>
           <li>Сравнение версий модулей с git</li>
           <li>Очистка и пересборка проекта</li>
         </ul>
@@ -719,7 +723,7 @@
       <div class="pricing-card pc-featured">
         <div class="pc-tier-label">Тариф</div>
         <div class="pc-name">Архитектор</div>
-        <div class="pc-tools">Полный контроль над конфигурацией: всё из предыдущих профилей плюс флагманский конструктор, юнит-тесты YAxUnit и сценарные UI-тесты Vanessa. <strong>25 инструментов.</strong></div>
+        <div class="pc-tools">Полный контроль над конфигурацией: всё из предыдущих профилей плюс флагманский конструктор, юнит-тесты YAxUnit и сценарные UI-тесты Vanessa. <strong>26 инструментов.</strong></div>
         <div><span class="pc-amount" id="pc-amount-ARC">4 490</span><span class="pc-currency"> ₽</span></div>
         <div class="pc-per" id="pc-per-ARC"></div>
         <div class="pc-total" id="pc-total-ARC"></div>
@@ -767,7 +771,7 @@
     <div class="section-header">
       <span class="eyebrow">📥 Актуальный релиз</span>
       <h2>Скачать MCP:RSV Server</h2>
-      <p data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 5.10.0 · для 1C:EDT 2025.x и 2026.1 · Windows, macOS · пробный период 14 дней.</p>
+      <p data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 6.0.0 · для 1C:EDT 2025.x и 2026.1 · Windows, macOS · пробный период 14 дней.</p>
     </div>
 
     <!-- Флагман — основной платный плагин (выделен фиолетовым) -->
@@ -776,21 +780,21 @@
       <div class="download-file">
         <div class="download-file-icon">📦</div>
         <div>
-          <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-5.10.0-distr.zip</div>
-          <div class="download-file-meta" data-v="Версия {v} · ~4.4 MB">Версия 5.10.0 · ~4.7 MB</div>
+          <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-6.0.0-distr.zip</div>
+          <div class="download-file-meta" data-v="Версия {v} · ~4.4 MB">Версия 6.0.0 · ~5.0 MB</div>
         </div>
       </div>
 
       <div class="download-includes">
-        <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-5.10.0-SNAPSHOT.zip</span>
+        <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-6.0.0-SNAPSHOT.zip</span>
         <span>✅ guide.html — руководство пользователя</span>
         <span>✅ tools.html — описание инструментов</span>
         <span>✅ CLAUDE.md — правила для AI</span>
-        <span>✅ RELEASE-5.10.0.md — что нового</span>
-        <span>✅ RELEASE-5.9.0.md — предыдущий релиз</span>
+        <span>✅ RELEASE-6.0.0.md — что нового</span>
+        <span>✅ RELEASE-5.10.0.md — предыдущий релиз</span>
       </div>
 
-      <a href="./MCP-RSV-Server-5.10.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./MCP-RSV-Server-{v}-distr.zip" download="MCP-RSV-Server-5.10.0-distr.zip">⬇ Скачать бесплатно</a>
+      <a href="./MCP-RSV-Server-6.0.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./MCP-RSV-Server-{v}-distr.zip" download="MCP-RSV-Server-6.0.0-distr.zip">⬇ Скачать бесплатно</a>
 
       <div class="download-note">
         При первом запуске откроется диалог активации — нажмите «Пробный период» или введите код активации
@@ -850,6 +854,12 @@
 
     <div class="changelog">
       <h3>История версий</h3>
+
+      <div class="changelog-entry">
+        <a href="release.html?v=6.0.0" class="changelog-version" title="Открыть заметки релиза v6.0.0">v6.0.0</a>
+        <h4>Новый инструмент диагностики: производительность, техжурнал, журнал регистрации</h4>
+        <p>Появился отдельный инструмент диагностики. Замер производительности во время отладки показывает самые долгие строки и методы, включая фоновые задания. Анализ технологического журнала выделяет самые долгие запросы к СУБД, исключения и блокировки — с прицелом по модулю и периоду. Журнал регистрации читается без запуска 1С: видно, что происходило в базе и почему упало. Плюс полная поддержка регламентных заданий с расписанием и большой пакет улучшений по формам, коду и метаданным. <a href="release.html?v=6.0.0">Полный список →</a></p>
+      </div>
 
       <div class="changelog-entry">
         <a href="release.html?v=5.10.0" class="changelog-version" title="Открыть заметки релиза v5.10.0">v5.10.0</a>
@@ -1045,7 +1055,7 @@
       </details>
       <details>
         <summary>Что даёт бесплатный пробный период?</summary>
-        <p>Полный доступ к профилю «Архитектор» — все 25 инструментов, включая флагманский конструктор объектов конфигурации, инструмент юнит-тестов YAxUnit и сценарное тестирование Vanessa — на 14 дней. Пробный период активируется одной кнопкой прямо из плагина, не требует ввода платёжных данных и регистрации. За 14 дней можно полноценно оценить все возможности на реальном проекте.</p>
+        <p>Полный доступ к профилю «Архитектор» — все 26 инструментов, включая флагманский конструктор объектов конфигурации, диагностику производительности, инструмент юнит-тестов YAxUnit и сценарное тестирование Vanessa — на 14 дней. Пробный период активируется одной кнопкой прямо из плагина, не требует ввода платёжных данных и регистрации. За 14 дней можно полноценно оценить все возможности на реальном проекте.</p>
       </details>
       <details>
         <summary>Как происходит продление подписки?</summary>
@@ -1082,7 +1092,7 @@
           <span class="nav-brand-badge">RSV</span>
           MCP Server
         </a>
-        <p>Интеллектуальный мост между AI-ассистентами и средой разработки 1C:EDT. 25 инструментов, встроены в EDT, 0 JAR-зависимостей.</p>
+        <p>Интеллектуальный мост между AI-ассистентами и средой разработки 1C:EDT. 26 инструментов, встроены в EDT, 0 JAR-зависимостей.</p>
       </div>
       <div class="footer-links-section">
         <h5>Продукт</h5>
@@ -1091,7 +1101,7 @@
           <li><a href="#how">Как устроено</a></li>
           <li><a href="#reviews">Отзывы</a></li>
           <li><a href="#pricing">Тарифы</a></li>
-          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v5.10.0</a></li>
+          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v6.0.0</a></li>
           <li><a href="guide.html">Руководство пользователя</a></li>
           <li><a href="tools.html">Описание инструментов</a></li>
         </ul>
@@ -1122,7 +1132,7 @@
     </div>
     <div class="footer-bottom">
       <div>Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a></div>
-      <div data-v="MCP:RSV Server v{v} · 2026">MCP:RSV Server v5.10.0 · 2026</div>
+      <div data-v="MCP:RSV Server v{v} · 2026">MCP:RSV Server v6.0.0 · 2026</div>
     </div>
     <div class="footer-disclaimer">
       <p>«1С», «1С:Предприятие», «1С:EDT» — товарные знаки фирмы «1С». Продукт <strong>MCP:RSV Server</strong> является независимой разработкой Радзивилловича С.В., не входит в линейку продуктов фирмы «1С» и не является официальным продуктом фирмы «1С».</p>
