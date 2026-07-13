@@ -363,6 +363,24 @@ section.section {
 .hero-lead strong { color: var(--text); font-weight: 600; }
 .hero-closer { font-size: 0.98rem; color: var(--text-muted); margin: 24px 0 32px; max-width: 580px; }
 .hero-closer strong { color: var(--text); font-weight: 600; }
+.hero-diag {
+  max-width: 580px;
+  margin: 0 0 28px;
+  padding: 14px 16px;
+  background: rgba(124, 58, 237, 0.04);
+  border: 1px solid rgba(124, 58, 237, 0.12);
+  border-radius: var(--radius);
+}
+.hero-diag-body { font-size: 0.94rem; line-height: 1.55; color: var(--text-muted); margin: 6px 0 0; }
+.hero-diag-body b { color: var(--text); font-weight: 600; }
+.hero-diag-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+}
+.hero-diag a { color: var(--accent-hi); font-weight: 600; white-space: nowrap; }
 .hero-bullets {
   list-style: none;
   padding: 0;
