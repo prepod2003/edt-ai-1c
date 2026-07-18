@@ -17,11 +17,13 @@
 
   <!-- Доп. стили маркетингового варианта: профильные карточки -->
   <style>
-    .profiles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch;}
+    .profiles-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:stretch;max-width:940px;margin:0 auto;}
     .profile-card{position:relative;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px 28px;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s,border-color .2s;}
     .profile-card:hover{transform:translateY(-4px);box-shadow:var(--accent-glow);border-color:var(--border-hi);}
     .profile-card.is-featured{border-color:var(--accent);box-shadow:var(--accent-glow);}
     .profile-card.is-featured::after{content:"Рекомендуем";position:absolute;top:-12px;right:20px;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.03em;padding:5px 14px;border-radius:999px;}
+    .profile-card.is-pro{border-color:var(--accent);box-shadow:var(--accent-glow);}
+    .profile-card.is-pro::after{content:"Новинка 7.0";position:absolute;top:-12px;right:20px;background:linear-gradient(135deg,#7C3AED,#DB2777);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.03em;padding:5px 14px;border-radius:999px;}
     .profile-badge{display:inline-flex;align-items:center;gap:8px;font-size:.74rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-hi);background:var(--accent-soft);padding:6px 14px;border-radius:999px;margin-bottom:18px;align-self:flex-start;}
     .profile-card h3{font-size:1.55rem;margin-bottom:10px;}
     .profile-promise{font-size:1.06rem;font-weight:700;color:var(--text);margin-bottom:16px;line-height:1.3;}
@@ -239,9 +241,9 @@
 <section class="section" id="features">
   <div class="container">
     <div class="section-header">
-      <span class="eyebrow">Три профиля · Три тарифа</span>
-      <h2>Три уровня работы ИИ внутри 1С:EDT</h2>
-      <p>Возможности разделены на три профиля. Каждый следующий включает предыдущий — это ровно те же три тарифа, что вы видите ниже.</p>
+      <span class="eyebrow">Четыре профиля · Четыре тарифа</span>
+      <h2>Четыре уровня работы ИИ внутри 1С:EDT</h2>
+      <p>Возможности разделены на четыре профиля. Каждый следующий включает предыдущий — это ровно те же четыре тарифа, что вы видите ниже.</p>
     </div>
 
     <div class="profiles-grid">
@@ -292,9 +294,23 @@
         <div class="profile-foot"><b>Кому:</b> архитекторам и ведущим разработчикам · <a href="#flagship">подробнее о конструкторе ↓</a></div>
       </div>
 
+      <!-- АРХИТЕКТОР ПРО -->
+      <div class="profile-card is-pro">
+        <span class="profile-badge">★ Профиль 4 · Архитектор Про</span>
+        <h3>Архитектор Про</h3>
+        <p class="profile-promise">Обновлять доработанные типовые и вести старые конфигурации</p>
+        <p class="profile-prev">Всё из профиля «Архитектор», плюс возможности, которых нет у других инструментов на рынке:</p>
+        <ul class="profile-list">
+          <li><strong>Обновление и объединение конфигураций</strong> — накат нового релиза поставщика на доработанную типовую по полному файлу конфигурации, сравнение, инвентаризация различий и реестр доработок (свои правки сохраняются и возвращаются после обновления).</li>
+          <li><strong>Журнал версий проекта</strong> — снимки, история, откат, ветки, слияния и обмен с сервером хранилища. Встроенный git, ставить ничего не нужно.</li>
+          <li class="li-hi"><strong>Старые конфигурации на обычных формах</strong> (УТ 10.3, УПП, БП 2.0…) — ИИ читает и правит код модулей обычных форм, обновляет базу, подтягивает формы из Конфигуратора, снимает замок поддержки.</li>
+        </ul>
+        <div class="profile-foot"><b>Кому:</b> тем, кто сопровождает и обновляет доработанные типовые · <a href="guide.html#update-configuration">подробнее в руководстве →</a></div>
+      </div>
+
     </div>
 
-    <p class="profiles-note">Полный доступ ко всем трём профилям — <strong>14 дней бесплатно</strong>, без регистрации и платёжных данных.</p>
+    <p class="profiles-note">Пробный период — доступ к профилю «Архитектор» на <strong>14 дней бесплатно</strong>, без регистрации и платёжных данных.</p>
   </div>
 </section>
 
@@ -425,7 +441,7 @@
       <a href="tools.html" class="doc-card">
         <div class="doc-card-icon">🔧</div>
         <h3>Описание инструментов</h3>
-        <p>26 инструментов, около 150 операций конструктора <code>edit_metadata</code>, код-ревью BSL, диагностика производительности, отдельные инструменты для юнит-тестов YAxUnit и сценарных UI-тестов Vanessa, примеры для каждого тарифа, параметры и форматы ответов.</p>
+        <p>28 инструментов, около 150 операций конструктора <code>edit_metadata</code>, обновление и объединение конфигураций, журнал версий проекта (git), код-ревью BSL, диагностика производительности, юнит-тесты YAxUnit и сценарные UI-тесты Vanessa, примеры для каждого тарифа, параметры и форматы ответов.</p>
         <span class="doc-card-link">Открыть описание →</span>
       </a>
     </div>
@@ -665,8 +681,8 @@
   <div class="container pricing-wrap">
     <div class="section-header">
       <span class="eyebrow">Цены</span>
-      <h2>Три профиля пользователей</h2>
-      <p>Функциональность плагина разделена на три профиля. Каждый следующий профиль включает все возможности предыдущего.</p>
+      <h2>Четыре профиля пользователей</h2>
+      <p>Функциональность плагина разделена на четыре профиля. Каждый следующий профиль включает все возможности предыдущего.</p>
     </div>
 
     <div class="period-switcher">
@@ -674,7 +690,9 @@
       <button class="period-btn" data-period="3M" onclick="pricingSetPeriod('3M',this)">3 месяца</button>
       <button class="period-btn" data-period="6M" onclick="pricingSetPeriod('6M',this)">6 месяцев</button>
       <button class="period-btn active" data-period="1Y" onclick="pricingSetPeriod('1Y',this)">1 год</button>
+      <button class="period-btn" data-period="LT" onclick="pricingSetPeriod('LT',this)">Навсегда</button>
     </div>
+    <p class="period-hint" id="period-hint"></p>
 
     <div class="pricing-grid">
 
@@ -682,7 +700,7 @@
       <div class="pricing-card">
         <div class="pc-tier-label">Тариф</div>
         <div class="pc-name">Аналитик</div>
-        <div class="pc-tools">Для изучения и документирования конфигураций без внесения изменений. <strong>13 инструментов.</strong></div>
+        <div class="pc-tools">Для изучения и документирования конфигураций без внесения изменений. <strong>12 инструментов.</strong></div>
         <div><span class="pc-amount" id="pc-amount-ANL">1 290</span><span class="pc-currency"> ₽</span></div>
         <div class="pc-per" id="pc-per-ANL"></div>
         <div class="pc-total" id="pc-total-ANL"></div>
@@ -717,7 +735,7 @@
           <li>Список ошибок валидации EDT с автофиксами</li>
           <li>Полноценная отладка (16 действий)</li>
           <li>Диагностика: замер производительности, технологический журнал, журнал регистрации</li>
-          <li>Сравнение версий модулей с git</li>
+          <li>Экспорт внешних обработок и отчётов в .epf/.erf</li>
           <li>Очистка и пересборка проекта</li>
         </ul>
         <div class="pc-subtitle">Основной тариф для разработчиков.</div>
@@ -745,7 +763,35 @@
           <li>Юнит-тесты YAxUnit — прогон и отладка</li>
           <li>Сценарные UI-тесты Vanessa — прогон и проверка интерфейса</li>
         </ul>
-        <div class="pc-subtitle">Максимальный тариф — для архитекторов и ведущих разработчиков.</div>
+        <div class="pc-subtitle">Для архитекторов и ведущих разработчиков.</div>
+      </div>
+
+      <!-- Архитектор Про -->
+      <!-- ЗАГОТОВКА (релиз 7.0.0): цены — рыба. Утверждены 7 900 ₽/мес и 79 000 ₽/год;
+           3 мес / 6 мес / «Навсегда» — предварительные значения, пользователь уточнит.
+           Серверная часть (Code.gs, тариф ARCHITECT_PRO, AMOUNT_MAP PRO-1M/3M/6M/1Y/LT)
+           уже задеплоена. -->
+      <div class="pricing-card">
+        <div class="pc-tier-label">Тариф · Новинка 7.0</div>
+        <div class="pc-name">Архитектор Про</div>
+        <div class="pc-tools">Уникальные на рынке возможности: обновление и объединение конфигураций, журнал версий проекта (git), доработка конфигураций на обычных формах. <strong>28 инструментов.</strong></div>
+        <div><span class="pc-amount" id="pc-amount-PRO">7 900</span><span class="pc-currency"> ₽</span></div>
+        <div class="pc-per" id="pc-per-PRO"></div>
+        <div class="pc-total" id="pc-total-PRO"></div>
+        <div class="pc-discount pc-hidden" id="pc-disc-PRO">−0%</div>
+        <button class="btn-buy-now primary" onclick="pricingOpenModal('PRO')">Купить</button>
+        <ul class="pc-features">
+          <li>Всё из профиля «Архитектор»</li>
+          <li>Обновление конфигурации на релиз поставщика</li>
+          <li>Сравнение и объединение конфигураций и расширений</li>
+          <li>Реестр доработок типовой конфигурации</li>
+          <li>Журнал версий проекта: снимки, ветки, слияния, обмен с сервером</li>
+          <li>Запись модулей обычных форм (УТ 10.3, УПП и т. п.)</li>
+          <li>Обновление базы для конфигураций обычного приложения</li>
+          <li>Перенос обычных форм из базы в проект</li>
+          <li>Снятие конфигурации с замка поддержки</li>
+        </ul>
+        <div class="pc-subtitle">Для тех, кто сопровождает и обновляет доработанные типовые конфигурации.</div>
       </div>
 
     </div>
@@ -1096,7 +1142,7 @@
           <span class="nav-brand-badge">RSV</span>
           MCP Server
         </a>
-        <p>Интеллектуальный мост между AI-ассистентами и средой разработки 1C:EDT. 26 инструментов, встроены в EDT, 0 JAR-зависимостей.</p>
+        <p>Интеллектуальный мост между AI-ассистентами и средой разработки 1C:EDT. 28 инструментов, встроены в EDT, 0 JAR-зависимостей.</p>
       </div>
       <div class="footer-links-section">
         <h5>Продукт</h5>
@@ -1201,6 +1247,12 @@
           <option value="ARC-3M">Архитектор, 3 месяца</option>
           <option value="ARC-6M">Архитектор, 6 месяцев</option>
           <option value="ARC-1Y">Архитектор, 1 год</option>
+        </optgroup>
+        <optgroup label="Архитектор Про">
+          <option value="PRO-1M">Архитектор Про, 1 месяц</option>
+          <option value="PRO-3M">Архитектор Про, 3 месяца</option>
+          <option value="PRO-6M">Архитектор Про, 6 месяцев</option>
+          <option value="PRO-1Y">Архитектор Про, 1 год</option>
         </optgroup>
       </select>
 
@@ -1315,12 +1367,19 @@
    Pricing — unchanged from production landing
    ============================================================ */
 const PRICING_GAS = 'https://script.google.com/macros/s/AKfycbzXuSR6nMP7wDIW9tQthJyGBbF7B9BI4hId4z-Npo8PRkMcH_B798HBXOW0cNaWdjInWw/exec';
+// ВНИМАНИЕ: цены тарифа «Архитектор Про» (PRO) и периода «Навсегда» (LT) —
+// ЗАГОТОВКА (рыба), релиз 7.0.0. Утверждены только PRO 1 мес (7 900) и 1 год
+// (79 000); PRO 3/6 мес и все цены «Навсегда» — предварительные, пользователь
+// уточнит. Ключи AMOUNT_MAP на сервере (Code.gs) должны совпадать: PRO-1M/3M/6M/1Y,
+// ARC-LT, PRO-LT. «Навсегда» продаётся только для «Архитектор» и «Архитектор Про».
 const PRICING_DATA = {
-  '1M': { ANL:1290,  DEV:2590,  ARC:4490,  disc:null },
-  '3M': { ANL:3250,  DEV:6490,  ARC:11490, disc:'−16%', pm:{ANL:1083, DEV:2163, ARC:3830}, label:'3 месяца' },
-  '6M': { ANL:5790,  DEV:11590, ARC:20490, disc:'−25%', pm:{ANL:965,  DEV:1932, ARC:3415}, label:'6 месяцев' },
-  '1Y': { ANL:10290, DEV:20690, ARC:35900, disc:'−34%', pm:{ANL:858,  DEV:1724, ARC:2992}, label:'1 год' }
+  '1M': { ANL:1290,  DEV:2590,  ARC:4490,  PRO:7900,  disc:null },
+  '3M': { ANL:3250,  DEV:6490,  ARC:11490, PRO:22500, disc:'−16%', pm:{ANL:1083, DEV:2163, ARC:3830, PRO:7500}, label:'3 месяца' },
+  '6M': { ANL:5790,  DEV:11590, ARC:20490, PRO:42000, disc:'−25%', pm:{ANL:965,  DEV:1932, ARC:3415, PRO:7000}, label:'6 месяцев' },
+  '1Y': { ANL:10290, DEV:20690, ARC:35900, PRO:79000, disc:'−34%', pm:{ANL:858,  DEV:1724, ARC:2992, PRO:6583}, label:'1 год' },
+  'LT': { ARC:149000, PRO:249000, lifetime:true, label:'навсегда' }
 };
+const PRICING_TIERS = ['ANL','DEV','ARC','PRO'];
 let pricingPeriod = '1Y', pricingTier = '';
 
 function pricingFmt(n) { return n.toLocaleString('ru-RU'); }
@@ -1334,14 +1393,52 @@ function pricingSetPeriod(p, btn) {
 
 function pricingUpdate() {
   const d = PRICING_DATA[pricingPeriod];
-  ['ANL','DEV','ARC'].forEach(function(t) {
+  const isLifetime = pricingPeriod === 'LT';
+  const hint = document.getElementById('period-hint');
+  if (hint) {
+    hint.textContent = isLifetime
+      ? 'Покупка «навсегда» — единоразовый платёж без продления. Доступна только для тарифов «Архитектор» и «Архитектор Про».'
+      : '';
+    hint.style.display = isLifetime ? 'block' : 'none';
+  }
+  PRICING_TIERS.forEach(function(t) {
+    const amountEl = document.getElementById('pc-amount-' + t);
+    const perEl    = document.getElementById('pc-per-' + t);
+    const totalEl  = document.getElementById('pc-total-' + t);
+    const disc     = document.getElementById('pc-disc-' + t);
+    if (!amountEl) return;
+    const card     = amountEl.closest('.pricing-card');
+    const buyBtn   = card ? card.querySelector('.btn-buy-now') : null;
+    const currEl   = card ? card.querySelector('.pc-currency') : null;
+
+    if (isLifetime) {
+      if (d[t] == null) {
+        // Аналитик / Разработчик — «навсегда» не продаётся
+        amountEl.textContent = '—';
+        if (currEl) currEl.style.display = 'none';
+        perEl.textContent   = 'только по подписке';
+        totalEl.textContent = '';
+        disc.classList.add('pc-hidden');
+        if (buyBtn) { buyBtn.disabled = true; buyBtn.classList.add('pc-disabled'); }
+        return;
+      }
+      if (currEl) currEl.style.display = '';
+      amountEl.textContent = pricingFmt(d[t]);
+      perEl.textContent    = '₽ · навсегда';
+      totalEl.textContent  = 'Единоразовый платёж, без продления';
+      disc.classList.add('pc-hidden');
+      if (buyBtn) { buyBtn.disabled = false; buyBtn.classList.remove('pc-disabled'); }
+      return;
+    }
+
+    if (currEl) currEl.style.display = '';
+    if (buyBtn) { buyBtn.disabled = false; buyBtn.classList.remove('pc-disabled'); }
     const isMulti = pricingPeriod !== '1M';
     const total   = d[t];
     const perMo   = isMulti ? d.pm[t] : null;
-    document.getElementById('pc-amount-' + t).textContent = pricingFmt(isMulti ? perMo : total);
-    document.getElementById('pc-per-' + t).textContent    = isMulti ? '₽ / месяц' : '';
-    document.getElementById('pc-total-' + t).textContent  = isMulti ? 'Итого: ' + pricingFmt(total) + ' ₽ за ' + d.label : '';
-    var disc = document.getElementById('pc-disc-' + t);
+    amountEl.textContent = pricingFmt(isMulti ? perMo : total);
+    perEl.textContent    = isMulti ? '₽ / месяц' : '';
+    totalEl.textContent  = isMulti ? 'Итого: ' + pricingFmt(total) + ' ₽ за ' + d.label : '';
     if (d.disc) { disc.textContent = d.disc; disc.classList.remove('pc-hidden'); }
     else        { disc.classList.add('pc-hidden'); }
   });

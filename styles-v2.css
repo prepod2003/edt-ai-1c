@@ -1100,8 +1100,8 @@ section.section {
 
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
   text-align: left;
   margin-top: 16px;
 }
@@ -1294,7 +1294,24 @@ section.section {
 }
 .pricing-footer-note a { color: var(--accent-hi); }
 
-@media (max-width: 960px) {
+.period-hint {
+  display: none;
+  text-align: center;
+  margin: 12px auto 0;
+  max-width: 640px;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+.btn-buy-now.pc-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+@media (max-width: 1180px) {
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); max-width: 720px; margin: 0 auto; }
+}
+@media (max-width: 620px) {
   .pricing-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
 }
 
