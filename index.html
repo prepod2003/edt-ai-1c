@@ -195,7 +195,7 @@
           <a href="#pricing" class="btn btn-secondary btn-lg">Посмотреть тарифы</a>
         </div>
         <div class="hero-meta">
-          <span><b>v6.0.0</b> · для 1C:EDT 2025.x и 2026.1</span>
+          <span><b>v7.0.0</b> · для 1C:EDT 2025.x и 2026.1</span>
           <span>Java 17 · Windows, macOS</span>
         </div>
       </div>
@@ -272,7 +272,7 @@
           <li><strong>Безопасная запись BSL-кода</strong> — без дублей, с предпросмотром изменений (dry-run) и автоблокировкой опасных правок, стирающих модуль.</li>
           <li><strong>Автовалидация прямо при записи</strong> — ИИ сразу видит ошибки EDT и сам доводит код до нуля замечаний, без участия человека.</li>
           <li><strong>Полноценный отладчик 1С</strong> — точки останова, шаги по коду, реальные значения переменных и вычисление выражений на лету.</li>
-          <li class="li-hi"><strong>Диагностика</strong> — замер производительности, полная поддержка технологического журнала, журнал регистрации. Всё необходимое для поиска узких мест и оптимизации.</li>
+          <li class="li-hi"><strong>Диагностика</strong> — замер производительности, полная поддержка технологического журнала, журнал регистрации. Всё необходимое для поиска узких мест и оптимизации (для баз обычного приложения — в профиле «Архитектор Про»).</li>
           <li><strong>Код-ревью по стандартам разработки 1С</strong> — код готов пройти строгую проверку конфигурации.</li>
           <li><strong>Расширенный синтаксис-помощник платформы</strong> — тысячи топиков по API, языку запросов и СКД всегда под рукой у ИИ.</li>
         </ul>
@@ -298,14 +298,16 @@
       <div class="profile-card is-pro">
         <span class="profile-badge">★ Профиль 4 · Архитектор Про</span>
         <h3>Архитектор Про</h3>
-        <p class="profile-promise">Обновлять доработанные типовые и вести старые конфигурации</p>
+        <p class="profile-promise">Обновлять доработанные типовые и дорабатывать старые конфигурации</p>
         <p class="profile-prev">Всё из профиля «Архитектор», плюс возможности, которых нет у других инструментов на рынке:</p>
         <ul class="profile-list">
           <li><strong>Обновление и объединение конфигураций</strong> — накат нового релиза поставщика на доработанную типовую по полному файлу конфигурации, сравнение, инвентаризация различий и реестр доработок (свои правки сохраняются и возвращаются после обновления).</li>
           <li><strong>Журнал версий проекта</strong> — снимки, история, откат, ветки, слияния и обмен с сервером хранилища. Встроенный git, ставить ничего не нужно.</li>
-          <li class="li-hi"><strong>Старые конфигурации на обычных формах</strong> (УТ 10.3, УПП, БП 2.0…) — ИИ читает и правит код модулей обычных форм, обновляет базу, подтягивает формы из Конфигуратора, снимает замок поддержки.</li>
+          <li><strong>Привязка информационных баз к проекту</strong> — привязать, отвязать, зарегистрировать в списке EDT, выбрать основную. Незаменима для конфигураций на обычных формах: штатный мастер привязки EDT на них не работает.</li>
+          <li class="li-hi"><strong>Доработка старых конфигураций на обычных формах</strong> (УТ 10.3, УПП, БП 2.0…) — полный цикл, как с современной управляемой: ИИ правит код модулей обычных форм и метаданные, обновляет базу, запускает приложение в родном режиме, снимает замок поддержки. Единственное исключение — расположение элементов на форме: его дорабатывают в Конфигураторе, а ИИ подтягивает готовую форму в проект, не теряя своих правок кода.</li>
+          <li><strong>Диагностика баз обычного приложения</strong> — замер производительности, технологический журнал и журнал регистрации на обычноформенных конфигурациях работают в этом профиле.</li>
         </ul>
-        <div class="profile-foot"><b>Кому:</b> тем, кто сопровождает и обновляет доработанные типовые · <a href="guide.html#update-configuration">подробнее в руководстве →</a></div>
+        <div class="profile-foot"><b>Кому:</b> тем, кто сопровождает и обновляет доработанные типовые и ведёт старые конфигурации · подробнее в руководстве: <a href="guide.html#update-configuration">обновление конфигураций →</a> · <a href="guide.html#ordinary-forms">обычные формы →</a></div>
       </div>
 
     </div>
@@ -713,7 +715,6 @@
           <li>Анализ цепочек вызовов методов</li>
           <li>Справка по API платформы и языку запросов</li>
           <li>Визуализация управляемых форм</li>
-          <li>Проверка синтаксиса запросов 1С</li>
         </ul>
         <div class="pc-subtitle">Для аналитиков, внедренцев, техподдержки.</div>
       </div>
@@ -722,7 +723,7 @@
       <div class="pricing-card">
         <div class="pc-tier-label">Тариф</div>
         <div class="pc-name">Разработчик</div>
-        <div class="pc-tools">Для повседневной разработки: анализ, запись кода, валидация, код-ревью, отладка и диагностика производительности. <strong>23 инструмента.</strong></div>
+        <div class="pc-tools">Для повседневной разработки: анализ, запись кода, валидация, код-ревью, отладка и диагностика производительности. <strong>22 инструмента.</strong></div>
         <div><span class="pc-amount" id="pc-amount-DEV">2 590</span><span class="pc-currency"> ₽</span></div>
         <div class="pc-per" id="pc-per-DEV"></div>
         <div class="pc-total" id="pc-total-DEV"></div>
@@ -732,9 +733,10 @@
           <li>Всё из профиля «Аналитик»</li>
           <li>Запись BSL-кода в 6 режимах с dry-run</li>
           <li>Автоматическая проверка синтаксиса</li>
+          <li>Проверка синтаксиса запросов 1С</li>
           <li>Список ошибок валидации EDT с автофиксами</li>
           <li>Полноценная отладка (16 действий)</li>
-          <li>Диагностика: замер производительности, технологический журнал, журнал регистрации</li>
+          <li>Диагностика: замер производительности, технологический журнал, журнал регистрации (для баз обычного приложения — в тарифе «Архитектор Про»)</li>
           <li>Экспорт внешних обработок и отчётов в .epf/.erf</li>
           <li>Очистка и пересборка проекта</li>
         </ul>
@@ -745,7 +747,7 @@
       <div class="pricing-card pc-featured">
         <div class="pc-tier-label">Тариф</div>
         <div class="pc-name">Архитектор</div>
-        <div class="pc-tools">Полный контроль над конфигурацией: всё из предыдущих профилей плюс флагманский конструктор, юнит-тесты YAxUnit и сценарные UI-тесты Vanessa. <strong>26 инструментов.</strong></div>
+        <div class="pc-tools">Полный контроль над конфигурацией: всё из предыдущих профилей плюс флагманский конструктор, юнит-тесты YAxUnit и сценарные UI-тесты Vanessa. <strong>25 инструментов.</strong></div>
         <div><span class="pc-amount" id="pc-amount-ARC">4 490</span><span class="pc-currency"> ₽</span></div>
         <div class="pc-per" id="pc-per-ARC"></div>
         <div class="pc-total" id="pc-total-ARC"></div>
@@ -774,7 +776,7 @@
       <div class="pricing-card">
         <div class="pc-tier-label">Тариф · Новинка 7.0</div>
         <div class="pc-name">Архитектор Про</div>
-        <div class="pc-tools">Уникальные на рынке возможности: обновление и объединение конфигураций, журнал версий проекта (git), доработка конфигураций на обычных формах. <strong>28 инструментов.</strong></div>
+        <div class="pc-tools">Уникальные на рынке возможности: обновление и объединение конфигураций, журнал версий проекта (git), привязка информационных баз, доработка конфигураций на обычных формах. <strong>28 инструментов.</strong></div>
         <div><span class="pc-amount" id="pc-amount-PRO">7 900</span><span class="pc-currency"> ₽</span></div>
         <div class="pc-per" id="pc-per-PRO"></div>
         <div class="pc-total" id="pc-total-PRO"></div>
@@ -786,12 +788,15 @@
           <li>Сравнение и объединение конфигураций и расширений</li>
           <li>Реестр доработок типовой конфигурации</li>
           <li>Журнал версий проекта: снимки, ветки, слияния, обмен с сервером</li>
-          <li>Запись модулей обычных форм (УТ 10.3, УПП и т. п.)</li>
+          <li>Привязка информационных баз к проекту</li>
+          <li>Доработка конфигураций на обычных формах (УТ 10.3, УПП и т. п.) — всё, кроме раскладки форм</li>
+          <li>Запись модулей обычных форм</li>
           <li>Обновление базы для конфигураций обычного приложения</li>
           <li>Перенос обычных форм из базы в проект</li>
+          <li>Диагностика баз обычного приложения: замер, техжурнал, журнал регистрации</li>
           <li>Снятие конфигурации с замка поддержки</li>
         </ul>
-        <div class="pc-subtitle">Для тех, кто сопровождает и обновляет доработанные типовые конфигурации.</div>
+        <div class="pc-subtitle">Для тех, кто сопровождает и обновляет доработанные типовые и ведёт старые конфигурации.</div>
       </div>
 
     </div>
@@ -821,7 +826,7 @@
     <div class="section-header">
       <span class="eyebrow">📥 Актуальный релиз</span>
       <h2>Скачать MCP:RSV Server</h2>
-      <p data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 6.0.0 · для 1C:EDT 2025.x и 2026.1 · Windows, macOS · пробный период 14 дней.</p>
+      <p data-v="Версия {v} · Для 1C:EDT 2025.x · Windows, macOS · Пробный период 14 дней">Версия 7.0.0 · для 1C:EDT 2025.x и 2026.1 · Windows, macOS · пробный период 14 дней.</p>
     </div>
 
     <!-- Флагман — основной платный плагин (выделен фиолетовым) -->
@@ -830,21 +835,21 @@
       <div class="download-file">
         <div class="download-file-icon">📦</div>
         <div>
-          <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-6.0.0-distr.zip</div>
-          <div class="download-file-meta" data-v="Версия {v} · ~4.4 MB">Версия 6.0.0 · ~5.0 MB</div>
+          <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-7.0.0-distr.zip</div>
+          <div class="download-file-meta" data-v="Версия {v} · ~4.4 MB">Версия 7.0.0 · ~5.8 MB</div>
         </div>
       </div>
 
       <div class="download-includes">
-        <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-6.0.0-SNAPSHOT.zip</span>
+        <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-7.0.0-SNAPSHOT.zip</span>
         <span>✅ guide.html — руководство пользователя</span>
         <span>✅ tools.html — описание инструментов</span>
         <span>✅ CLAUDE.md — правила для AI</span>
-        <span>✅ RELEASE-6.0.0.md — что нового</span>
-        <span>✅ RELEASE-5.10.0.md — предыдущий релиз</span>
+        <span>✅ RELEASE-7.0.0.md — что нового</span>
+        <span>✅ RELEASE-6.0.0.md — предыдущий релиз</span>
       </div>
 
-      <a href="./MCP-RSV-Server-6.0.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./MCP-RSV-Server-{v}-distr.zip" download="MCP-RSV-Server-6.0.0-distr.zip">⬇ Скачать бесплатно</a>
+      <a href="./MCP-RSV-Server-7.0.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./MCP-RSV-Server-{v}-distr.zip" download="MCP-RSV-Server-7.0.0-distr.zip">⬇ Скачать бесплатно</a>
 
       <div class="download-note">
         При первом запуске откроется диалог активации — нажмите «Пробный период» или введите код активации
@@ -906,19 +911,25 @@
       <h3>История версий</h3>
 
       <div class="changelog-entry">
+        <a href="release.html?v=7.0.0" class="changelog-version" title="Открыть заметки релиза v7.0.0">v7.0.0</a>
+        <h4>Обычные формы, обновление конфигураций, журнал версий и профиль «Архитектор Про»</h4>
+        <p>Плагин научился дорабатывать конфигурации на обычных формах (УТ 10.3, УПП): код модулей обычных форм читается и правится, база обновляется отдельным конвейером, клиент запускается в родном режиме обычного приложения, доработанная в Конфигураторе форма подтягивается в проект. Появились инструмент обновления и объединения конфигураций с реестром доработок, журнал версий проекта — снимки, сравнение по методам, ветки и слияния, привязка информационных баз к проекту и снятие «замка» поддержки. Поиск по большим конфигурациям не обрывается тайм-аутом, несколько EDT на одном компьютере адресуются по имени проекта, а старший функционал собран в новый профиль «Архитектор Про». <a href="release.html?v=7.0.0">Полный список →</a></p>
+      </div>
+
+      <div class="changelog-entry">
         <a href="release.html?v=6.0.0" class="changelog-version" title="Открыть заметки релиза v6.0.0">v6.0.0</a>
         <h4>Новый инструмент диагностики: производительность, техжурнал, журнал регистрации</h4>
         <p>Появился отдельный инструмент диагностики. Замер производительности во время отладки показывает самые долгие строки и методы, включая фоновые задания. Анализ технологического журнала выделяет самые долгие запросы к СУБД, исключения и блокировки — с прицелом по модулю и периоду. Журнал регистрации читается без запуска 1С: видно, что происходило в базе и почему упало. Плюс полная поддержка регламентных заданий с расписанием и большой пакет улучшений по формам, коду и метаданным. <a href="release.html?v=6.0.0">Полный список →</a></p>
       </div>
 
-      <div class="changelog-entry">
-        <a href="release.html?v=5.10.0" class="changelog-version" title="Открыть заметки релиза v5.10.0">v5.10.0</a>
-        <h4>Функциональные опции, командный интерфейс подсистем, расширения без ловушек</h4>
-        <p>Функциональные опции поддержаны полностью: создание, состав, назначение реквизитам и командам форм. Командный интерфейс дошёл до панелей каждой подсистемы — видимость, перенос между группами и порядок команд. Расширения избавлены от целого класса тихих ловушек: галочки безопасного режима управляются из EDT, реквизиты из кода заимствуются сами, обработчики на заимствованных формах больше не ломают модуль, а удалённое из базы расширение восстанавливается автоматически. Плюс понятные сообщения автообновления, когда источник обновлений блокирует провайдер. <a href="release.html?v=5.10.0">Полный список →</a></p>
-      </div>
-
       <details class="changelog-archive">
-        <summary>Показать предыдущие версии (v5.9.0 и старше)</summary>
+        <summary>Показать предыдущие версии (v5.10.0 и старше)</summary>
+
+        <div class="changelog-entry">
+          <a href="release.html?v=5.10.0" class="changelog-version" title="Открыть заметки релиза v5.10.0">v5.10.0</a>
+          <h4>Функциональные опции, командный интерфейс подсистем, расширения без ловушек</h4>
+          <p>Функциональные опции поддержаны полностью: создание, состав, назначение реквизитам и командам форм. Командный интерфейс дошёл до панелей каждой подсистемы — видимость, перенос между группами и порядок команд. Расширения избавлены от целого класса тихих ловушек: галочки безопасного режима управляются из EDT, реквизиты из кода заимствуются сами, обработчики на заимствованных формах больше не ломают модуль, а удалённое из базы расширение восстанавливается автоматически. Плюс понятные сообщения автообновления, когда источник обновлений блокирует провайдер. <a href="release.html?v=5.10.0">Полный список →</a></p>
+        </div>
 
         <div class="changelog-entry">
           <a href="release.html?v=5.9.0" class="changelog-version" title="Открыть заметки релиза v5.9.0">v5.9.0</a>
@@ -1151,7 +1162,7 @@
           <li><a href="#how">Как устроено</a></li>
           <li><a href="#reviews">Отзывы</a></li>
           <li><a href="#pricing">Тарифы</a></li>
-          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v6.0.0</a></li>
+          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v7.0.0</a></li>
           <li><a href="guide.html">Руководство пользователя</a></li>
           <li><a href="tools.html">Описание инструментов</a></li>
         </ul>
@@ -1182,7 +1193,7 @@
     </div>
     <div class="footer-bottom">
       <div>Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a></div>
-      <div data-v="MCP:RSV Server v{v} · 2026">MCP:RSV Server v6.0.0 · 2026</div>
+      <div data-v="MCP:RSV Server v{v} · 2026">MCP:RSV Server v7.0.0 · 2026</div>
     </div>
     <div class="footer-disclaimer">
       <p>«1С», «1С:Предприятие», «1С:EDT» — товарные знаки фирмы «1С». Продукт <strong>MCP:RSV Server</strong> является независимой разработкой Радзивилловича С.В., не входит в линейку продуктов фирмы «1С» и не является официальным продуктом фирмы «1С».</p>
@@ -1367,17 +1378,23 @@
    Pricing — unchanged from production landing
    ============================================================ */
 const PRICING_GAS = 'https://script.google.com/macros/s/AKfycbzXuSR6nMP7wDIW9tQthJyGBbF7B9BI4hId4z-Npo8PRkMcH_B798HBXOW0cNaWdjInWw/exec';
-// ВНИМАНИЕ: цены тарифа «Архитектор Про» (PRO) и периода «Навсегда» (LT) —
-// ЗАГОТОВКА (рыба), релиз 7.0.0. Утверждены только PRO 1 мес (7 900) и 1 год
-// (79 000); PRO 3/6 мес и все цены «Навсегда» — предварительные, пользователь
-// уточнит. Ключи AMOUNT_MAP на сервере (Code.gs) должны совпадать: PRO-1M/3M/6M/1Y,
-// ARC-LT, PRO-LT. «Навсегда» продаётся только для «Архитектор» и «Архитектор Про».
+// ВНИМАНИЕ: значения PRO (все периоды) и LT — АКЦИОННЫЕ на промо-окно до 22 июля 2026
+// (запуск «Архитектор Про» + продление старых цен). PRO — вводная −20% (6 320 ₽/мес),
+// период-скидки считаются ОТ ВВОДНОЙ и мельче регулярных: −10/−15/−20 (3М/6М/1Г),
+// итоги округлены до ровных: 17 000 / 32 000 / 60 000. Бейдж скидки у PRO свой (discPro),
+// общий disc (−16/−25/−34 от старых месячных) к PRO не относится.
+// LT — 100 000 / 150 000. ANL/DEV/ARC — старые цены (эти дни).
+// ПОСЛЕ 22 июля вернуть регулярные: PRO 7900/20100/37900/71000 (pm 6700/6317/5917,
+// discPro убрать), ARC 4900 (12500/23500/44000, pm 4167/3917/3667), ANL 1500, DEV 3500,
+// период-скидки −15/−20/−25, LT 120 000 / 180 000.
+// Ключи AMOUNT_MAP на сервере (Code.gs) держать синхронно: PRO-1M/3M/6M/1Y, ARC-LT, PRO-LT.
+// «Навсегда» продаётся только для «Архитектор» и «Архитектор Про»; промокоды на LT не действуют.
 const PRICING_DATA = {
-  '1M': { ANL:1290,  DEV:2590,  ARC:4490,  PRO:7900,  disc:null },
-  '3M': { ANL:3250,  DEV:6490,  ARC:11490, PRO:22500, disc:'−16%', pm:{ANL:1083, DEV:2163, ARC:3830, PRO:7500}, label:'3 месяца' },
-  '6M': { ANL:5790,  DEV:11590, ARC:20490, PRO:42000, disc:'−25%', pm:{ANL:965,  DEV:1932, ARC:3415, PRO:7000}, label:'6 месяцев' },
-  '1Y': { ANL:10290, DEV:20690, ARC:35900, PRO:79000, disc:'−34%', pm:{ANL:858,  DEV:1724, ARC:2992, PRO:6583}, label:'1 год' },
-  'LT': { ARC:149000, PRO:249000, lifetime:true, label:'навсегда' }
+  '1M': { ANL:1290,  DEV:2590,  ARC:4490,  PRO:6320,  disc:null },
+  '3M': { ANL:3250,  DEV:6490,  ARC:11490, PRO:17000, disc:'−16%', discPro:'−10%', pm:{ANL:1083, DEV:2163, ARC:3830, PRO:5667}, label:'3 месяца' },
+  '6M': { ANL:5790,  DEV:11590, ARC:20490, PRO:32000, disc:'−25%', discPro:'−15%', pm:{ANL:965,  DEV:1932, ARC:3415, PRO:5333}, label:'6 месяцев' },
+  '1Y': { ANL:10290, DEV:20690, ARC:35900, PRO:60000, disc:'−34%', discPro:'−20%', pm:{ANL:858,  DEV:1724, ARC:2992, PRO:5000}, label:'1 год' },
+  'LT': { ARC:100000, PRO:150000, lifetime:true, label:'навсегда' }
 };
 const PRICING_TIERS = ['ANL','DEV','ARC','PRO'];
 let pricingPeriod = '1Y', pricingTier = '';
@@ -1439,8 +1456,9 @@ function pricingUpdate() {
     amountEl.textContent = pricingFmt(isMulti ? perMo : total);
     perEl.textContent    = isMulti ? '₽ / месяц' : '';
     totalEl.textContent  = isMulti ? 'Итого: ' + pricingFmt(total) + ' ₽ за ' + d.label : '';
-    if (d.disc) { disc.textContent = d.disc; disc.classList.remove('pc-hidden'); }
-    else        { disc.classList.add('pc-hidden'); }
+    var discVal = (t === 'PRO' && d.discPro) ? d.discPro : d.disc;
+    if (discVal) { disc.textContent = discVal; disc.classList.remove('pc-hidden'); }
+    else         { disc.classList.add('pc-hidden'); }
   });
 }
 
@@ -1469,11 +1487,20 @@ function pricingOpenModal(tier) {
   document.getElementById('pricing-terms-check').checked = false;
   document.getElementById('pricing-privacy-check').checked = false;
   document.getElementById('pricing-proceed-btn').disabled = true;
-  document.getElementById('pricing-promo-input').value = '';
-  document.getElementById('pricing-promo-input').className = '';
+  var promoInput = document.getElementById('pricing-promo-input');
+  promoInput.value = '';
+  promoInput.className = '';
   var pr = document.getElementById('promo-result');
   pr.className = 'em-promo-result'; pr.textContent = '';
   validPromoCode = '';
+  // Тарифы «навсегда» продаются без промокодов (сервер их тоже отклоняет) —
+  // поле блокируется с предупреждением.
+  var isLifetime = pricingPeriod === 'LT';
+  promoInput.disabled = isLifetime;
+  promoInput.placeholder = isLifetime ? 'Промокоды не действуют' : 'Введите промокод';
+  if (isLifetime) {
+    pr.textContent = 'Для тарифа «навсегда» промокоды не действуют.';
+  }
   setTimeout(function() { document.getElementById('pricing-email-input').focus(); }, 100);
 }
 
@@ -1513,7 +1540,8 @@ function checkPromo(code) {
   // Передаём email — для индивидуальных промокодов сервер сверяет привязку.
   // Для партнёрских email сервер игнорирует, так что отправлять можно всегда.
   var email = document.getElementById('pricing-email-input').value.trim();
-  var url = PRICING_GAS + '?action=check-promo&code=' + encodeURIComponent(code) + '&tier=' + encodeURIComponent(tierCode);
+  // pv=2 — версия цен этого лендинга; сервер по ней выбирает актуальный прайс (AMOUNT_MAP_V2)
+  var url = PRICING_GAS + '?action=check-promo&pv=2&code=' + encodeURIComponent(code) + '&tier=' + encodeURIComponent(tierCode);
   if (email) {
     url += '&email=' + encodeURIComponent(email);
   }
@@ -1553,7 +1581,8 @@ function pricingProceed() {
   var email = document.getElementById('pricing-email-input').value.trim();
   if (!pricingEmailValid(email)) return;
   var tierCode = pricingTier + '-' + pricingPeriod;
-  var url = PRICING_GAS + '?action=pay&tier=' + encodeURIComponent(tierCode) + '&email=' + encodeURIComponent(email);
+  // pv=2 — версия цен этого лендинга; сервер по ней выбирает актуальный прайс (AMOUNT_MAP_V2)
+  var url = PRICING_GAS + '?action=pay&pv=2&tier=' + encodeURIComponent(tierCode) + '&email=' + encodeURIComponent(email);
   if (validPromoCode) {
     url += '&promo=' + encodeURIComponent(validPromoCode);
   }
