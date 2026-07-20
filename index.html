@@ -836,14 +836,13 @@
         <div class="download-file-icon">📦</div>
         <div>
           <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-7.0.0-distr.zip</div>
-          <div class="download-file-meta" data-v="Версия {v} · ~4.4 MB">Версия 7.0.0 · ~5.8 MB</div>
+          <div class="download-file-meta" data-v="Версия {v} · ~4.4 MB">Версия 7.0.0 · ~5.7 MB</div>
         </div>
       </div>
 
       <div class="download-includes">
         <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-7.0.0-SNAPSHOT.zip</span>
-        <span>✅ guide.html — руководство пользователя</span>
-        <span>✅ tools.html — описание инструментов</span>
+        <span>✅ README.md — ссылки на руководство и каталог инструментов</span>
         <span>✅ CLAUDE.md — правила для AI</span>
         <span>✅ RELEASE-7.0.0.md — что нового</span>
         <span>✅ RELEASE-6.0.0.md — предыдущий релиз</span>
@@ -1258,12 +1257,14 @@
           <option value="ARC-3M">Архитектор, 3 месяца</option>
           <option value="ARC-6M">Архитектор, 6 месяцев</option>
           <option value="ARC-1Y">Архитектор, 1 год</option>
+          <option value="ARC-LT">Архитектор, навсегда</option>
         </optgroup>
         <optgroup label="Архитектор Про">
           <option value="PRO-1M">Архитектор Про, 1 месяц</option>
           <option value="PRO-3M">Архитектор Про, 3 месяца</option>
           <option value="PRO-6M">Архитектор Про, 6 месяцев</option>
           <option value="PRO-1Y">Архитектор Про, 1 год</option>
+          <option value="PRO-LT">Архитектор Про, навсегда</option>
         </optgroup>
       </select>
 
@@ -1661,7 +1662,9 @@ function upgradeRequestQuote() {
       document.getElementById('upg-old-remaining').textContent = pricingFmt(data.oldRemainingRub);
       document.getElementById('upg-new-tier').textContent = data.newTier + ' — ' + data.newPeriod;
       document.getElementById('upg-new-full').textContent = pricingFmt(data.newFullPriceRub);
-      document.getElementById('upg-new-expires').textContent = data.newExpiresAt;
+      // «Навсегда»: вместо технической даты через 100 лет показываем суть
+      document.getElementById('upg-new-expires').textContent =
+        /-LT$/.test(newTier) ? 'бессрочно (навсегда)' : data.newExpiresAt;
       document.getElementById('upg-amount').textContent = pricingFmt(data.upgradeAmountRub) + ' ₽';
 
       document.getElementById('upg-terms-check').checked = false;
