@@ -1,0 +1,53 @@
+name: Пересборка terms.pdf
+
+# Как только меняется текст оферты (terms.html) — PDF пересобирается автоматически
+# и коммитится обратно. Вручную ничего запускать не нужно.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'terms.html'
+      - 'build-terms-pdf.js'
+      - '.github/workflows/terms-pdf.yml'
+  workflow_dispatch:        # можно запустить руками из вкладки Actions
+
+permissions:
+  contents: write           # чтобы workflow мог закоммитить terms.pdf
+
+concurrency:
+  group: terms-pdf
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Установить Chrome
+        id: chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Сгенерировать terms.pdf
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: node build-terms-pdf.js
+
+      - name: Закоммитить, если PDF изменился
+        run: |
+          if git diff --quiet -- terms.pdf; then
+            echo "terms.pdf не изменился — коммит не нужен"
+          else
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add terms.pdf
+            git commit -m "chore: авто-пересборка terms.pdf из terms.html"
+            git push
+          fi

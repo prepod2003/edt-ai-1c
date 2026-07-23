@@ -38,6 +38,21 @@
     table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.875rem; }
     th { background: #f1f5f9; padding: 8px 12px; text-align: left; font-weight: 600; border: 1px solid #e2e8f0; }
     td { padding: 8px 12px; border: 1px solid #e2e8f0; color: #334155; }
+    .pdf-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 0.875rem; font-weight: 600; color: white; background: #2563eb; padding: 7px 14px; border-radius: 8px; text-decoration: none; white-space: nowrap; }
+    .pdf-btn:hover { background: #1d4ed8; text-decoration: none; }
+    .download-note { margin-bottom: 32px; }
+    .download-note a { font-weight: 600; }
+
+    /* Печать / генерация PDF: убираем интерактивные элементы сайта */
+    @media print {
+      body { background: white; }
+      .header, .pdf-btn, .download-note, .footer-note a { display: none !important; }
+      .container { max-width: 100%; padding: 0 8px; }
+      a { color: #0f172a; text-decoration: none; }
+      h2 { break-after: avoid; }
+      h3 { break-after: avoid; }
+      .quote, .warning, ul, ol, table { break-inside: avoid; }
+    }
   </style>
 </head>
 <body>
@@ -48,7 +63,13 @@
       <span class="logo-badge">RSV</span>
       <span class="logo-text">MCP:RSV Server</span>
     </a>
-    <a href="index.html#pricing" class="back-link">← Вернуться к тарифам</a>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <a href="terms.pdf" class="pdf-btn" download>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Скачать PDF
+      </a>
+      <a href="index.html#pricing" class="back-link">← Вернуться к тарифам</a>
+    </div>
   </div>
 </div>
 
@@ -57,6 +78,8 @@
 
   <h1>Пользовательское соглашение</h1>
   <p class="subtitle">Публичная оферта на предоставление лицензии на программное обеспечение <strong>MCP:RSV Server</strong></p>
+
+  <p class="download-note">Нужен файл для бухгалтерии или согласования? Скачайте текст оферты в PDF — <a href="terms.pdf" download>terms.pdf</a>.</p>
 
   <h2>1. Общие положения</h2>
   <p>1.1. Настоящее Соглашение является публичной офертой в соответствии со статьёй 437 Гражданского кодекса РФ и регулирует условия предоставления лицензии на программное обеспечение MCP:RSV Server (далее — ПО).</p>
