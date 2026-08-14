@@ -992,6 +992,40 @@ tbody td code {
 }
 
 /* ==========================================================================
+   Download card
+   ========================================================================== */
+
+.dl-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  margin: 26px 0;
+  padding: 18px 22px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.dl-card-text { flex: 1 1 280px; }
+.dl-card-text strong { display: block; margin-bottom: 4px; }
+.dl-card-text span { color: var(--text-muted); font-size: 0.93em; }
+
+.dl-btn {
+  display: inline-block;
+  padding: 11px 22px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff !important;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+.dl-btn:hover { background: var(--accent-hi); }
+
+/* ==========================================================================
    Print
    ========================================================================== */
 
