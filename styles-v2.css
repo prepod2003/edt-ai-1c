@@ -1804,16 +1804,77 @@ footer {
 }
 
 /* ==========================================================================
-   Announcement banner (top bar) — статичная плашка, без анимации
+   Announcement banner (top bar) — бегущая строка в одну строчку
    ========================================================================== */
 
 .announce-bar {
   background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
   border-bottom: 1px solid #FCD34D;
-  padding: 14px 24px;
+  padding: 8px 46px 8px 22px;
   position: relative;
   z-index: 101;
 }
+/* Окно бегущей строки: одна строка, края растворяются */
+.announce-marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
+}
+/* Две одинаковые копии подряд: сдвиг на половину дорожки даёт бесшовный цикл */
+.announce-track {
+  display: flex;
+  width: max-content;
+  animation: announce-scroll 34s linear infinite;
+  will-change: transform;
+}
+.announce-track .announce-text {
+  padding-right: 6rem;
+}
+/* Навёл мышь или вышел на крестик с клавиатуры — строка встаёт, можно дочитать */
+.announce-bar:hover .announce-track,
+.announce-bar:focus-within .announce-track {
+  animation-play-state: paused;
+}
+@keyframes announce-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.announce-icon {
+  font-size: 1rem;
+  margin-right: 2px;
+}
+.announce-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #78350F;
+  line-height: 1.45;
+}
+.announce-text strong {
+  color: #78350F;
+  font-weight: 800;
+}
+.announce-close {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 0;
+  color: #92400E;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 2px 8px;
+  line-height: 1;
+  transition: color .15s;
+}
+.announce-close:hover {
+  color: #78350F;
+}
+.announce-bar.hidden {
+  display: none;
+}
+/* Использует архивная index-v3.2.html — там баннер статичный, с кнопкой */
 .announce-inner {
   max-width: var(--container);
   margin: 0 auto;
@@ -1824,20 +1885,7 @@ footer {
   flex-wrap: wrap;
   justify-content: center;
 }
-.announce-icon {
-  font-size: 1rem;
-  margin-right: 2px;
-}
-.announce-text {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: #78350F;
-  text-align: center;
-}
-.announce-text strong {
-  color: #78350F;
-  font-weight: 800;
-}
+.announce-inner .announce-text { text-align: center; }
 .announce-link {
   font-size: 0.88rem;
   font-weight: 700;
@@ -1853,25 +1901,22 @@ footer {
   color: #FFFFFF;
   transform: scale(1.05);
 }
-.announce-close {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: 0;
-  color: #92400E;
-  font-size: 1.3rem;
-  cursor: pointer;
-  padding: 4px 8px;
-  line-height: 1;
-  transition: color .15s;
-}
-.announce-close:hover {
-  color: #78350F;
-}
-.announce-bar.hidden {
-  display: none;
+/* Анимации отключены в системе — показываем текст статично и целиком */
+@media (prefers-reduced-motion: reduce) {
+  .announce-marquee {
+    overflow: visible;
+    white-space: normal;
+    -webkit-mask-image: none;
+            mask-image: none;
+  }
+  .announce-track {
+    display: block;
+    width: auto;
+    animation: none;
+    text-align: center;
+  }
+  .announce-track .announce-text { padding-right: 0; }
+  .announce-track .announce-copy { display: none; }
 }
 
 /* When banner is visible, shift sticky nav down */
@@ -1881,6 +1926,7 @@ footer {
 }
 
 @media (max-width: 680px) {
+  .announce-bar { padding: 7px 38px 7px 16px; }
   .announce-text { font-size: 0.82rem; }
   .announce-link { font-size: 0.82rem; }
   .announce-close { right: 8px; }
