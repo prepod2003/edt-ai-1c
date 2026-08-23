@@ -1804,7 +1804,7 @@ footer {
 }
 
 /* ==========================================================================
-   Announcement banner (top bar)
+   Announcement banner (top bar) — статичная плашка, без анимации
    ========================================================================== */
 
 .announce-bar {
@@ -1817,6 +1817,7 @@ footer {
 .announce-inner {
   max-width: var(--container);
   margin: 0 auto;
+  padding-right: 28px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1825,7 +1826,7 @@ footer {
 }
 .announce-icon {
   font-size: 1rem;
-  flex-shrink: 0;
+  margin-right: 2px;
 }
 .announce-text {
   font-size: 0.92rem;
@@ -1834,7 +1835,7 @@ footer {
   text-align: center;
 }
 .announce-text strong {
-  color: #991B1B;
+  color: #78350F;
   font-weight: 800;
 }
 .announce-link {
@@ -1845,17 +1846,12 @@ footer {
   padding: 7px 18px;
   background: #D97706;
   border-radius: 6px;
-  transition: background .15s, transform .15s, box-shadow .15s;
-  animation: pulse-cta 2s ease-in-out infinite;
+  transition: background .15s, transform .15s;
 }
 .announce-link:hover {
   background: #B45309;
   color: #FFFFFF;
   transform: scale(1.05);
-}
-@keyframes pulse-cta {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.5); }
-  50%      { box-shadow: 0 0 0 8px rgba(217, 119, 6, 0); }
 }
 .announce-close {
   position: absolute;

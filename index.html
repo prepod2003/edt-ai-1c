@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles-v2.css?v=20260620">
+  <link rel="stylesheet" href="styles-v2.css?v=20260823">
 
   <!-- Доп. стили маркетингового варианта: профильные карточки -->
   <style>
@@ -139,6 +139,18 @@
   </style>
 </head>
 <body>
+
+<!-- ==========================================================================
+     ANNOUNCEMENT BANNER — поддерживаемые версии 1C:EDT (удалить, когда неактуально)
+     Статичная плашка: без анимации и бегущей строки.
+     ========================================================================== -->
+<div class="announce-bar" id="announceBar">
+  <div class="announce-inner">
+    <span class="announce-text"><span class="announce-icon">⚠️</span> Рекомендуемая среда — <strong>1C:EDT 2026.1.2</strong>: на ней ведётся вся разработка и проверка плагина. <strong>1C:EDT 2026.2</strong> тестируется, полная поддержка пока не обещается. <strong>1C:EDT 2025</strong> не тестируется, поддержка прекращена.</span>
+    <a href="release.html?v=7.5.0" class="announce-link">Подробнее</a>
+    <button class="announce-close" onclick="closeAnnounce()" aria-label="Закрыть сообщение">&times;</button>
+  </div>
+</div>
 
 <!-- ==========================================================================
      NAVBAR
@@ -1736,6 +1748,21 @@ document.addEventListener('keydown', function(e) {
     upgradeCloseModal();
   }
 });
+
+/* Плашка о поддерживаемых версиях 1C:EDT: закрытие на текущую вкладку */
+function closeAnnounce() {
+  var bar = document.getElementById('announceBar');
+  if (bar) { bar.classList.add('hidden'); }
+  try { sessionStorage.setItem('announceEdtVersions', '1'); } catch (err) {}
+}
+(function () {
+  var closed = false;
+  try { closed = sessionStorage.getItem('announceEdtVersions') === '1'; } catch (err) {}
+  if (closed) {
+    var bar = document.getElementById('announceBar');
+    if (bar) { bar.classList.add('hidden'); }
+  }
+})();
 
 </script>
 
