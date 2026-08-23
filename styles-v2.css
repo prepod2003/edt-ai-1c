@@ -1825,7 +1825,7 @@ footer {
 .announce-track {
   display: flex;
   width: max-content;
-  animation: announce-scroll 34s linear infinite;
+  animation: announce-scroll 28s linear infinite;
   will-change: transform;
 }
 .announce-track .announce-text {
