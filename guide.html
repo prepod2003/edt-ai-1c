@@ -334,15 +334,28 @@
 
     <h3 id="connect-clients">Конфигурация для вашего ИИ-клиента</h3>
 
-    <p><strong>Claude Code</strong> (файл <code>~/.claude/claude_desktop_config.json</code>):</p>
+    <p><strong>Claude Code</strong> (файл <code>.mcp.json</code> в корне проекта; то же самое делает команда <code>claude mcp add --transport http 1c-rsv http://127.0.0.1:8770/mcp</code>):</p>
     <pre data-lang="json"><code>{
   <span class="prop">"mcpServers"</span>: {
     <span class="prop">"1c-rsv"</span>: {
-      <span class="prop">"url"</span>: <span class="str">"http://127.0.0.1:8770/mcp"</span>,
-      <span class="prop">"transport"</span>: <span class="str">"http"</span>
+      <span class="prop">"type"</span>: <span class="str">"http"</span>,
+      <span class="prop">"url"</span>: <span class="str">"http://127.0.0.1:8770/mcp"</span>
     }
   }
 }</code></pre>
+
+    <p><strong>Claude Desktop</strong> &mdash; это отдельная программа, и настраивается она иначе, чем Claude Code. Файл <code>%APPDATA%\Claude\claude_desktop_config.json</code> (в самой программе: Настройки &rarr; Разработчик &rarr; Изменить конфигурацию), на macOS &mdash; <code>~/Library/Application&nbsp;Support/Claude/claude_desktop_config.json</code>. Нужен установленный <a href="https://nodejs.org" target="_blank" rel="noopener">Node.js</a>:</p>
+    <pre data-lang="json"><code>{
+  <span class="prop">"mcpServers"</span>: {
+    <span class="prop">"1c-rsv"</span>: {
+      <span class="prop">"command"</span>: <span class="str">"npx"</span>,
+      <span class="prop">"args"</span>: [<span class="str">"-y"</span>, <span class="str">"mcp-remote"</span>, <span class="str">"http://127.0.0.1:8770/mcp"</span>,
+               <span class="str">"--transport"</span>, <span class="str">"http-only"</span>, <span class="str">"--allow-http"</span>]
+    }
+  }
+}</code></pre>
+
+    <blockquote><p>Claude Desktop понимает в этом файле только серверы, которые он запускает сам как программу, а строку с адресом и транспортом пропускает без сообщения &mdash; поэтому подключение по адресу напрямую здесь не работает. Роль переходника выполняет <code>mcp-remote</code>: Claude Desktop запускает его, а он обращается к серверу плагина по адресу. Раздел «Пользовательские коннекторы» в настройках для локального сервера тоже не подходит &mdash; такой коннектор подключается со стороны облака и требует адрес, доступный из интернета по https. После правки файла закройте Claude Desktop полностью и запустите заново.</p></blockquote>
 
     <p><strong>Cursor / Windsurf</strong> (файл <code>.cursor/mcp.json</code>):</p>
     <pre data-lang="json"><code>{
