@@ -10,6 +10,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="docs-v2.css">
+  <style>
+    .doc-search{padding:0 16px 14px;}
+    .doc-search input{width:100%;padding:9px 12px;font-family:inherit;font-size:.88rem;
+      background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;color:var(--text);}
+    .doc-search input::placeholder{color:var(--text-dim);}
+    .doc-search input:focus{outline:none;border-color:var(--accent);
+      box-shadow:0 0 0 3px rgba(124,58,237,.12);}
+    .nav-link.is-hidden,.nav-section.is-hidden{display:none;}
+    .doc-search-empty{padding:6px 2px 0;font-size:.82rem;color:var(--text-dim);display:none;}
+    .doc-search-empty.show{display:block;}
+  </style>
 </head>
 <body>
 
@@ -36,6 +47,10 @@
 <!-- ===== SIDEBAR ===== -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 <nav class="sidebar" id="sidebar">
+  <div class="doc-search">
+    <input type="search" id="docSearch" placeholder="Поиск по разделам…" aria-label="Поиск по разделам">
+    <div class="doc-search-empty" id="docSearchEmpty">Ничего не нашлось</div>
+  </div>
   <div class="nav-section">
     <span class="nav-section-title">Введение</span>
     <a href="#what" class="nav-link">Что такое плагин</a>
@@ -45,6 +60,14 @@
     <a href="#requirements" class="nav-link sub">Требования</a>
     <a href="#install" class="nav-link sub">Установка</a>
     <a href="#rules-file" class="nav-link sub">Файл правил</a>
+  </div>
+  <div class="nav-section">
+    <span class="nav-section-title">Настройка EDT</span>
+    <a href="#edt-setup" class="nav-link">Первоначальная настройка</a>
+    <a href="#edt-setup-agent" class="nav-link sub">Поручить ИИ-агенту</a>
+    <a href="#edt-setup-memory" class="nav-link sub">Память среды</a>
+    <a href="#edt-setup-builds" class="nav-link sub">Одновременные сборки</a>
+    <a href="#edt-setup-stats" class="nav-link sub">Сбор статистики</a>
   </div>
   <div class="nav-section">
     <span class="nav-section-title">Подключение</span>
@@ -151,10 +174,12 @@
 
     <h3 id="requirements">Требования</h3>
     <ul>
-      <li><strong>1C:EDT</strong> 2025.2</li>
-      <li><strong>Java 17</strong> (Azul Zulu 17)</li>
+      <li><strong>1C:EDT 2026.1.2</strong> — рекомендуемая среда: она наиболее стабильна, на ней ведётся вся разработка и проверка плагина. <strong>1C:EDT 2026.2</strong> тестируется, полную поддержку пока не гарантируем. Поддержка <strong>1C:EDT 2025</strong> прекращена с релиза 7.5.0</li>
+      <li><strong>Java</strong> — отдельно устанавливать не нужно, входит в стандартную поставку 1C:EDT</li>
       <li>ИИ-ассистент: Claude Code, Cursor, Windsurf, Roo Code, Gemini CLI, Qwen Code или VS Code + Copilot</li>
     </ul>
+
+    <p>Дистрибутив плагина один и тот же для обеих версий среды — отдельной сборки под версию ставить не нужно. Сразу после установки 1C:EDT имеет смысл выполнить <a href="#edt-setup">первоначальную настройку среды</a>: заводские значения памяти и сборки рассчитаны на самый слабый компьютер.</p>
 
     <h3 id="install">Установка</h3>
     <ol>
@@ -212,6 +237,96 @@
     </blockquote>
 
     <p>Эти два файла — основа работы над задачами, которые не помещаются в один разговор с ассистентом: как их вести, как передавать работу из чата в чат и что ещё дописать в файл правил — раздел <a href="#method">Метод разработки</a>.</p>
+
+    <!-- Первоначальная настройка EDT -->
+    <h2 id="edt-setup">Первоначальная настройка EDT</h2>
+
+    <p>1C:EDT ставится с заводскими настройками, рассчитанными на самый слабый компьютер: среде отводится 4 ГБ памяти, проекты собираются по одному, сбор статистики включён. На реальной конфигурации это видно сразу — среда задумывается, сборка проекта идёт долго, ИИ-агент ждёт ответа на каждом вызове. Три настройки ниже делаются один раз после установки среды и дальше внимания не требуют.</p>
+
+    <p>Они относятся к самой 1C:EDT, а не к плагину: полезны любому, кто работает в этой среде, и не зависят от того, установлен ли MCP:RSV Server.</p>
+
+    <h3 id="edt-setup-agent">Проще всего поручить это ИИ-агенту</h3>
+
+    <p>Правильные значения зависят от компьютера — сколько оперативной памяти, сколько у процессора ядер. Считать самому не нужно: ИИ-агент, который у вас уже подключён, видит конфигурацию машины и умеет править текстовый файл настроек среды. Дайте ему такую задачу:</p>
+
+    <blockquote><p><em>«Посмотри, сколько на этом компьютере оперативной памяти и сколько у процессора физических ядер. Найди файл <code>1cedt.ini</code> в каталоге установки 1C:EDT, сделай его копию рядом. Подбери под эту машину параметры <code>-Xmx</code> (наибольший объём памяти среды) и <code>-Xms</code> (начальный): примерно половина оперативной памяти компьютера, но не больше 28 гигабайт. Покажи, что собираешься записать, до записи в файл. EDT перед правкой должна быть закрыта. Заодно скажи, сколько одновременных сборок проекта имеет смысл поставить при таком числе ядер и такой памяти.»</em></p></blockquote>
+
+    <p>Агент правит файл настроек, а две оставшиеся настройки — галочки в окне параметров среды, их ставят руками: это две минуты.</p>
+
+    <h3 id="edt-setup-memory">1. Память среды</h3>
+
+    <p>Настройка живёт в файле <code>1cedt.ini</code> рядом с <code>1cedt.exe</code> в каталоге установки среды. Заводские значения — <code>-Xms80m</code> и <code>-Xmx4096m</code>, то есть не больше 4 ГБ на всю работу среды. Для конфигурации масштаба ERP или УТ этого мало: среда упирается в потолок памяти и начинает подолгу молчать.</p>
+
+    <p>Сколько ставить — зависит от объёма оперативной памяти компьютера:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Оперативная память компьютера</th><th><code>-Xms</code></th><th><code>-Xmx</code></th><th>Что это даёт</th></tr></thead>
+        <tbody>
+          <tr><td><strong>16 ГБ</strong></td><td><code>-Xms2g</code></td><td><code>-Xmx8g</code></td><td>Нижняя граница, с которой можно работать. Меньше 16 ГБ на компьютере для 1C:EDT лучше не иметь вовсе</td></tr>
+          <tr><td><strong>32 ГБ</strong></td><td><code>-Xms4g</code></td><td><code>-Xmx16g</code></td><td>Рабочий вариант для типовых конфигураций</td></tr>
+          <tr><td><strong>64 ГБ и больше</strong></td><td><code>-Xms8g</code></td><td><code>-Xmx28g</code></td><td>Запас для ERP и для двух сред одновременно</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Правило простое: примерно <strong>половина оперативной памяти компьютера</strong>, потому что рядом работают платформа 1С, сервер, браузер и сама операционная система. Верхняя граница — <strong>28 ГБ</strong>, и поднимать выше нет смысла: примерно до 32 ГБ Java хранит ссылки в сжатом виде, а за этой границей объекты в памяти становятся крупнее, и прибавка съедается сама собой.</p>
+
+    <p>Как править:</p>
+    <ol>
+      <li>Закрыть EDT.</li>
+      <li>Открыть <code>1cedt.ini</code> в текстовом редакторе и сделать копию файла рядом — понадобится, если что-то пойдёт не так.</li>
+      <li>Найти строки <code>-Xms</code> и <code>-Xmx</code> и заменить значения. Они идут ниже строки <code>-vmargs</code>, каждое на отдельной строке. Если такой строки нет — дописать её ниже <code>-vmargs</code>; второй <code>-Xmx</code> к уже существующему не добавлять.</li>
+      <li>Запустить EDT.</li>
+    </ol>
+
+    <p>Проверить, что значение применилось: <strong>Справка &rarr; Детали установки &rarr; вкладка «Конфигурация»</strong> — в списке видно, с какими параметрами запущена среда.</p>
+
+    <figure class="figure">
+      <img src="images/edt-setup/installation-details.jpg" alt="Детали установки, вкладка Конфигурация: параметр -Xmx28g в списке">
+      <figcaption>Справка &rarr; Детали установки &rarr; <strong>Конфигурация</strong>. Здесь видно фактическое значение <code>-Xmx</code>, с которым работает среда.</figcaption>
+    </figure>
+
+    <blockquote>
+      <p><strong>Обновление среды перезаписывает <code>1cedt.ini</code>.</strong> После установки новой версии 1C:EDT настройка возвращается к заводским 4 ГБ. Если среда снова стала задумчивой — первым делом посмотрите этот файл.</p>
+    </blockquote>
+
+    <p>Держите две среды открытыми одновременно (например, 2026.1 и 2026.2) — память делится между ними: при 64 ГБ разумно оставить <code>-Xmx28g</code> основной и поставить <code>-Xmx20g</code> второй.</p>
+
+    <h3 id="edt-setup-builds">2. Одновременные сборки проектов</h3>
+
+    <p><strong>Параметры &rarr; Общие &rarr; Рабочая область &rarr; Сборка</strong>, поле <strong>«Макс количество одновременных сборок проекта»</strong>. Заводское значение — <strong>1</strong>: проекты собираются строго по очереди, даже если процессор простаивает.</p>
+
+    <figure class="figure">
+      <img src="images/edt-setup/parallel-builds.jpg" alt="Параметры → Общие → Рабочая область → Сборка: поле «Макс количество одновременных сборок проекта»">
+      <figcaption>Параметры &rarr; Общие &rarr; Рабочая область &rarr; <strong>Сборка</strong>. Поле внизу &mdash; число одновременных сборок.</figcaption>
+    </figure>
+
+    <p>Ставится по числу <strong>физических ядер</strong> процессора — не потоков. У процессора на 12 ядер и 24 потока это 12.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Физических ядер</th><th>Значение</th></tr></thead>
+        <tbody>
+          <tr><td>4</td><td>4</td></tr>
+          <tr><td>8</td><td>8</td></tr>
+          <tr><td>12 и больше</td><td>12</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Две оговорки. Первая: настройка работает, когда в рабочей области <strong>несколько проектов</strong> — конфигурация, расширения, внешние обработки и отчёты. Если проект один, собираться параллельно нечему, и значение ничего не изменит. Вторая: каждая одновременная сборка занимает память, поэтому число сборок поднимают <strong>вместе</strong> с памятью среды, а не вместо неё — при 8 ГБ памяти больше четырёх ставить не стоит.</p>
+
+    <h3 id="edt-setup-stats">3. Сбор статистики</h3>
+
+    <p><strong>Параметры &rarr; V8 &rarr; Сбор статистики</strong> — снять галочку <strong>«Собирать статистику использования и передавать её в 1С»</strong>.</p>
+
+    <figure class="figure">
+      <img src="images/edt-setup/statistics.jpg" alt="Параметры → V8 → Сбор статистики: галочка снята">
+      <figcaption>Параметры &rarr; V8 &rarr; <strong>Сбор статистики</strong>. Галочка снята &mdash; среда никуда не обращается.</figcaption>
+    </figure>
+
+    <p>Среда перестаёт обращаться к внешнему сервису из рабочего сеанса. В сети без выхода наружу или с жёстким прокси это лишние попытки соединения, которые ничего не дают вам и только засоряют журналы.</p>
 
     <!-- Подключение ИИ-ассистента -->
     <h2 id="connect">Подключение ИИ-ассистента</h2>
@@ -2566,13 +2681,13 @@ description: Подхватить работу по .ai/current-task.md там, 
       <table>
         <thead><tr><th>Параметр</th><th>Значение</th></tr></thead>
         <tbody>
-          <tr><td>Инструментов</td><td>26 в 10 группах</td></tr>
-          <tr><td>Профилей</td><td>3 (Аналитик, Разработчик, Архитектор)</td></tr>
+          <tr><td>Инструментов</td><td>28 в 12 группах</td></tr>
+          <tr><td>Профилей</td><td>4 (Аналитик, Разработчик, Архитектор, Архитектор Про)</td></tr>
           <tr><td>Протокол</td><td>MCP Streamable HTTP (2025-11-25 / 2024-11-05)</td></tr>
           <tr><td>Порт по умолчанию</td><td>8770 (настраиваемый, 1024–65535)</td></tr>
           <tr><td>Формат ответов</td><td>JSON (все инструменты)</td></tr>
           <tr><td>ИИ-ассистенты</td><td>Claude Code, Cursor, Windsurf, Roo Code, Gemini CLI, Qwen Code</td></tr>
-          <tr><td>Совместимость</td><td>1C:EDT 2025.2, Java 17</td></tr>
+          <tr><td>Совместимость</td><td>1C:EDT 2026.1.2 (рекомендуется), 1C:EDT 2026.2; Java из поставки EDT</td></tr>
           <tr><td>Установка</td><td>Справка &rarr; Установить новое ПО &rarr; Архив</td></tr>
         </tbody>
       </table>
@@ -2695,6 +2810,34 @@ description: Подхватить работу по .ai/current-task.md там, 
   });
   // Первый вызов при загрузке
   updateActiveNav();
+
+  // Поиск по разделам в боковом меню
+  const searchInput = document.getElementById('docSearch');
+  const searchEmpty = document.getElementById('docSearchEmpty');
+  if (searchInput) {
+    const navSections = document.querySelectorAll('.sidebar .nav-section');
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase();
+      let found = 0;
+      navLinks.forEach(link => {
+        const hit = !q || link.textContent.toLowerCase().indexOf(q) >= 0;
+        link.classList.toggle('is-hidden', !hit);
+        if (hit) found++;
+      });
+      navSections.forEach(section => {
+        const visible = section.querySelectorAll('.nav-link:not(.is-hidden)').length;
+        section.classList.toggle('is-hidden', Boolean(q) && !visible);
+      });
+      searchEmpty.classList.toggle('show', Boolean(q) && !found);
+    });
+    // Escape очищает поиск
+    searchInput.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        searchInput.value = '';
+        searchInput.dispatchEvent(new Event('input'));
+      }
+    });
+  }
 </script>
 
 </body>

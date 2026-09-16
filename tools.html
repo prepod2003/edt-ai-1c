@@ -11,6 +11,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="docs-v2.css">
+  <style>
+    .doc-search{padding:0 16px 14px;}
+    .doc-search input{width:100%;padding:9px 12px;font-family:inherit;font-size:.88rem;
+      background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;color:var(--text);}
+    .doc-search input::placeholder{color:var(--text-dim);}
+    .doc-search input:focus{outline:none;border-color:var(--accent);
+      box-shadow:0 0 0 3px rgba(124,58,237,.12);}
+    .sidebar-link.is-hidden,.sidebar-section.is-hidden{display:none;}
+    .doc-search-empty{padding:6px 2px 0;font-size:.82rem;color:var(--text-dim);display:none;}
+    .doc-search-empty.show{display:block;}
+    .doc-search-hits{display:none;margin-top:10px;border-top:1px solid var(--border);padding-top:8px;}
+    .doc-search-hits.show{display:block;}
+    .doc-search-hits-title{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+      color:var(--text-dim);margin-bottom:6px;}
+    .doc-search-hits a{display:block;padding:4px 0;font-size:.85rem;color:var(--text-m);text-decoration:none;}
+    .doc-search-hits a:hover{color:var(--accent);}
+    .doc-search-hits a span{color:var(--text-dim);font-size:.78rem;}
+  </style>
 </head>
 <body>
 
@@ -34,6 +52,11 @@
 
 <!-- SIDEBAR -->
 <nav class="sidebar" id="sidebar">
+  <div class="doc-search">
+    <input type="search" id="docSearch" placeholder="Поиск: инструмент или раздел…" aria-label="Поиск по инструментам и разделам">
+    <div class="doc-search-empty" id="docSearchEmpty">Ничего не нашлось</div>
+    <div class="doc-search-hits" id="docSearchHits"></div>
+  </div>
   <div class="sidebar-section">
     <div class="sidebar-section-title">О документе</div>
     <a href="#top" class="sidebar-link">Введение</a>
@@ -1668,6 +1691,77 @@ validate_query на извлечённый текст. Если есть оши�
     }
   });
   updateActiveLink();
+
+  // Поиск: фильтрует пункты меню и находит инструменты по имени и названию
+  const searchInput = document.getElementById('docSearch');
+  const searchEmpty = document.getElementById('docSearchEmpty');
+  const searchHits = document.getElementById('docSearchHits');
+  if (searchInput) {
+    const sidebarSections = document.querySelectorAll('.sidebar .sidebar-section');
+    // Якорь карточки: свой id, иначе ближайший заголовок группы выше
+    function anchorFor(card) {
+      if (card.id) return card.id;
+      let prev = card.previousElementSibling;
+      while (prev) { if (prev.id) return prev.id; prev = prev.previousElementSibling; }
+      let parent = card.parentElement;
+      while (parent) { if (parent.id) return parent.id; parent = parent.parentElement; }
+      return '';
+    }
+
+    // Индекс карточек инструментов: имя инструмента + русское название
+    const toolIndex = Array.from(document.querySelectorAll('.tool-card')).map(card => {
+      const nameEl = card.querySelector('.tool-card-name');
+      const titleEl = card.querySelector('.tool-card-title');
+      const name = nameEl ? nameEl.textContent.trim() : '';
+      const title = titleEl ? titleEl.textContent.trim() : '';
+      return { id: anchorFor(card), name, title, hay: (name + ' ' + title).toLowerCase() };
+    }).filter(t => t.name && t.id);
+
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase();
+      let found = 0;
+      sidebarLinks.forEach(link => {
+        const hit = !q || link.textContent.toLowerCase().indexOf(q) >= 0;
+        link.classList.toggle('is-hidden', !hit);
+        if (hit) found++;
+      });
+      sidebarSections.forEach(section => {
+        const visible = section.querySelectorAll('.sidebar-link:not(.is-hidden)').length;
+        section.classList.toggle('is-hidden', Boolean(q) && !visible);
+      });
+
+      // Найденные инструменты — отдельным списком под полем
+      let hits = [];
+      if (q) hits = toolIndex.filter(t => t.hay.indexOf(q) >= 0).slice(0, 12);
+      if (hits.length) {
+        searchHits.innerHTML = '<div class="doc-search-hits-title">Инструменты</div>' +
+          hits.map(t => '<a href="#' + t.id + '">' + t.name +
+            (t.title ? ' <span>' + t.title + '</span>' : '') + '</a>').join('');
+        searchHits.classList.add('show');
+      } else {
+        searchHits.innerHTML = '';
+        searchHits.classList.remove('show');
+      }
+
+      searchEmpty.classList.toggle('show', Boolean(q) && !found && !hits.length);
+    });
+
+    // Клик по найденному инструменту закрывает меню на телефоне
+    searchHits.addEventListener('click', e => {
+      if (e.target.closest('a') && window.innerWidth <= 900) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('open');
+      }
+    });
+
+    // Escape очищает поиск
+    searchInput.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        searchInput.value = '';
+        searchInput.dispatchEvent(new Event('input'));
+      }
+    });
+  }
 </script>
 
 </body>
