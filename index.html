@@ -71,6 +71,26 @@
     @media(max-width:480px){.hc-status{font-size:.75rem;padding:9px 16px;margin:-4px 0 22px;align-items:flex-start;}.hc-pre{display:block;margin-bottom:3px;color:var(--text-dim);}.hc-status .hc-pulse{margin-top:5px;}}
     @media (prefers-reduced-motion:reduce){.hc-shimmer{animation:none;}.hc-status .hc-pulse::after{animation:none;}.hc-status .hc-caret{animation:none;}}
   </style>
+  <style>
+    /* Анонс статьи-примера (case-dragmet.html): чип в hero и блок #case */
+  .case-chip{display:inline-flex;align-items:center;gap:10px;max-width:100%;margin:0 0 18px;padding:6px 14px 6px 6px;background:var(--bg-surface);border:1px solid var(--accent-soft2);border-radius:999px;box-shadow:0 8px 24px -14px rgba(124,58,237,.45);color:var(--text);font-size:.92rem;line-height:1.35;text-decoration:none;transition:border-color .15s,box-shadow .15s;}
+  .case-chip:hover{border-color:var(--accent);box-shadow:var(--accent-glow);}
+  .case-chip-tag{flex:none;background:var(--accent);color:#fff;font-weight:700;font-size:.78rem;letter-spacing:.03em;border-radius:999px;padding:4px 10px;}
+  .case-chip-txt{min-width:0;}
+  .case-chip-go{flex:none;color:var(--accent-hi);font-weight:700;white-space:nowrap;}
+  @media(max-width:600px){.case-chip{align-items:flex-start;border-radius:16px;font-size:.86rem;flex-wrap:wrap;padding:8px 12px;}.case-chip-go{margin-left:auto;}}
+  .case-announce{padding:8px 0 40px;}
+  .case-card{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:30px 32px;box-shadow:var(--accent-glow);}
+  .case-card .eyebrow{margin-bottom:10px;}
+  .case-card h2{font-size:1.75rem;line-height:1.25;margin:0 0 12px;}
+  .case-card p{color:var(--text-muted);font-size:1rem;line-height:1.6;margin:0 0 16px;}
+  .case-facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;padding:0;list-style:none;}
+  .case-facts li{font-size:.86rem;background:var(--accent-soft);color:var(--accent-hi);border-radius:999px;padding:5px 12px;font-weight:600;}
+  .case-ctas{display:flex;flex-wrap:wrap;gap:10px;}
+  .case-shot{display:block;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border-hi);}
+  .case-shot img{display:block;width:100%;height:auto;}
+  @media(max-width:900px){.case-card{grid-template-columns:1fr;padding:22px 20px;gap:20px;}.case-card h2{font-size:1.4rem;}}
+</style>
 </head>
 <body>
 
@@ -124,6 +144,8 @@
   <div class="container">
     <div class="hero-inner">
       <div>
+        <!-- Анонс статьи-примера: ссылка на case-dragmet.html, подробный блок — сразу под первым экраном (#case) -->
+        <a href="case-dragmet.html" class="case-chip"><span class="case-chip-tag">Пример</span><span class="case-chip-txt">ИИ-агент выполнил большое комплексное ТЗ в 1С (14 задач) целиком за 4 ч 15 мин — с тестами и сверкой до копейки</span><span class="case-chip-go">Читать →</span></a>
         <span class="eyebrow">MCP:RSV Server · MCP-плагин для 1С:EDT</span>
         <h1>Дайте искусственному интеллекту<br><span class="hc-shimmer">полный доступ к 1С:EDT</span></h1>
         <div class="hc-status" aria-hidden="true"><span class="hc-pulse"></span><span class="hc-txt"><span class="hc-pre">агент сейчас: </span><b id="hcStatus"></b><span class="hc-caret"></span></span></div>
@@ -144,7 +166,7 @@
           <a href="#pricing" class="btn btn-secondary btn-lg">Посмотреть тарифы</a>
         </div>
         <div class="hero-meta">
-          <span><b>v7.13.0</b> · для 1C:EDT 2026.x</span>
+          <span><b>v7.14.0</b> · для 1C:EDT 2026.x</span>
           <span>Java 17 · Windows, macOS</span>
         </div>
       </div>
@@ -154,6 +176,34 @@
     </div>
   </div>
 </header>
+
+<!-- ==========================================================================
+     CASE ANNOUNCE — статья «Полный цикл разработки в 1С силами ИИ-агента»
+     ========================================================================== -->
+<section class="case-announce" id="case">
+  <div class="container">
+    <div class="case-card">
+      <div>
+        <span class="eyebrow">Пример · сквозная разработка</span>
+        <h2>ИИ-агент выполнил техническое задание в 1С целиком</h2>
+        <p>«Учёт драгметаллов в ломе» для «Управления торговлей» 11.5: справочники, регистры, документ с проведением
+          и контролем, печатные формы, отчёт на СКД, внешняя обработка, свой раздел, права. Агент сам изучил типовую
+          конфигурацию, проверил работу модульными тестами и сценариями в работающей программе, разобрал снимки
+          экрана, исправил найденное и сверил отчёты с базой.</p>
+        <ul class="case-facts">
+          <li>4 ч 15 мин</li><li>14 из 14 пунктов ТЗ</li><li>16 тестов YAxUnit</li><li>сверка до копейки</li>
+        </ul>
+        <div class="case-ctas">
+          <a href="case-dragmet.html" class="btn btn-primary">Читать статью →</a>
+          <a href="case-dragmet-stats.html" class="btn btn-secondary">Статистика прогона</a>
+        </div>
+      </div>
+      <a href="case-dragmet.html" class="case-shot" aria-label="Открыть статью">
+        <img src="images/case-dragmet/00-teaser.png" alt="Отчёт «Драгоценные металлы по складам», сделанный ИИ-агентом: таблица с итогами и диаграмма" loading="lazy">
+      </a>
+    </div>
+  </div>
+</section>
 
 <!-- ==========================================================================
      FEATURES — 7 key capabilities (flagship + yaxunit highlighted)
@@ -287,19 +337,20 @@
             <li><strong>Генератор форм EDT:</strong> элемента, списка, выбора, записи регистра, общие.</li>
             <li><strong>Реквизиты формы и динамические списки</strong> — со своим запросом, колонками и отбором.</li>
             <li><strong>Элементы интерфейса:</strong> поля всех видов, группы, кнопки с обработчиками, таблицы ТЧ, декорации.</li>
-            <li><strong>Команды и командный интерфейс</strong> — навигационная панель и панель команд.</li>
+            <li><strong>Команды и командный интерфейс</strong> — навигационная панель, панель команд, группа команд одной кнопкой-подменю.</li>
             <li>Параметры открытия, цвета, шрифты, картинки (763 стандартные).</li>
           </ul>
         </div>
 
         <!-- 4. Отчёты СКД -->
         <div class="build-card">
-          <h3>Отчёты и схемы компоновки <span class="build-ops">48 операций</span></h3>
+          <h3>Отчёты и схемы компоновки <span class="build-ops">49 операций</span></h3>
           <p class="build-promise">Полноценный отчёт СКД под ключ — и правка существующего.</p>
           <ul class="build-list">
             <li><strong>Наборы данных, поля, ресурсы</strong> с агрегацией, вычисляемые поля.</li>
             <li><strong>Группировки, отборы</strong> (20+ типов сравнения), сортировки, условное оформление, варианты.</li>
             <li><strong>Матричные отчёты</strong> «товары × месяцы» и пользовательские поля.</li>
+            <li><strong>Шапка в два уровня и диаграммы:</strong> общий заголовок над несколькими колонками, подписи секторов, легенда.</li>
             <li><strong>Композитор настроек на форму</strong> одним вызовом — вместо 12 шагов мастера.</li>
             <li>Схема работает не только в отчётах — на обработках, справочниках, документах.</li>
           </ul>
@@ -685,7 +736,7 @@
           <li>Реквизиты, табличные части, поля регистров</li>
           <li>Создание управляемых форм (26 операций)</li>
           <li>Печатные макеты с именованными областями</li>
-          <li>Отчёты СКД (48 операций)</li>
+          <li>Отчёты СКД (49 операций)</li>
           <li>HTTP-сервисы — REST-API из 1С</li>
           <li>Расширения — заимствование объектов</li>
           <li>Юнит-тесты YAxUnit — прогон и отладка</li>
@@ -752,7 +803,7 @@
     <div class="section-header">
       <span class="eyebrow">📥 Актуальный релиз</span>
       <h2>Скачать MCP:RSV Server</h2>
-      <p data-v="Версия {v} · Для 1C:EDT 2026.x · Windows, macOS · Пробный период 14 дней">Версия 7.13.0 · для 1C:EDT 2026.x · Windows, macOS · пробный период 14 дней.</p>
+      <p data-v="Версия {v} · Для 1C:EDT 2026.x · Windows, macOS · Пробный период 14 дней">Версия 7.14.0 · для 1C:EDT 2026.x · Windows, macOS · пробный период 14 дней.</p>
     </div>
 
     <!-- Флагман — основной платный плагин (выделен фиолетовым) -->
@@ -761,20 +812,20 @@
       <div class="download-file">
         <div class="download-file-icon">📦</div>
         <div>
-          <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-7.13.0-distr.zip</div>
-          <div class="download-file-meta" data-v="Версия {v} · ~10.0 MB">Версия 7.13.0 · ~10.0 MB</div>
+          <div class="download-file-name" data-v="MCP-RSV-Server-{v}-distr.zip">MCP-RSV-Server-7.14.0-distr.zip</div>
+          <div class="download-file-meta" data-v="Версия {v} · ~10.2 MB">Версия 7.14.0 · ~10.2 MB</div>
         </div>
       </div>
 
       <div class="download-includes">
-        <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-7.13.0-SNAPSHOT.zip</span>
+        <span data-v="✅ edt-rsv-repository-{v}.zip">✅ edt-rsv-repository-7.14.0-SNAPSHOT.zip</span>
         <span>✅ README.md — ссылки на руководство и каталог инструментов</span>
         <span>✅ CLAUDE.md — правила для AI</span>
-        <span>✅ RELEASE-7.13.0.md — что нового</span>
-        <span>✅ RELEASE-7.12.0.md — предыдущий релиз</span>
+        <span>✅ RELEASE-7.14.0.md — что нового</span>
+        <span>✅ RELEASE-7.13.0.md — предыдущий релиз</span>
       </div>
 
-      <a href="./MCP-RSV-Server-7.13.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./MCP-RSV-Server-{v}-distr.zip" download="MCP-RSV-Server-7.13.0-distr.zip">⬇ Скачать бесплатно</a>
+      <a href="./MCP-RSV-Server-7.14.0-distr.zip" class="btn btn-primary btn-lg" data-v-href="./MCP-RSV-Server-{v}-distr.zip" download="MCP-RSV-Server-7.14.0-distr.zip">⬇ Скачать бесплатно</a>
 
       <div class="download-note">
         При первом запуске откроется диалог активации — нажмите «Пробный период» или введите код активации
@@ -836,22 +887,29 @@
       <h3>История версий</h3>
 
       <div class="changelog-entry">
+        <a href="release.html?v=7.14.0" class="changelog-version" title="Открыть заметки релиза v7.14.0">v7.14.0</a>
+        <h4>Проверка в открытой программе, выбор базы, отчёты, команды</h4>
+        <p>Прогоны сценариев и снимки форм идут в уже открытой программе 1С — за секунды, без нового запуска, а упавший сценарий оставляет программу открытой для досмотра. Если у проекта несколько баз, база выбирается явно и называется в ответе. Шапка отчёта в два уровня и подписи диаграммы настраиваются без кода, несколько команд собираются в одно подменю, данные не удаляются из базы молча, а MCP:RSV Data Pro на том же компьютере не мешает загрузке изменений в базу. <a href="release.html?v=7.14.0">Полный список →</a></p>
+      </div>
+
+      <div class="changelog-entry">
         <a href="release.html?v=7.13.0" class="changelog-version" title="Открыть заметки релиза v7.13.0">v7.13.0</a>
         <h4>Обновление типовой «на замке», загрузка в базу, печатные формы, права</h4>
         <p>Типовая «на замке» обновляется файлом обновления, первый запуск после обновления проходит и на базе с расширениями, а оставшееся от обновления на диске убирается одним вызовом. Загрузка в базу не срывается из-за второй среды на компьютере и не объявляется вставшей раньше времени. Точечная правка печатной формы меняет только названное, права ролям выдаются сразу, значок подбирается по картинке, а метод типовой на замке берётся в расширение «изменением и контролем». <a href="release.html?v=7.13.0">Полный список →</a></p>
       </div>
 
-      <div class="changelog-entry">
-        <a href="release.html?v=7.12.0" class="changelog-version" title="Открыть заметки релиза v7.12.0">v7.12.0</a>
-        <h4>Обновление и объединение конфигураций, формы, Vanessa</h4>
-        <p>Доработанная конфигурация обновляется на новый релиз поставщика без потери доработок: план изменений до запуска, вопрос по процедурам, которые правили обе стороны, и откат одной командой; объединяются версии коллег и расширения, а опись доработок составляется и для конфигураций на обычных формах. Заимствование формы больше не тянет в расширение лишние объекты, форма документа собирается по готовому рецепту, а собственные шаги Vanessa проекта видны агенту и работают на прогоне. <a href="release.html?v=7.12.0">Полный список →</a></p>
-      </div>
 
 
 
 
       <details class="changelog-archive">
-        <summary>Показать предыдущие версии (v7.11.0 и старше)</summary>
+        <summary>Показать предыдущие версии (v7.12.0 и старше)</summary>
+
+        <div class="changelog-entry">
+          <a href="release.html?v=7.12.0" class="changelog-version" title="Открыть заметки релиза v7.12.0">v7.12.0</a>
+          <h4>Обновление и объединение конфигураций, формы, Vanessa</h4>
+          <p>Доработанная конфигурация обновляется на новый релиз поставщика без потери доработок: план изменений до запуска, вопрос по процедурам, которые правили обе стороны, и откат одной командой; объединяются версии коллег и расширения, а опись доработок составляется и для конфигураций на обычных формах. Заимствование формы больше не тянет в расширение лишние объекты, форма документа собирается по готовому рецепту, а собственные шаги Vanessa проекта видны агенту и работают на прогоне. <a href="release.html?v=7.12.0">Полный список →</a></p>
+        </div>
 
         <div class="changelog-entry">
           <a href="release.html?v=7.11.0" class="changelog-version" title="Открыть заметки релиза v7.11.0">v7.11.0</a>
@@ -1169,7 +1227,7 @@
           <li><a href="#how">Как устроено</a></li>
           <li><a href="#reviews">Отзывы</a></li>
           <li><a href="#pricing">Тарифы</a></li>
-          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v7.13.0</a></li>
+          <li><a href="#download" data-v="⬇ Скачать v{v}">⬇ Скачать v7.14.0</a></li>
           <li><a href="guide.html">Руководство пользователя</a></li>
           <li><a href="tools.html">Описание инструментов</a></li>
         </ul>
@@ -1200,7 +1258,7 @@
     </div>
     <div class="footer-bottom">
       <div>Разработал <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">Радзивиллович Сергей</a></div>
-      <div data-v="MCP:RSV Server v{v} · 2026">MCP:RSV Server v7.13.0 · 2026</div>
+      <div data-v="MCP:RSV Server v{v} · 2026">MCP:RSV Server v7.14.0 · 2026</div>
     </div>
     <div class="footer-disclaimer">
       <p>«1С», «1С:Предприятие», «1С:EDT» — товарные знаки фирмы «1С». Продукт <strong>MCP:RSV Server</strong> является независимой разработкой Радзивилловича С.В., не входит в линейку продуктов фирмы «1С» и не является официальным продуктом фирмы «1С».</p>
