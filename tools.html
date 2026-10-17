@@ -105,6 +105,7 @@
     <a href="#architect-pro" class="sidebar-link">Обзор профиля</a>
     <a href="#update-configuration" class="sidebar-link indent">update_configuration</a>
     <a href="#git-tool" class="sidebar-link indent">git</a>
+    <a href="#external-data-sources" class="sidebar-link indent">Внешние источники данных</a>
     <a href="#pro-branches" class="sidebar-link indent">Обычные формы и замок</a>
   </div>
 </nav>
@@ -638,7 +639,7 @@
 <span class="tree-branch">│   ├──</span> <span class="tree-op">addCommandHandler</span> — обработчик кнопки + процедура-заглушка в Module.bsl
 <span class="tree-branch">│   ├──</span> <span class="tree-op">removeEventHandler / removeCommandHandler</span> — снять обработчик события или кнопки, оставив элемент на месте
 <span class="tree-branch">│   ├──</span> <span class="tree-op">setupSettingsComposerOnForm</span> — композитор настроек на форме (реквизит + таблицы UI + BSL-пример)
-<span class="tree-branch">│   ├──</span> <span class="tree-op">addFormConditionalAppearance / listFormConditionalAppearance / removeFormConditionalAppearance</span> — условное оформление формы (подсветка строки, поля, колонки по условию)
+<span class="tree-branch">│   ├──</span> <span class="tree-op">addFormConditionalAppearance / listFormConditionalAppearance / removeFormConditionalAppearance</span> — условное оформление формы (подсветка строки, поля, колонки по условию; скрытие, недоступность и «только просмотр» по условию)
 <span class="tree-branch">│   ├──</span> <span class="tree-op">removeFormCommand</span> — удалить команду формы и её кнопки (чистка сирот и дублей)
 <span class="tree-branch">│   ├──</span> <span class="tree-op">addFormCommandInterfaceItem</span> — ссылка на команду в навигационной панели/панели команд формы
 <span class="tree-branch">│   ├──</span> <span class="tree-op">removeFormCommandInterfaceItem</span> — убрать ссылку
@@ -1555,7 +1556,7 @@
         <span class="profile-dot dot-indigo"></span>
         <h2>Профиль &laquo;Архитектор Про&raquo; &mdash; добавляет 3 инструмента</h2>
       </div>
-      <p class="profile-desc">Старший профиль над «Архитектором». К 25 инструментам добавляются обновление и объединение конфигураций (<span class="ic">update_configuration</span>), журнал версий проекта (<span class="ic">git</span>) и привязка информационных баз (<span class="ic">manage_infobase</span>), а внутри уже знакомых инструментов открываются доработка старых конфигураций на обычных формах и сеансы базы в <span class="ic">diagnostics</span> &mdash; что выполняется в базе прямо сейчас и завершение зависшего сеанса. Всего у профиля <strong style="color:var(--text)">28 инструментов</strong>. Это возможности, которых нет у других инструментов на рынке: обновление доработанных типовых, работа со старыми конфигурациями и полноценный контроль версий прямо в EDT.</p>
+      <p class="profile-desc">Старший профиль над «Архитектором». К 25 инструментам добавляются обновление и объединение конфигураций (<span class="ic">update_configuration</span>), журнал версий проекта (<span class="ic">git</span>) и привязка информационных баз (<span class="ic">manage_infobase</span>), а внутри уже знакомых инструментов открываются доработка старых конфигураций на обычных формах, подключение таблиц внешних баз и файлов Excel к конфигурации (внешние источники данных в <span class="ic">edit_metadata</span>) и сеансы базы в <span class="ic">diagnostics</span> &mdash; что выполняется в базе прямо сейчас и завершение зависшего сеанса. Всего у профиля <strong style="color:var(--text)">28 инструментов</strong>. Это возможности, которых нет у других инструментов на рынке: обновление доработанных типовых, работа со старыми конфигурациями и полноценный контроль версий прямо в EDT.</p>
 
       <!-- update_configuration -->
       <div class="group-header" id="update-configuration">
@@ -1614,6 +1615,24 @@
         <p style="margin-top:10px"><strong style="color:var(--text)">Уборка списка баз</strong> (<span class="ic">operation=cleanup</span>). Убирает из списка информационных баз накопившиеся служебные записи временных баз плагина. С <span class="ic">dryRun=true</span> сначала показывает полный перечень того, что будет убрано. Трогает только файловую базу внутри служебного каталога плагина, не привязанную ни к одному проекту; сами базы на диске не удаляются.</p>
         <p style="margin-top:10px"><strong style="color:var(--text)">Ответ о привязке говорит, что произошло.</strong> В ответе <span class="ic">operation=associate</span> есть поле <span class="ic">status</span> с тремя разными значениями: привязка готова &middot; привязка ещё идёт &middot; среда разработки ждёт ответа человека на своё окно. В последнем случае приходят заголовок, текст и кнопки всех ждущих окон и прямо сказано, что повторять вызов бесполезно, пока они открыты. Отдельным полем ответ говорит словами, что уже сделано с базой: записана ли она в список информационных баз и создана ли привязка.</p>
         <p style="margin-top:10px"><strong style="color:var(--text)">Отвязка убирает за собой.</strong> <span class="ic">operation=dissociate</span> снимает служебную запись отвязанной базы в настройках проекта (<span class="ic">bindingEntryRemoved</span>) &mdash; прежде такие записи копились от базы к базе, и отличить живую от мёртвой было нечем. Записи остальных баз проекта не трогаются.</p>
+      </div>
+
+      <!-- external data sources -->
+      <div class="group-header" id="external-data-sources">
+        <h3>Внешние источники данных &mdash; в <span class="ic">edit_metadata</span></h3>
+        <p class="group-desc">Таблицы своей базы PostgreSQL или Microsoft SQL Server, листы Excel и файлы CSV, а также таблицы Access и других источников &mdash; через их драйвер ODBC &mdash; подключаются к конфигурации как внешний источник данных 1С. Работает внутри конструктора конфигурации, отдельного инструмента для этого нет.</p>
+      </div>
+
+      <div class="tool-card border-indigo">
+        <div class="tool-card-title">Подключение таблиц внешней базы и файлов к конфигурации</div>
+        <p>По просьбе вида «подключи таблицы заказов из нашей базы на SQL Server» или «подключи лист Excel с ценами поставщика» агент заводит внешний источник данных с таблицами и полями &mdash; то же, что вручную делают в редакторе внешнего источника EDT, одним вызовом на таблицу:</p>
+        <ul>
+          <li><strong>Типы колонок переводятся в типы 1С</strong> &mdash; строка нужной длины, число с разрядностью, дата, булево, уникальный идентификатор, двоичные данные. Колонку, тип которой не переводится или переводится с потерей, инструмент называет в ответе и предлагает выбор, а не пропускает молча.</li>
+          <li><strong>Ключевые поля и поле представления.</strong> С одной ключевой колонкой у строки есть ссылка &mdash; работают формы и выбор значения; с несколькими &mdash; ключ записи; таблица без ключа читается запросами и отчётами.</li>
+          <li><strong>Таблица сразу доступна в запросах и отчётах</strong>: в ответе &mdash; готовый запрос к ней и то, что указать в 1С:Предприятии, чтобы данные читались.</li>
+          <li><strong>Чтение, правка, удаление.</strong> Подключённые таблицы читаются вместе с полями и ключом, приводятся к изменившейся структуре базы, переименовываются; лишние таблицы и поля удаляются.</li>
+        </ul>
+        <p style="margin-top:10px">Источник заводится в проекте основной конфигурации; из расширения его таблицы доступны коду и запросам. Для работы базы с источником нужен драйвер ODBC той же разрядности, что и 1С, на компьютере, где выполняются запросы. Подробно &mdash; в разделе руководства <a href="guide.html#external-data" style="color:var(--blue)">«Внешние источники данных»</a>.</p>
       </div>
 
       <!-- ordinary forms branches -->
