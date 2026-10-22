@@ -72,7 +72,7 @@
     @media (prefers-reduced-motion:reduce){.hc-shimmer{animation:none;}.hc-status .hc-pulse::after{animation:none;}.hc-status .hc-caret{animation:none;}}
   </style>
   <style>
-    /* Анонс статьи-примера (case-dragmet.html): чип в hero и блок #case */
+    /* Анонсы статей-примеров (case-holding.html, case-dragmet.html): чипы в hero */
   .case-chip{display:inline-flex;align-items:center;gap:10px;max-width:100%;margin:0 0 18px;padding:6px 14px 6px 6px;background:var(--bg-surface);border:1px solid var(--accent-soft2);border-radius:999px;box-shadow:0 8px 24px -14px rgba(124,58,237,.45);color:var(--text);font-size:.92rem;line-height:1.35;text-decoration:none;transition:border-color .15s,box-shadow .15s;}
   .case-chip:hover{border-color:var(--accent);box-shadow:var(--accent-glow);}
   .case-chip-tag{flex:none;background:var(--accent);color:#fff;font-weight:700;font-size:.78rem;letter-spacing:.03em;border-radius:999px;padding:4px 10px;}
@@ -81,18 +81,6 @@
   @media(max-width:600px){.case-chip{align-items:flex-start;border-radius:16px;font-size:.86rem;flex-wrap:wrap;padding:8px 12px;}.case-chip-go{margin-left:auto;}}
   .case-chips{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin:0 0 18px;}
   .case-chips .case-chip{margin:0;}
-  .case-card + .case-card{margin-top:20px;}
-  .case-announce{padding:8px 0 40px;}
-  .case-card{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:30px 32px;box-shadow:var(--accent-glow);}
-  .case-card .eyebrow{margin-bottom:10px;}
-  .case-card h2{font-size:1.75rem;line-height:1.25;margin:0 0 12px;}
-  .case-card p{color:var(--text-muted);font-size:1rem;line-height:1.6;margin:0 0 16px;}
-  .case-facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;padding:0;list-style:none;}
-  .case-facts li{font-size:.86rem;background:var(--accent-soft);color:var(--accent-hi);border-radius:999px;padding:5px 12px;font-weight:600;}
-  .case-ctas{display:flex;flex-wrap:wrap;gap:10px;}
-  .case-shot{display:block;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border-hi);}
-  .case-shot img{display:block;width:100%;height:auto;}
-  @media(max-width:900px){.case-card{grid-template-columns:1fr;padding:22px 20px;gap:20px;}.case-card h2{font-size:1.4rem;}}
 </style>
 </head>
 <body>
@@ -147,7 +135,7 @@
   <div class="container">
     <div class="hero-inner">
       <div>
-        <!-- Анонсы статей-примеров: case-holding.html и case-dragmet.html, подробные блоки — сразу под первым экраном (#case) -->
+        <!-- Анонсы статей-примеров: case-holding.html и case-dragmet.html -->
         <div class="case-chips">
         <a href="case-holding.html" class="case-chip"><span class="case-chip-tag">Пример</span><span class="case-chip-txt">Управленческая консолидация холдинга: 5 фирм и 7 баз 1С сведены в один отчёт за 3–4 дня</span><span class="case-chip-go">Читать →</span></a>
         <a href="case-dragmet.html" class="case-chip"><span class="case-chip-tag">Пример</span><span class="case-chip-txt">ИИ-агент выполнил большое комплексное ТЗ в 1С (14 задач) целиком за 4 ч 15 мин — с тестами и сверкой до копейки</span><span class="case-chip-go">Читать →</span></a>
@@ -182,54 +170,6 @@
     </div>
   </div>
 </header>
-
-<!-- ==========================================================================
-     CASE ANNOUNCE — статья «Полный цикл разработки в 1С силами ИИ-агента»
-     ========================================================================== -->
-<section class="case-announce" id="case">
-  <div class="container">
-    <div class="case-card">
-      <div>
-        <span class="eyebrow">Пример · Server + Data Pro</span>
-        <h2>Управленческая консолидация холдинга за четыре дня</h2>
-        <p>Пять фирм, семь баз 1С — пять бухгалтерий, ЗУП и «Комплексная автоматизация». ИИ-агент построил отчёт
-          с экономикой каждого заказчика по учёту и по деньгам, с расшифровкой до документа. MCP:RSV Data Pro изучил
-          живые базы, завёл больше сотни сопоставлений между ними и сверил итог до копейки; MCP:RSV Server вёл
-          разработку и проверку в работающей программе.</p>
-        <ul class="case-facts">
-          <li>3–4 дня</li><li>7 баз 1С</li><li>100+ сопоставлений</li><li>сверка до копейки</li>
-        </ul>
-        <div class="case-ctas">
-          <a href="case-holding.html" class="btn btn-primary">Читать статью →</a>
-          <a href="case-holding.html#compare" class="btn btn-secondary">Сравнение с классикой</a>
-        </div>
-      </div>
-      <a href="case-holding.html" class="case-shot" aria-label="Открыть статью">
-        <img src="images/case-holding/00-teaser.png" alt="Отчёт «Экономика заказчиков», сделанный ИИ-агентом: свод по заказчикам с доходом по учёту и по деньгам" loading="lazy">
-      </a>
-    </div>
-    <div class="case-card">
-      <div>
-        <span class="eyebrow">Пример · сквозная разработка</span>
-        <h2>ИИ-агент выполнил техническое задание в 1С целиком</h2>
-        <p>«Учёт драгметаллов в ломе» для «Управления торговлей» 11.5: справочники, регистры, документ с проведением
-          и контролем, печатные формы, отчёт на СКД, внешняя обработка, свой раздел, права. Агент сам изучил типовую
-          конфигурацию, проверил работу модульными тестами и сценариями в работающей программе, разобрал снимки
-          экрана, исправил найденное и сверил отчёты с базой.</p>
-        <ul class="case-facts">
-          <li>4 ч 15 мин</li><li>14 из 14 пунктов ТЗ</li><li>16 тестов YAxUnit</li><li>сверка до копейки</li>
-        </ul>
-        <div class="case-ctas">
-          <a href="case-dragmet.html" class="btn btn-primary">Читать статью →</a>
-          <a href="case-dragmet-stats.html" class="btn btn-secondary">Статистика прогона</a>
-        </div>
-      </div>
-      <a href="case-dragmet.html" class="case-shot" aria-label="Открыть статью">
-        <img src="images/case-dragmet/00-teaser.png" alt="Отчёт «Драгоценные металлы по складам», сделанный ИИ-агентом: таблица с итогами и диаграмма" loading="lazy">
-      </a>
-    </div>
-  </div>
-</section>
 
 <!-- ==========================================================================
      FEATURES — 7 key capabilities (flagship + yaxunit highlighted)
