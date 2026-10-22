@@ -79,6 +79,9 @@
   .case-chip-txt{min-width:0;}
   .case-chip-go{flex:none;color:var(--accent-hi);font-weight:700;white-space:nowrap;}
   @media(max-width:600px){.case-chip{align-items:flex-start;border-radius:16px;font-size:.86rem;flex-wrap:wrap;padding:8px 12px;}.case-chip-go{margin-left:auto;}}
+  .case-chips{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin:0 0 18px;}
+  .case-chips .case-chip{margin:0;}
+  .case-card + .case-card{margin-top:20px;}
   .case-announce{padding:8px 0 40px;}
   .case-card{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:30px 32px;box-shadow:var(--accent-glow);}
   .case-card .eyebrow{margin-bottom:10px;}
@@ -144,8 +147,11 @@
   <div class="container">
     <div class="hero-inner">
       <div>
-        <!-- Анонс статьи-примера: ссылка на case-dragmet.html, подробный блок — сразу под первым экраном (#case) -->
+        <!-- Анонсы статей-примеров: case-holding.html и case-dragmet.html, подробные блоки — сразу под первым экраном (#case) -->
+        <div class="case-chips">
+        <a href="case-holding.html" class="case-chip"><span class="case-chip-tag">Пример</span><span class="case-chip-txt">Управленческая консолидация холдинга: 5 фирм и 7 баз 1С сведены в один отчёт за 3–4 дня</span><span class="case-chip-go">Читать →</span></a>
         <a href="case-dragmet.html" class="case-chip"><span class="case-chip-tag">Пример</span><span class="case-chip-txt">ИИ-агент выполнил большое комплексное ТЗ в 1С (14 задач) целиком за 4 ч 15 мин — с тестами и сверкой до копейки</span><span class="case-chip-go">Читать →</span></a>
+        </div>
         <span class="eyebrow">MCP:RSV Server · MCP-плагин для 1С:EDT</span>
         <h1>Дайте искусственному интеллекту<br><span class="hc-shimmer">полный доступ к 1С:EDT</span></h1>
         <div class="hc-status" aria-hidden="true"><span class="hc-pulse"></span><span class="hc-txt"><span class="hc-pre">агент сейчас: </span><b id="hcStatus"></b><span class="hc-caret"></span></span></div>
@@ -182,6 +188,26 @@
      ========================================================================== -->
 <section class="case-announce" id="case">
   <div class="container">
+    <div class="case-card">
+      <div>
+        <span class="eyebrow">Пример · Server + Data Pro</span>
+        <h2>Управленческая консолидация холдинга за четыре дня</h2>
+        <p>Пять фирм, семь баз 1С — пять бухгалтерий, ЗУП и «Комплексная автоматизация». ИИ-агент построил отчёт
+          с экономикой каждого заказчика по учёту и по деньгам, с расшифровкой до документа. MCP:RSV Data Pro изучил
+          живые базы, завёл больше сотни сопоставлений между ними и сверил итог до копейки; MCP:RSV Server вёл
+          разработку и проверку в работающей программе.</p>
+        <ul class="case-facts">
+          <li>3–4 дня</li><li>7 баз 1С</li><li>100+ сопоставлений</li><li>сверка до копейки</li>
+        </ul>
+        <div class="case-ctas">
+          <a href="case-holding.html" class="btn btn-primary">Читать статью →</a>
+          <a href="case-holding.html#compare" class="btn btn-secondary">Сравнение с классикой</a>
+        </div>
+      </div>
+      <a href="case-holding.html" class="case-shot" aria-label="Открыть статью">
+        <img src="images/case-holding/00-teaser.png" alt="Отчёт «Экономика заказчиков», сделанный ИИ-агентом: свод по заказчикам с доходом по учёту и по деньгам" loading="lazy">
+      </a>
+    </div>
     <div class="case-card">
       <div>
         <span class="eyebrow">Пример · сквозная разработка</span>
