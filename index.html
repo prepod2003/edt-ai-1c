@@ -749,7 +749,9 @@
     </div>
 
     <div class="pricing-upgrade">
-      <button onclick="upgradeOpenModal()">↗ Сменить тариф (уже есть код активации)</button>
+      <button onclick="renewOpenModal()">↻ Продлить лицензию (без нового кода)</button>
+      <p>Ещё год того же тарифа — к текущему сроку, код активации остаётся прежним</p>
+      <button onclick="upgradeOpenModal()" style="margin-top:18px;">↗ Сменить тариф (уже есть код активации)</button>
       <p>Перейти на более высокий тариф с учётом уже оплаченной суммы</p>
     </div>
 
@@ -1286,6 +1288,65 @@
 </div>
 
 <!-- ==========================================================================
+     RENEW MODAL — продление лицензии без смены кода
+     ========================================================================== -->
+<div class="email-modal-bg" id="renew-modal-bg" onclick="if(event.target===this)renewCloseModal()">
+  <div class="email-modal-box" style="max-width:520px;">
+    <h3>Продление лицензии</h3>
+    <p>Ещё год вашего тарифа. Срок прибавится к текущему (если лицензия уже истекла — отсчитается от дня оплаты). Код активации остаётся прежним — вводить новый не нужно.</p>
+
+    <div id="rnw-step-input">
+      <label class="em-promo-label">Код активации лицензии</label>
+      <input type="text" id="rnw-code-input" placeholder="ACT-DEV-XXXXXXXX" autocomplete="off" style="font-family:var(--font-mono);text-transform:uppercase;">
+
+      <label class="em-promo-label" style="margin-top:16px;display:block;">Email (на который оформлен код)</label>
+      <input type="email" id="rnw-email-input" placeholder="your@email.com" autocomplete="email">
+
+      <div id="rnw-error" style="display:none;margin-top:12px;padding:12px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;color:#fca5a5;font-size:0.88rem;"></div>
+
+      <div class="email-modal-actions">
+        <button class="em-proceed" id="rnw-quote-btn" onclick="renewRequestQuote()">Узнать стоимость</button>
+        <button class="em-cancel" onclick="renewCloseModal()">Отмена</button>
+      </div>
+    </div>
+
+    <div id="rnw-step-quote" style="display:none;">
+      <div style="background:var(--bg-base);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;">
+        <div style="font-size:0.82rem;color:var(--text-dim);margin-bottom:8px;">Тариф</div>
+        <div style="font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:4px;" id="rnw-tier">—</div>
+        <div style="font-size:0.85rem;color:var(--text-muted);" id="rnw-current">—</div>
+      </div>
+
+      <div style="background:var(--accent-soft);border:1px solid var(--accent-soft2);border-radius:12px;padding:20px;margin-bottom:16px;">
+        <div style="font-size:0.82rem;color:var(--accent-hi);margin-bottom:8px;">После продления</div>
+        <div style="font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:4px;">Действует до: <span id="rnw-new-expires">—</span></div>
+        <div style="font-size:0.85rem;color:var(--success);margin-top:4px;display:none;" id="rnw-bonus"></div>
+      </div>
+
+      <div style="background:linear-gradient(135deg, rgba(245,158,11,.15), rgba(245,158,11,.05));border:1px solid rgba(245,158,11,.35);border-radius:12px;padding:20px;margin-bottom:20px;text-align:center;">
+        <div style="font-size:0.85rem;color:var(--warning);margin-bottom:4px;">К оплате — 1 год</div>
+        <div style="font-size:2rem;font-weight:800;color:var(--text);" id="rnw-amount">— ₽</div>
+      </div>
+
+      <label class="em-terms-row">
+        <input type="checkbox" id="rnw-terms-check" onchange="renewValidatePay()">
+        <span>Я ознакомился с <a href="terms.html" target="_blank">пользовательским соглашением</a></span>
+      </label>
+      <label class="em-terms-row">
+        <input type="checkbox" id="rnw-privacy-check" onchange="renewValidatePay()">
+        <span>Я даю согласие на <a href="privacy.html" target="_blank">обработку персональных данных</a> (152-ФЗ)</span>
+      </label>
+
+      <div class="email-modal-actions">
+        <button class="em-proceed" id="rnw-pay-btn" onclick="renewProceed()" disabled>Оплатить продление →</button>
+        <button class="em-cancel" onclick="renewBack()">Назад</button>
+      </div>
+      <p style="font-size:0.8rem;color:var(--text-dim);margin-top:12px;">После оплаты перезапустите 1C:EDT — плагин получит новый срок сам.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================================================
      UPGRADE MODAL — preserved (pro-rata tier change)
      ========================================================================== -->
 <div class="email-modal-bg" id="upgrade-modal-bg" onclick="if(event.target===this)upgradeCloseModal()">
@@ -1746,11 +1807,113 @@ function upgradeProceed() {
   window.location.href = url;
 }
 
+/* ============================================================
+   Renew — продление лицензии без смены кода (год своего тарифа)
+   ============================================================ */
+var renewQuoteData = null;
+
+function renewOpenModal() {
+  document.getElementById('rnw-step-input').style.display = 'block';
+  document.getElementById('rnw-step-quote').style.display = 'none';
+  document.getElementById('rnw-error').style.display = 'none';
+  document.getElementById('rnw-code-input').value = '';
+  document.getElementById('rnw-email-input').value = '';
+  document.getElementById('rnw-terms-check').checked = false;
+  document.getElementById('rnw-privacy-check').checked = false;
+  document.getElementById('renew-modal-bg').classList.add('active');
+  renewQuoteData = null;
+}
+
+function renewCloseModal() {
+  document.getElementById('renew-modal-bg').classList.remove('active');
+  renewQuoteData = null;
+}
+
+function renewBack() {
+  document.getElementById('rnw-step-input').style.display = 'block';
+  document.getElementById('rnw-step-quote').style.display = 'none';
+  document.getElementById('rnw-error').style.display = 'none';
+}
+
+function renewShowError(msg) {
+  var el = document.getElementById('rnw-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function renewRequestQuote() {
+  var code = document.getElementById('rnw-code-input').value.trim().toUpperCase();
+  var email = document.getElementById('rnw-email-input').value.trim();
+  if (!code) { renewShowError('Введите код активации'); return; }
+  if (!email || !pricingEmailValid(email)) { renewShowError('Введите корректный email'); return; }
+
+  document.getElementById('rnw-error').style.display = 'none';
+  var btn = document.getElementById('rnw-quote-btn');
+  btn.disabled = true;
+  btn.textContent = 'Считаем...';
+
+  var url = PRICING_GAS + '?action=renew-quote'
+    + '&code=' + encodeURIComponent(code)
+    + '&email=' + encodeURIComponent(email);
+
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      btn.disabled = false;
+      btn.textContent = 'Узнать стоимость';
+      if (!data.success) {
+        renewShowError(data.message || 'Ошибка расчёта');
+        return;
+      }
+      renewQuoteData = { code: code, email: email };
+      document.getElementById('rnw-tier').textContent = data.tier + ', 1 год';
+      document.getElementById('rnw-current').textContent = data.active
+        ? 'Сейчас действует до ' + data.currentExpiresAt
+        : 'Срок закончился ' + data.currentExpiresAt + ' — новый год отсчитается от дня оплаты';
+      document.getElementById('rnw-new-expires').textContent = data.newExpiresAt;
+      var bonus = document.getElementById('rnw-bonus');
+      if (data.bonusMonths > 0) {
+        bonus.textContent = 'Подарок по акции: +' + data.bonusMonths + ' мес. уже учтены в сроке';
+        bonus.style.display = 'block';
+      } else {
+        bonus.style.display = 'none';
+      }
+      document.getElementById('rnw-amount').textContent = pricingFmt(data.priceRub) + ' ₽';
+
+      document.getElementById('rnw-terms-check').checked = false;
+      document.getElementById('rnw-privacy-check').checked = false;
+      document.getElementById('rnw-pay-btn').disabled = true;
+
+      document.getElementById('rnw-step-input').style.display = 'none';
+      document.getElementById('rnw-step-quote').style.display = 'block';
+    })
+    .catch(function(err) {
+      btn.disabled = false;
+      btn.textContent = 'Узнать стоимость';
+      renewShowError('Ошибка соединения: ' + err.message);
+    });
+}
+
+function renewValidatePay() {
+  var terms = document.getElementById('rnw-terms-check').checked;
+  var privacy = document.getElementById('rnw-privacy-check').checked;
+  document.getElementById('rnw-pay-btn').disabled = !(terms && privacy);
+}
+
+function renewProceed() {
+  if (!renewQuoteData) return;
+  var url = PRICING_GAS + '?action=renew-pay'
+    + '&code=' + encodeURIComponent(renewQuoteData.code)
+    + '&email=' + encodeURIComponent(renewQuoteData.email);
+  window.location.href = url;
+}
+
 /* Keyboard: ESC closes modals */
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     pricingCloseModal();
     upgradeCloseModal();
+    renewCloseModal();
   }
 });
 
