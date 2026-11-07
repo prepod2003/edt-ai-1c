@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Счёт для организации — MCP:RSV</title>
+  <meta name="description" content="Запрос счёта на MCP:RSV Server и MCP:RSV Data Pro для организаций и ИП: оплата по безналичному расчёту, без НДС (УСН).">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles-v2.css?v=20261107">
+  <link rel="stylesheet" href="invoice.css?v=20261107">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand"><span class="nav-brand-badge">RSV</span> MCP Server</a>
+    <ul class="nav-links">
+      <li><a href="index.html#pricing">Тарифы</a></li>
+      <li><a href="guide.html">Руководство</a></li>
+      <li><a href="https://prepod2003.github.io/rsv-data-pro/" target="_blank" rel="noopener">MCP:RSV Data Pro</a></li>
+    </ul>
+    <a href="https://t.me/Prepod2003" target="_blank" rel="noopener" class="nav-tg">✈ Telegram</a>
+  </div>
+</nav>
+
+<main class="inv">
+  <div class="inv-wrap">
+    <div id="form-view">
+      <header class="inv-head">
+        <span class="eyebrow">Для организаций и ИП</span>
+        <h1>Счёт для организации</h1>
+        <p>Оплата по безналичному расчёту, без НДС (УСН). Счёт действует 5 рабочих дней.</p>
+      </header>
+
+      <div class="note offer">
+        <b>Работаем по публичной оферте — отдельный договор не заключаем.</b>
+        <span>Оплата счёта означает согласие с условиями оферты. После оплаты — ключи на почту, акт приёма-передачи прав — через ЭДО, а если ЭДО нет — в PDF на почту.
+          Условия: <a href="terms.html" target="_blank" rel="noopener">оферта MCP:RSV Server</a> ·
+          <a href="https://prepod2003.github.io/rsv-data-pro/terms.html" target="_blank" rel="noopener">оферта MCP:RSV Data Pro</a>.</span>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <!-- 1. Покупатель -->
+          <section class="sect" aria-labelledby="s1">
+            <h2 id="s1"><span class="n">1</span>Покупатель</h2>
+            <div class="seg" role="group" aria-label="Откуда покупатель">
+              <button type="button" class="on" data-kind="ru">Организация или ИП в России</button>
+              <button type="button" data-kind="foreign">Организация из другой страны</button>
+            </div>
+
+            <div id="ru-block" class="f" style="gap:10px">
+              <div class="f">
+                <label for="inn">ИНН <span class="req">*</span> <small>— 10 цифр у организации, 12 у ИП</small></label>
+                <div class="inn-wrap">
+                  <input id="inn" inputmode="numeric" maxlength="12" autocomplete="off" placeholder="10 или 12 цифр">
+                  <button type="button" class="btn ghost" id="inn-go">Найти</button>
+                </div>
+                <div class="err" id="inn-err" hidden></div>
+              </div>
+              <div class="found" id="inn-found" hidden>
+                <b id="f-name"></b>
+                <span class="meta" id="f-meta"></span>
+                <span class="small" id="f-note"></span>
+              </div>
+              <div class="row" id="kpp-row" hidden>
+                <div class="f"><label for="kpp">КПП <small>— если отличается</small></label><input id="kpp" inputmode="numeric" maxlength="9"></div>
+                <div class="f"><label for="ru-addr">Почтовый адрес <small>— если не юридический</small></label><input id="ru-addr" placeholder="необязательно"></div>
+              </div>
+            </div>
+
+            <div id="foreign-block" hidden>
+              <div class="note warn"><b>Для организаций из других стран</b>
+                <span>Оплата — в российских рублях на счёт в банке РФ. Комиссии банков и конвертация — на стороне покупателя. Документы — на русском языке; без ЭДО акт приходит в PDF на почту.</span></div>
+              <div class="row">
+                <div class="f"><label for="country">Страна</label>
+                  <select id="country"><option>Беларусь</option><option>Казахстан</option><option>Другая страна</option></select></div>
+                <div class="f"><label for="taxno"><span id="taxno-l">УНП</span> <span class="req">*</span> <small id="taxno-fmt">— 9 цифр</small></label>
+                  <div class="inn-wrap"><input id="taxno" autocomplete="off"><button type="button" class="btn ghost" id="tax-go">Найти</button></div>
+                  <div class="err" id="tax-err" hidden></div></div>
+              </div>
+              <div class="note warn" id="pay-warn" hidden><b>Перед оплатой — уточните в своём банке</b>
+                <span>Оплаты из этой страны мы принимали не всегда. Уточните в своём банке, проходит ли перевод в российских рублях в банк в России. Если нет — напишите нам до оплаты, подберём способ.</span></div>
+              <div class="found" id="f-found" hidden>
+                <b id="ff-name"></b>
+                <span class="meta" id="ff-meta"></span>
+                <span class="small" id="ff-note"></span>
+              </div>
+              <div id="f-manual" class="f" style="gap:12px">
+                <div class="f"><label for="fname">Полное название</label><input id="fname" placeholder="Общество с ограниченной ответственностью «…»"></div>
+                <div class="f"><label for="faddr">Юридический адрес</label><input id="faddr"></div>
+              </div>
+              <label class="drop" id="drop" for="file">
+                <input type="file" id="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png" hidden>
+                <b>Приложите карточку предприятия</b> — PDF, Word, Excel или фото, до 5 МБ. <span id="drop-tail"></span>
+                <span class="file-name" id="file-name" hidden></span>
+              </label>
+              <div class="err" id="file-err" hidden></div>
+              <details class="bank"><summary>Банковские реквизиты</summary>
+                <div class="f" style="gap:12px">
+                  <div class="row"><div class="f"><label for="iban">Счёт (IBAN)</label><input id="iban"></div>
+                    <div class="f"><label for="swift">SWIFT (BIC)</label><input id="swift"></div></div>
+                  <div class="f"><label for="bank">Банк</label><input id="bank" placeholder="название и город банка"></div>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <!-- 2. Что покупаете -->
+          <section class="sect" aria-labelledby="s2">
+            <h2 id="s2"><span class="n">2</span>Что покупаете</h2>
+            <div class="lines" id="lines"></div>
+            <div class="add-row">
+              <button type="button" class="btn ghost" id="add">+ Добавить строку</button>
+              <span class="hint">Одна лицензия — одно рабочее место.</span>
+            </div>
+            <div class="row code-row" id="code-row">
+              <div class="f" id="code-field"><label for="srvcode">Код лицензии MCP:RSV Server <small>— если уже есть</small></label><input id="srvcode" placeholder="ACT-ARC-XXXXXXXX"></div>
+              <div class="code-note"><span id="code-note-text"></span></div>
+            </div>
+            <div class="xsell" id="xsell" hidden>
+              <span id="xsell-text"></span>
+              <button type="button" class="btn ghost" id="xsell-add">+ Добавить Data Pro в заявку</button>
+            </div>
+          </section>
+
+          <!-- 3. Контакты -->
+          <section class="sect" aria-labelledby="s3">
+            <h2 id="s3"><span class="n">3</span>Контакты</h2>
+            <div class="row">
+              <div class="f"><label for="email">Почта для счёта и ключей <span class="req">*</span></label><input id="email" type="email" autocomplete="email"><span class="err" data-err="email" hidden></span></div>
+              <div class="f"><label for="person">Контактное лицо <span class="req">*</span></label><input id="person" autocomplete="name" placeholder="Имя и фамилия"><span class="err" data-err="person" hidden></span></div>
+            </div>
+            <div class="row">
+              <div class="f"><label for="phone">Телефон или Telegram <span class="req">*</span></label><input id="phone" autocomplete="tel" placeholder="+7 … или @ник"><span class="err" data-err="phone" hidden></span></div>
+              <div class="f"><label for="position">Должность <small>— необязательно</small></label><input id="position" placeholder="Например: главный бухгалтер"></div>
+            </div>
+            <div class="f">
+              <label id="edo-l">Есть ли у вас электронный документооборот (ЭДО)? <span class="req">*</span></label>
+              <div class="seg edo" role="radiogroup" aria-labelledby="edo-l">
+                <button type="button" role="radio" aria-checked="false" data-edo="yes">Да</button>
+                <button type="button" role="radio" aria-checked="false" data-edo="no">Нет</button>
+              </div>
+              <span class="hint" id="edo-hint">Есть ЭДО — акт приёма-передачи прав отправим через ЭДО. Нет — акт придёт в PDF на почту для счёта.</span>
+              <span class="err" data-err="edo" hidden></span>
+            </div>
+            <span class="hint"><span class="req">*</span> — обязательные поля</span>
+            <div class="f"><label for="comment">Комментарий <small>— необязательно</small></label><textarea id="comment" placeholder="Например: ключи разным сотрудникам, счёт до конца месяца…"></textarea></div>
+            <div class="hp" aria-hidden="true"><label for="website">Сайт</label><input id="website" tabindex="-1" autocomplete="off"></div>
+            <div class="checks">
+              <label><input type="checkbox" id="c1"> <span id="c1-text">Принимаю условия публичной оферты</span></label>
+              <label><input type="checkbox" id="c2"> <span>Согласен на обработку персональных данных — <a href="privacy.html" target="_blank" rel="noopener">политика конфиденциальности</a> (152-ФЗ)</span></label>
+              <span class="err" data-err="consent" hidden></span>
+            </div>
+          </section>
+        </div>
+
+        <aside class="total" aria-label="Итог заявки">
+          <h2>Итог</h2>
+          <div class="tl" id="tl"></div>
+          <div class="big"><span>К оплате</span><b id="sum">—</b></div>
+          <button type="button" class="btn send" id="send">Запросить счёт</button>
+          <div class="err" id="send-err" hidden></div>
+          <span class="small">Счёт придёт на почту в течение рабочего дня. Ключи — после оплаты, в течение 3 рабочих дней.</span>
+        </aside>
+      </div>
+    </div>
+
+    <div id="done-view" hidden>
+      <div class="done">
+        <h1>Заявка принята</h1>
+        <p>Счёт пришлём на <b id="d-mail"></b> в течение рабочего дня. Копия заявки — в письме на ту же почту.</p>
+        <ul>
+          <li id="d-gift" hidden></li>
+          <li id="d-pay" hidden></li>
+          <li>Оплатить счёт нужно в течение 5 рабочих дней.</li>
+          <li>Ключи активации придут на эту почту после оплаты.</li>
+          <li id="d-act"></li>
+          <li>Вопросы — Telegram <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">@Prepod2003</a> или prepod2003@yandex.ru.</li>
+        </ul>
+        <a class="btn ghost" href="index.html">← На главную</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="inv-foot">
+  <div class="inv-wrap">
+    <span>ИП Радзивиллович С. В. · <a href="terms.html">Пользовательское соглашение</a> · <a href="privacy.html">Политика конфиденциальности</a></span>
+    <span>Вопросы: <a href="https://t.me/Prepod2003" target="_blank" rel="noopener">@Prepod2003</a> · prepod2003@yandex.ru</span>
+  </div>
+</footer>
+
+<script src="pricing-data.js?v=20261107"></script>
+<script src="invoice.js?v=20261107"></script>
+</body>
+</html>

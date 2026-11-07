@@ -18,6 +18,19 @@
 
   <!-- Доп. стили маркетингового варианта: профильные карточки -->
   <style>
+    /* Под тарифами: три действия — счёт для организации, продление, смена тарифа */
+    .pay-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;max-width:1080px;margin:40px auto 0;text-align:left;}
+    .pay-action{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:10px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 24px 22px;transition:transform .2s,box-shadow .2s,border-color .2s;font-family:var(--font-sans);}
+    .pay-action:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:var(--accent-glow);}
+    .pay-action:focus-visible{outline:none;box-shadow:var(--accent-ring);border-color:var(--accent);}
+    .pa-icon{width:46px;height:46px;border-radius:12px;background:var(--accent-soft2);color:var(--accent);display:grid;place-items:center;}
+    .pa-icon svg{width:24px;height:24px;}
+    .pa-title{font-size:1.1rem;font-weight:700;color:var(--text);letter-spacing:-0.01em;}
+    .pa-text{font-size:.92rem;line-height:1.5;color:var(--text-muted);flex:1;}
+    .pa-cta{font-size:.92rem;font-weight:700;color:var(--accent);}
+    @media (max-width:860px){.pay-actions{grid-template-columns:minmax(0,1fr);gap:14px;}}
+    .em-invoice-link{margin:16px 0 0 !important;font-size:.88rem !important;color:var(--text-dim) !important;text-align:center;}
+    .em-invoice-link a{color:var(--accent);font-weight:600;}
     .profiles-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:stretch;max-width:940px;margin:0 auto;}
     .profile-card{position:relative;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px 28px;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s,border-color .2s;}
     .profile-card:hover{transform:translateY(-4px);box-shadow:var(--accent-glow);border-color:var(--border-hi);}
@@ -751,11 +764,26 @@
 
     </div>
 
-    <div class="pricing-upgrade">
-      <button onclick="renewOpenModal()">↻ Продлить лицензию (без нового кода)</button>
-      <p>Тот же тариф на месяц, 3 месяца, полгода или год — к текущему сроку, код активации остаётся прежним</p>
-      <button onclick="upgradeOpenModal()" style="margin-top:18px;">↗ Сменить тариф (уже есть код активации)</button>
-      <p>Перейти на более высокий тариф с учётом уже оплаченной суммы</p>
+    <!-- Под тарифами: счёт для организации, продление, смена тарифа -->
+    <div class="pay-actions">
+      <a class="pay-action" href="invoice.html">
+        <span class="pa-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span>
+        <span class="pa-title">Счёт для организации</span>
+        <span class="pa-text">Оплата по безналичному расчёту для организаций и ИП. Заполните реквизиты — счёт пришлём на почту.</span>
+        <span class="pa-cta">Запросить счёт →</span>
+      </a>
+      <button type="button" class="pay-action" onclick="renewOpenModal()">
+        <span class="pa-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 4v5h-5"/></svg></span>
+        <span class="pa-title">Продлить лицензию</span>
+        <span class="pa-text">Тот же тариф на месяц, 3 месяца, полгода или год — к текущему сроку. Код активации остаётся прежним.</span>
+        <span class="pa-cta">Продлить →</span>
+      </button>
+      <button type="button" class="pay-action" onclick="upgradeOpenModal()">
+        <span class="pa-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></span>
+        <span class="pa-title">Сменить тариф</span>
+        <span class="pa-text">Переход на более высокий тариф с учётом уже оплаченной суммы. Нужен код активации.</span>
+        <span class="pa-cta">Сменить тариф →</span>
+      </button>
     </div>
 
     <p class="pricing-footer-note">
@@ -1287,6 +1315,7 @@
       <button class="em-proceed" id="pricing-proceed-btn" onclick="pricingProceed()" disabled>Перейти к оплате →</button>
       <button class="em-cancel" onclick="pricingCloseModal()">Отмена</button>
     </div>
+    <p class="em-invoice-link">Оплачиваете от организации или ИП по счёту? <a href="invoice.html">Запросить счёт →</a></p>
   </div>
 </div>
 
@@ -1443,6 +1472,7 @@
 <!-- ==========================================================================
      JS — pricing + upgrade + particles — all preserved functionally
      ========================================================================== -->
+<script src="pricing-data.js?v=20261107"></script>
 <script>
 /* ============================================================
    Mobile nav — гамбургер-меню
@@ -1504,19 +1534,7 @@
 /* ============================================================
    Pricing — unchanged from production landing
    ============================================================ */
-const PRICING_GAS = 'https://script.google.com/macros/s/AKfycbzXuSR6nMP7wDIW9tQthJyGBbF7B9BI4hId4z-Npo8PRkMcH_B798HBXOW0cNaWdjInWw/exec';
-// Регулярные цены (тарифы Аналитик / Разработчик / Архитектор / Архитектор Про).
-// Период-скидки: 3 мес −15%, 6 мес −20%, 1 год −25%.
-// «Навсегда» (LT) продаётся только для «Архитектор» и «Архитектор Про»; промокоды на LT не действуют.
-// Ключи AMOUNT_MAP на сервере (Code.gs) держать синхронно: PRO-1M/3M/6M/1Y, ARC-LT, PRO-LT.
-const PRICING_DATA = {
-  '1M': { ANL:1500,  DEV:3500,  ARC:4900,  PRO:7900,  disc:null },
-  '3M': { ANL:3800,  DEV:8900,  ARC:12500, PRO:20100, disc:'−15%', pm:{ANL:1267, DEV:2967, ARC:4167, PRO:6700}, label:'3 месяца' },
-  '6M': { ANL:7200,  DEV:16800, ARC:23500, PRO:37900, disc:'−20%', pm:{ANL:1200, DEV:2800, ARC:3917, PRO:6317}, label:'6 месяцев' },
-  '1Y': { ANL:13500, DEV:31500, ARC:44000, PRO:71000, disc:'−25%', pm:{ANL:1125, DEV:2625, ARC:3667, PRO:5917}, label:'1 год' },
-  'LT': { ARC:120000, PRO:180000, lifetime:true, label:'навсегда' }
-};
-const PRICING_TIERS = ['ANL','DEV','ARC','PRO'];
+// PRICING_GAS, PRICING_DATA, PRICING_TIERS — в pricing-data.js (общий прайс сайта).
 let pricingPeriod = '1Y', pricingTier = '';
 
 function pricingFmt(n) { return n.toLocaleString('ru-RU'); }
