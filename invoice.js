@@ -255,7 +255,7 @@
     var v = $('inn').value.replace(/\D/g, ''); $('inn').value = v;
     $('inn-found').hidden = true; $('kpp-row').hidden = true; ruFound = null; ruState = 'idle'; ruNameRow(false);
     if (!innOk(v)) {
-      $('inn-err').textContent = v ? 'ИНН не сходится по контрольной сумме — проверьте цифры.' : 'Укажите ИНН — без него счёт не выставить.';
+      $('inn-err').textContent = v ? 'В ИНН ошибка — проверьте цифры.' : 'Укажите ИНН — без него счёт не выставить.';
       $('inn-err').hidden = false; return;
     }
     $('inn-err').hidden = true; $('inn').classList.remove('bad');
@@ -366,7 +366,7 @@
       var v = $('inn').value.replace(/\D/g, '');
       if (!innOk(v)) {
         $('inn').classList.add('bad');
-        $('inn-err').textContent = v ? 'ИНН не сходится по контрольной сумме — проверьте цифры.' : 'Укажите ИНН — без него счёт не выставить.';
+        $('inn-err').textContent = v ? 'В ИНН ошибка — проверьте цифры.' : 'Укажите ИНН — без него счёт не выставить.';
         $('inn-err').hidden = false; bad.push($('inn'));
       } else if (ruState === 'idle') {
         findInn();
