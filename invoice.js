@@ -5,7 +5,7 @@
    Server — из скрипта лицензий Data Pro (action=pricing). Поиск организации по ИНН / УНП /
    БИН и приём заявки — скрипт лицензий Server (company-lookup, invoice-request): суммы,
    скидка и подарок по акции там пересчитываются заново; страница показывает их заранее.
-   Акция — по времени заявки (promo-info): в дни акции +N мес. к годовым лицензиям Server,
+   Акция — по времени заявки (promo-info, через общий блок акции promo.js): в дни акции +N мес. к годовым лицензиям Server,
    до начала — честная строка «начнётся… сейчас не добавляется».
 
    Ссылка для клиентов: invoice.html; invoice.html?product=datapro — сразу строка Data Pro.
@@ -437,15 +437,31 @@
   fetch(DP_PRICING_URL).then(function (r) { return r.json(); })
     .then(function (d) { if (d && d.ok && d.tiers) { dp = d; dpState = 'ok'; } else dpState = 'fail'; render(); })
     .catch(function () { dpState = 'fail'; render(); });
-  var t0 = Date.now();
-  fetch(GAS + '?action=promo-info').then(function (r) { return r.json(); })
-    .then(function (d) {
-      if (d && d.success && typeof d.startMs === 'number' && d.tiers && d.months > 0) {
-        promo = d; skew = typeof d.now === 'number' ? d.now - t0 : 0; render();
-      }
-    })
-    .catch(function () { /* без акции */ });
 
   countryChanged();
   render();
+
+  /* Акция: данные берутся у общего блока акции сайта (promo.js — полоса, значок, карточка;
+     там же просмотр на своём компьютере ?promo-preview). Без него — свой запрос. */
+  function takePromo(d, sk) {
+    if (d && d.success && typeof d.startMs === 'number' && typeof d.endMs === 'number' && d.tiers && d.months > 0) {
+      promo = d; skew = sk || 0; render();
+    }
+  }
+  if (window.RsvPromo && RsvPromo.onInfo) {
+    RsvPromo.onInfo(takePromo);
+    /* «Выбрать →» в полосе акции: первая строка Server — на годовой срок, прокрутка к составу заявки. */
+    RsvPromo.setOfferHandler(function (period) {
+      var l = lines.filter(function (x) { return x.p === 'SRV'; })[0];
+      if (!l) { l = { p: 'SRV', t: 'ARC', per: period, q: 1 }; lines.unshift(l); }
+      if (periodsFor(l)[period]) l.per = period;
+      render();
+      $('s2').scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
+  } else {
+    var t0 = Date.now();
+    fetch(GAS + '?action=promo-info').then(function (r) { return r.json(); })
+      .then(function (d) { takePromo(d, typeof d.now === 'number' ? d.now - t0 : 0); })
+      .catch(function () { /* без акции */ });
+  }
 })();

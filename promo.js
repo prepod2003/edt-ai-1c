@@ -41,6 +41,8 @@
   var ui = null;       // элементы значка, карточки и полосы
   var autoTimer = null;
   var ticker = null;
+  var listeners = []; // страницы, которым нужны данные акции (счёт для организации)
+  var offerHandler = null; // своя реакция страницы на «Выбрать →»
 
   // ---------- мелочи ----------
   function sget(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
@@ -122,6 +124,8 @@
     if (m) parts.push(M);
     return parts.length ? parts.join(' ') : 'меньше минуты';
   }
+  /* Страница-форма (счёт для организации): карточка сама не раскрывается, кнопка ведёт к составу заявки. */
+  function formPage() { return document.body && document.body.getAttribute('data-promo-page') === 'form'; }
   function isPhone() { return window.matchMedia && window.matchMedia('(max-width: 760px)').matches; }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
 
@@ -135,6 +139,7 @@
     closeCard();
     var p = promoPeriods();
     var target = p.length ? p[p.length - 1] : '1Y';
+    if (offerHandler) { offerHandler(target); return; }
     var pricing = document.getElementById('pricing');
     if (pricing && switchPeriod(target)) {
       pricing.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
@@ -209,7 +214,7 @@
         '</ul>' +
         '<div class="rsvp-count">До ' + (soon ? 'начала' : 'конца') + ' акции осталось: <b class="rsvp-left"></b></div>' +
         '<button type="button" class="rsvp-btn rsvp-go">' +
-          (soon ? 'Посмотреть тарифы' : (yearly ? 'Выбрать годовой тариф' : 'Выбрать тариф')) + '</button>' +
+          (formPage() ? 'К составу заявки →' : soon ? 'Посмотреть тарифы' : (yearly ? 'Выбрать годовой тариф' : 'Выбрать тариф')) + '</button>' +
         '<button type="button" class="rsvp-hide">Скрыть значок</button>' +
       '</div>';
     ui.toast = el('button', 'rsvp-toast',
@@ -243,7 +248,8 @@
     // Первый заход за визит: на компьютере карточка раскрывается сама на несколько
     // секунд и не затемняет страницу; на телефоне вместо неё — короткая подсказка у
     // значка (карточка заняла бы полэкрана). Читать сайт ни то ни другое не мешает.
-    if (sget(SEEN_KEY + ph) !== '1') {
+    // На странице-форме — нет: там об акции говорит итог заявки.
+    if (!formPage() && sget(SEEN_KEY + ph) !== '1') {
       sset(SEEN_KEY + ph, '1');
       setTimeout(function () {
         if (!ui || !ui.card || document.querySelector('.email-modal-bg.active')) return;
@@ -431,7 +437,13 @@
     }
   }
 
-  window.RsvPromo = { refreshPricing: refreshPricing, refreshBuy: refreshBuy, refreshUpgrade: refreshUpgrade };
+  /* Данные акции для страницы: cb(info, skew) — сразу, если уже есть, иначе по приходу ответа скрипта. */
+  function onInfo(cb) { if (info) cb(info, skew); else listeners.push(cb); }
+  /* «Выбрать →» в полосе и карточке: страница без таблицы цен ведёт посетителя к своему выбору. */
+  function setOfferHandler(fn) { offerHandler = typeof fn === 'function' ? fn : null; }
+
+  window.RsvPromo = { refreshPricing: refreshPricing, refreshBuy: refreshBuy, refreshUpgrade: refreshUpgrade,
+    onInfo: onInfo, setOfferHandler: setOfferHandler };
 
   // ---------- запуск ----------
   function start(data, fetchedAt) {
@@ -439,6 +451,7 @@
         typeof data.startMs !== 'number' || typeof data.endMs !== 'number') return;
     info = data;
     skew = (typeof data.now === 'number') ? data.now - fetchedAt : 0;
+    listeners.splice(0).forEach(function (cb) { try { cb(info, skew); } catch (e) { /* страница сама разберётся */ } });
     if (now() >= info.endMs) return;
     build();
     refreshAll();
