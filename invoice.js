@@ -260,11 +260,11 @@
       $('inn-err').hidden = false; return;
     }
     $('inn-err').hidden = true; $('inn').classList.remove('bad');
-    // У ИП нет КПП, а адрес реестр не публикует (только город) — для счёта и акта спрашиваем его.
+    // У ИП нет КПП, а адрес реестр не публикует (только город) — адрес по желанию покупателя.
     var ip = v.length === 12;
     $('kpp-row').hidden = false; $('kpp-f').hidden = ip;
-    $('ru-addr-l').innerHTML = ip ? 'Адрес ИП <span class="req">*</span> <small>— для счёта и акта</small>' : 'Почтовый адрес <small>— если не юридический</small>';
-    $('ru-addr').placeholder = ip ? 'индекс, город, улица, дом, квартира' : 'необязательно';
+    $('ru-addr-l').innerHTML = ip ? 'Адрес ИП <small>— по желанию, если нужен в документах</small>' : 'Почтовый адрес <small>— если не юридический</small>';
+    $('ru-addr').placeholder = ip ? 'необязательно: индекс, город, улица, дом' : 'необязательно';
     var my = ++innSeq; ruState = 'pending';
     $('f-name').textContent = 'Ищем…'; $('f-meta').textContent = ''; $('f-note').textContent = '';
     $('inn-found').hidden = false; $('inn-found').classList.add('neutral'); $('inn-found').classList.remove('miss');
@@ -381,9 +381,6 @@
         $('send-err').textContent = 'Подождите секунду — проверяем ИНН по реестру.'; $('send-err').hidden = false;
         bad.push($('inn'));
       }
-      if (innOk(v) && v.length === 12) {
-        mark('ru-addr', $('ru-addr').value.trim() ? '' : 'Укажите адрес ИП — в реестре адрес предпринимателя не публикуется, а он нужен для счёта и акта.');
-      } else { $('ru-addr').classList.remove('bad'); document.querySelector('[data-err="ru-addr"]').hidden = true; }
       if (innOk(v) && ruState === 'none') {
         mark('ru-name', $('ru-name').value.trim() ? '' : 'Впишите название организации или ФИО предпринимателя — проверить ИНН по реестру не удалось.');
       }
