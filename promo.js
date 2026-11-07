@@ -198,11 +198,11 @@
           ' — <em>+' + esc(gift) + ' в подарок</em></div>' +
         '<ul class="rsvp-card-list">' +
           (yearly ? '<li><b class="rsvp-save">Экономия ' + savingPct() + '%:</b> ' + (12 + info.months) + ' месяцев по цене 12</li>' : '') +
-          '<li>при покупке, продлении и переходе ' + (yearly ? 'на годовой тариф' : 'на тариф со сроком из акции') +
-            (soon ? ' ' + esc(fromToText()) : '') + '</li>' +
+          '<li>При покупке, продлении и переходе ' + (yearly ? 'на годовой тариф' : 'на тариф со сроком из акции') +
+            (soon ? ' <b class="rsvp-save">' + esc(fromToText()) + '</b>' : '') + '</li>' +
           (soon
-            ? '<li>при оплате до ' + esc(lastMinuteBefore()) + ' подарок не добавляется</li>'
-            : '<li>подарок добавляется к сроку сам после оплаты</li>') +
+            ? '<li>При оплате до <b class="rsvp-save">' + esc(lastMinuteBefore()) + '</b> подарок не добавляется</li>'
+            : '<li>Подарок добавляется к сроку сам после оплаты</li>') +
         '</ul>' +
         '<div class="rsvp-count">До ' + (soon ? 'начала' : 'конца') + ' акции осталось <b class="rsvp-left"></b></div>' +
         '<button type="button" class="rsvp-btn rsvp-go">' +
