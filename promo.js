@@ -92,6 +92,14 @@
       : a.getUTCDate() + ' ' + MONTH_GEN[am] + ' – ' + b.getUTCDate() + ' ' + MONTH_GEN[bm];
   }
   function dayMonth(ms) { var d = new Date(ms + MSK); return d.getUTCDate() + ' ' + MONTH_GEN[d.getUTCMonth()]; }
+  function hhmm(ms) {
+    var d = new Date(ms + MSK), h = d.getUTCHours(), m = d.getUTCMinutes();
+    return (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+  }
+  /* «8 ноября 23:59» — последняя минута перед началом акции (МСК). */
+  function lastMinuteBefore() { return dayMonth(info.startMs - 60000) + ' ' + hhmm(info.startMs - 60000); }
+  /* «9 ноября в 00:00» — начало акции (МСК). */
+  function startAt() { return dayMonth(info.startMs) + ' в ' + hhmm(info.startMs); }
   /* «с 9 по 13 ноября» */
   function fromToText() {
     var a = new Date(info.startMs + MSK), b = new Date(info.endMs - 1 + MSK);
@@ -191,7 +199,7 @@
           '<li>при покупке, продлении и переходе ' + (yearly ? 'на годовой тариф' : 'на тариф со сроком из акции') +
             (soon ? ' ' + esc(fromToText()) : '') + '</li>' +
           (soon
-            ? '<li>до ' + esc(dayMonth(info.startMs)) + ' подарок не добавляется</li>'
+            ? '<li>при оплате до ' + esc(lastMinuteBefore()) + ' подарок не добавляется</li>'
             : '<li>подарок добавляется к сроку сам после оплаты</li>') +
         '</ul>' +
         '<div class="rsvp-count">До ' + (soon ? 'начала' : 'конца') + ' акции осталось <b class="rsvp-left"></b></div>' +
@@ -352,7 +360,7 @@
     if (ph === 'soon') {
       // До начала подарок не выдаётся — не обещаем, а честно говорим, когда он будет.
       box.className = 'rsvp-box rsvp-up';
-      box.innerHTML = '<b>' + esc(promoName()) + ' начнётся ' + esc(dayMonth(info.startMs)) + '.</b>' +
+      box.innerHTML = '<b>' + esc(promoName()) + ' начнётся ' + esc(startAt()) + ' по московскому времени.</b>' +
         '<span>' + (target === '1Y' ? 'Годовой тариф' : 'Тариф ' + PERIOD_ON[target]) + ', оплаченный ' + esc(fromToText()) +
         ', получит +' + esc(gift) + ' в подарок. При оплате сейчас подарок не добавляется.</span>';
       return;
@@ -407,7 +415,7 @@
       var period = upgradeState.tierCode.split('-')[1];
       if (ph === 'soon') {
         box.className = 'rsvp-box rsvp-up';
-        box.innerHTML = '<b>' + esc(promoName()) + ' начнётся ' + esc(dayMonth(info.startMs)) + '.</b>' +
+        box.innerHTML = '<b>' + esc(promoName()) + ' начнётся ' + esc(startAt()) + ' по московскому времени.</b>' +
           '<span>Переход ' + (PERIOD_ON[period] || '') + ', оплаченный ' + esc(fromToText()) + ', получит +' +
           esc(monthsWord(info.months)) + ' в подарок. При оплате сейчас подарок не добавляется.</span>';
       } else {
