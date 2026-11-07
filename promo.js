@@ -3,10 +3,14 @@
    с карточкой акции, метки и подсказки в ценах, блоки в окнах покупки,
    продления и смены тарифа.
 
-   Включается и выключается скриптом лицензий: запрос promo-info отвечает,
-   идёт ли акция, по тем же настройкам, по которым выдаётся подарок. Даты, число
-   месяцев, тарифы и надпись значка берутся оттуда — на странице их нет.
-   Нет ответа или акция не идёт — на странице ничего не появляется.
+   Включается и выключается скриптом лицензий: запрос promo-info отдаёт даты
+   акции и анонса, число месяцев, тарифы и надпись значка — по тем же настройкам,
+   по которым выдаётся подарок; на странице их нет. Два состояния:
+     «скоро» — анонс до начала: значок, полоса и карточка со счётчиком «до начала»;
+               подарок нигде не обещается, в окнах — «сейчас подарок не добавляется»;
+     «идёт»  — счётчик «до конца», метки и подсказки в ценах и окнах.
+   Смена состояний — сама, по часам (с поправкой на время сервера).
+   Нет ответа, анонс выключен или акция кончилась — на странице ничего нет.
 
    Страница с ценами вызывает RsvPromo.refreshPricing / refreshBuy /
    refreshUpgrade; до ответа скрипта они ничего не делают.
@@ -18,9 +22,9 @@
     : 'https://script.google.com/macros/s/AKfycbzXuSR6nMP7wDIW9tQthJyGBbF7B9BI4hId4z-Npo8PRkMcH_B798HBXOW0cNaWdjInWw/exec';
   var CACHE_KEY = 'rsvPromoInfo';
   var CACHE_TTL = 10 * 60 * 1000;
-  var SEEN_KEY = 'rsvPromoSeen';        // карточка уже раскрывалась сама в этом визите
+  var SEEN_KEY = 'rsvPromoSeen-';       // + состояние: карточка уже раскрывалась сама в этом визите
   var HIDE_KEY = 'rsvPromoBadgeHidden'; // посетитель скрыл значок
-  var STRIP_KEY = 'rsvPromoStripClosed';
+  var STRIP_KEY = 'rsvPromoStripClosed-'; // + состояние: начало акции снова показывает полосу
   var MSK = 3 * 60 * 60 * 1000;
   var PERIOD_MONTHS = { '1M': 1, '3M': 3, '6M': 6, '1Y': 12 };
   var PERIOD_NAMES = { '1M': '1 месяц', '3M': '3 месяца', '6M': '6 месяцев', '1Y': '1 год' };
@@ -51,7 +55,15 @@
     return n + ' ' + many;
   }
   function monthsWord(n) { return plural(n, 'месяц', 'месяца', 'месяцев'); }
-  function active() { return !!(info && info.active && now() >= info.startMs && now() < info.endMs); }
+  /* 'on' — акция идёт; 'soon' — анонс до начала; '' — ничего не показывать. */
+  function phase() {
+    if (!info) return '';
+    var t = now();
+    if (t >= info.startMs && t < info.endMs) return 'on';
+    if (typeof info.announceMs === 'number' && t >= info.announceMs && t < info.startMs) return 'soon';
+    return '';
+  }
+  function active() { return phase() === 'on'; }
   function badgeText() { return info.badge || ('+' + info.months + ' мес.'); }
   function promoName() { return info.badge ? 'Акция ' + info.badge : 'Акция'; }
   function hasPromo(tier, period) { return !!info && info.tiers.indexOf(tier + '-' + period) !== -1; }
@@ -79,9 +91,18 @@
       ? a.getUTCDate() + '–' + b.getUTCDate() + ' ' + MONTH_GEN[bm]
       : a.getUTCDate() + ' ' + MONTH_GEN[am] + ' – ' + b.getUTCDate() + ' ' + MONTH_GEN[bm];
   }
-  /* «4 дня 11 часов»; в последние сутки — «11 часов 59 минут»; в последний час — минуты. */
+  function dayMonth(ms) { var d = new Date(ms + MSK); return d.getUTCDate() + ' ' + MONTH_GEN[d.getUTCMonth()]; }
+  /* «с 9 по 13 ноября» */
+  function fromToText() {
+    var a = new Date(info.startMs + MSK), b = new Date(info.endMs - 1 + MSK);
+    return a.getUTCMonth() === b.getUTCMonth()
+      ? 'с ' + a.getUTCDate() + ' по ' + b.getUTCDate() + ' ' + MONTH_GEN[b.getUTCMonth()]
+      : 'с ' + dayMonth(info.startMs) + ' по ' + dayMonth(info.endMs - 1);
+  }
+  /* «4 дня 11 часов»; в последние сутки — «11 часов 59 минут»; в последний час — минуты.
+     До начала акции считается время до начала, во время акции — до конца. */
   function leftText() {
-    var ms = Math.max(0, info.endMs - now());
+    var ms = Math.max(0, (phase() === 'soon' ? info.startMs : info.endMs) - now());
     var d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
     var D = plural(d, 'день', 'дня', 'дней'), H = plural(h, 'час', 'часа', 'часов'), M = plural(m, 'минута', 'минуты', 'минут');
     if (d) return h ? D + ' ' + H : D;
@@ -112,24 +133,32 @@
   // ---------- полоса, значок, карточка ----------
   function build() {
     if (ui) return;
-    ui = {};
+    var ph = phase();
+    if (!ph) return;
+    var soon = ph === 'soon';
+    ui = { phase: ph };
     var what = offerWhat();
     var gift = monthsWord(info.months);
 
-    if (sget(STRIP_KEY) !== '1') {
+    if (sget(STRIP_KEY + ph) !== '1') {
       ui.strip = el('div', 'rsvp-strip');
       ui.strip.setAttribute('role', 'region');
       ui.strip.setAttribute('aria-label', promoName());
       ui.strip.innerHTML =
         '<div class="rsvp-strip-in"><b class="rsvp-mono">' + esc(badgeText()) + '</b>' +
-        '<span>' + esc(what) + ' — +' + esc(gift) + ' в подарок</span>' +
-        '<span class="rsvp-strip-dates">· ' + esc(datesText()) + '</span>' +
-        '<button type="button" class="rsvp-strip-go">Выбрать →</button></div>' +
-        '<button type="button" class="rsvp-strip-x" aria-label="Закрыть полосу акции">×</button>';
+        (soon
+          ? '<span>Скоро акция: ' + esc(fromToText()) + ' ' + esc(what.toLowerCase()) + ' — +' + esc(gift) + ' в подарок</span>' +
+            '<button type="button" class="rsvp-strip-go">Подробнее →</button>'
+          : '<span>' + esc(what) + ' — +' + esc(gift) + ' в подарок</span>' +
+            '<span class="rsvp-strip-dates">· ' + esc(datesText()) + '</span>' +
+            '<button type="button" class="rsvp-strip-go">Выбрать →</button>') +
+        '</div><button type="button" class="rsvp-strip-x" aria-label="Закрыть полосу акции">×</button>';
       document.body.insertBefore(ui.strip, document.body.firstChild);
-      ui.strip.querySelector('.rsvp-strip-go').addEventListener('click', goToOffer);
+      ui.strip.querySelector('.rsvp-strip-go').addEventListener('click', function () {
+        if (soon && ui && ui.card) openCard(true); else goToOffer();
+      });
       ui.strip.querySelector('.rsvp-strip-x').addEventListener('click', function () {
-        sset(STRIP_KEY, '1'); ui.strip.remove(); ui.strip = null;
+        sset(STRIP_KEY + ph, '1'); ui.strip.remove(); ui.strip = null;
       });
     }
 
@@ -138,11 +167,13 @@
     var yearly = promoPeriods().length === 1 && promoPeriods()[0] === '1Y';
     ui.shade = el('div', 'rsvp-shade');
     ui.badge = el('button', 'rsvp-badge',
-      GIFT_SVG + '<span class="rsvp-badge-num">' + esc(badgeText()) + '</span><span class="rsvp-badge-lbl">акция</span>');
+      GIFT_SVG + '<span class="rsvp-badge-num">' + esc(badgeText()) + '</span><span class="rsvp-badge-lbl">' +
+      (soon ? 'скоро' : 'акция') + '</span>');
     ui.badge.type = 'button';
     ui.badge.setAttribute('aria-expanded', 'false');
     ui.badge.setAttribute('aria-controls', 'rsvp-card');
-    ui.badge.setAttribute('aria-label', promoName() + ': ' + what.toLowerCase() + ' — плюс ' + gift + ' в подарок');
+    ui.badge.setAttribute('aria-label', promoName() + (soon ? ', ' + fromToText() : '') + ': ' + what.toLowerCase() +
+      ' — плюс ' + gift + ' в подарок');
     ui.card = el('div', 'rsvp-card');
     ui.card.id = 'rsvp-card';
     ui.card.setAttribute('role', 'dialog');
@@ -153,18 +184,24 @@
         '<span class="rsvp-card-dates">' + esc(datesText()) + ' · по московскому времени</span>' +
         '<button type="button" class="rsvp-card-close" aria-label="Свернуть">×</button></div>' +
       '<div class="rsvp-card-body">' +
-        '<div class="rsvp-card-head">' + esc(what) + ' — <em>+' + esc(gift) + ' в подарок</em></div>' +
+        '<div class="rsvp-card-head">' + (soon ? 'Скоро: ' + esc(what.toLowerCase()) : esc(what)) +
+          ' — <em>+' + esc(gift) + ' в подарок</em></div>' +
         '<ul class="rsvp-card-list">' +
           (yearly ? '<li>' + (12 + info.months) + ' месяцев по цене 12</li>' : '') +
-          '<li>при покупке, продлении и переходе ' + (yearly ? 'на годовой тариф' : 'на тариф со сроком из акции') + '</li>' +
-          '<li>подарок добавляется к сроку сам после оплаты</li>' +
+          '<li>при покупке, продлении и переходе ' + (yearly ? 'на годовой тариф' : 'на тариф со сроком из акции') +
+            (soon ? ' ' + esc(fromToText()) : '') + '</li>' +
+          (soon
+            ? '<li>до ' + esc(dayMonth(info.startMs)) + ' подарок не добавляется</li>'
+            : '<li>подарок добавляется к сроку сам после оплаты</li>') +
         '</ul>' +
-        '<div class="rsvp-count">До конца акции осталось <b class="rsvp-left"></b></div>' +
-        '<button type="button" class="rsvp-btn rsvp-go">' + (yearly ? 'Выбрать годовой тариф' : 'Выбрать тариф') + '</button>' +
+        '<div class="rsvp-count">До ' + (soon ? 'начала' : 'конца') + ' акции осталось <b class="rsvp-left"></b></div>' +
+        '<button type="button" class="rsvp-btn rsvp-go">' +
+          (soon ? 'Посмотреть тарифы' : (yearly ? 'Выбрать годовой тариф' : 'Выбрать тариф')) + '</button>' +
         '<button type="button" class="rsvp-hide">Скрыть значок</button>' +
       '</div>';
     ui.toast = el('button', 'rsvp-toast',
-      '<b>' + esc(badgeText()) + '</b> ' + esc(what) + ' — +' + esc(gift) + ' в подарок');
+      '<b>' + esc(badgeText()) + '</b> ' + (soon ? 'Скоро: ' + esc(what.toLowerCase()) : esc(what)) +
+      ' — +' + esc(gift) + ' в подарок' + (soon ? ', ' + esc(fromToText()) : ''));
     ui.toast.type = 'button';
     document.body.appendChild(ui.shade);
     document.body.appendChild(ui.card);
@@ -193,8 +230,8 @@
     // Первый заход за визит: на компьютере карточка раскрывается сама на несколько
     // секунд и не затемняет страницу; на телефоне вместо неё — короткая подсказка у
     // значка (карточка заняла бы полэкрана). Читать сайт ни то ни другое не мешает.
-    if (sget(SEEN_KEY) !== '1') {
-      sset(SEEN_KEY, '1');
+    if (sget(SEEN_KEY + ph) !== '1') {
+      sset(SEEN_KEY + ph, '1');
       setTimeout(function () {
         if (!ui || !ui.card || document.querySelector('.email-modal-bg.active')) return;
         if (isPhone()) ui.toast.classList.add('rsvp-open'); else openCard(false);
@@ -220,18 +257,18 @@
     ui.badge.setAttribute('aria-expanded', 'false');
   }
 
-  function teardown() {
-    if (ticker) { clearInterval(ticker); ticker = null; }
+  function removeUi() {
+    if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
     if (ui) ['strip', 'badge', 'card', 'shade', 'toast'].forEach(function (k) { if (ui[k]) ui[k].remove(); });
     ui = null;
-    refreshPricing(); refreshBuy(); refreshUpgrade();
   }
+  function refreshAll() { refreshPricing(); refreshBuy(); refreshUpgrade(); }
 
   // ---------- раздел «Цены» ----------
   function refreshPricing() {
     var sw = document.querySelector('#pricing .period-switcher');
     if (!sw) return;
-    var on = active();
+    var on = active(), soon = phase() === 'soon';
     sw.querySelectorAll('.period-btn').forEach(function (b) {
       var chip = b.querySelector('.rsvp-chip');
       var want = on && anyHasPeriod(b.getAttribute('data-period'));
@@ -242,7 +279,7 @@
     var period = (typeof pricingPeriod !== 'undefined') ? pricingPeriod : '';
     var hint = document.getElementById('rsvp-period-hint');
     var offerPeriod = promoPeriods().slice(-1)[0];
-    var showHint = on && offerPeriod && period && period !== 'LT' && !anyHasPeriod(period);
+    var showHint = (on && offerPeriod && period && period !== 'LT' && !anyHasPeriod(period)) || (soon && !!offerPeriod);
     if (showHint && !hint) {
       hint = el('div', 'rsvp-hint');
       hint.id = 'rsvp-period-hint';
@@ -251,7 +288,13 @@
     }
     if (hint) {
       hint.hidden = !showHint;
-      if (showHint) {
+      if (showHint && soon) {
+        hint.innerHTML = '<span class="rsvp-hint-mark rsvp-mono">' + esc(badgeText()) + '</span>' +
+          '<span>Скоро ' + esc(promoName().toLowerCase()) + ': ' + esc(fromToText()) + ' ' + esc(offerWhat().toLowerCase()) +
+          ' — <b>+' + esc(monthsWord(info.months)) + ' в подарок</b>' +
+          (offerPeriod === '1Y' ? ', ' + (12 + info.months) + ' месяцев по цене 12' : '') + '.</span>' +
+          '<span>До начала — ' + esc(leftText()) + '.</span>';
+      } else if (showHint) {
         hint.innerHTML = '<span class="rsvp-hint-mark rsvp-mono">' + esc(badgeText()) + '</span>' +
           '<span>' + esc(promoName()) + ': ' + PERIOD_ON[offerPeriod] + ' — <b>+' + esc(monthsWord(info.months)) + ' в подарок</b>' +
           (offerPeriod === '1Y' ? ', ' + (12 + info.months) + ' месяцев по цене 12' : '') + '.</span>' +
@@ -290,7 +333,8 @@
     var tier = (typeof pricingTier !== 'undefined') ? pricingTier : '';
     var period = (typeof pricingPeriod !== 'undefined') ? pricingPeriod : '';
     var data = (typeof PRICING_DATA !== 'undefined') ? PRICING_DATA : null;
-    var show = active() && tier && data && period && period !== 'LT' && data[period] && data[period][tier] != null;
+    var ph = phase();
+    var show = !!ph && tier && data && period && period !== 'LT' && data[period] && data[period][tier] != null;
     var target = show ? (hasPromo(tier, period) ? period : bestPeriod(tier)) : '';
     if (!target) show = false;
     if (show && !box) {
@@ -305,6 +349,14 @@
 
     var promoUsed = (typeof validPromoCode !== 'undefined') && !!validPromoCode;
     var gift = monthsWord(info.months);
+    if (ph === 'soon') {
+      // До начала подарок не выдаётся — не обещаем, а честно говорим, когда он будет.
+      box.className = 'rsvp-box rsvp-up';
+      box.innerHTML = '<b>' + esc(promoName()) + ' начнётся ' + esc(dayMonth(info.startMs)) + '.</b>' +
+        '<span>' + (target === '1Y' ? 'Годовой тариф' : 'Тариф ' + PERIOD_ON[target]) + ', оплаченный ' + esc(fromToText()) +
+        ', получит +' + esc(gift) + ' в подарок. При оплате сейчас подарок не добавляется.</span>';
+      return;
+    }
     if (target === period) {
       if (promoUsed && !info.withPromocode) {
         box.className = 'rsvp-box rsvp-warn';
@@ -341,7 +393,8 @@
   function refreshUpgrade(newTierCode, anchor) {
     if (newTierCode !== undefined) upgradeState = { tierCode: String(newTierCode || '').toUpperCase(), anchor: anchor || null };
     var box = document.getElementById('rsvp-upg');
-    var show = active() && upgradeState.tierCode && info.tiers.indexOf(upgradeState.tierCode) !== -1 && upgradeState.anchor;
+    var ph = phase();
+    var show = !!ph && upgradeState.tierCode && info.tiers.indexOf(upgradeState.tierCode) !== -1 && upgradeState.anchor;
     if (show && !box) {
       box = el('div', 'rsvp-box rsvp-ok');
       box.id = 'rsvp-upg';
@@ -352,8 +405,16 @@
     box.hidden = !show;
     if (show) {
       var period = upgradeState.tierCode.split('-')[1];
-      box.innerHTML = '<b>' + esc(promoName()) + ': переход ' + (PERIOD_ON[period] || '') + ' — +' + esc(monthsWord(info.months)) + ' в подарок.</b>' +
-        '<span>Подарок добавится к новому сроку после оплаты — один раз на лицензию за время акции.</span>';
+      if (ph === 'soon') {
+        box.className = 'rsvp-box rsvp-up';
+        box.innerHTML = '<b>' + esc(promoName()) + ' начнётся ' + esc(dayMonth(info.startMs)) + '.</b>' +
+          '<span>Переход ' + (PERIOD_ON[period] || '') + ', оплаченный ' + esc(fromToText()) + ', получит +' +
+          esc(monthsWord(info.months)) + ' в подарок. При оплате сейчас подарок не добавляется.</span>';
+      } else {
+        box.className = 'rsvp-box rsvp-ok';
+        box.innerHTML = '<b>' + esc(promoName()) + ': переход ' + (PERIOD_ON[period] || '') + ' — +' + esc(monthsWord(info.months)) + ' в подарок.</b>' +
+          '<span>Подарок добавится к новому сроку после оплаты — один раз на лицензию за время акции.</span>';
+      }
     }
   }
 
@@ -361,17 +422,20 @@
 
   // ---------- запуск ----------
   function start(data, fetchedAt) {
-    if (!data || !data.success || !data.active || !data.tiers || !data.tiers.length || !(data.months > 0)) return;
+    if (!data || !data.success || !data.tiers || !data.tiers.length || !(data.months > 0) ||
+        typeof data.startMs !== 'number' || typeof data.endMs !== 'number') return;
     info = data;
     skew = (typeof data.now === 'number') ? data.now - fetchedAt : 0;
-    if (!active()) return;
+    if (now() >= info.endMs) return;
     build();
-    refreshPricing();
-    refreshBuy();
-    refreshUpgrade();
+    refreshAll();
+    // Раз в 30 секунд: счётчик, а на границе — смена «скоро» → «идёт» → ничего.
     ticker = setInterval(function () {
-      if (!active()) { teardown(); return; }
+      var ph = phase();
+      if ((ui ? ui.phase : '') !== ph) { removeUi(); build(); refreshAll(); }
+      else if (ph === 'soon') refreshPricing();
       if (ui && ui.card) ui.card.querySelector('.rsvp-left').textContent = leftText();
+      if (now() >= info.endMs) { clearInterval(ticker); ticker = null; }
     }, 30000);
   }
 
@@ -381,8 +445,12 @@
   // на 9 ноября 12:00 МСК — как будто акция уже идёт. На опубликованном сайте
   // этого режима нет: там всё берётся у скрипта.
   var local = location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-  if (local && /[?&]promo-preview\b/.test(location.search)) {
-    start({ success: true, active: true, now: Date.UTC(2026, 10, 9, 9),
+  // ?promo-preview=soon — анонс: часы на 7 ноября 12:00 МСК, до начала 1 день 12 часов.
+  var pv = /[?&]promo-preview(=([a-z]+))?\b/.exec(location.search);
+  if (local && pv) {
+    start({ success: true, active: pv[2] !== 'soon',
+      now: pv[2] === 'soon' ? Date.UTC(2026, 10, 7, 9) : Date.UTC(2026, 10, 9, 9),
+      announceMs: Date.UTC(2026, 10, 1, 21),
       startMs: Date.UTC(2026, 10, 8, 21), endMs: Date.UTC(2026, 10, 13, 21),
       months: 3, tiers: ['ANL-1Y', 'DEV-1Y', 'ARC-1Y', 'PRO-1Y'], withPromocode: true, badge: '11.11' }, Date.now());
     return;
