@@ -109,15 +109,18 @@
       ? 'с ' + a.getUTCDate() + ' по ' + b.getUTCDate() + ' ' + MONTH_GEN[b.getUTCMonth()]
       : 'с ' + dayMonth(info.startMs) + ' по ' + dayMonth(info.endMs - 1);
   }
-  /* «4 дня 11 часов»; в последние сутки — «11 часов 59 минут»; в последний час — минуты.
+  /* «1 день 10 часов 40 минут»; нулевые части опускаются.
      До начала акции считается время до начала, во время акции — до конца. */
   function leftText() {
     var ms = Math.max(0, (phase() === 'soon' ? info.startMs : info.endMs) - now());
     var d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
     var D = plural(d, 'день', 'дня', 'дней'), H = plural(h, 'час', 'часа', 'часов'), M = plural(m, 'минута', 'минуты', 'минут');
-    if (d) return h ? D + ' ' + H : D;
-    if (h) return m ? H + ' ' + M : H;
-    return M;
+    // Дни, часы и минуты; нулевые части не пишутся («1 день 5 минут»).
+    var parts = [];
+    if (d) parts.push(D);
+    if (h) parts.push(H);
+    if (m) parts.push(M);
+    return parts.length ? parts.join(' ') : 'меньше минуты';
   }
   function isPhone() { return window.matchMedia && window.matchMedia('(max-width: 760px)').matches; }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
