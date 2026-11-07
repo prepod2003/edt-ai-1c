@@ -204,7 +204,7 @@
             ? '<li>При оплате <b class="rsvp-save">до ' + esc(lastMinuteBefore()) + '</b> подарок не добавляется</li>'
             : '<li>Подарок добавляется к сроку сам после оплаты</li>') +
         '</ul>' +
-        '<div class="rsvp-count">До ' + (soon ? 'начала' : 'конца') + ' акции осталось <b class="rsvp-left"></b></div>' +
+        '<div class="rsvp-count">До ' + (soon ? 'начала' : 'конца') + ' акции осталось: <b class="rsvp-left"></b></div>' +
         '<button type="button" class="rsvp-btn rsvp-go">' +
           (soon ? 'Посмотреть тарифы' : (yearly ? 'Выбрать годовой тариф' : 'Выбрать тариф')) + '</button>' +
         '<button type="button" class="rsvp-hide">Скрыть значок</button>' +

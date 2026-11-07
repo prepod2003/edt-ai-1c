@@ -123,8 +123,8 @@
 .rsvp-card-head em { font-style: normal; color: var(--rsvp-accent); }
 .rsvp-card-list { margin: 0; padding-left: 18px; display: grid; gap: 3px; color: var(--rsvp-muted); font-size: 13.5px; }
 .rsvp-card-list .rsvp-save { color: var(--rsvp-text); font-weight: 800; }
-.rsvp-count { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; color: var(--rsvp-dim); font-size: 12.5px; }
-.rsvp-count b { color: var(--rsvp-text); font-size: 14px; font-variant-numeric: tabular-nums; }
+.rsvp-count { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: baseline; color: var(--rsvp-muted); font-size: 14.5px; }
+.rsvp-count b { color: var(--rsvp-text); font-size: 15.5px; font-variant-numeric: tabular-nums; }
 .rsvp-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   border: 0; border-radius: 10px; padding: 12px 16px;
