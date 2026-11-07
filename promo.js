@@ -281,7 +281,7 @@
     if (ui) ['strip', 'badge', 'card', 'shade', 'toast'].forEach(function (k) { if (ui[k]) ui[k].remove(); });
     ui = null;
   }
-  function refreshAll() { refreshPricing(); refreshBuy(); refreshUpgrade(); }
+  function refreshAll() { refreshPricing(); refreshBuy(); refreshUpgrade(); refreshRenew(renewPeriod); }
 
   // ---------- раздел «Цены» ----------
   function refreshPricing() {
@@ -407,6 +407,42 @@
     });
   }
 
+  // ---------- окно продления ----------
+  // В дни акции подарок показывает сам расчёт продления (скрипт знает, получала ли лицензия
+  // подарок этой акции): метка срока и строка «+N мес. уже учтены в сроке». Здесь — что
+  // скрипт сказать не может: анонс до начала и короткая строка на шаге ввода кода.
+  var renewPeriod = '';
+  function refreshRenew(period) {
+    renewPeriod = period || '';
+    var ph = phase();
+    var target = ph ? (promoPeriods().slice(-1)[0] || '1Y') : '';
+    var gift = ph ? monthsWord(info.months) : '';
+    var what = target === '1Y' ? 'Продление на год' : 'Продление ' + PERIOD_ON[target];
+    var intro = document.getElementById('rnw-step-input');
+    if (intro) {
+      var ib = document.getElementById('rsvp-renew-intro');
+      if (ph && !ib) { ib = el('div', 'rsvp-box rsvp-up'); ib.id = 'rsvp-renew-intro'; intro.insertBefore(ib, intro.firstChild); }
+      if (ib) {
+        ib.hidden = !ph;
+        if (ph) ib.innerHTML = ph === 'soon'
+          ? '<b>' + esc(promoName()) + ' начнётся ' + esc(startAt()) + ' по московскому времени.</b><span>' + what + ', оплаченное ' +
+            esc(fromToText()) + ', получит +' + esc(gift) + ' в подарок.</span>'
+          : '<b>' + esc(promoName()) + ': ' + what.toLowerCase() + ' — +' + esc(gift) + ' в подарок.</b><span>Один раз на лицензию за время акции.</span>';
+      }
+    }
+    var anchor = document.getElementById('rnw-periods');
+    if (!anchor) return;
+    var box = document.getElementById('rsvp-renew');
+    var show = ph === 'soon' && !!renewPeriod;
+    if (show && !box) { box = el('div', 'rsvp-box rsvp-up'); box.id = 'rsvp-renew'; anchor.parentNode.insertBefore(box, anchor.nextSibling); }
+    if (!box) return;
+    box.hidden = !show;
+    if (!show) return;
+    box.innerHTML = '<b>' + esc(promoName()) + ' начнётся ' + esc(startAt()) + ' по московскому времени.</b><span>' + what + ', оплаченное ' +
+      esc(fromToText()) + ', получит +' + esc(gift) + ' в подарок.' + (renewPeriod === target ? '' : ' Сейчас выбран другой срок.') +
+      ' При оплате сейчас подарок не добавляется.</span>';
+  }
+
   // ---------- окно смены тарифа ----------
   var upgradeState = { tierCode: '', anchor: null };
   function refreshUpgrade(newTierCode, anchor) {
@@ -443,7 +479,7 @@
   function setOfferHandler(fn) { offerHandler = typeof fn === 'function' ? fn : null; }
 
   window.RsvPromo = { refreshPricing: refreshPricing, refreshBuy: refreshBuy, refreshUpgrade: refreshUpgrade,
-    onInfo: onInfo, setOfferHandler: setOfferHandler };
+    refreshRenew: refreshRenew, onInfo: onInfo, setOfferHandler: setOfferHandler };
 
   // ---------- запуск ----------
   function start(data, fetchedAt) {

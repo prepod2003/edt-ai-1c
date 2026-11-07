@@ -1888,6 +1888,7 @@ function renewOpenModal() {
   document.getElementById('rnw-privacy-check').checked = false;
   document.getElementById('renew-modal-bg').classList.add('active');
   renewQuoteData = null;
+  if (window.RsvPromo && RsvPromo.refreshRenew) RsvPromo.refreshRenew('');
 }
 
 function renewCloseModal() {
@@ -2004,6 +2005,7 @@ function renewSelectPeriod(period) {
   document.getElementById('rnw-amount-label').textContent = 'К оплате — ' + o.periodName;
   document.getElementById('rnw-amount').textContent = pricingFmt(o.priceRub) + ' ₽';
   document.getElementById('rnw-pay-error').style.display = 'none';
+  if (window.RsvPromo && RsvPromo.refreshRenew) RsvPromo.refreshRenew(o.period);
 }
 
 function renewValidatePay() {
@@ -2079,6 +2081,6 @@ function closeAnnounce() {
 })();
 </script>
 
-<script src="promo.js?v=20261107" defer></script>
+<script src="promo.js?v=20261107b" defer></script>
 </body>
 </html>
