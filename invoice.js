@@ -232,7 +232,7 @@
     box.classList.toggle('miss', !r.found && r.reason === 'not-found');
     if (r.found) {
       nameEl.textContent = r.name;
-      metaEl.textContent = [r.kpp ? 'КПП ' + r.kpp : '', r.address, r.head, r.status].filter(Boolean).join(' · ');
+      metaEl.textContent = [r.ogrn ? (r.isIp ? 'ОГРНИП ' : 'ОГРН ') + r.ogrn : '', r.kpp ? 'КПП ' + r.kpp : '', r.address, r.head, r.status].filter(Boolean).join(' · ');
       noteEl.textContent = okNote;
     } else {
       var m = r.reason === 'not-found' ? miss.notFound : miss.unknown;
@@ -260,7 +260,11 @@
       $('inn-err').hidden = false; return;
     }
     $('inn-err').hidden = true; $('inn').classList.remove('bad');
-    $('kpp-row').hidden = v.length !== 10;
+    // У ИП нет КПП, а адрес реестр не публикует (только город) — для счёта и акта спрашиваем его.
+    var ip = v.length === 12;
+    $('kpp-row').hidden = false; $('kpp-f').hidden = ip;
+    $('ru-addr-l').innerHTML = ip ? 'Адрес ИП <span class="req">*</span> <small>— для счёта и акта</small>' : 'Почтовый адрес <small>— если не юридический</small>';
+    $('ru-addr').placeholder = ip ? 'индекс, город, улица, дом, квартира' : 'необязательно';
     var my = ++innSeq; ruState = 'pending';
     $('f-name').textContent = 'Ищем…'; $('f-meta').textContent = ''; $('f-note').textContent = '';
     $('inn-found').hidden = false; $('inn-found').classList.add('neutral'); $('inn-found').classList.remove('miss');
@@ -376,7 +380,11 @@
       } else if (ruState === 'pending') {
         $('send-err').textContent = 'Подождите секунду — проверяем ИНН по реестру.'; $('send-err').hidden = false;
         bad.push($('inn'));
-      } else if (ruState === 'none') {
+      }
+      if (innOk(v) && v.length === 12) {
+        mark('ru-addr', $('ru-addr').value.trim() ? '' : 'Укажите адрес ИП — в реестре адрес предпринимателя не публикуется, а он нужен для счёта и акта.');
+      } else { $('ru-addr').classList.remove('bad'); document.querySelector('[data-err="ru-addr"]').hidden = true; }
+      if (innOk(v) && ruState === 'none') {
         mark('ru-name', $('ru-name').value.trim() ? '' : 'Впишите название организации или ФИО предпринимателя — проверить ИНН по реестру не удалось.');
       }
     } else {
