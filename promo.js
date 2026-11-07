@@ -201,7 +201,7 @@
           '<li>При покупке, продлении и переходе ' + (yearly ? 'на годовой тариф' : 'на тариф со сроком из акции') +
             (soon ? ' <b class="rsvp-save">' + esc(fromToText()) + '</b>' : '') + '</li>' +
           (soon
-            ? '<li>При оплате до <b class="rsvp-save">' + esc(lastMinuteBefore()) + '</b> подарок не добавляется</li>'
+            ? '<li>При оплате <b class="rsvp-save">до ' + esc(lastMinuteBefore()) + '</b> подарок не добавляется</li>'
             : '<li>Подарок добавляется к сроку сам после оплаты</li>') +
         '</ul>' +
         '<div class="rsvp-count">До ' + (soon ? 'начала' : 'конца') + ' акции осталось <b class="rsvp-left"></b></div>' +
@@ -455,11 +455,11 @@
   // на 9 ноября 12:00 МСК — как будто акция уже идёт. На опубликованном сайте
   // этого режима нет: там всё берётся у скрипта.
   var local = location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-  // ?promo-preview=soon — анонс: часы на 7 ноября 12:00 МСК, до начала 1 день 12 часов.
+  // ?promo-preview=soon — анонс по настоящим часам (до начала акции).
   var pv = /[?&]promo-preview(=([a-z]+))?\b/.exec(location.search);
   if (local && pv) {
     start({ success: true, active: pv[2] !== 'soon',
-      now: pv[2] === 'soon' ? Date.UTC(2026, 10, 7, 9) : Date.UTC(2026, 10, 9, 9),
+      now: pv[2] === 'soon' ? Math.min(Date.now(), Date.UTC(2026, 10, 8, 21) - 60000) : Date.UTC(2026, 10, 9, 9),
       announceMs: Date.UTC(2026, 10, 1, 21),
       startMs: Date.UTC(2026, 10, 8, 21), endMs: Date.UTC(2026, 10, 13, 21),
       months: 3, tiers: ['ANL-1Y', 'DEV-1Y', 'ARC-1Y', 'PRO-1Y'], withPromocode: true, badge: '11.11' }, Date.now());
