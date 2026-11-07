@@ -1931,3 +1931,12 @@ footer {
   .announce-link { font-size: 0.82rem; }
   .announce-close { right: 8px; }
 }
+
+/* Сроки в окне продления — ровной сеткой 2×2: в строку четыре срока не помещаются
+   (тем более с меткой подарка у срока), а переносом расползаются в три ряда. */
+#rnw-periods {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+}
+#rnw-periods .period-btn { padding: 10px 8px; white-space: nowrap; }

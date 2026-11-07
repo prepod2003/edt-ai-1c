@@ -13,7 +13,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles-v2.css?v=20260823b">
+  <link rel="stylesheet" href="styles-v2.css?v=20261107">
+  <link rel="stylesheet" href="promo.css?v=20261107">
 
   <!-- Доп. стили маркетингового варианта: профильные карточки -->
   <style>
@@ -1579,6 +1580,7 @@ function pricingUpdate() {
     if (discVal) { disc.textContent = discVal; disc.classList.remove('pc-hidden'); }
     else         { disc.classList.add('pc-hidden'); }
   });
+  if (window.RsvPromo) RsvPromo.refreshPricing();
 }
 
 function pricingEmailValid(val) {
@@ -1593,6 +1595,7 @@ function pricingValidate() {
   var btn = document.getElementById('pricing-proceed-btn');
   var promoReady = !promoInput || validPromoCode || (!promoChecking && document.getElementById('pricing-promo-input').className === 'promo-invalid');
   btn.disabled = !(pricingEmailValid(email) && terms && privacy && promoReady && !promoChecking);
+  if (window.RsvPromo) RsvPromo.refreshBuy();
 }
 
 var promoTimer = null;
@@ -1621,6 +1624,7 @@ function pricingOpenModal(tier) {
   if (isLifetime) {
     pr.textContent = 'Для тарифа «навсегда» промокоды не действуют.';
   }
+  if (window.RsvPromo) RsvPromo.refreshBuy();
   setTimeout(function() { document.getElementById('pricing-email-input').focus(); }, 100);
 }
 
@@ -1816,7 +1820,7 @@ function upgradeRequestQuote() {
       document.getElementById('upg-new-full').textContent = pricingFmt(data.newFullPriceRub);
       // «Навсегда»: вместо технической даты через 100 лет показываем суть
       document.getElementById('upg-new-expires').textContent =
-        /-LT$/.test(newTier) ? 'бессрочно (навсегда)' : data.newExpiresAt;
+        /-LT$/.test(newTier) ? 'бессрочно (навсегда)' : renewDate(data.newExpiresAt);
       document.getElementById('upg-amount').textContent = pricingFmt(data.upgradeAmountRub) + ' ₽';
 
       document.getElementById('upg-terms-check').checked = false;
@@ -1825,6 +1829,7 @@ function upgradeRequestQuote() {
 
       document.getElementById('upg-step-input').style.display = 'none';
       document.getElementById('upg-step-quote').style.display = 'block';
+      if (window.RsvPromo) RsvPromo.refreshUpgrade(newTier, document.getElementById('upg-new-expires').parentNode.parentNode);
       document.getElementById('upg-pay-error').style.display = 'none';
     })
     .catch(function(err) {
@@ -1925,6 +1930,12 @@ function renewRequestQuote() {
         b.className = 'period-btn';
         b.setAttribute('data-period', o.period);
         b.textContent = o.periodName;
+        if (o.bonusMonths > 0) {
+          var chip = document.createElement('span');
+          chip.className = 'rsvp-chip';
+          chip.textContent = '+' + o.bonusMonths + ' мес.';
+          b.appendChild(chip);
+        }
         b.onclick = function() { renewSelectPeriod(o.period); };
         box.appendChild(b);
       });
@@ -2049,5 +2060,6 @@ function closeAnnounce() {
 })();
 </script>
 
+<script src="promo.js?v=20261107" defer></script>
 </body>
 </html>

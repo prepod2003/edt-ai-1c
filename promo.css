@@ -1,0 +1,225 @@
+/* ==========================================================================
+   Акция с бонусными месяцами: полоса над меню, значок у края экрана,
+   подсказки в ценах и в окнах покупки, продления и смены тарифа.
+   Показывается, только пока скрипт лицензий отвечает «акция идёт» (promo.js).
+   Цвета — свои, с запасными значениями: файл подключается и к страницам
+   без общего стиля сайта.
+   ========================================================================== */
+
+.rsvp-strip,
+.rsvp-badge,
+.rsvp-toast,
+.rsvp-card,
+.rsvp-chip,
+.rsvp-gift,
+.rsvp-hint,
+.rsvp-box {
+  --rsvp-accent: #7C3AED;
+  --rsvp-accent-hi: #6D28D9;
+  --rsvp-accent-soft: rgba(124, 58, 237, 0.08);
+  --rsvp-accent-line: rgba(124, 58, 237, 0.22);
+  --rsvp-text: #1A1A1A;
+  --rsvp-muted: #57534E;
+  --rsvp-dim: #8B8680;
+  --rsvp-surface: #FFFFFF;
+  --rsvp-border: #E7E2DA;
+  --rsvp-gift-bg: #FDE68A;
+  --rsvp-gift-fg: #713F12;
+  --rsvp-ok-bg: #ECFDF5;
+  --rsvp-ok-line: #A7F3D0;
+  --rsvp-ok-fg: #065F46;
+  --rsvp-warn-bg: #FFFBEB;
+  --rsvp-warn-line: #FCD34D;
+  --rsvp-warn-fg: #78350F;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-sizing: border-box;
+}
+.rsvp-strip *, .rsvp-badge *, .rsvp-card *, .rsvp-hint *, .rsvp-box * { box-sizing: border-box; }
+.rsvp-hint[hidden], .rsvp-gift[hidden], .rsvp-box[hidden] { display: none !important; }
+.rsvp-mono { font-family: 'JetBrains Mono', Menlo, Consolas, monospace; }
+
+/* ---------- полоса над меню ---------- */
+.rsvp-strip {
+  position: relative;
+  background: var(--rsvp-accent);
+  color: #FFFFFF;
+  font-size: 14px;
+  line-height: 1.35;
+  padding: 9px 48px 9px max(16px, env(safe-area-inset-left, 0px));
+}
+.rsvp-strip-in {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 4px 10px; text-align: center; max-width: 1100px; margin: 0 auto;
+}
+.rsvp-strip-in b { font-weight: 800; letter-spacing: 0.02em; }
+.rsvp-strip-go {
+  color: #FFFFFF; font-weight: 700; text-decoration: underline; text-underline-offset: 3px;
+  background: none; border: 0; padding: 0; font: inherit; font-weight: 700; cursor: pointer;
+}
+.rsvp-strip-go:hover { text-decoration-thickness: 2px; }
+.rsvp-strip-x {
+  position: absolute; top: 50%; right: max(6px, env(safe-area-inset-right, 0px)); transform: translateY(-50%);
+  width: 36px; height: 36px; border: 0; border-radius: 8px; background: transparent;
+  color: #FFFFFF; font-size: 20px; line-height: 1; cursor: pointer; opacity: 0.85;
+}
+.rsvp-strip-x:hover { opacity: 1; background: rgba(255, 255, 255, 0.14); }
+
+/* ---------- значок у правого края ---------- */
+.rsvp-badge {
+  position: fixed; z-index: 95;
+  right: 0; top: 50%; transform: translateY(-50%);
+  width: 66px; padding: 11px 0 10px;
+  display: grid; justify-items: center; gap: 3px;
+  border: 0; border-radius: 14px 0 0 14px; cursor: pointer;
+  background: var(--rsvp-accent); color: #FFFFFF; text-align: center;
+  box-shadow: 0 14px 30px -10px rgba(124, 58, 237, 0.6);
+  transition: background 0.2s ease;
+}
+.rsvp-badge:hover { background: var(--rsvp-accent-hi); }
+.rsvp-badge::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  animation: rsvp-ring 2.8s ease-out infinite;
+}
+@keyframes rsvp-ring {
+  0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.45); }
+  70%, 100% { box-shadow: 0 0 0 14px rgba(124, 58, 237, 0); }
+}
+.rsvp-badge svg { width: 22px; height: 22px; }
+.rsvp-badge-num { font-size: 17px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.rsvp-badge-lbl { font-size: 10px; font-weight: 600; line-height: 1; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.9; }
+
+/* ---------- карточка акции ---------- */
+.rsvp-shade {
+  position: fixed; inset: 0; z-index: 96;
+  background: rgba(26, 26, 26, 0.35);
+  opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+}
+.rsvp-card {
+  position: fixed; z-index: 97;
+  right: 78px; top: 50%; width: 320px;
+  transform: translate(10px, -50%);
+  background: var(--rsvp-surface); color: var(--rsvp-text);
+  border: 1px solid var(--rsvp-border); border-radius: 16px; overflow: hidden;
+  box-shadow: 0 30px 70px -24px rgba(40, 20, 80, 0.45);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+}
+.rsvp-card.rsvp-open {
+  opacity: 1; visibility: visible; pointer-events: auto; transform: translate(0, -50%);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+}
+.rsvp-card-top { position: relative; display: grid; gap: 4px; padding: 16px 52px 14px 18px; background: var(--rsvp-accent); color: #FFFFFF; }
+.rsvp-card-big { font-size: 40px; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+.rsvp-card-dates { font-size: 12px; line-height: 1.3; letter-spacing: 0.02em; opacity: 0.92; }
+.rsvp-card-close {
+  position: absolute; top: 10px; right: 10px; width: 32px; height: 32px;
+  border: 0; border-radius: 8px; background: rgba(255, 255, 255, 0.16);
+  color: #FFFFFF; font-size: 18px; line-height: 1; cursor: pointer;
+}
+.rsvp-card-close:hover { background: rgba(255, 255, 255, 0.26); }
+.rsvp-grip { display: none; }
+.rsvp-card-body { display: grid; gap: 10px; padding: 14px 18px 16px; }
+.rsvp-card-head { font-size: 17px; font-weight: 700; line-height: 1.3; }
+.rsvp-card-head em { font-style: normal; color: var(--rsvp-accent); }
+.rsvp-card-list { margin: 0; padding-left: 18px; display: grid; gap: 3px; color: var(--rsvp-muted); font-size: 13.5px; }
+.rsvp-count { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; color: var(--rsvp-dim); font-size: 12.5px; }
+.rsvp-count b { color: var(--rsvp-text); font-size: 14px; font-variant-numeric: tabular-nums; }
+.rsvp-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border: 0; border-radius: 10px; padding: 12px 16px;
+  background: var(--rsvp-accent); color: #FFFFFF;
+  font: inherit; font-size: 14px; font-weight: 700; line-height: 1.2; cursor: pointer; text-align: center;
+}
+.rsvp-btn:hover { background: var(--rsvp-accent-hi); }
+.rsvp-card .rsvp-btn { width: 100%; }
+.rsvp-hide {
+  justify-self: center; border: 0; background: none; padding: 2px 4px;
+  color: var(--rsvp-dim); font: inherit; font-size: 12.5px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+}
+.rsvp-hide:hover { color: var(--rsvp-muted); }
+
+/* ---------- подсказка у значка при первом заходе (телефон) ---------- */
+.rsvp-toast { display: none; }
+
+/* ---------- метки и подсказки в ценах ---------- */
+.rsvp-chip {
+  display: inline-block; margin-left: 6px; padding: 3px 6px; border-radius: 6px;
+  background: var(--rsvp-gift-bg); color: var(--rsvp-gift-fg);
+  font-size: 11px; font-weight: 800; line-height: 1.2; letter-spacing: 0.01em;
+  white-space: nowrap; vertical-align: 1px;
+}
+.rsvp-hint {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 12px;
+  max-width: 720px; margin: 14px auto 18px; padding: 10px 14px;
+  border: 1px solid var(--rsvp-accent-line); border-radius: 12px;
+  background: var(--rsvp-accent-soft); color: var(--rsvp-text);
+  font-size: 14px; line-height: 1.4; text-align: center;
+}
+.rsvp-hint-mark { padding: 4px 7px; border-radius: 6px; background: var(--rsvp-accent); color: #FFFFFF; font-size: 12px; font-weight: 800; }
+.rsvp-link {
+  border: 0; background: none; padding: 2px 0; cursor: pointer;
+  color: var(--rsvp-accent); font: inherit; font-weight: 700; white-space: nowrap;
+}
+.rsvp-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.rsvp-gift {
+  display: flex; align-items: flex-start; gap: 7px; margin: 10px 0 0; padding: 8px 10px;
+  border-radius: 10px; background: var(--rsvp-gift-bg); color: var(--rsvp-gift-fg);
+  font-size: 13px; font-weight: 500; line-height: 1.4; text-align: left;
+}
+.rsvp-gift b { font-weight: 800; }
+.rsvp-gift svg { flex: none; width: 16px; height: 16px; margin-top: 1px; }
+
+/* ---------- блоки в окнах покупки, продления, смены тарифа ---------- */
+.rsvp-box {
+  display: grid; gap: 8px; margin: 4px 0 16px; padding: 12px 14px;
+  border-radius: 12px; font-size: 14px; line-height: 1.45; text-align: left;
+}
+.rsvp-box.rsvp-up { border: 1px dashed var(--rsvp-accent); background: var(--rsvp-accent-soft); color: var(--rsvp-text); }
+.rsvp-box.rsvp-ok { border: 1px solid var(--rsvp-ok-line); background: var(--rsvp-ok-bg); color: var(--rsvp-ok-fg); }
+.rsvp-box.rsvp-warn { border: 1px solid var(--rsvp-warn-line); background: var(--rsvp-warn-bg); color: var(--rsvp-warn-fg); }
+.rsvp-box .rsvp-cmp { color: var(--rsvp-muted); font-variant-numeric: tabular-nums; }
+.rsvp-box .rsvp-cmp b { color: var(--rsvp-text); }
+.rsvp-box .rsvp-btn { justify-self: start; padding: 10px 14px; font-size: 13.5px; }
+
+/* ---------- телефон: значок в углу, карточка снизу ---------- */
+@media (max-width: 760px) {
+  .rsvp-strip { font-size: 13px; padding-top: 8px; padding-bottom: 8px; padding-right: 44px; }
+  .rsvp-strip-dates { display: none; }
+  .rsvp-badge {
+    top: auto; transform: none;
+    right: calc(14px + env(safe-area-inset-right, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    width: 60px; height: 60px; padding: 0; align-content: center;
+    border-radius: 16px;
+  }
+  .rsvp-badge svg { display: none; }
+  .rsvp-toast {
+    display: block; position: fixed; z-index: 95;
+    right: calc(86px + env(safe-area-inset-right, 0px));
+    bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+    max-width: calc(100% - 104px);
+    padding: 10px 12px; border: 1px solid var(--rsvp-border); border-radius: 14px;
+    background: var(--rsvp-surface); color: var(--rsvp-text);
+    font: inherit; font-size: 14px; line-height: 1.35; text-align: left; cursor: pointer;
+    box-shadow: 0 16px 40px -16px rgba(40, 20, 80, 0.45);
+    opacity: 0; transform: translateX(10px); pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .rsvp-toast b { color: var(--rsvp-accent); }
+  .rsvp-toast.rsvp-open { opacity: 1; transform: none; pointer-events: auto; }
+  .rsvp-card {
+    top: auto; right: calc(10px + env(safe-area-inset-right, 0px)); left: calc(10px + env(safe-area-inset-left, 0px));
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    width: auto; max-height: calc(100% - 40px); overflow-y: auto;
+    border-radius: 20px; transform: translateY(18px);
+  }
+  .rsvp-card.rsvp-open { transform: translateY(0); }
+  .rsvp-grip { display: block; width: 40px; height: 4px; margin: -6px auto 8px; border-radius: 4px; background: rgba(255, 255, 255, 0.5); }
+  .rsvp-shade.rsvp-on { opacity: 1; pointer-events: auto; }
+  .rsvp-box .rsvp-btn { justify-self: stretch; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rsvp-badge::after { animation: none; }
+  .rsvp-card, .rsvp-card.rsvp-open, .rsvp-shade, .rsvp-toast { transition: none; }
+}
