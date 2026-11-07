@@ -44,12 +44,13 @@
   function now() { return Date.now() + skew; }
   function fmt(n) { return Math.round(n).toLocaleString('ru-RU'); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-  function monthsWord(n) {
+  function plural(n, one, few, many) {
     var a = n % 10, b = n % 100;
-    if (a === 1 && b !== 11) return n + ' месяц';
-    if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return n + ' месяца';
-    return n + ' месяцев';
+    if (a === 1 && b !== 11) return n + ' ' + one;
+    if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return n + ' ' + few;
+    return n + ' ' + many;
   }
+  function monthsWord(n) { return plural(n, 'месяц', 'месяца', 'месяцев'); }
   function active() { return !!(info && info.active && now() >= info.startMs && now() < info.endMs); }
   function badgeText() { return info.badge || ('+' + info.months + ' мес.'); }
   function promoName() { return info.badge ? 'Акция ' + info.badge : 'Акция'; }
@@ -78,10 +79,14 @@
       ? a.getUTCDate() + '–' + b.getUTCDate() + ' ' + MONTH_GEN[bm]
       : a.getUTCDate() + ' ' + MONTH_GEN[am] + ' – ' + b.getUTCDate() + ' ' + MONTH_GEN[bm];
   }
+  /* «4 дня 11 часов»; в последние сутки — «11 часов 59 минут»; в последний час — минуты. */
   function leftText() {
     var ms = Math.max(0, info.endMs - now());
     var d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
-    return (d ? d + ' д ' : '') + h + ' ч ' + (m < 10 ? '0' : '') + m + ' мин';
+    var D = plural(d, 'день', 'дня', 'дней'), H = plural(h, 'час', 'часа', 'часов'), M = plural(m, 'минута', 'минуты', 'минут');
+    if (d) return h ? D + ' ' + H : D;
+    if (h) return m ? H + ' ' + M : H;
+    return M;
   }
   function isPhone() { return window.matchMedia && window.matchMedia('(max-width: 760px)').matches; }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
@@ -154,7 +159,7 @@
           '<li>при покупке, продлении и переходе ' + (yearly ? 'на годовой тариф' : 'на тариф со сроком из акции') + '</li>' +
           '<li>подарок добавляется к сроку сам после оплаты</li>' +
         '</ul>' +
-        '<div class="rsvp-count">До конца акции <b class="rsvp-left"></b></div>' +
+        '<div class="rsvp-count">До конца акции осталось <b class="rsvp-left"></b></div>' +
         '<button type="button" class="rsvp-btn rsvp-go">' + (yearly ? 'Выбрать годовой тариф' : 'Выбрать тариф') + '</button>' +
         '<button type="button" class="rsvp-hide">Скрыть значок</button>' +
       '</div>';
@@ -371,12 +376,15 @@
   }
 
   // Просмотр на своём компьютере без живого скрипта: открыть страницу как файл
-  // или с localhost и добавить ?promo-preview — акция показывается на примере.
+  // или с localhost и добавить ?promo-preview — акция показывается на примере:
+  // настройки акции 11.11 (9–13 ноября 2026, +3 месяца к годовому), а часы стоят
+  // на 9 ноября 12:00 МСК — как будто акция уже идёт. На опубликованном сайте
+  // этого режима нет: там всё берётся у скрипта.
   var local = location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   if (local && /[?&]promo-preview\b/.test(location.search)) {
-    var t = Date.now();
-    start({ success: true, active: true, now: t, startMs: t - 864e5, endMs: t + 2 * 864e5 + 5 * 36e5,
-      months: 3, tiers: ['ANL-1Y', 'DEV-1Y', 'ARC-1Y', 'PRO-1Y'], withPromocode: true, badge: '11.11' }, t);
+    start({ success: true, active: true, now: Date.UTC(2026, 10, 9, 9),
+      startMs: Date.UTC(2026, 10, 8, 21), endMs: Date.UTC(2026, 10, 13, 21),
+      months: 3, tiers: ['ANL-1Y', 'DEV-1Y', 'ARC-1Y', 'PRO-1Y'], withPromocode: true, badge: '11.11' }, Date.now());
     return;
   }
 
