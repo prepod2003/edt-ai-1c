@@ -55,6 +55,8 @@
     return n + ' ' + many;
   }
   function monthsWord(n) { return plural(n, 'месяц', 'месяца', 'месяцев'); }
+  /* На сколько процентов месяц годового тарифа дешевле с подарком: 3 из 15 → 20. */
+  function savingPct() { return Math.round(info.months / (12 + info.months) * 100); }
   /* 'on' — акция идёт; 'soon' — анонс до начала; '' — ничего не показывать. */
   function phase() {
     if (!info) return '';
@@ -195,7 +197,7 @@
         '<div class="rsvp-card-head">' + (soon ? 'Скоро: ' + esc(what.toLowerCase()) : esc(what)) +
           ' — <em>+' + esc(gift) + ' в подарок</em></div>' +
         '<ul class="rsvp-card-list">' +
-          (yearly ? '<li>' + (12 + info.months) + ' месяцев по цене 12</li>' : '') +
+          (yearly ? '<li><b class="rsvp-save">Экономия ' + savingPct() + '%:</b> ' + (12 + info.months) + ' месяцев по цене 12</li>' : '') +
           '<li>при покупке, продлении и переходе ' + (yearly ? 'на годовой тариф' : 'на тариф со сроком из акции') +
             (soon ? ' ' + esc(fromToText()) : '') + '</li>' +
           (soon
