@@ -223,41 +223,59 @@
       .then(function (r) { done(r && r.success ? r : { found: false, reason: 'error' }); })
       .catch(function () { done({ found: false, reason: 'error' }); });
   }
-  function showFound(box, nameEl, metaEl, noteEl, r, okNote) {
+  /* Итог поиска. Не найдено или реестр не ответил — честно об этом и просьба вписать название:
+     «номер верный» по одной контрольной сумме не говорит, что это та организация. */
+  function showFound(box, nameEl, metaEl, noteEl, r, okNote, miss) {
     box.hidden = false;
     box.classList.toggle('neutral', !r.found);
+    box.classList.toggle('miss', !r.found && r.reason === 'not-found');
     if (r.found) {
       nameEl.textContent = r.name;
       metaEl.textContent = [r.kpp ? 'КПП ' + r.kpp : '', r.address, r.head, r.status].filter(Boolean).join(' · ');
       noteEl.textContent = okNote;
     } else {
-      nameEl.textContent = r.reason === 'not-found' ? 'В реестре не найдено' : 'Номер верный';
-      metaEl.textContent = r.reason === 'not-found'
-        ? 'Проверьте номер. Если он верный — продолжайте, реквизиты сверим при выставлении счёта.'
-        : 'Название подставим при выставлении счёта.';
-      noteEl.textContent = '';
+      var m = r.reason === 'not-found' ? miss.notFound : miss.unknown;
+      nameEl.textContent = m[0]; metaEl.textContent = m[1]; noteEl.textContent = '';
     }
   }
-  var innSeq = 0;
+  var RU_MISS = {
+    notFound: ['Организация с таким ИНН не найдена', 'Проверьте ИНН — возможно, ошибка в цифре. Если ИНН верный (организация зарегистрирована на днях), впишите название ниже.'],
+    unknown: ['Не удалось проверить ИНН по реестру', 'Впишите название организации или ФИО предпринимателя ниже — сверим его с ИНН при выставлении счёта.']
+  };
+  var FOREIGN_MISS = {
+    notFound: ['В реестре не найдено', 'Проверьте номер — возможно, ошибка в цифре. Если он верный, впишите название ниже или приложите карточку предприятия.'],
+    unknown: ['Не удалось проверить номер по реестру', 'Впишите название организации ниже или приложите карточку предприятия.']
+  };
+  var innSeq = 0, ruState = 'idle';   // idle | pending | found | none
+  function ruNameRow(show) {
+    $('ru-name-row').hidden = !show;
+    if (!show) { $('ru-name').classList.remove('bad'); document.querySelector('[data-err="ru-name"]').hidden = true; }
+  }
   function findInn() {
     var v = $('inn').value.replace(/\D/g, ''); $('inn').value = v;
-    $('inn-found').hidden = true; $('kpp-row').hidden = true; ruFound = null;
+    $('inn-found').hidden = true; $('kpp-row').hidden = true; ruFound = null; ruState = 'idle'; ruNameRow(false);
     if (!innOk(v)) {
       $('inn-err').textContent = v ? 'ИНН не сходится по контрольной сумме — проверьте цифры.' : 'Укажите ИНН — без него счёт не выставить.';
       $('inn-err').hidden = false; return;
     }
     $('inn-err').hidden = true; $('inn').classList.remove('bad');
     $('kpp-row').hidden = v.length !== 10;
-    var my = ++innSeq;
+    var my = ++innSeq; ruState = 'pending';
     $('f-name').textContent = 'Ищем…'; $('f-meta').textContent = ''; $('f-note').textContent = '';
-    $('inn-found').hidden = false; $('inn-found').classList.add('neutral');
+    $('inn-found').hidden = false; $('inn-found').classList.add('neutral'); $('inn-found').classList.remove('miss');
     lookup('RU', v, function (r) {
       if (my !== innSeq) return;
       ruFound = r.found ? r : null;
+      ruState = r.found ? 'found' : 'none';
       showFound($('inn-found'), $('f-name'), $('f-meta'), $('f-note'), r,
-        'Данные — из ЕГРЮЛ. Это ваша организация?' + (v.length === 10 ? ' Если КПП другой (филиал), укажите его ниже.' : ''));
+        'Данные — из госреестра (ЕГРЮЛ / ЕГРИП). Это ваша организация? Если нет — проверьте ИНН.' +
+        (v.length === 10 ? ' Если КПП другой (филиал), укажите его ниже.' : ''), RU_MISS);
+      ruNameRow(!r.found);
     });
   }
+  $('ru-name').addEventListener('input', function () {
+    if (this.value.trim()) { this.classList.remove('bad'); document.querySelector('[data-err="ru-name"]').hidden = true; }
+  });
   $('inn-go').addEventListener('click', findInn);
   $('inn').addEventListener('keydown', function (e) { if (e.key === 'Enter') findInn(); });
   $('inn').addEventListener('input', function () { var v = this.value.replace(/\D/g, ''); if (v.length === 10 || v.length === 12) findInn(); });
@@ -289,7 +307,7 @@
     lookup(r.code, v, function (res) {
       if (my !== taxSeq) return;
       foreignFound = res.found ? res : null;
-      showFound($('f-found'), $('ff-name'), $('ff-meta'), $('ff-note'), res, r.src + ' Это ваша организация?');
+      showFound($('f-found'), $('ff-name'), $('ff-meta'), $('ff-note'), res, r.src + ' Это ваша организация? Если нет — проверьте номер.', FOREIGN_MISS);
       $('f-manual').hidden = !!res.found;   // название и адрес пришли из реестра
     });
   }
@@ -350,6 +368,15 @@
         $('inn').classList.add('bad');
         $('inn-err').textContent = v ? 'ИНН не сходится по контрольной сумме — проверьте цифры.' : 'Укажите ИНН — без него счёт не выставить.';
         $('inn-err').hidden = false; bad.push($('inn'));
+      } else if (ruState === 'idle') {
+        findInn();
+        $('send-err').textContent = 'Проверяем ИНН по реестру — посмотрите, та ли это организация, и отправьте ещё раз.'; $('send-err').hidden = false;
+        bad.push($('inn'));
+      } else if (ruState === 'pending') {
+        $('send-err').textContent = 'Подождите секунду — проверяем ИНН по реестру.'; $('send-err').hidden = false;
+        bad.push($('inn'));
+      } else if (ruState === 'none') {
+        mark('ru-name', $('ru-name').value.trim() ? '' : 'Впишите название организации или ФИО предпринимателя — проверить ИНН по реестру не удалось.');
       }
     } else {
       var tv = $('taxno').value.trim(), rr = REG[$('country').value];
@@ -400,6 +427,7 @@
       action: 'invoice-request',
       buyer: kind === 'ru'
         ? { kind: 'ru', inn: $('inn').value.replace(/\D/g, ''), kpp: $('kpp').value.trim(), postAddress: $('ru-addr').value.trim(),
+            name: ruFound ? '' : $('ru-name').value.trim(),
             found: ruFound ? { name: ruFound.name, address: ruFound.address } : null }
         : { kind: 'foreign', country: $('country').value, taxno: $('taxno').value.trim(), name: $('fname').value.trim(), address: $('faddr').value.trim(),
             iban: $('iban').value.trim(), swift: $('swift').value.trim(), bankName: $('bank').value.trim(),

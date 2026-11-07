@@ -74,6 +74,8 @@
 .found.neutral { border-color: var(--line); background: var(--bg-base, #FAF8F5); color: var(--muted); }
 .found.neutral b { color: var(--text); }
 .found.neutral .meta { color: var(--muted); }
+.found.miss { border-color: var(--warn-line); background: var(--warn-bg); }
+.found.miss b, .found.miss .meta { color: var(--warn-fg); }
 
 .note { border-radius: 12px; padding: 12px 14px; font-size: 13.5px; display: grid; gap: 4px; line-height: 1.45; }
 .note.warn { background: var(--warn-bg); border: 1px solid var(--warn-line); color: var(--warn-fg); }
