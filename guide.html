@@ -20,6 +20,24 @@
     .nav-link.is-hidden,.nav-section.is-hidden{display:none;}
     .doc-search-empty{padding:6px 2px 0;font-size:.82rem;color:var(--text-dim);display:none;}
     .doc-search-empty.show{display:block;}
+    /* Полосы времени: продление, смена тарифа, второй код */
+    .tl{margin:24px 0;padding:18px 18px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-surface);}
+    .tl-row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 14px;align-items:center;margin:12px 0;}
+    .tl-label{font-weight:600;font-size:var(--fs-sm);color:var(--text);line-height:1.3;}
+    .tl-tracks{display:flex;flex-direction:column;gap:5px;min-width:0;border-left:2px solid var(--border-hi);padding-left:4px;}
+    .tl-track{display:flex;gap:4px;min-width:0;}
+    .tl-seg{flex:var(--w,1) 1 0;min-width:0;padding:7px 10px;border-radius:6px;border:1.5px solid;font-size:var(--fs-xs);line-height:1.3;color:var(--text-m);}
+    .tl-seg b{display:block;font-size:var(--fs-sm);font-weight:600;color:var(--text);}
+    .tl-fit{flex:0 0 auto;}
+    .tl-gap{flex:var(--w,1) 1 0;min-width:0;}
+    .tl-anl{background:var(--green-soft);border-color:var(--green);}
+    .tl-arc{background:var(--amber-soft);border-color:var(--amber);}
+    .tl-pro{background:var(--accent-soft2);border-color:var(--accent);}
+    .tl-add{border-style:dashed;}
+    .tl-ghost{background:repeating-linear-gradient(135deg,var(--bg-sunken) 0 6px,var(--bg-elevated) 6px 12px);border:1.5px dashed var(--border-hi);color:var(--text-muted);padding-top:5px;padding-bottom:5px;}
+    .tl-today{font-size:var(--fs-xs);color:var(--text-dim);}
+    .tl-cap{margin:12px 0 0;font-size:var(--fs-sm);color:var(--text-muted);line-height:1.5;}
+    @media (max-width:600px){.tl{padding:14px 12px 10px;}.tl-row{grid-template-columns:minmax(0,1fr);gap:5px;}.tl-row.tl-head .tl-label{display:none;}.tl-gap-wide{display:none;}}
   </style>
   <link rel="stylesheet" href="promo.css?v=20261107">
 </head>
@@ -570,7 +588,7 @@
 
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Способ</th><th>Когда выбирать</th><th>Что происходит с оставшимися днями</th><th>Сколько платить</th></tr></thead>
+        <thead><tr><th>Способ</th><th>Когда выбирать</th><th>Оставшиеся дни</th><th>Сколько платить</th></tr></thead>
         <tbody>
           <tr><td><strong>Продлить лицензию</strong></td><td>Тариф устраивает, нужен новый срок</td><td>Сохраняются: новый срок прибавляется к текущей дате окончания</td><td>Цена выбранного срока своего тарифа</td></tr>
           <tr><td><strong>Сменить тариф</strong></td><td>Переходите на другой тариф насовсем</td><td>Засчитываются деньгами и уменьшают доплату; новый срок идёт от дня оплаты</td><td>Цена нового тарифа минус стоимость неиспользованных дней</td></tr>
@@ -578,6 +596,55 @@
         </tbody>
       </table>
     </div>
+    <figure class="tl">
+      <div class="tl-row tl-head">
+        <div class="tl-label"></div>
+        <div class="tl-today">&#9660; сегодня, 11.11.2026</div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Сейчас</div>
+        <div class="tl-tracks">
+          <div class="tl-track">
+            <div class="tl-seg tl-anl" style="--w:15"><b>Аналитик</b>до 12.02.2028</div>
+            <div class="tl-gap" style="--w:13"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Продлить лицензию</div>
+        <div class="tl-tracks">
+          <div class="tl-track">
+            <div class="tl-seg tl-anl" style="--w:15"><b>Аналитик</b>оставшиеся дни на месте</div>
+            <div class="tl-seg tl-anl tl-add" style="--w:12"><b>+ год</b>до 12.02.2029</div>
+            <div class="tl-gap" style="--w:1"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Сменить тариф</div>
+        <div class="tl-tracks">
+          <div class="tl-track">
+            <div class="tl-seg tl-pro" style="--w:12"><b>Архитектор Про</b>год от дня оплаты, до 11.11.2027</div>
+            <div class="tl-gap" style="--w:16"></div>
+          </div>
+          <div class="tl-track">
+            <div class="tl-seg tl-ghost" style="--w:15">остаток «Аналитика» зачтён деньгами &mdash; на эту сумму меньше доплата</div>
+            <div class="tl-gap" style="--w:13"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Ввести ещё один код</div>
+        <div class="tl-tracks">
+          <div class="tl-track">
+            <div class="tl-seg tl-pro tl-fit"><b>Архитектор Про</b>месяц, до 12.12.2026</div>
+            <div class="tl-seg tl-anl" style="--w:15"><b>Аналитик</b>те же дни, сдвинуты на месяц: до 14.03.2028</div>
+            <div class="tl-gap tl-gap-wide" style="--w:7"></div>
+          </div>
+        </div>
+      </div>
+      <figcaption class="tl-cap">Один и тот же пример тремя способами: «Аналитик» действует до 12.02.2028, сегодня 11.11.2026. Длина полос условная.</figcaption>
+    </figure>
     <p>Цены в примерах ниже взяты из прайса на момент написания раздела; действующие цены — в разделе <a href="index.html#pricing">«Цены»</a>.</p>
 
     <h4>Продление своего тарифа</h4>
@@ -622,6 +689,26 @@
         </tbody>
       </table>
     </div>
+    <figure class="tl">
+      <div class="tl-row">
+        <div class="tl-label">Было</div>
+        <div class="tl-tracks">
+          <div class="tl-track">
+            <div class="tl-seg tl-arc" style="--w:1"><b>Архитектор</b>навсегда &rarr;</div>
+          </div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Ввели месяц «Архитектор Про»</div>
+        <div class="tl-tracks">
+          <div class="tl-track">
+            <div class="tl-seg tl-pro tl-fit"><b>Архитектор Про</b>месяц</div>
+            <div class="tl-seg tl-arc" style="--w:1"><b>Архитектор</b>снова навсегда &rarr;</div>
+          </div>
+        </div>
+      </div>
+      <figcaption class="tl-cap">С бессрочной лицензией правило то же: старший тариф работает свой срок, потом возвращается бессрочная.</figcaption>
+    </figure>
     <p>Что действует сейчас и что начнёт действовать потом, плагин показывает сразу после ввода кода: <em>«Архитектор Про» до 12.12.2026. Затем — «Аналитик» до 14.03.2028</em>. Переключение происходит само, вводить что-либо повторно не нужно.</p>
     <p><strong>Что выбрать: второй код или смену тарифа.</strong> Нужен «Архитектор Про» на месяц под конкретную задачу, а дальше хватит своего тарифа — купите месяц «Архитектор Про» и введите код: заплатите цену одного месяца, а свой тариф вернётся с теми же днями. Переходите на старший тариф насовсем — меняйте тариф: неиспользованные дни уменьшат доплату.</p>
 
