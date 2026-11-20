@@ -92,6 +92,7 @@
     <span class="nav-section-title">Подключение</span>
     <a href="#connect" class="nav-link">Подключение ИИ-ассистента</a>
     <a href="#connect-clients" class="nav-link sub">Конфигурация клиентов</a>
+    <a href="#connect-kimi" class="nav-link sub">Kimi Code CLI и Kimi Work</a>
     <a href="#connect-multi" class="nav-link sub">Несколько EDT и конфигураций</a>
     <a href="#connect-shared-server" class="nav-link sub">Один сервер на несколько разработчиков</a>
     <a href="#connect-remote" class="nav-link sub">Удалённый доступ</a>
@@ -435,6 +436,30 @@
     </blockquote>
 
     <p><strong>После обновления плагина</strong> переподключите MCP-сервер в клиенте агента (или начните новую сессию агента): клиент запоминает список инструментов при подключении и до переподключения не видит новых параметров и возможностей выпуска.</p>
+
+    <h3 id="connect-kimi">Kimi Code CLI и Kimi Work</h3>
+    <p>Запустите 1С:EDT с MCP:RSV Server. В примерах ниже указан адрес по умолчанию <code>http://127.0.0.1:8770/mcp</code>. Если порт отличается, возьмите адрес из подсказки индикатора MCP:RSV в строке состояния EDT.</p>
+
+    <h4>Kimi Code CLI</h4>
+    <p>Если CLI выдаёт ошибку из-за размера схемы <code>edit_metadata</code>, включите загрузку инструментов по запросу. В <code>~/.kimi-code/config.toml</code> добавьте настройку ниже. Если раздел <code>[experimental]</code> уже есть, добавьте параметр в него.</p>
+    <pre data-lang="toml"><code>[experimental]
+tool-select = true</code></pre>
+    <p>В <code>~/.kimi-code/mcp.json</code> добавьте сервер. Если подключение <code>1c-rsv</code> уже настроено, добавьте в его запись только <code>"deferred": true</code>.</p>
+    <pre data-lang="json"><code>{
+  <span class="prop">"mcpServers"</span>: {
+    <span class="prop">"1c-rsv"</span>: {
+      <span class="prop">"url"</span>: <span class="str">"http://127.0.0.1:8770/mcp"</span>,
+      <span class="prop">"deferred"</span>: <span class="kw">true</span>
+    }
+  }
+}</code></pre>
+    <p><code>tool-select</code> включает экспериментальный режим в Kimi Code CLI. <code>deferred</code> применяет его к подключению <code>1c-rsv</code>: Kimi показывает модели краткий список инструментов и подгружает полные схемы по мере необходимости. Размер самих схем остаётся прежним. Режим требует модели с поддержкой динамической загрузки инструментов.</p>
+    <p>Перезапустите CLI и вызовите <code>/mcp</code>, чтобы проверить подключение. <a href="https://www.kimi.com/code/docs/en/kimi-code-cli/customization/mcp#loading-tools-on-demand">Загрузка инструментов по запросу в документации Kimi Code</a>.</p>
+
+    <h4>Настольное приложение Kimi с режимом Work</h4>
+    <p>Установите <a href="https://www.kimi.com/en/products/download">Kimi for desktop, with Kimi Work</a> на том же компьютере, где запущена EDT, войдите в аккаунт и откройте вкладку <strong>Work</strong>. В новом чате отправьте запрос, подставив свой адрес сервера при необходимости.</p>
+    <blockquote><p>Создай личный плагин «MCP:RSV Server». Подключи к нему локальный MCP-сервер по HTTP по адресу http://127.0.0.1:8770/mcp. Проверь подключение без изменения проекта 1С.</p></blockquote>
+    <p>В разделе <strong>«Плагины» → «Личные»</strong> установите созданный плагин, если приложение предложит установку. Проверьте статус <strong>Connected</strong> и нажмите <strong>«Использовать»</strong>. Затем попросите Kimi показать открытые проекты 1С:EDT. В настольном приложении проверена работа профиля «Архитектор», включая создание объекта через <code>edit_metadata</code>. Настройки CLI для этого подключения не требуются. <a href="https://www.kimi.com/en/help/plugins-and-skills/create">Личные плагины в документации Kimi Work</a>.</p>
 
     <h3 id="connect-multi">Несколько EDT и несколько конфигураций</h3>
     <p>Если ИИ-ассистенту нужны сразу две базы — например, при разработке обмена между <strong>ERP</strong> и <strong>Бухгалтерией</strong>, — держите их как вам удобнее: обе <strong>в одном EDT</strong> (в одном workspace) или <strong>каждую в своём EDT</strong>. Работает одинаково и одинаково без настройки: подключение у агента одно, набор инструментов один — контекст чата вторая база не раздувает, — а нужную конфигурацию агент выбирает по имени проекта: «сравни структуру документа <em>Реализация</em> в ERP и в Бухгалтерии» — и он сам обратится к обеим.</p>
